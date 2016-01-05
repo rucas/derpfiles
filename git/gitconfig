@@ -2,6 +2,9 @@
     editor = nvim
 [hub]
     protocol = https
+[user]
+    name = rucas
+    email = lucas.rondenet@wk.com
 [web]
     browser = google-chrome
 [credential]
