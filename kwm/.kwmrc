@@ -1,0 +1,46 @@
+# This is a sample config for Kwm
+# The commands listed here can be of
+# two types. 
+#
+# Commands prefixed with 'kwmc' will call
+# local functions corresponding to the
+# kwmc syntax.
+#
+# To run a system command, use the prefix
+# 'sys' and then the requested command
+# e.g 'sys mvim' would open macvim
+
+# Set default values for screen padding
+kwmc config padding top 40
+kwmc config padding bottom 40
+kwmc config padding left 20
+kwmc config padding right 20
+
+# Set default values for container gaps
+kwmc config gap vertical 20
+kwmc config gap horizontal 20
+
+# Let Kwm listen for hotkeys
+kwmc config hotkeys enable
+
+# Turn off focus-follows-mouse if any
+# context-menus or the menubar is visible.
+# If the menubar is not set to auto-hide,
+# disable this setting.
+kwmc config menu-fix enable
+
+# Set focus-follows-mouse-mode to autoraise
+kwmc config focus autoraise
+
+# Window can be made floating through drag&drop
+kwmc config dragndrop enable
+
+# Allow Kwm to tile windows
+kwmc config tiling enable
+
+# The following command blacklists a specific application
+# from Kwms tiling (PS: The app name is case-sensitive)
+# If the name consist of multiple words, the command
+# looks like: kwmc config float Google Chrome
+kwmc config float Steam
+kwmc config float Photoshop

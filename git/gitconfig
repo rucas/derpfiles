@@ -1,0 +1,25 @@
+[core]
+    editor = nvim
+[web]
+    browser = google-chrome
+[credential]
+    helper = osxkeychain
+[alias]
+    # View abbrv. SHA, description, and history graph of the latest 20
+    l = log --pretty=format:'%h - %an, %an : %s' -n 20 --graph --abbrev-commit
+
+    # Short hand add
+    a = add
+
+    branches = branch -a
+    remotes = remote -v
+
+    # Amend the currently staged files to the latest commit
+    amend = commit --amend --reuse-message=HEAD
+
+    # Remove branches that have already been merged with master
+    # a.k.a. ‘delete merged’
+    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+    # List contributors with number of commits
+    contributors = shortlog --summary --numbered
