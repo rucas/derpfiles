@@ -9,3 +9,6 @@ git config --global core.excludesfile ~/.gitignore_global
 
 # Set NeoVim for commits
 git config --global core.editor "nvim"
+
+# Use the keychain
+git config --global credential.helper osxkeychain
