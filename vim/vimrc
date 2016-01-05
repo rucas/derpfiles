@@ -33,6 +33,7 @@ Plug 'airblade/vim-gitgutter'
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+map <C-n> :NERDTreeToggle<CR>
 
 " Add plugins to &runtimepath
 call plug#end()
