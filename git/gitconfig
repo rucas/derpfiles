@@ -1,5 +1,7 @@
 [core]
     editor = nvim
+[hub]
+    protocol = https
 [web]
     browser = google-chrome
 [credential]
