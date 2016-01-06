@@ -6,3 +6,19 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
+# Shortcuts
+alias d="cd Dropbox\ \(G*"
+alias dp="cd Dropbox\ \(P*"
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias p="cd ~/projects"
+alias h="history"
+alias j="jobs"
+
+# Get week number
+alias week='date +%V'
+
+# Git
+alias ga="git add"
+alias gs="gws"
+alias gd="git diff"
