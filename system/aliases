@@ -20,5 +20,6 @@ alias week='date +%V'
 
 # Git
 alias ga="git add"
+alias gl="git l"
 alias gs="gws"
 alias gd="git diff"
