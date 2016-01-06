@@ -30,6 +30,7 @@ au Syntax * RainbowParenthesesLoadBraces
 
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-obsession'
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
