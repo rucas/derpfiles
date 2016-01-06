@@ -9,7 +9,3 @@ sudo pmset -a sms 0
 
 # Check for software updates daily, not just once per week
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
-
-# Global .gitignore
-git config --global core.excludesfile ~/.gitignore_global
-
