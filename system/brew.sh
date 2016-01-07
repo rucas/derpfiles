@@ -14,6 +14,9 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade --all
 
+# So we can get iterm2-nightly
+brew tap caskroom/versions
+
 # Install GNU core utilities (those that come with OS X are outdated).
 brew install coreutils
 
@@ -69,8 +72,10 @@ brew cask install dash
 brew cask install dropbox
 brew cask install google-chrome
 brew cask install iterm2
+brew cask install iterm2-nightly
 brew cask install java
 brew cask install omnigraffle
 brew cask install slack
 brew cask install transmission
 brew cask install vlc
+brew cask install virtualbox
