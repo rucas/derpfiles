@@ -28,8 +28,10 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
+" finish ( " [
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
+Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-obsession'
 
 " On-demand loading
@@ -61,6 +63,9 @@ nmap <leader>w :w!<cr>
 "
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
+
+" show them numbers
+set number
 
 " no status line
 set laststatus=0
@@ -114,6 +119,10 @@ set encoding=utf8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
+
+" colorscheme
+colorscheme onedark
+set background=dark
 
 " Files, backups, and undo
 " ----------------------------------------------------------------
