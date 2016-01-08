@@ -34,6 +34,10 @@ Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-obsession'
 
+" Autocompletion
+Plug 'Shougo/deoplete.nvim'
+let g:deoplete#enable_at_startup = 1
+
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 map <C-n> :NERDTreeToggle<CR>
