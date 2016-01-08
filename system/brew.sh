@@ -79,3 +79,6 @@ brew cask install slack
 brew cask install transmission
 brew cask install vlc
 brew cask install virtualbox
+
+# TODO figure out where to add this
+sudo pip3 install neovim
