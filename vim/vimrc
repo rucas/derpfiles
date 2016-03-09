@@ -3,44 +3,91 @@ call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'tpope/vim-surround'
 
-Plug 'kien/rainbow_parentheses.vim'
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['red',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['magenta',         'firebrick3'],
-    \ ]
+Plug 'junegunn/rainbow_parentheses.vim'
+let g:rainbow#max_level = 16
+let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+" List of colors that you do not want. ANSI code or #RRGGBB
+let g:rainbow#blacklist = [233, 234]
+au VimEnter * RainbowParentheses
 
-" finish ( " [
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
-Plug 'tpope/vim-obsession'
+Plug 'hdima/python-syntax', { 'for': 'python' }
+let python_highlight_all = 1
+
+Plug 'vim-scripts/vim-auto-save'
+let g:auto_save = 1  " enable AutoSave on Vim startup
+let g:auto_save_in_insert_mode = 0 " Disable on insert mode
+
+Plug 'othree/yajs.vim'
+Plug 'othree/javascript-libraries-syntax.vim'
+au FileType javascript setl sw=2 sts=2 et
+
+
+" Plug 'tpope/vim-obsession'
+Plug 'christoomey/vim-tmux-navigator'
+if has('nvim')
+  nmap <bs> :<c-u>TmuxNavigateLeft<cr>
+endif
 
 " Autocompletion
 Plug 'Shougo/deoplete.nvim'
 let g:deoplete#enable_at_startup = 1
 
-" On-demand loading
+" fzf
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" goyo
+Plug 'junegunn/goyo.vim'
+Plug 'reedes/vim-pencil'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
+au! BufRead,BufNewFile *.markdown set filetype=mkd
+au! BufRead,BufNewFile *.md       set filetype=mkd
+
+function! s:auto_goyo()
+  if &ft == 'mkd'
+    Goyo 80
+  elseif exists('#goyo')
+    let bufnr = bufnr('%')
+    Goyo!
+    execute 'b '.bufnr
+  endif
+endfunction
+
+augroup goyo_markdown
+  autocmd!
+  autocmd BufNewFile,BufRead * call s:auto_goyo()
+augroup END
+
+function! s:goyo_enter()
+  let b:quitting = 0
+  let b:quitting_bang = 0
+  autocmd QuitPre <buffer> let b:quitting = 1
+  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+endfunction
+
+function! s:goyo_leave()
+  " Quit Vim if this is the only remaining buffer
+  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+    if b:quitting_bang
+      qa!
+    else
+      qa
+    endif
+  endif
+endfunction
+
+autocmd! User GoyoEnter call <SID>goyo_enter()
+autocmd! User GoyoLeave call <SID>goyo_leave()
+
+" On demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 map <C-n> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -223,6 +270,9 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+
+" Save on buffer move or lost focus
+autocmd BufLeave,FocusLost * silent! wall
 
 " Spell Checking
 " -----------------
