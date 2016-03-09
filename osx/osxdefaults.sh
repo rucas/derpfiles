@@ -67,6 +67,9 @@ defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
 # Disable local Time Machine backups
 hash tmutil &> /dev/null && sudo tmutil disablelocal
 
+# Let's see them dotfiles
+defaults write com.apple.finder AppleShowAllFiles -bool YES
+
 # TODO way to remove clock from menubar and wifi indicator
 # TODO way to remove notification from menubar and spotlight
 
