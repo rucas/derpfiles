@@ -12,6 +12,9 @@ sudo pmset -a standbydelay 86400
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
 
+# Disable Resume system-wide
+defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
+
 # Disable the sudden motion sensor as it’s not useful for SSDs
 sudo pmset -a sms 0
 
@@ -72,4 +75,3 @@ defaults write com.apple.finder AppleShowAllFiles -bool YES
 
 # TODO way to remove clock from menubar and wifi indicator
 # TODO way to remove notification from menubar and spotlight
-
