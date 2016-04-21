@@ -23,6 +23,8 @@ let g:auto_save_in_insert_mode = 0 " Disable on insert mode
 
 Plug 'othree/yajs.vim'
 Plug 'othree/javascript-libraries-syntax.vim'
+let g:used_javascript_libs = 'underscore,react'
+" Plug 'mxw/vim-jsx'
 au FileType javascript setl sw=2 sts=2 et
 
 
@@ -36,6 +38,16 @@ endif
 Plug 'Shougo/deoplete.nvim'
 let g:deoplete#enable_at_startup = 1
 
+" Python Autocompletion
+" Plug 'zchee/deoplete-jedi'
+" set completeopt-=preview
+" autocmd CompleteDone * pclose!
+
+" floobits
+" Plug 'floobits/floobits-neovim'
+" let g:python_host_prog  = "/usr/local/bin/python"
+" let g:python3_host_prog = "/usr/local/bin/python3"
+
 " fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
@@ -44,6 +56,9 @@ Plug 'junegunn/goyo.vim'
 Plug 'reedes/vim-pencil'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+
+" vim org
+" Plug 'jceb/vim-orgmode'
 
 au! BufRead,BufNewFile *.markdown set filetype=mkd
 au! BufRead,BufNewFile *.md       set filetype=mkd
@@ -284,6 +299,44 @@ map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
+
+
+" Helper functions
+" -------------------------------------------
+" Don't close window, when deleting a buffer
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+   let l:currentBufNum = bufnr("%")
+   let l:alternateBufNum = bufnr("#")
+
+   if buflisted(l:alternateBufNum)
+     buffer #
+   else
+     bnext
+   endif
+
+   if bufnr("%") == l:currentBufNum
+     new
+   endif
+
+   if buflisted(l:currentBufNum)
+     execute("bdelete! ".l:currentBufNum)
+   endif
+endfunction
+
+function! ClipboardYank()
+  call system('pbcopy', @@)
+endfunction
+function! ClipboardPaste()
+  let @@ = system('pbpaste')
+endfunction
+
+vnoremap <silent> y y:call ClipboardYank()<cr>
+onoremap <silent> y y:call ClipboardYank()<cr>
+vnoremap <silent> d d:call ClipboardYank()<cr>
+onoremap <silent> d d:call ClipboardYank()<cr>
+nnoremap <silent> p :call ClipboardPaste()<cr>p
+
 
 " Misc
 " ------------------------------------
