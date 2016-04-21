@@ -24,3 +24,6 @@ alias gaa="git add -A"
 alias gl="git l"
 alias gs="gws"
 alias gd="git diff"
+
+# NeoVim
+alias vi="nvim -c \"colorscheme onedark\""
