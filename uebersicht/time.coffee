@@ -1,0 +1,1 @@
+/Users/lucas/Library/Application Support/Übersicht/widgets/time.coffee
