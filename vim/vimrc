@@ -1,4 +1,13 @@
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
 call plug#begin('~/.vim/plugged')
+
+" True Color
+"
+set termguicolors
 
 " Make sure you use single quotes
 Plug 'tpope/vim-surround'
@@ -14,19 +23,34 @@ au VimEnter * RainbowParentheses
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
+
+" Snippets
+Plug 'SirVer/ultisnips'
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+Plug 'greg-js/vim-react-es6-snippets'
+
+" Python
+"
 Plug 'hdima/python-syntax', { 'for': 'python' }
 let python_highlight_all = 1
+Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 
 Plug 'vim-scripts/vim-auto-save'
-let g:auto_save = 1  " enable AutoSave on Vim startup
-let g:auto_save_in_insert_mode = 0 " Disable on insert mode
+let g:auto_save = 1                 " enable AutoSave on Vim startup
+let g:auto_save_in_insert_mode = 0  " Disable on insert mode
 
-Plug 'othree/yajs.vim'
-Plug 'othree/javascript-libraries-syntax.vim'
-let g:used_javascript_libs = 'underscore,react'
-" Plug 'mxw/vim-jsx'
+" JavaScript Syntax
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+let g:used_javascript_libs = 'underscore,react,chai'
+Plug 'isRuslan/vim-es6'
+
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+" let g:jsx_ext_required = 0
 au FileType javascript setl sw=2 sts=2 et
-
+au FileType javascript.jsx setl sw=2 sts=2 et
 
 " Plug 'tpope/vim-obsession'
 Plug 'christoomey/vim-tmux-navigator'
@@ -34,31 +58,38 @@ if has('nvim')
   nmap <bs> :<c-u>TmuxNavigateLeft<cr>
 endif
 
+" HTML
+"
+Plug 'mattn/emmet-vim', { 'for': 'html' }
+
+" Linting
+"
+Plug 'neomake/neomake'
+
 " Autocompletion
+"
 Plug 'Shougo/deoplete.nvim'
 let g:deoplete#enable_at_startup = 1
 
-" Python Autocompletion
-" Plug 'zchee/deoplete-jedi'
-" set completeopt-=preview
-" autocmd CompleteDone * pclose!
-
-" floobits
-" Plug 'floobits/floobits-neovim'
-" let g:python_host_prog  = "/usr/local/bin/python"
-" let g:python3_host_prog = "/usr/local/bin/python3"
-
-" fzf
+" FZF
+"
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
-" goyo
+nnoremap <silent> <leader><space> :Files<CR>
+nnoremap <silent> <leader>a :Buffers<CR>
+nnoremap <silent> <leader>A :Windows<CR>
+nnoremap <silent> <leader>; :BLines<CR>
+nnoremap <silent> <leader>o :BTags<CR>
+nnoremap <silent> <leader>O :Tags<CR>
+nnoremap <silent> <leader>? :History<CR>
+
+" Goyo
+"
 Plug 'junegunn/goyo.vim'
 Plug 'reedes/vim-pencil'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-
-" vim org
-" Plug 'jceb/vim-orgmode'
 
 au! BufRead,BufNewFile *.markdown set filetype=mkd
 au! BufRead,BufNewFile *.md       set filetype=mkd
@@ -99,15 +130,20 @@ endfunction
 autocmd! User GoyoEnter call <SID>goyo_enter()
 autocmd! User GoyoLeave call <SID>goyo_leave()
 
+" ix.io
+" Paste to public URL
+noremap <leader>i :w !ix<CR>
+
 " On demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 map <C-n> :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', 'venv', '__pycache__']
 
 " Add plugins to &runtimepath
 call plug#end()
 
 " General
+"
 set history=700
 
 " Enable filetype plugins
@@ -117,13 +153,12 @@ filetype indent on
 " Set to auto read when a file is changed from the outside
 set autoread
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
-
 " Fast saving
 nmap <leader>w :w!<cr>
+
+" Terminal
+"
+tnoremap kj <C-\><C-n>
 
 " UI
 "
@@ -152,7 +187,7 @@ set whichwrap+=<,>,h,l
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Makes search act like search in modern browsers
@@ -166,6 +201,7 @@ set magic
 
 " Show matching brackets when text indicator is over them
 set showmatch
+
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
@@ -177,6 +213,7 @@ set tm=500
 
 " Colors and Font
 " ---------------------------
+"
 " Enable syntax highlighting
 syntax enable
 
@@ -192,12 +229,14 @@ set background=dark
 
 " Files, backups, and undo
 " ----------------------------------------------------------------
+"
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
 set nowb
 set noswapfile
 
 " Text, tab and indents
+"
 " ---------------------------
 " Use spaces instead of tabs
 set expandtab
@@ -216,6 +255,12 @@ set tw=80
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
+
+fun! TrimWhitespace()
+    let l:save_cursor = getpos('.')
+    %s/\s\+$//e
+    call setpos('.', l:save_cursor)
+endfun
 
 " Visual mode
 " ---------------------------------------------------------------
@@ -283,8 +328,10 @@ func! DeleteTrailingWS()
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
+
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.js :call DeleteTrailingWS()
 
 " Save on buffer move or lost focus
 autocmd BufLeave,FocusLost * silent! wall
@@ -323,20 +370,6 @@ function! <SID>BufcloseCloseIt()
      execute("bdelete! ".l:currentBufNum)
    endif
 endfunction
-
-function! ClipboardYank()
-  call system('pbcopy', @@)
-endfunction
-function! ClipboardPaste()
-  let @@ = system('pbpaste')
-endfunction
-
-vnoremap <silent> y y:call ClipboardYank()<cr>
-onoremap <silent> y y:call ClipboardYank()<cr>
-vnoremap <silent> d d:call ClipboardYank()<cr>
-onoremap <silent> d d:call ClipboardYank()<cr>
-nnoremap <silent> p :call ClipboardPaste()<cr>p
-
 
 " Misc
 " ------------------------------------
