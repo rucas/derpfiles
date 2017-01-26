@@ -73,5 +73,8 @@ hash tmutil &> /dev/null && sudo tmutil disablelocal
 # Let's see them dotfiles
 defaults write com.apple.finder AppleShowAllFiles -bool YES
 
+# Smaller Sketch svg export
+defaults write com.bohemiancoding.sketch3 exportCompactSVG -bool yes
+
 # TODO way to remove clock from menubar and wifi indicator
 # TODO way to remove notification from menubar and spotlight
