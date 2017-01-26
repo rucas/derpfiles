@@ -45,12 +45,15 @@ let g:auto_save_in_insert_mode = 0  " Disable on insert mode
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 let g:used_javascript_libs = 'underscore,react,chai'
-Plug 'isRuslan/vim-es6'
-
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
-" let g:jsx_ext_required = 0
+let g:jsx_ext_required = 0
 au FileType javascript setl sw=2 sts=2 et
 au FileType javascript.jsx setl sw=2 sts=2 et
+
+
+" Snippets
+Plug 'isRuslan/vim-es6'
 
 " Plug 'tpope/vim-obsession'
 Plug 'christoomey/vim-tmux-navigator'
@@ -61,10 +64,27 @@ endif
 " HTML
 "
 Plug 'mattn/emmet-vim', { 'for': 'html' }
+autocmd Filetype html setlocal ts=2 sts=2 sw=2
+
+" Go
+"
+Plug 'fatih/vim-go'
+" Plug 'zchee/deoplete-go'
+" Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 
 " Linting
 "
 Plug 'neomake/neomake'
+
+" Color
+"
+Plug 'chrisbra/Colorizer'
 
 " Autocompletion
 "
@@ -144,6 +164,7 @@ call plug#end()
 
 " General
 "
+set autowrite
 set history=700
 
 " Enable filetype plugins
