@@ -22,7 +22,15 @@
 - [kwm](https://github.com/koekeishiya/kwm)
 - [khd](https://github.com/koekeishiya/khd)
 
+After installing depenendencies, set up by running:
+
+```
+./install.sh
+```
+
 ## Usage
+
+Checkout individual README's in directories for detailed descriptions
 
 ## Acknowledgments
 
