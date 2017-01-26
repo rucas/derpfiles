@@ -43,4 +43,6 @@ function commit() {
 
 function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 
+function gitdocs() { touch README.md CONTRIBUTING.md CHANGELOG.md DEPLOYING.md }
+
 function night() { pmset sleepnow }
