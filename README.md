@@ -1,4 +1,4 @@
-# 🌑&nbsp;&nbsp;F I L E S
+# 🌑&nbsp;&nbsp;<i>F I L E S</i>
 
 > Some hidden files that keep me sane...
 
