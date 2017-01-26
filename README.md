@@ -1,4 +1,4 @@
-# 🌑&nbsp;&nbsp;<i>F I L E S</i>
+# 🌑&nbsp;&nbsp;F I L E S
 
 > Some hidden files that keep me sane...
 
@@ -6,7 +6,6 @@
 
 - [Install](#install)
 - [Usage](#usage)
-- [Acknowledgments](#acknowledgments)
 - [Contribute](#contribute)
 - [License](#license)
 
@@ -31,8 +30,6 @@ After installing depenendencies, set up by running:
 ## Usage
 
 Checkout individual README's in directories for detailed descriptions
-
-## Acknowledgments
 
 ## Contribute
 
