@@ -76,5 +76,10 @@ defaults write com.apple.finder AppleShowAllFiles -bool YES
 # Smaller Sketch svg export
 defaults write com.bohemiancoding.sketch3 exportCompactSVG -bool yes
 
+# No Dock... or just too small to see
+# defaults write com.apple.dock tilesize -int 1; killall Dock
+# defaults write com.apple.dock autohide-time-modifier -float 20000000000; killall Dock
+# defaults write com.apple.dock static-only -bool TRUE; killall Dock
+
 # TODO way to remove clock from menubar and wifi indicator
 # TODO way to remove notification from menubar and spotlight
