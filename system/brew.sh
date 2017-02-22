@@ -72,7 +72,6 @@ brew cask install dash
 brew cask install dropbox
 brew cask install google-chrome
 brew cask install iterm2
-brew cask install iterm2-nightly
 brew cask install java
 brew cask install omnigraffle
 brew cask install slack
