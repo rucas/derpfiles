@@ -72,6 +72,7 @@ brew cask install google-chrome
 brew cask install iterm2
 brew cask install java
 brew cask install omnigraffle
+brew cask install ngrok
 brew cask install slack
 brew cask install transmission
 brew cask install vlc
