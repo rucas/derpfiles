@@ -26,6 +26,9 @@ brew install curl
 # Install some other useful utilities like `sponge`.
 brew install moreutils
 
+# FZF
+brew install FZF
+
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
 brew install findutils
 
