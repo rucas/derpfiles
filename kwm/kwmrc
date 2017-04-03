@@ -115,10 +115,10 @@ kwmc rule owner="iTerm2" properties={role="AXDialog"}
 /*
 The following commands create rules that
 blacklists an application from Kwms tiling
-
-    kwmc rule owner="Steam" properties={float="true"}
-    kwmc rule owner="Photoshop" properties={float="true"}
 */
+kwmc rule owner="Steam" properties={float="true"}
+kwmc rule owner="Photoshop" properties={float="true"}
+kwmc rule owner="iTunes" properties={float="true"}
 
 /*
 The following command creates a rule that
