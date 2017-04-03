@@ -14,6 +14,9 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade --all
 
+# Archey mac info
+brew install archey
+
 # Install GNU core utilities (those that come with OS X are outdated).
 brew install coreutils
 
