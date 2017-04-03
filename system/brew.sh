@@ -63,7 +63,9 @@ brew install tmux
 brew tap Goles/battery
 brew install battery
 
-# Python
+# Coding Languages
+brew install nvm
+brew install go
 brew install python
 brew install python3
 
