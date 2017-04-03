@@ -41,6 +41,10 @@ brew install htop
 # Neovim 
 brew install neovim/neovim/neovim
 
+# Kwm/Khd
+brew install koekeishiya/formulae/kwm
+brew install koekeishiya/formulae/khd
+
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
 brew install ack
