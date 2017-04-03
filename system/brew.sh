@@ -51,6 +51,9 @@ brew install neovim/neovim/neovim
 brew install koekeishiya/formulae/kwm
 brew install koekeishiya/formulae/khd
 
+# taskwarrior
+brew install task
+
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
 brew install ack
