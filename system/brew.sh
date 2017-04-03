@@ -78,5 +78,10 @@ brew cask install transmission
 brew cask install vlc
 brew cask install virtualbox
 
-# TODO figure out where to add this
+# neovim +python support
+sudo pip2 install neovim
 sudo pip3 install neovim
+
+# fonts!
+brew tap caskroom/fonts             
+brew cask install font-hack
