@@ -17,4 +17,4 @@ ln -sf $(pwd)/git/gitconfig ~/.gitconfig
 
 # kwm
 ln -sf $(pwd)/kwm/kwmrc ~/.kwm/kwmrc
-ln -sf $(pwd)/kwm/kwmrc ~/.khdrc
+ln -sf $(pwd)/kwm/khdrc ~/.khdrc
