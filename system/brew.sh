@@ -61,8 +61,9 @@ brew install python3
 brew install jq
 
 # brew cask
-brew cask install 1password
 brew cask install aerial
+brew cask install atom
+brew cask install postman
 brew cask install anybar
 brew cask install appcleaner
 brew cask install dash 
