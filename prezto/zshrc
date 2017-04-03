@@ -1,0 +1,41 @@
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
+
+# add the good stuff
+. ~/.aliases
+. ~/.functions
+
+# This may break homebrew installs... comment it
+# out if shit breaks especially vim
+# export PATH="/Users/lucas/anaconda/bin:$PATH"
+
+# Add NeoVim TrueColor
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+# nvm node version manager
+source /usr/local/opt/nvm/nvm.sh
+export NVM_DIR=~/.nvm
+  . $(brew --prefix nvm)/nvm.sh
+
+# Github hub aliasing
+eval "$(hub alias -s)"
+
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Golang stuff
+export GOPATH=$HOME/golang
+export GOROOT=/usr/local/opt/go/libexec
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
