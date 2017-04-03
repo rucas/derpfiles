@@ -100,6 +100,10 @@ brew cask install virtualbox
 sudo pip2 install neovim
 sudo pip3 install neovim
 
+# neovim vim-plug plugin manager
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 # fonts!
 brew tap caskroom/fonts             
 brew cask install font-hack
