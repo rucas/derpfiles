@@ -16,4 +16,5 @@ ln -sf $(pwd)/git/gitignore_global ~/.gitignore_global
 ln -sf $(pwd)/git/gitconfig ~/.gitconfig
 
 # kwm
-ln -sf $(pwd)/kwm/kwmrc ~/.kwmrc
+ln -sf $(pwd)/kwm/kwmrc ~/.kwm/kwmrc
+ln -sf $(pwd)/kwm/kwmrc ~/.khdrc
