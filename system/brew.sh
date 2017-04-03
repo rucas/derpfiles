@@ -51,6 +51,9 @@ brew install hub
 
 # tmux
 brew install tmux
+
+# tmux battery
+brew tap Goles/battery
 brew install battery
 
 # Python
