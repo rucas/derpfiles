@@ -67,6 +67,7 @@ brew install tmux
 
 # tmux battery
 brew tap Goles/battery
+brew isntall spark
 brew install battery
 
 # Coding Languages
