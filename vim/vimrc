@@ -43,13 +43,20 @@ Plug 'vim-scripts/vim-auto-save'
 let g:auto_save = 1                 " enable AutoSave on Vim startup
 let g:auto_save_in_insert_mode = 0  " Disable on insert mode
 
-" JavaScript Syntax
+" JavaScript 
+"
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 let g:used_javascript_libs = 'underscore,react,chai'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 let g:jsx_ext_required = 0
+
+
+" TypeScript
+"
+Plug 'HerringtonDarkholme/yats.vim'
+
 au FileType javascript setl sw=2 sts=2 et
 au FileType javascript.jsx setl sw=2 sts=2 et
 
@@ -78,8 +85,8 @@ let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
-Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
+" Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+" Plug 'zchee/deoplete-go', { 'do': 'make'}
 " Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 " Linting
 "
@@ -89,10 +96,25 @@ Plug 'neomake/neomake'
 "
 Plug 'chrisbra/Colorizer'
 
+" YAML
+" 
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+
 " Autocompletion
 "
 Plug 'Shougo/deoplete.nvim'
 let g:deoplete#enable_at_startup = 1
+
+" Aligner
+"
+Plug 'junegunn/vim-easy-align'
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " FZF
 "
