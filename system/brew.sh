@@ -26,6 +26,9 @@ brew install curl
 # Install some other useful utilities like `sponge`.
 brew install moreutils
 
+# FZF
+brew install FZF
+
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
 brew install findutils
 
@@ -48,6 +51,9 @@ brew install neovim/neovim/neovim
 brew install koekeishiya/formulae/kwm
 brew install koekeishiya/formulae/khd
 
+# taskwarrior
+brew install task
+
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
 brew install ack
@@ -61,9 +67,12 @@ brew install tmux
 
 # tmux battery
 brew tap Goles/battery
+brew isntall spark
 brew install battery
 
-# Python
+# Coding Languages
+brew install nvm
+brew install go
 brew install python
 brew install python3
 
@@ -79,7 +88,9 @@ brew cask install appcleaner
 brew cask install dash 
 brew cask install dropbox
 brew cask install google-chrome
+brew cask install firefox
 brew cask install iterm2
+brew cask install intellij-idea
 brew cask install java
 brew cask install omnigraffle
 brew cask install ngrok
@@ -91,6 +102,10 @@ brew cask install virtualbox
 # neovim +python support
 sudo pip2 install neovim
 sudo pip3 install neovim
+
+# neovim vim-plug plugin manager
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # fonts!
 brew tap caskroom/fonts             
