@@ -9,8 +9,8 @@ call plug#begin('~/.vim/plugged')
 "
 set termguicolors
 
-" Make sure you use single quotes
 Plug 'tpope/vim-surround'
+Plug 'sbdchd/neoformat'
 
 Plug 'junegunn/rainbow_parentheses.vim'
 let g:rainbow#max_level = 16
@@ -46,20 +46,24 @@ let g:auto_save_in_insert_mode = 0  " Disable on insert mode
 " JavaScript 
 "
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
-let g:used_javascript_libs = 'underscore,react,chai'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+
+let g:used_javascript_libs = 'underscore,react,chai'
 let g:jsx_ext_required = 0
-
-
-" TypeScript
-"
-Plug 'HerringtonDarkholme/yats.vim'
 
 au FileType javascript setl sw=2 sts=2 et
 au FileType javascript.jsx setl sw=2 sts=2 et
 
+
+" TypeScript
+"
+Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript'}
+Plug 'mhartington/nvim-typescript', { 'for': 'typescript'}
+
+au FileType typescript setl sw=2 sts=2 et
 
 " Snippets
 Plug 'isRuslan/vim-es6'
@@ -100,6 +104,13 @@ Plug 'chrisbra/Colorizer'
 " 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
+" TOML
+"
+Plug 'cespare/vim-toml'
+
+" Yank killring
+"
+Plug 'bfredl/nvim-miniyank'
 
 " Autocompletion
 "
@@ -378,6 +389,7 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.js :call DeleteTrailingWS()
+autocmd BufWrite *.ts :call DeleteTrailingWS()
 
 " Save on buffer move or lost focus
 autocmd BufLeave,FocusLost * silent! wall
