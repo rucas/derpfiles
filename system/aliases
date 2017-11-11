@@ -22,7 +22,6 @@ alias week='date +%V'
 alias ga="git add"
 alias gaa="git add -A"
 alias gl="git l"
-alias gs="gws"
 alias gd="git diff"
 
 # NeoVim
