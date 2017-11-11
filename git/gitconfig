@@ -17,6 +17,9 @@
     # Short hand add
     a = add
 
+    # list all merge conflicts
+    conflicts = diff --name-only --diff-filter=U
+
     branches = branch -a
     remotes = remote -v
 
