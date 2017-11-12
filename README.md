@@ -1,4 +1,6 @@
-# 🌑&nbsp;&nbsp;F I L E S
+<img src="artwork/thor.gif" align="center">
+
+# derpfiles 
 
 > Some hidden files that keep me sane...
 
