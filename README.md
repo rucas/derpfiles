@@ -1,6 +1,6 @@
-<img src="artwork/thor.gif" align="center">
+<img src="artwork/thor.gif" align="center" />
 
-# derpfiles 
+<h1 align="center">derpfiles</h1>
 
 > Some hidden files that keep me sane...
 
