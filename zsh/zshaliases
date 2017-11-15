@@ -1,3 +1,5 @@
+# 
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -5,6 +7,9 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
+
+# Lists the ten most used commands.
+alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 
 # Shortcuts
 alias d="cd Dropbox\ \(G*"
@@ -24,5 +29,5 @@ alias gaa="git add -A"
 alias gl="git l"
 alias gd="git diff"
 
-# NeoVim
+# NeoVim really...just less typing
 alias vi="nvim -c \"colorscheme onedark\""

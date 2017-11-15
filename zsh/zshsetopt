@@ -1,0 +1,71 @@
+setopt autocd
+setopt beep
+setopt extendedglob
+setopt nomatch 
+
+# Let me know immediately when terminating job
+setopt notify
+
+# Prohibit overwrite by redirection(> & >>) (Use >! and >>! to bypass.)
+setopt no_clobber
+
+# Deploy {a-c} -> a b c
+setopt brace_ccl
+
+# Confirm when executing 'rm *'
+setopt rm_star_wait
+
+# Treat the '!' character specially during expansion.
+setopt bang_hist                 
+
+# Write the history file in the ':start:elapsed;command' format.
+setopt extended_history          
+
+# Write to the history file immediately, not when the shell exits.
+setopt inc_append_history        
+
+# Share history between all sessions.
+setopt share_history             
+
+# Expire a duplicate event first when trimming history.
+setopt hist_expire_dups_first    
+
+# Do not record an event that was just recorded again.
+setopt hist_ignore_dups          
+
+# Delete an old recorded event if a new event is a duplicate.
+setopt hist_ignore_all_dups      
+
+# Do not display a previously found event.
+setopt hist_find_no_dups         
+
+# Do not record an event starting with a space.
+setopt hist_ignore_space         
+
+# Do not write a duplicate event to the history file.
+setopt hist_save_no_dups         
+
+# Do not execute immediately upon history expansion.
+setopt hist_verify               
+
+# Beep when accessing non-existent history.
+setopt hist_beep                 
+
+# Remove comannd of 'history' or 'fc -l' from history list
+setopt hist_no_store
+
+# Delete an old recorded event if a new event is a duplicate.
+setopt hist_save_nodups
+
+# Remove superfluous blanks from each command line being added to the history list.
+setopt hist_reduce_blanks
+
+# Let me know mail arrival
+setopt mail_warning
+
+# Allow comments even in interactive shells.
+setopt interactive_comments
+
+# Expand '=command' as path of command
+# e.g.) '=ls' -> '/bin/ls'
+setopt equals

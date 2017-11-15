@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash 
 
 # Ask for the administrator password upfront
 sudo -v
@@ -71,13 +71,13 @@ defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
 hash tmutil &> /dev/null && sudo tmutil disablelocal
 
 # Let's see them dotfiles
-defaults write com.apple.finder AppleShowAllFiles -bool YES
+# defaults write com.apple.finder AppleShowAllFiles -bool YES
 
 # Smaller Sketch svg export
 defaults write com.bohemiancoding.sketch3 exportCompactSVG -bool yes
 
 # No swipe gesture for chrome
-defaults write com.google.Chrome.plist AppleEnableSwipeNavigateWithScrolls -bool FALSE
+# defaults write com.google.Chrome.plist AppleEnableSwipeNavigateWithScrolls -bool FALSE
 
 # No Dock... or just too small to see
 # defaults write com.apple.dock tilesize -int 1; killall Dock
