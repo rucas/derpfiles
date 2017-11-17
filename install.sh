@@ -20,6 +20,9 @@ ln -sf $(pwd)/tmux/bin/wifi.sh ~/.tmux/bin/wifi
 ln -sf $(pwd)/git/gitignore_global ~/.gitignore_global
 ln -sf $(pwd)/git/gitconfig ~/.gitconfig
 
+# Chunkwm
+ln -sf $(pwd)/chunkwm/chunkwmrc ~/.chunkwmrc
+
 # kwm
 # ln -sf $(pwd)/kwm/kwmrc ~/.kwm/kwmrc
 # ln -sf $(pwd)/kwm/khdrc ~/.khdrc
