@@ -80,3 +80,10 @@ fi
 
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/lucas/repos/moneypenny/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/lucas/repos/moneypenny/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/lucas/repos/moneypenny/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/lucas/repos/moneypenny/node_modules/tabtab/.completions/sls.zsh
