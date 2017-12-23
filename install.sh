@@ -26,8 +26,8 @@ ln -sf $(pwd)/taskwarrior/taskrc ~/.taskrc
 # Chunkwm
 ln -sf $(pwd)/chunkwm/chunkwmrc ~/.chunkwmrc
 
+# Skhdrc
+ln -sf $(pwd)/skhdrc/skhdrc ~/.skhdrc
 
-
-# kwm
-# ln -sf $(pwd)/kwm/kwmrc ~/.kwm/kwmrc
-# ln -sf $(pwd)/kwm/khdrc ~/.khdrc
+# ubersicht
+ln -sf $(pwd)/ubersicht/bar.coffee ~/Library/Application\ Support/Übersicht/widgets

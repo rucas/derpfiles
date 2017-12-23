@@ -1,26 +1,41 @@
-command: "ESC=`printf \"\e\"`; ps -A -o %cpu | awk '{s+=$1} END {printf(\"%.2f\",s/8);}'"
+octicons = require("octicons")
 
-refreshFrequency: 2000 # ms
+command: "top -l 1 | grep -E '^CPU|^Phys'"
+
+refreshFrequency: "1m"
 
 render: (output) ->
   """
-  <link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.min.css" />
-  <div class="cpu"
-    <span></span>
-    <span class="icon"></span>
+  <div class="cpu">
+    #{octicons.pulse.toSVG()}
+    <span class="icon percentage"></span>
   </div>
   """
 
-update: (output, el) ->
-    $(".cpu span:first-child", el).text("  #{output}")
-    $icon = $(".cpu span.icon", el)
-    $icon.removeClass().addClass("icon")
-    $icon.addClass("fa fa-bar-chart")
+update: (output, domEl) ->
+  stats = output.split("\n")
+  console.log(stats)
+  cpuStats = stats[0]
+  cpuPercs = cpuStats.split(":")[1].trim().split(",")
+  userCpuPerc = cpuPercs[0].replace("user", "").trim()
+  sysCpuPerc = cpuPercs[1].replace("sys", "").trim()
+  $(".cpu span.icon.percentage", domEl).text("S:#{sysCpuPerc} U:#{userCpuPerc}")
 
-style: """
-  -webkit-font-smoothing: antialiased
-  color: #d5c4a1
-  font: 12px Input
-  right: 265px
-  top: 6px
-"""
+style:
+  """
+    -webkit-font-smoothing: antialiased
+    font: 12px Hack
+    color: #9C9486
+
+    svg
+      fill: #9C9486;
+      padding-left: 5px;
+
+    span
+      padding-left: 5px;
+
+    .cpu
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+  """
