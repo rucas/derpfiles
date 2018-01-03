@@ -17,12 +17,6 @@
 
 *os x system*
 
-- [neovim](https://github.com/neovim/neovim)
-- [tmux](https://github.com/tmux/tmux)
-- [uebersicht](http://tracesof.net/uebersicht/)
-- [kwm](https://github.com/koekeishiya/kwm)
-- [khd](https://github.com/koekeishiya/khd)
-
 After installing depenendencies, set up by running:
 
 ```
