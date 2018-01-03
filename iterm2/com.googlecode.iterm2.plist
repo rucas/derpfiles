@@ -276,15 +276,15 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>1169 113 445 103 0 0 1680 1027 </string>
+	<string>1396 33 445 77 0 0 1920 1177 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>1981 1430 796 473 1007 1200 2560 1417 </string>
+	<string>654 264 796 473 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1018 1216 2537 1385 1007 1200 2560 1417 </string>
+	<string>7 7 948 1166 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>1018 1214 1263 1390 1007 1200 2560 1417 </string>
+	<string>1013 1207 1270 1404 1007 1200 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>106 -48 927 405 0 0 1920 1177 </string>
+	<string>1013 1917 1270 690 1007 1200 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>535 107 1382 1027 0 0 1920 1177 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
@@ -939,7 +939,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>470E4DAF-97CC-4830-845F-E878489A2E9F</string>
 	<key>NoSyncLastTipTime</key>
-	<real>532633380.17357498</real>
+	<real>536697141.777785</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -952,6 +952,32 @@
 	<array>
 		<string>000</string>
 		<string>0000</string>
+		<string>0001</string>
+		<string>0002</string>
+		<string>0003</string>
+		<string>0004</string>
+		<string>0005</string>
+		<string>0006</string>
+		<string>0007</string>
+		<string>0008</string>
+		<string>0009</string>
+		<string>0010</string>
+		<string>0011</string>
+		<string>0012</string>
+		<string>0013</string>
+		<string>0014</string>
+		<string>0015</string>
+		<string>0016</string>
+		<string>0017</string>
+		<string>0018</string>
+		<string>0019</string>
+		<string>0020</string>
+		<string>0021</string>
+		<string>0022</string>
+		<string>0023</string>
+		<string>0024</string>
+		<string>0025</string>
+		<string>0026</string>
 	</array>
 	<key>PointerActions</key>
 	<dict>
@@ -997,7 +1023,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-11-15T18:59:32Z</date>
+	<date>2017-12-28T18:54:21Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>WordCharacters</key>
