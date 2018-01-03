@@ -1,0 +1,46 @@
+# Get a gitignore file
+function gi() { curl -L -s https://www.gitignore.io/api/\$@ ;}
+
+
+# Create a new directory and enter it
+function mkd() {
+    mkdir -p "$@" && cd "$_";
+}
+
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+function o() {
+    if [ $# -eq 0 ]; then
+        open .;
+    else
+        open "$@";
+    fi;
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre() {
+    tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
+
+function color() {
+    rand=$(openssl rand -hex 3) 
+    echo 'copied '$rand
+    echo $rand | pbcopy
+}
+
+function commit() {
+    hash=$(git log --pretty=format:'%h' -n 1)
+    echo 'copied '$hash
+    echo $hash | pbcopy
+}
+
+function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
+
+function giturl() { curl --silent -i https://git.io -F "url=$@" | tr -d '\r' | sed -En 's/^Location: (.*)/\1/p' | pbcopy . }
+
+function gitdocs() { touch README.md CONTRIBUTING.md CHANGELOG.md DEPLOYING.md }
+
+function night() { pmset sleepnow }

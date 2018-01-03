@@ -1,0 +1,33 @@
+# 
+
+# Easier navigation: .., ..., ...., ....., ~ and -
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+alias -- -="cd -"
+
+# Lists the ten most used commands.
+alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
+
+# Shortcuts
+alias d="cd Dropbox\ \(G*"
+alias dp="cd Dropbox\ \(P*"
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias p="cd ~/projects"
+alias h="history"
+alias j="jobs"
+
+# Get week number
+alias week='date +%V'
+
+# Git
+alias ga="git add"
+alias gaa="git add -A"
+alias gl="git l"
+alias gd="git diff"
+
+# NeoVim really...just less typing
+alias vi="nvim -c \"colorscheme onedark\""
