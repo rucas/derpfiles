@@ -69,6 +69,11 @@ au FileType typescript setl sw=2 sts=2 et
 "
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
+" SugarSS
+"
+Plug 'hhsnopek/vim-sugarss', { 'for': 'sugarss' }
+
+
 " Snippets
 Plug 'isRuslan/vim-es6'
 
