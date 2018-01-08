@@ -8,6 +8,7 @@ ln -sf $(pwd)/zsh/zshaliases ~/.zshaliases
 ln -sf $(pwd)/zsh/zshfunctions ~/.zshfunctions
 
 # Vim
+mkdir -p ~/.config/nvim
 ln -sf $(pwd)/neovim/vimrc ~/.vimrc
 ln -sf $(pwd)/neovim/vimrc ~/.config/nvim/init.vim
 
