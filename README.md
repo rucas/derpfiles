@@ -31,6 +31,8 @@ $ cd iterm2
 $ cd osx
 ./start.sh
 
+$ cd neovim
+./start.sh
 
 ```
 
