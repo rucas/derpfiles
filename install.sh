@@ -30,4 +30,4 @@ ln -sf $(pwd)/chunkwm/chunkwmrc ~/.chunkwmrc
 ln -sf $(pwd)/skhdrc/skhdrc ~/.skhdrc
 
 # ubersicht
-ln -sf $(pwd)/ubersicht/bar.coffee ~/Library/Application\ Support/Übersicht/widgets
+# ln -sf $(pwd)/ubersicht/bar.coffee ~/Library/Application\ Support/Übersicht/widgets
