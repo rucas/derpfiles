@@ -24,10 +24,7 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 . "$DIR/enablefirewall.sh"
 
 # shellcheck source=osx/keyrepeat.sh
-. "$DIR/keyrepeat.sh"
-
-# shellcheck source=osx/keyrepeat.sh
-. "$DIR/keyrepeat.sh"
+. "$DIR/hidemenubar.sh"
 
 # shellcheck source=osx/keyrepeat.sh
 . "$DIR/keyrepeat.sh"
@@ -35,17 +32,6 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 # shellcheck source=osx/keyrepeat.sh
 . "$DIR/noadobeonstart.sh"
 
-# shellcheck source=osx/nodashboard.sh
-. "$DIR/nodashboard.sh"
-
-# shellcheck source=osx/noDS_Store.sh
-. "$DIR/noDS_Store.sh"
-
-# shellcheck source=osx/onlyactiveappsdock.sh
-. "$DIR/onlyactiveappsdock.sh"
-
-# shellcheck source=osx/showdrivesondesktop.sh
-. "$DIR/showdrivesondesktop.sh"
 # shellcheck source=osx/nodashboard.sh
 . "$DIR/nodashboard.sh"
 

@@ -52,6 +52,7 @@ $ touch .zsh_history.db
 # Build skhdrc
 ...
 
+# Set ubersicht widgets folder to ./ubersicht
 ```
 
 ## Usage

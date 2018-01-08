@@ -9,7 +9,7 @@
 [web]
     browser = google-chrome
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain
 [alias]
     # View abbrv. SHA, description, and history graph of the latest 20
     l = log --pretty=format:'%h - %an, %an : %s' -n 20 --graph --abbrev-commit
