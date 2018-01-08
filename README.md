@@ -13,14 +13,25 @@
 
 ## Install
 
-### Depenendencies
-
 *os x system*
 
-After installing depenendencies, set up by running:
 
-```
-./install.sh
+```sh
+$ cd setup
+./start.sh
+
+$ cd homebrew
+brew bundle
+
+# TODO: then run iterm2 setup script
+$ cd iterm2
+./start.sh
+
+# Then run osx defaults (KeyRepeat, etc.)
+$ cd osx
+./start.sh
+
+
 ```
 
 ## Usage
