@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Debug menu and Develop menu
 defaults write com.apple.Safari IncludeInternalDebugMenu -bool true && \
 defaults write com.apple.Safari IncludeDevelopMenu -bool true && \
