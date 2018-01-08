@@ -34,6 +34,24 @@ $ cd osx
 $ cd neovim
 ./start.sh
 
+# Edit /etc/shells
+$ sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells'
+
+# Quit terminal and open iTerm
+
+# This is for sqlite zsh history
+$ touch .zsh_history.db
+
+# Go into neovim and run
+:PlugInstall
+:UpdateRemotePlugins
+
+# Build chunkwm
+...
+
+# Build skhdrc
+...
+
 ```
 
 ## Usage
