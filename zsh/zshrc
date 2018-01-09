@@ -48,6 +48,7 @@ zplug "sorin-ionescu/prezto", \
   as:plugin, \
   use:init.zsh, \
   hook-build:"ln -s $ZPLUG_ROOT/repos/sorin-ionescu/prezto ${ZDOTDIR:-$HOME}/.zprezto"
+
 zplug "modules/git", from:prezto
 zplug "modules/homebrew", from:prezto
 zplug "modules/osx", from:prezto
@@ -55,6 +56,10 @@ zplug "modules/utility", from:prezto
 
 # NVM (node version manager)
 zplug "creationix/nvm", use:nvm.sh
+
+# K8
+#
+zplug "plugins/kubectl", from:oh-my-zsh
 
 # Dropbox-cli
 #
@@ -67,6 +72,10 @@ zplug "b4b4r07/httpstat", \
     as:command, \
     use:'(*).sh', \
     rename-to:'$1'
+
+# zplug inception?
+#
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
