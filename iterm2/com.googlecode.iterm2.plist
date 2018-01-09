@@ -278,15 +278,15 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>1396 33 445 77 0 0 1920 1177 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>654 264 796 473 0 0 1920 1200 </string>
+	<string>654 311 1018 447 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>7 7 948 1166 0 0 1920 1200 </string>
+	<string>965 7 948 1166 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>1013 1207 1270 1404 1007 1200 2560 1417 </string>
+	<string>7 7 948 1166 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>1013 1917 1270 690 1007 1200 2560 1417 </string>
+	<string>485 594 472 578 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>535 107 1382 1027 0 0 1920 1177 </string>
+	<string>7 594 948 578 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
 	<string>2143 1810 570 377 1007 1200 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 5</key>
@@ -939,7 +939,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>470E4DAF-97CC-4830-845F-E878489A2E9F</string>
 	<key>NoSyncLastTipTime</key>
-	<real>536697141.777785</real>
+	<real>537168620.71357405</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -978,7 +978,14 @@
 		<string>0024</string>
 		<string>0025</string>
 		<string>0026</string>
+		<string>0027</string>
+		<string>0028</string>
+		<string>0029</string>
+		<string>0030</string>
+		<string>0031</string>
 	</array>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -1014,6 +1021,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/lucas/repos/derpfiles/iterm2</string>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedAlternateAppNameKey</key>
@@ -1023,7 +1032,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-12-28T18:54:21Z</date>
+	<date>2018-01-08T18:12:07Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>WordCharacters</key>

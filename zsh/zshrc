@@ -41,19 +41,13 @@ zplug "zdharma/fast-syntax-highlighting", defer:2
 # History
 # 
 zplug "zsh-users/zsh-history-substring-search"
-zplug "b4b4r07/zsh-history"
 
 # Prezto modules I like to use 
 #
-zplug "modules/git", from:prezto
-zplug "modules/homebrew", from:prezto
-zplug "modules/osx", from:prezto
-zplug "modules/utility", from:prezto
-
-# Alias reminder
-#
-# NOTE: dont use this causes regex errors
-# zplug "jedahan/ripz"
+zplug "modules/git",        from:prezto
+zplug "modules/homebrew",   from:prezto
+zplug "modules/osx",        from:prezto
+zplug "modules/utility",    from:prezto
 
 # NVM (node version manager)
 zplug "creationix/nvm", use:nvm.sh
@@ -80,10 +74,3 @@ fi
 
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/lucas/repos/moneypenny/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/lucas/repos/moneypenny/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/lucas/repos/moneypenny/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/lucas/repos/moneypenny/node_modules/tabtab/.completions/sls.zsh
