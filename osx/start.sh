@@ -29,6 +29,9 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 # shellcheck source=osx/keyrepeat.sh
 . "$DIR/keyrepeat.sh"
 
+# shellcheck source=osx/mapcapslocktoctrl.sh
+. "$DIR/mapcapslocktoctrl.sh"
+
 # shellcheck source=osx/keyrepeat.sh
 . "$DIR/noadobeonstart.sh"
 
