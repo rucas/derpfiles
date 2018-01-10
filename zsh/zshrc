@@ -61,6 +61,11 @@ zplug "creationix/nvm", use:nvm.sh
 #
 zplug "plugins/kubectl", from:oh-my-zsh
 
+# zsh site-functions
+# awless and kops
+#
+zplug "/usr/local/share/zsh/site-functions", from:local, use:"_{awless,kops}", defer:2
+
 # Dropbox-cli
 #
 zplug "andreafabrizi/Dropbox-Uploader", \
