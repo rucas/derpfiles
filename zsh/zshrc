@@ -55,7 +55,9 @@ zplug "modules/osx", from:prezto
 zplug "modules/utility", from:prezto
 
 # NVM (node version manager)
-zplug "creationix/nvm", use:nvm.sh
+#
+export NVM_LAZY_LOAD=true
+zplug "lukechilds/zsh-nvm"
 
 # K8
 #
@@ -68,10 +70,10 @@ zplug "/usr/local/share/zsh/site-functions", from:local, use:"_{awless,kops}", d
 
 # Dropbox-cli
 #
-zplug "andreafabrizi/Dropbox-Uploader", \
-    as:command, \
-    use:'(*).sh', \
-    rename-to:'$1'
+# zplug "andreafabrizi/Dropbox-Uploader", \
+#     as:command, \
+#     use:'(*).sh', \
+#     rename-to:'$1'
 
 zplug "b4b4r07/httpstat", \
     as:command, \
