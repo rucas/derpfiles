@@ -1,0 +1,4 @@
+os: osx
+
+install:
+  - brew update && brew bundle --file ./homebrew/Brewfile
