@@ -1,4 +1,24 @@
 # Contributing
+
+## chunkwm
+
+## git
+
+## homebrew
+
+## iterm2
+
+## neovim
+
 ## osx
-## zsh
+
+## skhdrc
+
+## taskwarrioir
+
 ## tmux
+
+## ubersicht
+
+## zsh
+
