@@ -1,1 +1,4 @@
 # Contributing
+## osx
+## zsh
+## tmux
