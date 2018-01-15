@@ -54,34 +54,34 @@ $ touch .zsh_history.db
 # Set ubersicht widgets folder to ./ubersicht
 ...
 
-./install.sh
+$ ./install.sh
 ```
 
 ## Usage
 
 Checkout individual README's in directories for detailed descriptions
 
-- [ chunkwm ]()
+- [ chunkwm ](chunkwm/)
 
-- [ git ]()
+- [ git ](git/)
 
-- [ homebrew ]()
+- [ homebrew ](homebrew/)
 
-- [ iterm2 ]()
+- [ iterm2 ](iterm2/)
 
-- [ neovim ]()
+- [ neovim ](neovim/)
 
-- [ osx ]()
+- [ osx ](osx/)
 
-- [ skhdrc ]()
+- [ skhdrc ](skhdrc/)
 
-- [ taskwarrior ]()
+- [ taskwarrior ](task/)
 
-- [ tmux ]()
+- [ tmux ](tmux/)
 
-- [ ubersicht ]()
+- [ ubersicht ](ubersicht/)
 
-- [ zsh ]()
+- [ zsh ](zsh/)
 
 ## Contribute
 
