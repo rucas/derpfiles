@@ -1,24 +1,23 @@
 # Contributing
 
-## chunkwm
+## [ chunkwm ]()
 
-## git
+## [ git ]()
 
-## homebrew
+## [ homebrew ]()
 
-## iterm2
+## [ iterm2 ]()
 
-## neovim
+## [ neovim ]()
 
-## osx
+## [ osx ]()
 
-## skhdrc
+## [ skhdrc ]()
 
-## taskwarrioir
+## [ taskwarrior ]()
 
-## tmux
+## [ tmux ]()
 
-## ubersicht
+## [ ubersicht ]()
 
-## zsh
-
+## [ zsh ]()
