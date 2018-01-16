@@ -1,1 +1,1 @@
-# Homebrew :beers:
+# [ homebrew ](https://brew.sh/)

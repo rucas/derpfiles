@@ -22,7 +22,7 @@ $ cd setup
 $ cd homebrew
 brew bundle
 
-# TODO: then run iterm2 setup script
+# Then run iterm2 setup script
 $ cd iterm2
 ./start.sh
 
@@ -30,6 +30,7 @@ $ cd iterm2
 $ cd osx
 ./start.sh
 
+# Then run neovim setup script
 $ cd neovim
 ./start.sh
 
