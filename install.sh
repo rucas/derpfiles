@@ -27,5 +27,5 @@ ln -sf "$(pwd)/taskwarrior/taskrc" ~/.taskrc
 # Chunkwm
 ln -sf "$(pwd)/chunkwm/chunkwmrc" ~/.chunkwmrc
 
-# Skhdrc
-ln -sf "$(pwd)/skhdrc/skhdrc" ~/.skhdrc
+# Skhd
+ln -sf "$(pwd)/skhd/skhdrc" ~/.skhdrc

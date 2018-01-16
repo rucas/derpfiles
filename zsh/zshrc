@@ -48,7 +48,6 @@ zplug "sorin-ionescu/prezto", \
   as:plugin, \
   use:init.zsh, \
   hook-build:"ln -s $ZPLUG_ROOT/repos/sorin-ionescu/prezto ${ZDOTDIR:-$HOME}/.zprezto"
-
 zplug "modules/git", from:prezto
 zplug "modules/homebrew", from:prezto
 zplug "modules/osx", from:prezto

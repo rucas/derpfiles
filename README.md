@@ -22,7 +22,7 @@ $ cd setup
 $ cd homebrew
 brew bundle
 
-# TODO: then run iterm2 setup script
+# Then run iterm2 setup script
 $ cd iterm2
 ./start.sh
 
@@ -30,6 +30,7 @@ $ cd iterm2
 $ cd osx
 ./start.sh
 
+# Then run neovim setup script
 $ cd neovim
 ./start.sh
 
@@ -52,15 +53,40 @@ $ touch .zsh_history.db
 ...
 
 # Set ubersicht widgets folder to ./ubersicht
+...
+
+$ ./install.sh
 ```
 
 ## Usage
 
 Checkout individual README's in directories for detailed descriptions
 
+- [ chunkwm ](chunkwm/)
+
+- [ git ](git/)
+
+- [ homebrew ](homebrew/)
+
+- [ iterm2 ](iterm2/)
+
+- [ neovim ](neovim/)
+
+- [ osx ](osx/)
+
+- [ skhdrc ](skhdrc/)
+
+- [ taskwarrior ](task/)
+
+- [ tmux ](tmux/)
+
+- [ ubersicht ](ubersicht/)
+
+- [ zsh ](zsh/)
+
 ## Contribute
 
-PRs accepted. Checkout [CONTRIBUTING.md](https://github.com/rucas/derpfiles/blob/master/CONTRIBUTING.md)
+PRs accepted. Checkout [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
