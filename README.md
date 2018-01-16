@@ -86,7 +86,7 @@ Checkout individual README's in directories for detailed descriptions
 
 ## Contribute
 
-PRs accepted. Checkout [CONTRIBUTING.md](https://github.com/rucas/derpfiles/blob/master/CONTRIBUTING.md)
+PRs accepted. Checkout [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
