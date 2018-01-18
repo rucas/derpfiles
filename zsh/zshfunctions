@@ -44,3 +44,5 @@ function giturl() { curl --silent -i https://git.io -F "url=$@" | tr -d '\r' | s
 function gitdocs() { touch README.md CONTRIBUTING.md CHANGELOG.md DEPLOYING.md }
 
 function night() { pmset sleepnow }
+
+function osx-purge-dns-cache() { sudo killall -HUP mDNSResponder && echo macOS DNS Cache Reset }
