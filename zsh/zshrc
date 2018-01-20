@@ -58,22 +58,18 @@ zplug "modules/utility", from:prezto
 export NVM_LAZY_LOAD=true
 zplug "lukechilds/zsh-nvm"
 
-# K8
+# K8 & Helm
 #
 zplug "plugins/kubectl", from:oh-my-zsh
+zplug "plugins/helm", from:oh-my-zsh
 
 # zsh site-functions
 # awless and kops
 #
 zplug "/usr/local/share/zsh/site-functions", from:local, use:"_{awless,kops}", defer:2
 
-# Dropbox-cli
 #
-# zplug "andreafabrizi/Dropbox-Uploader", \
-#     as:command, \
-#     use:'(*).sh', \
-#     rename-to:'$1'
-
+#
 zplug "b4b4r07/httpstat", \
     as:command, \
     use:'(*).sh', \
