@@ -1,1 +1,1 @@
-# [ skhdrc ](https://github.com/koekeishiya/skhd)
+# [ skhd ](https://github.com/koekeishiya/skhd)
