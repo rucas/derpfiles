@@ -22,6 +22,12 @@ source ~/.zplug/init.zsh
 . ~/.zshaliases
 . ~/.zshfunctions
 
+# Use ESC to edit the current command line:
+# TODO: This should be in its own file
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\033' edit-command-line
+
 # Github Hub
 #
 eval "$(hub alias -s)"
