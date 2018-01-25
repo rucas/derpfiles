@@ -74,7 +74,7 @@ Checkout individual README's in directories for detailed descriptions
 
 - [ osx ](osx/)
 
-- [ skhdrc ](skhdrc/)
+- [ skhd ](skhd/)
 
 - [ taskwarrior ](task/)
 
