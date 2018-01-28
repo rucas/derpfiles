@@ -1,5 +1,7 @@
 # Contributing
 
+The project is divided into directories to manage individual programs. Below is a description of each program.
+
 ## [ chunkwm ](chunkwm/)
 [ website ](https://github.com/koekeishiya/chunkwm)
 
