@@ -31,7 +31,7 @@ Plug 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-Plug 'greg-js/vim-react-es6-snippets'
+Plug 'greg-js/vim-react-es6-snippets', { 'for': 'javascript' }
 
 " Python
 "
@@ -75,7 +75,7 @@ Plug 'hhsnopek/vim-sugarss', { 'for': 'sugarss' }
 
 
 " Snippets
-Plug 'isRuslan/vim-es6'
+Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
 
 " Plug 'tpope/vim-obsession'
 Plug 'christoomey/vim-tmux-navigator'
@@ -88,26 +88,43 @@ endif
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 
-" Go
+" Golang
 "
-Plug 'fatih/vim-go'
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_types = 1
-let g:go_highlight_operators = 1
+" Tabbing and Spacing 
+"
+au FileType go set noexpandtab
+au FileType go set shiftwidth=4
+au FileType go set softtabstop=4
+au FileType go set tabstop=4
+"
+"
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
 let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+"  highlighting variables that are the same.
+let g:go_auto_sameids = 1
+" autoimport deps
+let g:go_fmt_command = "goimports"
+" automatic type info
+let g:go_auto_type_info = 1
 
-" Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
-" Plug 'zchee/deoplete-go', { 'do': 'make'}
-" Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+" needs to be .config for neovim
+"
+" Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+
 " Linting
 "
 Plug 'neomake/neomake'
 
 " Color
 "
-Plug 'chrisbra/Colorizer'
+Plug 'chrisbra/Colorizer', { 'for': 'css' }
 
 " YAML
 " 
@@ -115,7 +132,7 @@ autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 " TOML
 "
-Plug 'cespare/vim-toml'
+Plug 'cespare/vim-toml', { 'for': 'toml' }
 
 " Yank killring
 "
@@ -123,12 +140,17 @@ Plug 'bfredl/nvim-miniyank'
 
 " Autocompletion
 "
-Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/deoplete.nvim', { 'commit': '865747e'}
 let g:deoplete#enable_at_startup = 1
+
+" Vim Journal
+"
+Plug 'junegunn/vim-journal', { 'for': 'journal' }
+au BufNewFile,BufRead *.journal set filetype=journal
 
 " Emojis
 "
-Plug 'fszymanski/deoplete-emoji', { 'for': ['markdown', 'gitcommit'] }
+Plug 'fszymanski/deoplete-emoji', { 'for': ['markdown', 'gitcommit', 'journal'] }
 
 " Aligner
 "
@@ -153,51 +175,53 @@ nnoremap <silent> <leader>o :BTags<CR>
 nnoremap <silent> <leader>O :Tags<CR>
 nnoremap <silent> <leader>? :History<CR>
 
+
+
 " Goyo
 "
-Plug 'junegunn/goyo.vim'
-Plug 'reedes/vim-pencil'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'reedes/vim-pencil', { 'for': 'markdown' }
+Plug 'godlygeek/tabular', { 'for': 'markdown' }
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown'}
 
 au! BufRead,BufNewFile *.markdown set filetype=mkd
 au! BufRead,BufNewFile *.md       set filetype=mkd
 
-function! s:auto_goyo()
-  if &ft == 'mkd'
-    Goyo 80
-  elseif exists('#goyo')
-    let bufnr = bufnr('%')
-    Goyo!
-    execute 'b '.bufnr
-  endif
-endfunction
-
-augroup goyo_markdown
-  autocmd!
-  autocmd BufNewFile,BufRead * call s:auto_goyo()
-augroup END
-
-function! s:goyo_enter()
-  let b:quitting = 0
-  let b:quitting_bang = 0
-  autocmd QuitPre <buffer> let b:quitting = 1
-  cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
-endfunction
-
-function! s:goyo_leave()
-  " Quit Vim if this is the only remaining buffer
-  if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
-    if b:quitting_bang
-      qa!
-    else
-      qa
-    endif
-  endif
-endfunction
-
-autocmd! User GoyoEnter call <SID>goyo_enter()
-autocmd! User GoyoLeave call <SID>goyo_leave()
+" function! s:auto_goyo()
+"   if &ft == 'mkd'
+"     Goyo 80
+"   elseif exists('#goyo')
+"     let bufnr = bufnr('%')
+"     Goyo!
+"     execute 'b '.bufnr
+"   endif
+" endfunction
+" 
+" augroup goyo_markdown
+"   autocmd!
+"   autocmd BufNewFile,BufRead * call s:auto_goyo()
+" augroup END
+" 
+" function! s:goyo_enter()
+"   let b:quitting = 0
+"   let b:quitting_bang = 0
+"   autocmd QuitPre <buffer> let b:quitting = 1
+"   cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
+" endfunction
+" 
+" function! s:goyo_leave()
+"   " Quit Vim if this is the only remaining buffer
+"   if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
+"     if b:quitting_bang
+"       qa!
+"     else
+"       qa
+"     endif
+"   endif
+" endfunction
+" 
+" autocmd! User GoyoEnter call <SID>goyo_enter()
+" autocmd! User GoyoLeave call <SID>goyo_leave()
 
 " ix.io
 " Paste to public URL
