@@ -31,6 +31,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 
 # GOPATH
 #
-export GOROOT=/usr/local/opt/go/libexec
+# export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin
+# export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
