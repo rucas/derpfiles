@@ -12,3 +12,5 @@ go get -u golang.org/x/tour/gotour
 
 go get -u github.com/motemen/gore
 go get -u github.com/k0kubun/pp
+
+go get -u github.com/spf13/cobra/cobra
