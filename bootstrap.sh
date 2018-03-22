@@ -29,3 +29,6 @@ ln -sf "$(pwd)/chunkwm/chunkwmrc" ~/.chunkwmrc
 
 # Skhd
 ln -sf "$(pwd)/skhd/skhdrc" ~/.skhdrc
+
+# Go
+ln -sf "$(pwd)/go/cobra.yaml" ~/.cobra.yaml
