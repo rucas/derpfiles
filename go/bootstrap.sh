@@ -17,3 +17,6 @@ go get -u github.com/spf13/cobra/cobra
 
 # HTTP Load Testing
 go get -u github.com/tsenart/vegeta
+
+# protoc go_out
+go get -u github.com/golang/protobuf/protoc-gen-go
