@@ -151,7 +151,7 @@ Plug 'bfredl/nvim-miniyank'
 
 " Autocompletion
 "
-Plug 'Shougo/deoplete.nvim', { 'commit': '865747e'}
+Plug 'Shougo/deoplete.nvim'
 let g:deoplete#enable_at_startup = 1
 
 " Vim Journal
