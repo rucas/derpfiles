@@ -1,1 +1,7 @@
-# OSX
+# osx
+
+## Install
+
+```sh
+$ ./start.sh
+```
