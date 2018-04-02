@@ -6,6 +6,7 @@
 [user]
     name = rucas
     email = lucas.rondenet@gmail.com
+    signingkey = C485BE3662CE98461CD4E62FF13321B9D1DEC65B
 [web]
     browser = google-chrome
 [credential]

@@ -35,3 +35,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 # export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
+# GNUPG
+#
+export GPG_TTY=$(tty)
