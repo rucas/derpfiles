@@ -82,7 +82,7 @@ if [ -d /usr/local/Caskroom/google-cloud-sdk ]; then
 fi
 
 
-#
+# httpstat
 #
 zplug "b4b4r07/httpstat", \
     as:command, \
