@@ -18,5 +18,11 @@ go get -u github.com/spf13/cobra/cobra
 # HTTP Load Testing
 go get -u github.com/tsenart/vegeta
 
+# Terraform Linter
+go get -u github.com/wata727/tflint
+
+# Makefile Linter
+go get -u github.com/mrtazz/checkmake
+
 # protoc go_out
 go get -u github.com/golang/protobuf/protoc-gen-go
