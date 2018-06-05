@@ -18,6 +18,9 @@ go get -u github.com/spf13/cobra/cobra
 # HTTP Load Testing
 go get -u github.com/tsenart/vegeta
 
+# yup...
+go get -u github.com/alecthomas/gometalinter
+
 # Terraform Linter
 go get -u github.com/wata727/tflint
 
