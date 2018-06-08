@@ -99,7 +99,7 @@ au FileType go set softtabstop=4
 au FileType go set tabstop=4
 "
 "
-Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 " :=, ==, -= 
 let g:go_highlight_operators = 1
 
@@ -132,7 +132,7 @@ Plug 'zchee/deoplete-go', { 'do': 'make'}
 
 " Terraform
 "
-Plug 'hashivim/vim-terraform', { 'for': 'tf' }
+Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 
 " Linting
 "
