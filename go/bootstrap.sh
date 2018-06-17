@@ -18,6 +18,9 @@ go get -u github.com/spf13/cobra/cobra
 # HTTP Load Testing
 go get -u github.com/tsenart/vegeta
 
+# hugo
+go get -u github.com/gohugoio/hugo
+
 # yup...
 go get -u github.com/alecthomas/gometalinter
 
