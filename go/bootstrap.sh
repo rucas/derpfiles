@@ -27,6 +27,9 @@ go get -u github.com/alecthomas/gometalinter
 # Terraform Linter
 go get -u github.com/wata727/tflint
 
+# Terraform Docs
+go get -u github.com/segmentio/terraform-docs
+
 # Makefile Linter
 go get -u github.com/mrtazz/checkmake
 
