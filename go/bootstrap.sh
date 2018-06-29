@@ -18,11 +18,17 @@ go get -u github.com/spf13/cobra/cobra
 # HTTP Load Testing
 go get -u github.com/tsenart/vegeta
 
+# hugo
+go get -u github.com/gohugoio/hugo
+
 # yup...
 go get -u github.com/alecthomas/gometalinter
 
 # Terraform Linter
 go get -u github.com/wata727/tflint
+
+# Terraform Docs
+go get -u github.com/segmentio/terraform-docs
 
 # Makefile Linter
 go get -u github.com/mrtazz/checkmake
