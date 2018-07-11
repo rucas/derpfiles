@@ -229,12 +229,12 @@
 	</dict>
 	<key>Default Bookmark Guid</key>
 	<string>97031579-52BD-4054-AD0C-031E56651695</string>
+	<key>HideScrollbar</key>
+	<true/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
-	<key>NSFontPanelAttributes</key>
-	<string>1, 0</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>~/repos/derpfiles/iterm2</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
@@ -275,22 +275,18 @@
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
-	<key>NSWindow Frame NSFontPanel</key>
-	<string>1396 33 445 77 0 0 1920 1177 </string>
+	<key>NSWindow Frame SUUpdateAlert</key>
+	<string>970 786 620 392 0 0 2560 1440 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>654 311 1018 447 0 0 1920 1200 </string>
+	<string>469 747 796 473 0 0 2560 1440 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>965 7 948 1166 0 0 1920 1200 </string>
+	<string>8 8 2544 1404 0 0 2560 1440 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>7 7 948 1166 0 0 1920 1200 </string>
+	<string>8 8 2544 1404 0 0 2560 1440 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>485 594 472 578 0 0 1920 1200 </string>
+	<string>644 718 633 690 0 0 2560 1440 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
-	<string>7 594 948 578 0 0 1920 1200 </string>
-	<key>NSWindow Frame iTerm Window 4</key>
-	<string>2143 1810 570 377 1007 1200 2560 1417 </string>
-	<key>NSWindow Frame iTerm Window 5</key>
-	<string>1728 1922 570 377 1007 1200 2560 1417 </string>
+	<string>6 718 1270 690 0 0 2560 1440 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -937,9 +933,11 @@
 	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
-	<string>470E4DAF-97CC-4830-845F-E878489A2E9F</string>
+	<string>584290CF-22E6-41CE-B5C6-E1504B1473AF</string>
 	<key>NoSyncLastTipTime</key>
-	<real>537168620.71357405</real>
+	<real>546281353.54447103</real>
+	<key>NoSyncNeverAskAboutSettingAlternateMouseScroll</key>
+	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -947,7 +945,7 @@
 	<key>NoSyncPermissionToShowTip</key>
 	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
-	<real>532212160.478576</real>
+	<real>537127444.70928502</real>
 	<key>NoSyncTipsToNotShow</key>
 	<array>
 		<string>000</string>
@@ -983,6 +981,46 @@
 		<string>0029</string>
 		<string>0030</string>
 		<string>0031</string>
+		<string>0032</string>
+		<string>0033</string>
+		<string>0034</string>
+		<string>0035</string>
+		<string>0036</string>
+		<string>0037</string>
+		<string>0038</string>
+		<string>0039</string>
+		<string>0040</string>
+		<string>0041</string>
+		<string>0042</string>
+		<string>0043</string>
+		<string>0044</string>
+		<string>0045</string>
+		<string>0046</string>
+		<string>0047</string>
+		<string>0048</string>
+		<string>0049</string>
+		<string>0050</string>
+		<string>0051</string>
+		<string>0052</string>
+		<string>0053</string>
+		<string>0054</string>
+		<string>0055</string>
+		<string>0056</string>
+		<string>0057</string>
+		<string>0058</string>
+		<string>0059</string>
+		<string>0060</string>
+		<string>0061</string>
+		<string>0062</string>
+		<string>0063</string>
+		<string>0064</string>
+		<string>0065</string>
+		<string>0066</string>
+		<string>0067</string>
+		<string>0068</string>
+		<string>0069</string>
+		<string>0070</string>
+		<string>0071</string>
 	</array>
 	<key>PMPrintingExpandedStateForPrint2</key>
 	<false/>
@@ -1020,7 +1058,7 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/lucas/repos/derpfiles/iterm2</string>
+	<string>~/repos/derpfiles/iterm2</string>
 	<key>Print In Black And White</key>
 	<true/>
 	<key>SUEnableAutomaticChecks</key>
@@ -1028,11 +1066,11 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/final.xml?shard=20</string>
+	<string>https://iterm2.com/appcasts/final.xml?shard=13</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-01-08T18:12:07Z</date>
+	<date>2018-07-11T17:04:53Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>WordCharacters</key>
@@ -1040,7 +1078,7 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.1.5</string>
+	<string>3.1.7</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
