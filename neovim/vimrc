@@ -3,6 +3,11 @@
 let mapleader = ","
 let g:mapleader = ","
 
+" True Color
+"
+let g:python_host_prog = '/Users/lucas/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = '/Users/lucas/.pyenv/versions/neovim3/bin/python'
+
 call plug#begin('~/.vim/plugged')
 
 " True Color
