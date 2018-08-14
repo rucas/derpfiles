@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# NOTE: https://superuser.com/questions/12292/bluetooth-headphones-sound-terrible-on-mac-os-x?newreg=50d80785109445439dfe8d91b2083c6b
+
 # force better codecs 
 sudo defaults write bluetoothaudiod "Enable AptX codec" -bool true
 sudo defaults write bluetoothaudiod "Enable AAC codec" -bool true
