@@ -278,7 +278,7 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>970 786 620 392 0 0 2560 1440 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>469 747 796 473 0 0 2560 1440 </string>
+	<string>469 799 1018 447 0 0 2560 1440 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>8 8 2544 1404 0 0 2560 1440 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
@@ -1073,6 +1073,8 @@
 	<date>2018-07-11T17:04:53Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
+	<key>UseMetal</key>
+	<true/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>findMode_iTerm</key>
