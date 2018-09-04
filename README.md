@@ -22,31 +22,31 @@ $ cd setup
 $ cd homebrew
 brew bundle
 
+# Edit /etc/shells
+$ sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells'
+
 # Then run iterm2 setup script
 $ cd iterm2
 ./start.sh
 
-# Then run osx defaults (KeyRepeat, etc.)
-$ cd osx
-./start.sh
-
-# log out
-# and then log back in
-
-# Then run neovim setup script
-$ cd neovim
-./start.sh
-
-# Edit /etc/shells
-$ sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells'
-
-# set dotfiles (.zshrc, .zshenv, .zshaliases, ...)
+# Set dotfiles (.zshrc, .zshenv, .zshaliases, ...)
 $ ./bootstrap.sh
 
 # Quit terminal and open iTerm
 
 # zplug will prompt for downloading zsh plugins
 # procede with a Y
+
+# Then run osx defaults (KeyRepeat, etc.)
+$ cd osx
+./start.sh
+
+# log out
+# and then log back in to see osx changes
+
+# Then run neovim setup script
+$ cd neovim
+./start.sh
 
 # Go into neovim and run
 $ nvim
