@@ -17,17 +17,17 @@
 
 ```sh
 $ cd setup
-./start.sh
+$ ./start.sh
 
 $ cd homebrew
-brew bundle
+$ brew bundle
 
 # Edit /etc/shells
 $ sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells'
 
 # Then run iterm2 setup script
 $ cd iterm2
-./start.sh
+$ ./start.sh
 
 # Set dotfiles (.zshrc, .zshenv, .zshaliases, ...)
 $ ./bootstrap.sh
@@ -39,16 +39,16 @@ $ ./bootstrap.sh
 
 # Then run osx defaults (KeyRepeat, etc.)
 $ cd osx
-./start.sh
+$ ./start.sh
 
 # log out
 # and then log back in to see osx changes
 
 # Then run neovim setup script
 $ cd neovim
-./start.sh
+$ ./start.sh
 
-# Go into neovim and run
+# Go into neovim
 $ nvim
 
 :PlugInstall
