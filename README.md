@@ -30,6 +30,9 @@ $ cd iterm2
 $ cd osx
 ./start.sh
 
+# log out
+# and then log back in
+
 # Then run neovim setup script
 $ cd neovim
 ./start.sh
