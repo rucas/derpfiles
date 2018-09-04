@@ -40,12 +40,17 @@ $ cd neovim
 # Edit /etc/shells
 $ sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells'
 
+# set dotfiles (.zshrc, .zshenv, .zshaliases, ...)
+$ ./bootstrap.sh
+
 # Quit terminal and open iTerm
 
-# This is for sqlite zsh history
-$ touch .zsh_history.db
+# zplug will prompt for downloading zsh plugins
+# procede with a Y
 
 # Go into neovim and run
+$ nvim
+
 :PlugInstall
 :UpdateRemotePlugins
 
@@ -58,7 +63,7 @@ $ touch .zsh_history.db
 # Set ubersicht widgets folder to ./ubersicht
 ...
 
-$ ./install.sh
+
 ```
 
 ## Usage
