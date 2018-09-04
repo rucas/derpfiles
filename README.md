@@ -17,32 +17,40 @@
 
 ```sh
 $ cd setup
-./start.sh
+$ ./start.sh
 
 $ cd homebrew
-brew bundle
-
-# Then run iterm2 setup script
-$ cd iterm2
-./start.sh
-
-# Then run osx defaults (KeyRepeat, etc.)
-$ cd osx
-./start.sh
-
-# Then run neovim setup script
-$ cd neovim
-./start.sh
+$ brew bundle
 
 # Edit /etc/shells
 $ sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells'
 
+# Then run iterm2 setup script
+$ cd iterm2
+$ ./start.sh
+
+# Set dotfiles (.zshrc, .zshenv, .zshaliases, ...)
+$ ./bootstrap.sh
+
 # Quit terminal and open iTerm
 
-# This is for sqlite zsh history
-$ touch .zsh_history.db
+# zplug will prompt for downloading zsh plugins
+# procede with a Y
 
-# Go into neovim and run
+# Then run osx defaults (KeyRepeat, etc.)
+$ cd osx
+$ ./start.sh
+
+# log out
+# and then log back in to see osx changes
+
+# Then run neovim setup script
+$ cd neovim
+$ ./start.sh
+
+# Go into neovim
+$ nvim
+
 :PlugInstall
 :UpdateRemotePlugins
 
@@ -55,7 +63,7 @@ $ touch .zsh_history.db
 # Set ubersicht widgets folder to ./ubersicht
 ...
 
-$ ./install.sh
+
 ```
 
 ## Usage
