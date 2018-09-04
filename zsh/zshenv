@@ -1,3 +1,7 @@
+# Homebrew 
+#
+export PATH=/usr/local/bin:$PATH
+
 # Editor
 #
 export EDITOR=nvim
