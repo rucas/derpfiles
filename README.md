@@ -54,15 +54,12 @@ $ nvim
 :PlugInstall
 :UpdateRemotePlugins
 
-# Build chunkwm
-...
-
-# Build skhdrc
-...
+# launch tmux
+$ tmux new-session
+# prefix - I to fetch plugins
 
 # Set ubersicht widgets folder to ./ubersicht
 ...
-
 
 ```
 
