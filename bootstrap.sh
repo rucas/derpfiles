@@ -32,3 +32,6 @@ ln -sf "$(pwd)/skhd/skhdrc" ~/.skhdrc
 
 # Go
 ln -sf "$(pwd)/go/cobra.yaml" ~/.cobra.yaml
+
+# tig
+ln -sf "$(pwd)/tig/tigrc" ~/.tigrc
