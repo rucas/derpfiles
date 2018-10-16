@@ -71,6 +71,10 @@ Checkout individual README's in directories for detailed descriptions
 
 - [ git ](git/)
 
+- [ github ](github/)
+
+- [ go ](go/)
+
 - [ homebrew ](homebrew/)
 
 - [ iterm2 ](iterm2/)
@@ -82,6 +86,8 @@ Checkout individual README's in directories for detailed descriptions
 - [ skhd ](skhd/)
 
 - [ taskwarrior ](task/)
+
+- [ tig ](tig/)
 
 - [ tmux ](tmux/)
 
