@@ -52,7 +52,7 @@ function night() { pmset sleepnow }
 
 function osx-purge-dns-cache() { sudo killall -HUP mDNSResponder && echo macOS DNS Cache Reset }
 
-function gch() {
+function c() {
   local cols sep google_history open
   cols=$(( COLUMNS / 3 ))
   sep='{::}'
