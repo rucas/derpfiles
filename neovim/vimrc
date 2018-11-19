@@ -28,7 +28,7 @@ augroup rainbow_lisp
 augroup END
 
 Plug 'Raimondi/delimitMate'
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'joshdick/onedark.vim'
 
 " Snippets
