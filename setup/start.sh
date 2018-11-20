@@ -2,6 +2,9 @@
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 
+# shellcheck source=setup/xcode.sh
+. "$DIR/xcode.sh"
+
 # shellcheck source=setup/brew.sh
 . "$DIR/brew.sh"
 
