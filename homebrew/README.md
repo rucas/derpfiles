@@ -13,3 +13,9 @@ This will install [brew bundle](https://github.com/Homebrew/homebrew-bundle) and
 ```sh
 $ less Brewfile
 ```
+
+## Update
+
+```sh
+$ brew bundle dump --force
+```
