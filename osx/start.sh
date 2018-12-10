@@ -2,6 +2,9 @@
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 
+# shellcheck source=osx/dns.sh
+. "$DIR/dns.sh"
+
 # shellcheck source=osx/airport.sh
 . "$DIR/airport.sh"
 
