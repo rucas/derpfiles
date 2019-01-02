@@ -16,7 +16,9 @@ go get -u github.com/k0kubun/pp
 go get -u github.com/spf13/cobra/cobra
 
 # HTTP Load Testing
+#
 go get -u github.com/tsenart/vegeta
+go get -u github.com/rs/jplot
 
 # hugo
 go get -u github.com/gohugoio/hugo
