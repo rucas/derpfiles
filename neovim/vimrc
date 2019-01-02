@@ -253,6 +253,8 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 map <C-n> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$', 'venv', '__pycache__']
 
+" Plug 'mcchrish/nnn.vim', { 'branch': 'master' }
+
 " Add plugins to &runtimepath
 call plug#end()
 
