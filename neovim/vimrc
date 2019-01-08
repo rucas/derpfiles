@@ -62,6 +62,9 @@ let g:jsx_ext_required = 0
 au FileType javascript setl sw=2 sts=2 et
 au FileType javascript.jsx setl sw=2 sts=2 et
 
+" Bash
+"
+autocmd Filetype sh setlocal ts=2 sts=2 sw=2
 
 " TypeScript
 "
