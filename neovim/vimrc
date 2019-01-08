@@ -66,6 +66,24 @@ au FileType javascript.jsx setl sw=2 sts=2 et
 "
 autocmd Filetype sh setlocal ts=2 sts=2 sw=2
 
+" Scala
+"
+Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
+Plug 'natebosch/vim-lsc', { 'for': 'scala' }
+
+" Configuration for vim-scala
+au BufRead,BufNewFile *.sbt set filetype=scala
+
+" Configuration for vim-lsc
+let g:lsc_enable_autocomplete = v:false
+let g:lsc_server_commands = {
+  \ 'scala': 'metals-vim'
+  \}
+let g:lsc_auto_map = {
+  \ 'GoToDefinition': 'gd',
+  \}
+
+
 " TypeScript
 "
 Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
