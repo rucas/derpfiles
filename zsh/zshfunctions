@@ -76,3 +76,8 @@ function fresh-chrome() {
   fresh_dir=$(mktemp -d)
   open -na "Google Chrome" --args "--user-data-dir=$fresh_dir"
 }
+
+function cheat() {
+  curl cht.sh/$1
+}
+
