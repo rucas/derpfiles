@@ -92,6 +92,12 @@ zplug "b4b4r07/httpstat", \
     use:'(*).sh', \
     rename-to:'$1'
 
+# testssl.sh
+zplug "drwetter/testssl.sh", \
+    as:command, \
+    use:'(*).sh', \
+    rename-to:'$1'
+
 # zplug inception?
 #
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
