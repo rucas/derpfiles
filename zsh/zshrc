@@ -28,11 +28,14 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\033' edit-command-line
 
-# pyenv 
-# shims and autocompletion
+# pyenv
+# lazy load shims and autocompletion
 #
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+pyenv() {
+    eval "$( command pyenv init -)"
+    eval "$( command pyenv virtualenv-init -)"
+    pyenv "$@"
+}
 
 # Github Hub
 #
@@ -49,7 +52,9 @@ zplug "denysdovhan/spaceship-zsh-theme", \
     from:github, \
     as:theme
 
-zplug "zdharma/fast-syntax-highlighting", defer:2
+zplug "zdharma/fast-syntax-highlighting", \
+    from:github, \
+    defer:2
 
 # History
 # 
@@ -115,14 +120,6 @@ zplug "drwetter/testssl.sh", \
 # zplug inception?
 #
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
 
 # Then, source plugins and add commands to $PATH
 if [ "$ZPLUG_DEBUG" = true ]; then
