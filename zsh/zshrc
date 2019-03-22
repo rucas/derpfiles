@@ -87,7 +87,7 @@ zplug "plugins/helm", \
 # zsh site-functions
 # awless and kops
 #
-zplug "/usr/local/share/zsh/site-functions", from:local, use:"_{awless,kops}", defer:2
+# zplug "/usr/local/share/zsh/site-functions", from:local, use:"_{awless,kops}", defer:2
 
 # gcloud
 #
@@ -125,4 +125,8 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+if [ "$ZPLUG_DEBUG" = true ]; then
+    zplug load --verbose
+else
+    zplug load
+fi
