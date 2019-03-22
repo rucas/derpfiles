@@ -28,7 +28,9 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\033' edit-command-line
 
-# pyenv shims and autocompletion
+# pyenv 
+# shims and autocompletion
+#
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
@@ -37,6 +39,7 @@ eval "$(pyenv virtualenv-init -)"
 eval "$(hub alias -s)"
 
 # FZF
+#
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Theme
@@ -52,16 +55,20 @@ zplug "zdharma/fast-syntax-highlighting", defer:2
 # 
 zplug "zsh-users/zsh-history-substring-search"
 
-# Prezto modules I like to use 
+# Prezto modules 
 #
 zplug "sorin-ionescu/prezto", \
-  as:plugin, \
-  use:init.zsh, \
-  hook-build:"ln -s $ZPLUG_ROOT/repos/sorin-ionescu/prezto ${ZDOTDIR:-$HOME}/.zprezto"
+    as:plugin, \
+    use:init.zsh, \
+    hook-build:"ln -s $ZPLUG_ROOT/repos/sorin-ionescu/prezto ${ZDOTDIR:-$HOME}/.zprezto"
 zplug "modules/git", from:prezto
 zplug "modules/homebrew", from:prezto
-zplug "modules/osx", from:prezto
-zplug "modules/utility", from:prezto
+zplug "modules/osx", \
+    from:prezto, \
+    lazy:true
+zplug "modules/utility", \
+    from:prezto, \
+    lazy:true
 
 # NVM (node version manager)
 #
@@ -70,8 +77,12 @@ zplug "lukechilds/zsh-nvm"
 
 # K8 & Helm
 #
-zplug "plugins/kubectl", from:oh-my-zsh
-zplug "plugins/helm", from:oh-my-zsh
+zplug "plugins/kubectl", \
+    from:oh-my-zsh, \
+    lazy:true
+zplug "plugins/helm", \
+    from:oh-my-zsh, \
+    lazy:true
 
 # zsh site-functions
 # awless and kops
@@ -90,13 +101,16 @@ fi
 zplug "b4b4r07/httpstat", \
     as:command, \
     use:'(*).sh', \
-    rename-to:'$1'
+    rename-to:'$1', \
+    lazy:true
 
 # testssl.sh
+# 
 zplug "drwetter/testssl.sh", \
     as:command, \
     use:'(*).sh', \
-    rename-to:'$1'
+    rename-to:'$1', \
+    lazy:true
 
 # zplug inception?
 #
