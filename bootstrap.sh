@@ -35,3 +35,6 @@ ln -sf "$(pwd)/go/cobra.yaml" ~/.cobra.yaml
 
 # tig
 ln -sf "$(pwd)/tig/tigrc" ~/.tigrc
+
+# docker
+ln -sf "$(pwd)/docker/dockerfuncs" ~/.dockerfuncs
