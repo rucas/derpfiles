@@ -8,7 +8,7 @@ $ ./start.sh
 
 ## Finding a defaults setting
 
-(info)[https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/]
+[info](https://pawelgrzybek.com/change-macos-user-preferences-via-command-line/)
 
 ```sh
 $ defaults read > before
