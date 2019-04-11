@@ -79,3 +79,7 @@ function cheat() {
   curl cht.sh/$1
 }
 
+# list all defaults line per line
+function osx-defaults() {
+  defaults domains | tr ',' '\n'
+}
