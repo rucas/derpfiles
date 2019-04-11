@@ -53,5 +53,8 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 # shellcheck source=osx/showdrivesondesktop.sh
 . "$DIR/showdrivesondesktop.sh"
 
+# shellcheck source=osx/darkmode.sh
+. "$DIR/darkmode.sh"
+
 ln -sf "$(pwd)/com.rucas.mapcapslocktoctrl.plist" ~/Library/LaunchAgents/com.rucas.mapcapslocktoctrl.plist
 launchctl load -w ~/Library/LaunchAgents/com.rucas.mapcapslocktoctrl.plist
