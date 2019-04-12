@@ -1,0 +1,8 @@
+{
+    "languageserver": {
+      "scala": {
+        "command": "metals-vim",
+        "filetypes": ["scala"]
+      }
+    }
+}
