@@ -2,7 +2,9 @@
   "languageserver": {
     "scala": {
       "command": "metals-vim",
-      "filetypes": ["scala"]
+      "filetypes": ["scala"],
+      "rootPatterns": ["build.sbt"],
+      "filetypes": ["scala", "sbt"]
     }
   }
 }

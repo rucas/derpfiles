@@ -73,6 +73,7 @@ autocmd Filetype sh setlocal ts=2 sts=2 sw=2
 " LSP
 "
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+let g:coc_node_path=$HOME.'/.nvm/versions/node/v10.15.3/bin/node'
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
