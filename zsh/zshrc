@@ -45,7 +45,7 @@ pyenv() {
 eval "$(hub alias -s)"
 
 # FZF
-#
+# cltrl-r and cltrl-t things
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Theme

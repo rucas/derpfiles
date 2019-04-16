@@ -50,3 +50,8 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 # JAVA
 #
 export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+
+# FZF
+#
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
