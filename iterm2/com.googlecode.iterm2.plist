@@ -236,7 +236,7 @@
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>NSNavLastRootDirectory</key>
-	<string>/Applications</string>
+	<string>~/repos/derpfiles</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 448}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -278,15 +278,15 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>1610 1326 620 392 0 0 3840 2160 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>6 360 796 486 0 0 3840 2160 </string>
+	<string>4034 763 928 394 3840 0 3840 2160 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>5 5 1912 1063 0 0 3840 2160 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>7 11 3825 2118 0 0 3840 2160 </string>
+	<string>3847 11 3825 2118 3840 0 3840 2160 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>7 1609 948 522 0 0 3840 2160 </string>
+	<string>3847 11 1907 2118 3840 0 3840 2160 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>7 542 948 522 0 0 3840 2160 </string>
+	<string>1925 9 948 1054 0 0 3840 2160 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>965 7 948 1166 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
@@ -450,16 +450,12 @@
 			<true/>
 			<key>Background Color</key>
 			<dict>
-				<key>Alpha Component</key>
-				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.20000000000000001</real>
-				<key>Color Space</key>
-				<string>sRGB</string>
+				<real>0.15294118225574493</real>
 				<key>Green Component</key>
-				<real>0.17254901960784313</real>
+				<real>0.12941177189350128</real>
 				<key>Red Component</key>
-				<real>0.15294117647058825</real>
+				<real>0.11764705926179886</real>
 			</dict>
 			<key>Background Image Location</key>
 			<string></string>
@@ -546,16 +542,12 @@
 			<false/>
 			<key>Foreground Color</key>
 			<dict>
-				<key>Alpha Component</key>
-				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.74901960784313726</real>
-				<key>Color Space</key>
-				<string>sRGB</string>
+				<real>0.69803923368453979</real>
 				<key>Green Component</key>
-				<real>0.69803921568627447</real>
+				<real>0.63529413938522339</real>
 				<key>Red Component</key>
-				<real>0.6705882352941176</real>
+				<real>0.60784316062927246</real>
 			</dict>
 			<key>Guid</key>
 			<string>97031579-52BD-4054-AD0C-031E56651695</string>
@@ -904,13 +896,13 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.31764705882352939</real>
+				<real>1</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.26666666666666666</real>
+				<real>0.42352941176470588</real>
 				<key>Red Component</key>
-				<real>0.23921568627450981</real>
+				<real>0.56470588235294117</real>
 			</dict>
 			<key>Send Code When Idle</key>
 			<false/>
@@ -1012,7 +1004,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-03-27T17:48:56Z</date>
+	<date>2019-04-12T20:06:25Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>UKCrashReporterLastCrashReportDate</key>
