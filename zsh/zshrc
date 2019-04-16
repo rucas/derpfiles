@@ -50,8 +50,14 @@ eval "$(hub alias -s)"
 
 # Theme
 #
-zplug "denysdovhan/spaceship-zsh-theme", \
-    use:spaceship.zsh, \
+# too slow...for now...
+#zplug "denysdovhan/spaceship-zsh-theme", \
+#    use:spaceship.zsh, \
+#    from:github, \
+#    as:theme
+#
+zplug "agkozak/agkozak-zsh-prompt", \
+    use:agkozak-zsh-prompt.plugin.zsh, \
     from:github, \
     as:theme
 
