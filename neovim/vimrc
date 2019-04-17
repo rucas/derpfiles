@@ -131,7 +131,6 @@ au BufRead,BufNewFile *.sbt set filetype=scala
 "
 Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
 Plug 'mhartington/nvim-typescript', {'for': ['typescript', 'tsx'], 'do': './install.sh' }
-let g:ale_fixers = {'javascript': ['prettier']}
 
 au FileType typescript setl sw=2 sts=2 et
 
@@ -206,6 +205,11 @@ Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 " Linting
 "
 Plug 'w0rp/ale'
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'sql': ['sqlint'],
+\   'javascript': ['prettier'],
+\}
 
 " Color
 "
