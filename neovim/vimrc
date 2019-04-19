@@ -202,6 +202,10 @@ Plug 'zchee/deoplete-go', { 'do': 'make'}
 "
 Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 
+" PGSQL
+"
+Plug 'lifepillar/pgsql.vim', { 'for': 'sql' }
+
 " Linting
 "
 Plug 'w0rp/ale'
