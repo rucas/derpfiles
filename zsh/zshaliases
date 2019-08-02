@@ -1,4 +1,7 @@
-# 
+# exa 
+alias ls="exa"  
+alias ll="exa -lh"  
+alias la="exa -lhaa"
 
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."

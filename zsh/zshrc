@@ -56,10 +56,13 @@ eval "$(hub alias -s)"
 #    from:github, \
 #    as:theme
 #
-zplug "agkozak/agkozak-zsh-prompt", \
-    use:agkozak-zsh-prompt.plugin.zsh, \
-    from:github, \
-    as:theme
+# zplug "agkozak/agkozak-zsh-prompt", \
+#     use:agkozak-zsh-prompt.plugin.zsh, \
+#     from:github, \
+#     as:theme
+#
+zplug mafredri/zsh-async, from:github
+zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
 
 zplug "zdharma/fast-syntax-highlighting", \
     from:github, \
@@ -91,12 +94,12 @@ zplug "lukechilds/zsh-nvm"
 
 # K8 & Helm
 #
-zplug "plugins/kubectl", \
-    from:oh-my-zsh, \
-    lazy:true
-zplug "plugins/helm", \
-    from:oh-my-zsh, \
-    lazy:true
+# zplug "plugins/kubectl", \
+#    from:oh-my-zsh, \
+#    lazy:true
+# zplug "plugins/helm", \
+#    from:oh-my-zsh, \
+#    lazy:true
 
 # zsh site-functions
 # awless and kops
@@ -105,10 +108,10 @@ zplug "plugins/helm", \
 
 # gcloud
 #
-if [ -d /usr/local/Caskroom/google-cloud-sdk ]; then
-    source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-    source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-fi
+# if [ -d /usr/local/Caskroom/google-cloud-sdk ]; then
+#     source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+#     source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+# fi
 
 # httpstat
 #
