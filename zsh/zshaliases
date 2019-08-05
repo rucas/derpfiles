@@ -33,7 +33,6 @@ alias ga="git add"
 alias gaa="git add -A"
 alias gl="git l"
 alias gd="git diff"
-alias gip="git ls-files | fzf --preview 'bat --color=always {}' --ansi --margin 5,20"
 
 # NeoVim really...just less typing
 alias vi="nvim -c \"colorscheme onedark\""

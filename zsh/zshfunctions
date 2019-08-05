@@ -47,6 +47,18 @@ function gitio() {
 
 function gitdocs() { touch README.md CONTRIBUTING.md CHANGELOG.md DEPLOYING.md }
 
+# TODO: multi select
+# G - it 
+# I - nteractive
+# P - review
+function gip() {
+  local files
+  IFS=$'\n'
+  files=($(git ls-files | fzf --preview "bat --color=always {}" --ansi --margin 5,20))
+  echo "${files[@]}"
+  [[ -n "$files" ]] && ${EDITOR:-nvim} "${files[@]}"
+}
+
 function night() { pmset sleepnow }
 
 function osx-purge-dns-cache() { sudo killall -HUP mDNSResponder && echo macOS DNS Cache Reset }
