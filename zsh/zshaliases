@@ -3,6 +3,9 @@ alias ls="exa"
 alias ll="exa -lh"  
 alias la="exa -lhaa"
 
+# nicer ping
+alias ping='prettyping --nolegend'
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -19,7 +22,6 @@ alias d="cd Dropbox\ \(G*"
 alias dp="cd Dropbox\ \(P*"
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
-alias p="cd ~/projects"
 alias h="history"
 alias j="jobs"
 
@@ -31,6 +33,7 @@ alias ga="git add"
 alias gaa="git add -A"
 alias gl="git l"
 alias gd="git diff"
+alias gip="git ls-files | fzf --preview 'bat --color=always {}' --ansi --margin 5,20"
 
 # NeoVim really...just less typing
 alias vi="nvim -c \"colorscheme onedark\""
