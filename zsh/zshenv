@@ -49,7 +49,9 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 
 # JAVA
 #
+if [ -d "/usr/libexec/java_home" ]; then
 export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
+fi
 
 # FZF
 #
