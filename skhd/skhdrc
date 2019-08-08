@@ -144,6 +144,10 @@ alt - t : chunkc tiling::window --toggle float
 alt - s : chunkc tiling::window --toggle sticky;\
           chunkc tiling::window --warp-floating pip-right
 
+# toggle float and center to desktop using grid-layout
+alt - c : chunkc tiling::window --toggle float;\
+          chunkc tiling::window --grid-layout 4:4:1:1:2:2
+
 # float next window to be tiled
 shift + alt - t : chunkc set window_float_next 1
 
