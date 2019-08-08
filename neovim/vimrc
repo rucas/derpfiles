@@ -12,10 +12,11 @@ call plug#begin('~/.vim/plugged')
 
 " True Color
 "
-set termguicolors
+" do not set for pywal
+" set termguicolors
 
 Plug 'tpope/vim-surround'
-Plug 'sbdchd/neoformat'
+" Plug 'sbdchd/neoformat'
 
 Plug 'junegunn/rainbow_parentheses.vim'
 let g:rainbow#max_level = 16
@@ -33,7 +34,7 @@ Plug 'mhinz/vim-signify'
 " COLORS
 "
 Plug 'joshdick/onedark.vim'
-Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
+Plug 'dylanaraps/wal.vim'
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -52,7 +53,7 @@ Plug 'vim-scripts/vim-auto-save'
 let g:auto_save = 1                 " enable AutoSave on Vim startup
 let g:auto_save_in_insert_mode = 0  " Disable on insert mode
 
-" JavaScript 
+" JavaScript
 "
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
@@ -159,7 +160,7 @@ autocmd Filetype html setlocal ts=2 sts=2 sw=2
 
 " Golang
 "
-" Tabbing and Spacing 
+" Tabbing and Spacing
 "
 au FileType go set noexpandtab
 au FileType go set shiftwidth=4
@@ -168,7 +169,7 @@ au FileType go set tabstop=4
 "
 "
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
-" :=, ==, -= 
+" :=, ==, -=
 let g:go_highlight_operators = 1
 
 " // +build linux,386 darwin,!cgo
@@ -220,7 +221,7 @@ let g:ale_fixers = {
 Plug 'chrisbra/Colorizer', { 'for': 'css' }
 
 " YAML
-" 
+"
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 " TOML
@@ -310,19 +311,19 @@ au! BufRead,BufNewFile *.md       set filetype=mkd
 "     execute 'b '.bufnr
 "   endif
 " endfunction
-" 
+"
 " augroup goyo_markdown
 "   autocmd!
 "   autocmd BufNewFile,BufRead * call s:auto_goyo()
 " augroup END
-" 
+"
 " function! s:goyo_enter()
 "   let b:quitting = 0
 "   let b:quitting_bang = 0
 "   autocmd QuitPre <buffer> let b:quitting = 1
 "   cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
 " endfunction
-" 
+"
 " function! s:goyo_leave()
 "   " Quit Vim if this is the only remaining buffer
 "   if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
@@ -333,7 +334,7 @@ au! BufRead,BufNewFile *.md       set filetype=mkd
 "     endif
 "   endif
 " endfunction
-" 
+"
 " autocmd! User GoyoEnter call <SID>goyo_enter()
 " autocmd! User GoyoLeave call <SID>goyo_leave()
 
@@ -441,7 +442,7 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 " colorscheme
-colorscheme onedark
+colorscheme wal
 set background=dark
 
 " Files, backups, and undo
