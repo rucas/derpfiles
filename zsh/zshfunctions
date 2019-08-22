@@ -45,9 +45,16 @@ function gitio() {
     pbcopy .
 }
 
-function gitdocs() { touch README.md CONTRIBUTING.md CHANGELOG.md DEPLOYING.md }
+function gitdocs() {
+  repopath=`git rev-parse --show-toplevel`
+  reponame=`basename $repopath`
+  echo -n "# $reponame"   > README.md
+  echo -n '# Contributing'> CONTRIBUTING.md
+  echo -n '# Changelog'   > CHANGELOG.md
+  echo -n '# Deploying'   > DEPLOYING.md
+}
 
-# G - it 
+# G - it
 # I - nteractive
 # P - review
 function gip() {
