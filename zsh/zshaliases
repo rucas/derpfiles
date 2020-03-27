@@ -35,7 +35,8 @@ alias gl="git l"
 alias gd="git diff"
 
 # NeoVim really...just less typing
-alias vi="nvim -c \"colorscheme onedark\""
+alias vi="nvim"
+alias view="nvim -R"
 
 # urlecoder
 alias urldecode='python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
