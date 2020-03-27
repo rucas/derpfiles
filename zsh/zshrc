@@ -50,7 +50,7 @@ eval "$(hub alias -s)"
 
 # pywal
 #
-(cat ~/.cache/wal/sequences &)
+# (cat ~/.cache/wal/sequences &)
 
 # Theme
 #
