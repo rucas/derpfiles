@@ -12,6 +12,7 @@ call plug#begin('~/.vim/plugged')
 
 " True Color
 "
+" do not set for pywal
 set termguicolors
 
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -75,6 +76,7 @@ let g:fzf_buffers_jump = 1
 "
 Plug 'joshdick/onedark.vim'
 " TODO add vim colorscheme plugin
+" Plug 'dylanaraps/wal.vim'
 
 " Python
 "

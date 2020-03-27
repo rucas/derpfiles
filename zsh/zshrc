@@ -48,18 +48,11 @@ eval "$(hub alias -s)"
 # cltrl-r and cltrl-t things
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# pywal
+#
+(cat ~/.cache/wal/sequences &)
+
 # Theme
-#
-# too slow...for now...
-#zplug "denysdovhan/spaceship-zsh-theme", \
-#    use:spaceship.zsh, \
-#    from:github, \
-#    as:theme
-#
-# zplug "agkozak/agkozak-zsh-prompt", \
-#     use:agkozak-zsh-prompt.plugin.zsh, \
-#     from:github, \
-#     as:theme
 #
 zplug mafredri/zsh-async, from:github
 zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
@@ -91,27 +84,6 @@ zplug "modules/utility", \
 #
 export NVM_LAZY_LOAD=true
 zplug "lukechilds/zsh-nvm"
-
-# K8 & Helm
-#
-# zplug "plugins/kubectl", \
-#    from:oh-my-zsh, \
-#    lazy:true
-# zplug "plugins/helm", \
-#    from:oh-my-zsh, \
-#    lazy:true
-
-# zsh site-functions
-# awless and kops
-#
-# zplug "/usr/local/share/zsh/site-functions", from:local, use:"_{awless,kops}", defer:2
-
-# gcloud
-#
-# if [ -d /usr/local/Caskroom/google-cloud-sdk ]; then
-#     source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-#     source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-# fi
 
 # httpstat
 #
