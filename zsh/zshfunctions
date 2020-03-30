@@ -151,3 +151,8 @@ bcp() {
     do; brew uninstall $prog; done;
   fi
 }
+
+appz() {
+  f=$(fd --type d --exclude .git -d 1 . '/Applications'| FZF) 
+  open -a "$f"
+}
