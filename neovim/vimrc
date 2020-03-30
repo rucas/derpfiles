@@ -93,7 +93,7 @@ Plug 'othree/javascript-libraries-syntax.vim'    , { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript'                   , { 'for': 'javascript' }
 Plug 'mxw/vim-jsx'                               , { 'for': 'javascript' }
 
-let g:used_javascript_libs = 'underscore,react,chai'
+let g:used_javascript_libs = 'react'
 let g:jsx_ext_required = 0
 
 au FileType javascript     setl sw=2 sts=2 et
@@ -106,8 +106,7 @@ Plug 'autozimu/LanguageClient-neovim', {
   \ 'do': 'bash install.sh',
   \ }
 
-" TODO: vista
-
+Plug 'liuchengxu/vista.vim'
 
 " Bash
 "
