@@ -1,12 +1,22 @@
+" set utf-8 as standard encoding and en_US as the standard language
+set encoding=utf-8
+scriptencoding utf-8
+
+" create a vimrc group and initialize
+augroup vimrc
+  autocmd!
+augroup END
+
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = ','
+let g:mapleader = ','
 
 " Python virtualenvs
 "
-let g:python_host_prog=$HOME."/.pyenv/versions/neovim2/bin/python"
-let g:python3_host_prog=$HOME."/.pyenv/versions/neovim3/bin/python"
+let g:python_host_prog=$HOME.'/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog=$HOME.'/.pyenv/versions/neovim3/bin/python'
 
 call plug#begin('~/.vim/plugged')
 
@@ -20,20 +30,26 @@ let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 " List of colors that you do not want. ANSI code or #RRGGBB
 let g:rainbow#blacklist = [233, 234]
-augroup rainbow_lisp
-  autocmd!
-  autocmd FileType lisp,clojure,scheme,python,scala RainbowParentheses
-augroup END
+autocmd vimrc FileType lisp,clojure,scheme,python,scala,vim RainbowParentheses
 
 " ACCESSIBILITY
 "
 Plug 'tpope/vim-surround'
 Plug 'mhinz/vim-signify'
 Plug 'tmsvg/pear-tree'
+
 "
 "" Autosave
 "
-autocmd CursorHold * update
+autocmd vimrc CursorHold * update
+" Save on buffer move or lost focus
+" autocmd BufLeave,FocusLost * silent! wall
+
+" TODO: FIX THIS SHIT
+Plug 'christoomey/vim-tmux-navigator'
+if has('nvim')
+  nmap <bs> :<c-u>TmuxNavigateLeft<cr>
+endif
 
 "" FZF
 "
@@ -96,8 +112,8 @@ Plug 'mxw/vim-jsx'                               , { 'for': 'javascript' }
 let g:used_javascript_libs = 'react'
 let g:jsx_ext_required = 0
 
-au FileType javascript     setl sw=2 sts=2 et
-au FileType javascript.jsx setl sw=2 sts=2 et
+autocmd vimrc FileType javascript     setl sw=2 sts=2 et
+autocmd vimrc FileType javascript.jsx setl sw=2 sts=2 et
 
 " LSP
 "
@@ -110,48 +126,44 @@ Plug 'liuchengxu/vista.vim'
 
 " Bash
 "
-autocmd Filetype sh setlocal ts=2 sts=2 sw=2
+autocmd vimrc Filetype sh setlocal ts=2 sts=2 sw=2
 
 " JSON
 "
 Plug 'elzr/vim-json', { 'for': 'json' }
-autocmd Filetype json setlocal ts=2 sts=2 sw=2
+autocmd vimrc Filetype json setlocal ts=2 sts=2 sw=2
 
 " Scala
 "
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
-au BufRead,BufNewFile *.sbt set filetype=scala
-
+autocmd vimrc BufRead,BufNewFile *.sbt set filetype=scala
 
 " TypeScript
 "
 Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
 
-au FileType typescript setl sw=2 sts=2 et
+autocmd vimrc FileType typescript setl sw=2 sts=2 et
 
 " CoffeeScript
 "
 Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 
 " Plug 'tpope/vim-obsession'
-Plug 'christoomey/vim-tmux-navigator'
-if has('nvim')
-  nmap <bs> :<c-u>TmuxNavigateLeft<cr>
-endif
+"
 
 " HTML
 "
 Plug 'mattn/emmet-vim', { 'for': 'html' }
-autocmd Filetype html setlocal ts=2 sts=2 sw=2
+autocmd vimrc Filetype html setlocal ts=2 sts=2 sw=2
 
 " Golang
 "
 " Tabbing and Spacing
 "
-au FileType go set noexpandtab
-au FileType go set shiftwidth=4
-au FileType go set softtabstop=4
-au FileType go set tabstop=4
+autocmd vimrc FileType go set noexpandtab
+autocmd vimrc FileType go set shiftwidth=4
+autocmd vimrc FileType go set softtabstop=4
+autocmd vimrc FileType go set tabstop=4
 "
 "
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
@@ -176,7 +188,7 @@ let g:go_highlight_types = 1
 "  highlighting variables that are the same.
 let g:go_auto_sameids = 1
 " autoimport deps
-let g:go_fmt_command = "goimports"
+let g:go_fmt_command = 'goimports'
 " automatic type info
 let g:go_auto_type_info = 1
 
@@ -208,7 +220,7 @@ Plug 'chrisbra/Colorizer', { 'for': 'css' }
 
 " YAML
 "
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd vimrc FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
 " TOML
 "
@@ -226,7 +238,7 @@ let g:deoplete#enable_at_startup = 1
 " Vim Journal
 "
 Plug 'junegunn/vim-journal', { 'for': 'journal' }
-au BufNewFile,BufRead *.journal set filetype=journal
+autocmd! vimrc BufNewFile,BufRead *.journal set filetype=journal
 
 " Emojis
 "
@@ -242,61 +254,15 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" Goyo
-"
-Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-Plug 'reedes/vim-pencil', { 'for': 'markdown' }
-Plug 'godlygeek/tabular', { 'for': 'markdown' }
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown'}
+" Markdown
+" -------------------------------------------------------
+Plug 'junegunn/goyo.vim'        , { 'for': 'markdown' }
+Plug 'reedes/vim-pencil'        , { 'for': 'markdown' }
+Plug 'godlygeek/tabular'        , { 'for': 'markdown' }
+Plug 'plasticboy/vim-markdown'  , { 'for': 'markdown' }
 
-au! BufRead,BufNewFile *.markdown set filetype=mkd
-au! BufRead,BufNewFile *.md       set filetype=mkd
-
-" function! s:auto_goyo()
-"   if &ft == 'mkd'
-"     Goyo 80
-"   elseif exists('#goyo')
-"     let bufnr = bufnr('%')
-"     Goyo!
-"     execute 'b '.bufnr
-"   endif
-" endfunction
-"
-" augroup goyo_markdown
-"   autocmd!
-"   autocmd BufNewFile,BufRead * call s:auto_goyo()
-" augroup END
-"
-" function! s:goyo_enter()
-"   let b:quitting = 0
-"   let b:quitting_bang = 0
-"   autocmd QuitPre <buffer> let b:quitting = 1
-"   cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
-" endfunction
-"
-" function! s:goyo_leave()
-"   " Quit Vim if this is the only remaining buffer
-"   if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
-"     if b:quitting_bang
-"       qa!
-"     else
-"       qa
-"     endif
-"   endif
-" endfunction
-"
-" autocmd! User GoyoEnter call <SID>goyo_enter()
-" autocmd! User GoyoLeave call <SID>goyo_leave()
-
-" ix.io
-" Paste to public URL
-" TODO: change to gist using hub
-" noremap <leader>i :w !ix<CR>
-
-" On demand loading
-" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-" map <C-n> :NERDTreeToggle<CR>
-" let NERDTreeIgnore = ['\.pyc$', 'venv', '__pycache__']
+autocmd! vimrc BufRead,BufNewFile *.markdown set filetype=mkd
+autocmd! vimrc BufRead,BufNewFile *.md       set filetype=mkd
 
 Plug 'mcchrish/nnn.vim'
 " Opens the nnn window in a split
@@ -347,7 +313,7 @@ nmap <leader>w :w!<cr>
 " UI
 "
 " Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
+set scrolloff=7
 
 " show them numbers
 set number
@@ -362,7 +328,7 @@ set wildignore=*.o,*~,*.pyc
 set ruler
 
 " A buffer becomes hidden when it is abandoned
-set hid
+set hidden
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
@@ -387,13 +353,13 @@ set magic
 set showmatch
 
 " How many tenths of a second to blink when matching brackets
-set mat=2
+set matchtime=2
 
 " No annoying sound on errors
 set noerrorbells
 set novisualbell
 set t_vb=
-set tm=500
+set timeoutlen=500
 set updatetime=300
 
 " don't give |ins-completion-menu| messages.
@@ -408,11 +374,9 @@ set signcolumn=yes
 " Enable syntax highlighting
 syntax enable
 
-" set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
 
 " Use Unix as the standard file type
-set ffs=unix,dos,mac
+set fileformats=unix,dos,mac
 
 " colorscheme
 colorscheme onedark
@@ -423,7 +387,7 @@ set background=dark
 "
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
-set nowb
+set nowritebackup
 set noswapfile
 
 " Text, tab and indents
@@ -440,18 +404,12 @@ set shiftwidth=4
 set tabstop=4
 
 " Linebreak on 80 characters
-set lbr
-set tw=80
+set linebreak
+set textwidth=80
 
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
-
-fun! TrimWhitespace()
-    let l:save_cursor = getpos('.')
-    %s/\s\+$//e
-    call setpos('.', l:save_cursor)
-endfun
+set autoindent      " Auto indent
+set smartindent     " Smart indent
+set wrap            " Wrap lines
 
 " Visual mode
 " ---------------------------------------------------------------
@@ -479,6 +437,7 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+" TODO: do we really need bclose function
 " Close the current buffer
 map <leader>bd :Bclose<cr>
 
@@ -486,7 +445,7 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,1000 bd!<cr>
 
 " Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
+autocmd vimrc BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
      \   exe "normal! g`\"" |
      \ endif
@@ -501,52 +460,37 @@ inoremap jk <esc>
 
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 " ˙∆ keys for mac os x
-nmap ∆ mz:m+<cr>`z
-nmap ˚ mz:m-2<cr>`z
-vmap ∆ :m'>+<cr>`<my`>mzgv`yo`z
-vmap ˚ :m'<-2<cr>`>my`<mzgv`yo`z
+" nmap ∆ mz:m+<cr>`z
+" nmap ˚ mz:m-2<cr>`z
+" vmap ∆ :m'>+<cr>`<my`>mzgv`yo`z
+" vmap ˚ :m'<-2<cr>`>my`<mzgv`yo`z
+" 
+" if has("mac") || has("macunix")
+"   nmap <D-j> <M-j>
+"   nmap <D-k> <M-k>
+"   vmap <D-j> <M-j>
+"   vmap <D-k> <M-k>
+" endif
 
-if has("mac") || has("macunix")
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
-endif
-
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
-autocmd BufWrite *.js :call DeleteTrailingWS()
-autocmd BufWrite *.ts :call DeleteTrailingWS()
-
-" Save on buffer move or lost focus
-autocmd BufLeave,FocusLost * silent! wall
 
 " Spell Checking
 " -----------------
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
-" Shortcuts using <leader>
+" Shortcuts using <leader> for spelling
 map <leader>sn ]s
 map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
-
 
 " Helper functions
 " -------------------------------------------
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
-   let l:currentBufNum = bufnr("%")
-   let l:alternateBufNum = bufnr("#")
+   let l:currentBufNum = bufnr('%')
+   let l:alternateBufNum = bufnr('#')
 
    if buflisted(l:alternateBufNum)
      buffer #
@@ -554,12 +498,12 @@ function! <SID>BufcloseCloseIt()
      bnext
    endif
 
-   if bufnr("%") == l:currentBufNum
+   if bufnr('%') == l:currentBufNum
      new
    endif
 
    if buflisted(l:currentBufNum)
-     execute("bdelete! ".l:currentBufNum)
+     execute('bdelete! '.l:currentBufNum)
    endif
 endfunction
 
