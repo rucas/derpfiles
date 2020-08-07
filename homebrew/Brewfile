@@ -1,7 +1,6 @@
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
-tap "koekeishiya/formulae"
 tap "wallix/awless"
 brew "openssl"
 brew "asciinema"
