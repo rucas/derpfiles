@@ -7,5 +7,5 @@ else
     curl -sL \
         --proto-redir \
         -all,https \
-        https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
+        https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 fi
