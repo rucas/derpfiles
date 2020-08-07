@@ -54,7 +54,6 @@ brew "tree"
 brew "upx"
 brew "watch"
 brew "watchman"
-brew "yarn", args: ["without-node"]
 brew "ykpers"
 brew "ykman"
 brew "wget"
