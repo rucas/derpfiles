@@ -41,4 +41,4 @@ ln -sf "$(pwd)/tig/tigrc" ~/.tigrc
 ln -sf "$(pwd)/docker/dockerfuncs" ~/.dockerfuncs
 
 # nvm
-ln -sf "$(pwd)/nvm/default-packages" ~/.nvm
+ln -sf "$(pwd)/nvm/default-packages" ~/.nvm/default-packages
