@@ -42,3 +42,6 @@ ln -sf "$(pwd)/docker/dockerfuncs" ~/.dockerfuncs
 
 # nvm
 ln -sf "$(pwd)/nvm/default-packages" ~/.nvm/default-packages
+
+# FZF key bindings and fuzzy completion
+$(brew --prefix)/opt/fzf/install
