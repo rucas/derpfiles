@@ -45,3 +45,6 @@ ln -sf "$(pwd)/nvm/default-packages" ~/.nvm/default-packages
 
 # FZF key bindings and fuzzy completion
 $(brew --prefix)/opt/fzf/install
+
+# jabba...no more homebrew...
+curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh

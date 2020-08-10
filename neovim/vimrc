@@ -121,13 +121,33 @@ Plug 'autozimu/LanguageClient-neovim', {
   \ 'branch': 'next',
   \ 'do': 'bash install.sh',
   \ }
+
+let g:LanguageClient_serverCommands = {
+    \ 'scala': ['metals-vim'],
+    \ }
+
+" Setting the windowLevelMessageLevel to 'Log' helps to see things like 'compiling 32%'.
+let g:LanguageClient_windowLogMessageLevel = 'Log'
+
+" Having LogMessageLevel set to Log interferes with non-preview
+" displaying of Hover
+let g:LanguageClient_hoverPreview = 'Always'
 "
-" assuming you're using vim-plug: https://github.com/junegunn/vim-plug
+" note that if you are using Plug mapping you should not use `noremap` mappings.
+nmap <F5> <Plug>(lcn-menu)
+" Or map each action separately
+nmap <silent>K <Plug>(lcn-hover)
+nmap <silent> gd <Plug>(lcn-definition)
+nmap <silent> <F2> <Plug>(lcn-rename)
+
+
+" COMPLETION FRAMEWORK
+"
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
 
 " enable ncm2 for all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
+autocmd vimrc BufEnter * call ncm2#enable_for_buffer()
 
 " IMPORTANT: :help Ncm2PopupOpen for more information
 set completeopt=noinsert,menuone,noselect
@@ -137,7 +157,7 @@ set completeopt=noinsert,menuone,noselect
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-github'
-" Plug 'subnut/ncm2-github-emoji'
+
 
 Plug 'liuchengxu/vista.vim'
 

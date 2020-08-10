@@ -48,6 +48,11 @@ eval "$(hub alias -s)"
 # cltrl-r and cltrl-t things
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+
+# JABBA
+[ -s ~/.jabba/jabba.sh ] && source ~/.jabba/jabba.sh
+
+
 # pywal
 #
 # (cat ~/.cache/wal/sequences &)
