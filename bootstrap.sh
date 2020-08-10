@@ -25,10 +25,10 @@ ln -sf "$(pwd)/git/gitconfig" ~/.gitconfig
 # TaskWarrior
 ln -sf "$(pwd)/taskwarrior/taskrc" ~/.taskrc
 
-# Chunkwm
-ln -sf "$(pwd)/chunkwm/chunkwmrc" ~/.chunkwmrc
+# yabai
+ln -sf "$(pwd)/yabai/yabairc" ~/.yabairc
 
-# Skhd
+# skhd
 ln -sf "$(pwd)/skhd/skhdrc" ~/.skhdrc
 
 # Go
