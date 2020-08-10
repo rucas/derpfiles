@@ -121,6 +121,23 @@ Plug 'autozimu/LanguageClient-neovim', {
   \ 'branch': 'next',
   \ 'do': 'bash install.sh',
   \ }
+"
+" assuming you're using vim-plug: https://github.com/junegunn/vim-plug
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+
+" IMPORTANT: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+
+" NOTE: you need to install completion sources to get completions. Check
+" our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-github'
+" Plug 'subnut/ncm2-github-emoji'
 
 Plug 'liuchengxu/vista.vim'
 
@@ -156,47 +173,6 @@ Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 autocmd vimrc Filetype html setlocal ts=2 sts=2 sw=2
 
-" Golang
-"
-" Tabbing and Spacing
-"
-autocmd vimrc FileType go set noexpandtab
-autocmd vimrc FileType go set shiftwidth=4
-autocmd vimrc FileType go set softtabstop=4
-autocmd vimrc FileType go set tabstop=4
-"
-"
-Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
-" :=, ==, -=
-let g:go_highlight_operators = 1
-
-" // +build linux,386 darwin,!cgo
-let g:go_highlight_build_constraints = 1
-
-" // highlight common library types io.Reader
-let g:go_highlight_extra_types = 1
-
-" highlight struct field names
-let g:go_highlight_fields = 1
-
-let g:go_highlight_functions = 1
-let g:go_highlight_function_calls = 1
-"let g:go_highlight_structs = 1
-
-let g:go_highlight_types = 1
-
-"  highlighting variables that are the same.
-let g:go_auto_sameids = 1
-" autoimport deps
-let g:go_fmt_command = 'goimports'
-" automatic type info
-let g:go_auto_type_info = 1
-
-" needs to be .config for neovim
-"
-" Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-
 " Terraform
 "
 Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
@@ -226,24 +202,6 @@ autocmd vimrc FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 "
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 
-" Yank killring
-"
-Plug 'bfredl/nvim-miniyank'
-
-" Autocompletion
-"
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-let g:deoplete#enable_at_startup = 1
-
-" Vim Journal
-"
-Plug 'junegunn/vim-journal', { 'for': 'journal' }
-autocmd! vimrc BufNewFile,BufRead *.journal set filetype=journal
-
-" Emojis
-"
-Plug 'fszymanski/deoplete-emoji', { 'for': ['markdown', 'gitcommit', 'journal'] }
-
 " Aligner
 "
 Plug 'junegunn/vim-easy-align'
@@ -261,8 +219,8 @@ Plug 'reedes/vim-pencil'        , { 'for': 'markdown' }
 Plug 'godlygeek/tabular'        , { 'for': 'markdown' }
 Plug 'plasticboy/vim-markdown'  , { 'for': 'markdown' }
 
-autocmd! vimrc BufRead,BufNewFile *.markdown set filetype=mkd
-autocmd! vimrc BufRead,BufNewFile *.md       set filetype=mkd
+autocmd! vimrc BufRead,BufNewFile *.markdown set filetype=markdown
+autocmd! vimrc BufRead,BufNewFile *.md       set filetype=markdown
 
 Plug 'mcchrish/nnn.vim'
 " Opens the nnn window in a split
@@ -289,8 +247,6 @@ function! s:layout()
   call nvim_open_win(buf, v:true, opts)
 endfunction
 let g:nnn#layout = 'call ' . string(function('<SID>layout')) . '()'
-
-" Plug 'mcchrish/nnn.vim', { 'branch': 'master' }
 
 " Add plugins to &runtimepath
 call plug#end()
