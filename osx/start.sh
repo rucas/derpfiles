@@ -29,6 +29,9 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 # shellcheck source=osx/keyrepeat.sh
 . "$DIR/hidemenubar.sh"
 
+# shellcheck source=osx/hidedock.sh
+. "$DIR/hidedock.sh
+
 # shellcheck source=osx/keyrepeat.sh
 . "$DIR/keyrepeat.sh"
 
