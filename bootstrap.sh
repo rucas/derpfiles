@@ -43,8 +43,13 @@ ln -sf "$(pwd)/docker/dockerfuncs" ~/.dockerfuncs
 # nvm
 ln -sf "$(pwd)/nvm/default-packages" ~/.nvm/default-packages
 
-# FZF key bindings and fuzzy completion
-$(brew --prefix)/opt/fzf/install
+# bat
+mkdir -p ~/.config/bat
+ln -sf "$(pwd)/bat/config" ~/.config/bat/config
 
-# jabba...no more homebrew...
-curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
+# FZF key bindings and fuzzy completion
+if [ -f ~/.fzf.zsh ]; then
+  echo 'FZF key bindings, and completion already installed...skipping'
+else
+  "$(brew --prefix)/opt/fzf/install"
+fi
