@@ -30,7 +30,7 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 . "$DIR/hidemenubar.sh"
 
 # shellcheck source=osx/hidedock.sh
-. "$DIR/hidedock.sh
+. "$DIR/hidedock.sh"
 
 # shellcheck source=osx/keyrepeat.sh
 . "$DIR/keyrepeat.sh"
