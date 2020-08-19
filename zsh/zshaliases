@@ -1,6 +1,6 @@
-# exa 
-alias ls="exa"  
-alias ll="exa -lh"  
+# exa
+alias ls="exa"
+alias ll="exa -lh"
 alias la="exa -lhaa"
 
 # nicer ping
@@ -44,3 +44,6 @@ alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.ar
 
 # docker trash
 alias dtrash='docker rm -f $(docker ps -q); docker rmi -f $(docker images -q)'
+
+# ctags
+alias ctags="`brew --prefix`/bin/ctags"
