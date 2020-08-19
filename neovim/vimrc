@@ -80,8 +80,6 @@ Plug 'joshdick/onedark.vim'
 Plug 'liuchengxu/space-vim-theme'
 Plug 'morhetz/gruvbox'
 let g:gruvbox_sign_column = 'bg0'
-" let g:gruvbox_contrast_dark = 'hard'
-" Plug 'dylanaraps/wal.vim'
 
 " Python
 "
