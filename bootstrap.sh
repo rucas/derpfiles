@@ -11,7 +11,6 @@ ln -sf "$(pwd)/zsh/zshfunctions" ~/.zshfunctions
 mkdir -p ~/.config/nvim
 ln -sf "$(pwd)/neovim/vimrc" ~/.vimrc
 ln -sf "$(pwd)/neovim/vimrc" ~/.config/nvim/init.vim
-ln -sf "$(pwd)/neovim/coc-settings.json" ~/.config/nvim/coc-settings.json
 
 # Tmux
 mkdir -p ~/.tmux/bin
