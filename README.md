@@ -67,7 +67,7 @@ $ tmux new-session
 
 Checkout individual README's in directories for detailed descriptions
 
-- [ chunkwm ](chunkwm/)
+- [ yabai ](yabai/)
 
 - [ git ](git/)
 
