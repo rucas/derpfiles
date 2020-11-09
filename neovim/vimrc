@@ -196,6 +196,8 @@ let g:ale_fixers = {
 \   'sql': ['sqlint'],
 \   'javascript': ['prettier'],
 \}
+" Set this variable to 1 to fix files when you save them.
+let g:ale_fix_on_save = 1
 
 " Color
 "
@@ -218,6 +220,11 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+" Vimwiki
+"
+Plug 'vimwiki/vimwiki'
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
 
 " Markdown
 " -------------------------------------------------------
@@ -415,7 +422,7 @@ inoremap jk <esc>
 " nmap ˚ mz:m-2<cr>`z
 " vmap ∆ :m'>+<cr>`<my`>mzgv`yo`z
 " vmap ˚ :m'<-2<cr>`>my`<mzgv`yo`z
-" 
+"
 " if has("mac") || has("macunix")
 "   nmap <D-j> <M-j>
 "   nmap <D-k> <M-k>
