@@ -211,6 +211,10 @@ autocmd vimrc FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 "
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 
+" Jinja
+"
+Plug 'Glench/Vim-Jinja2-Syntax', { 'for': 'jinja' }
+
 " Aligner
 "
 Plug 'junegunn/vim-easy-align'
@@ -236,6 +240,8 @@ Plug 'plasticboy/vim-markdown'  , { 'for': 'markdown' }
 autocmd! vimrc BufRead,BufNewFile *.markdown set filetype=markdown
 autocmd! vimrc BufRead,BufNewFile *.md       set filetype=markdown
 
+" NNN
+" -------------------------------------------------------
 Plug 'mcchrish/nnn.vim'
 let g:nnn#action = {
     \ '<c-t>': 'tab split',
