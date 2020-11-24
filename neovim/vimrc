@@ -253,8 +253,12 @@ let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debu
 
 " Disable default mappings
 let g:nnn#set_default_mappings = 0
+
+" opens at start of vim process directory
+nnoremap <silent> <leader>nn :NnnPicker<CR>
+
 " Start nnn in the current file's directory
-nnoremap <leader>n :NnnPicker '%:p:h'<CR>
+nnoremap <leader>n :NnnPicker %:p:h<CR>
 
 " Add plugins to &runtimepath
 call plug#end()
