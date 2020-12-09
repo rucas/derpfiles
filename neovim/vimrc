@@ -41,9 +41,14 @@ let g:signify_skip = {'vcs': { 'allow': ['git'] }}
 " TODO: fix on enter to keep pair
 Plug 'tmsvg/pear-tree'
 
+" " vertical indent lines for the eyes
+"
 Plug 'Yggdroot/indentLine'
 
+" " HOCON syntax
 "
+Plug 'GEverding/vim-hocon', { 'for': 'hocon' }
+
 "" Autosave
 "
 autocmd vimrc CursorHold * update
