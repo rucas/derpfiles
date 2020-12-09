@@ -41,6 +41,8 @@ let g:signify_skip = {'vcs': { 'allow': ['git'] }}
 " TODO: fix on enter to keep pair
 Plug 'tmsvg/pear-tree'
 
+Plug 'Yggdroot/indentLine'
+
 "
 "" Autosave
 "
@@ -193,11 +195,14 @@ Plug 'lifepillar/pgsql.vim', { 'for': 'sql' }
 Plug 'w0rp/ale'
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'scala': ['scalafmt'],
 \   'sql': ['sqlint'],
 \   'javascript': ['prettier'],
 \}
 " Set this variable to 1 to fix files when you save them.
 let g:ale_fix_on_save = 1
+" scalafmt
+let g:ale_scala_scalafmt_executable = '/Users/lucas.rondenet/repos/gemini/bazel-bin/build/scalafmt'
 
 " Color
 "
