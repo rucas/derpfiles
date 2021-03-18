@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# zsh 
+# zsh
 ln -sf "$(pwd)/zsh/zshrc" ~/.zshrc
 ln -sf "$(pwd)/zsh/zshenv" ~/.zshenv
 ln -sf "$(pwd)/zsh/zshsetopt" ~/.zshsetopt
@@ -45,6 +45,9 @@ ln -sf "$(pwd)/nvm/default-packages" ~/.nvm/default-packages
 # bat
 mkdir -p ~/.config/bat
 ln -sf "$(pwd)/bat/config" ~/.config/bat/config
+
+# alacritty
+ln -sf "$(pwd)/alacritty/alacritty.yml" ~/.alacritty.yml
 
 # FZF key bindings and fuzzy completion
 if [ -f ~/.fzf.zsh ]; then
