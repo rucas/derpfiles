@@ -1,49 +1,49 @@
 # exa
-alias ls="exa"
-alias ll="exa -lh"
-alias la="exa -lhaa"
+alias ls=" exa"
+alias ll=" exa -lh"
+alias la=" exa -lhaa"
 
 # nicer ping
-alias ping='prettyping --nolegend'
+alias ping=' prettyping --nolegend'
 
 # Easier navigation: .., ..., ...., ....., ~ and -
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ~="cd ~" # `cd` is probably faster to type though
-alias -- -="cd -"
+alias ..=" cd .."
+alias ...=" cd ../.."
+alias ....=" cd ../../.."
+alias .....=" cd ../../../.."
+alias ~=" cd ~" # `cd` is probably faster to type though
+alias -- -=" cd -"
 
 # Lists the ten most used commands.
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 
 # Shortcuts
-alias d="cd Dropbox\ \(G*"
-alias dp="cd Dropbox\ \(P*"
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-alias h="history"
-alias j="jobs"
+alias d=" cd Dropbox\ \(G*"
+alias dp=" cd Dropbox\ \(P*"
+alias dl=" cd ~/Downloads"
+alias dt=" cd ~/Desktop"
+alias h=" history"
+alias j=" jobs"
 
 # Get week number
-alias week='date +%V'
+alias week=' date +%V'
 
 # Git
-alias ga="git add"
-alias gaa="git add -A"
-alias gl="git l"
-alias gd="git diff"
+alias ga=" git add"
+alias gaa=" git add -A"
+alias gl=" git l"
+alias gd=" git diff"
 
 # NeoVim really...just less typing
-alias vi="nvim"
-alias view="nvim -R"
+alias vi=" nvim"
+alias view=" nvim -R"
 
 # urlecoder
-alias urldecode='python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
-alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1])"'
+alias urldecode=' python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
+alias urlencode=' python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1])"'
 
 # docker trash
-alias dtrash='docker rm -f $(docker ps -q); docker rmi -f $(docker images -q)'
+alias dtrash=' docker rm -f $(docker ps -q); docker rmi -f $(docker images -q)'
 
 # ctags
-alias ctags="`brew --prefix`/bin/ctags"
+alias ctags=" `brew --prefix`/bin/ctags"
