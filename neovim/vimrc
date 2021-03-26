@@ -90,6 +90,7 @@ Plug 'lifepillar/vim-colortemplate'
 Plug 'joshdick/onedark.vim'
 Plug 'liuchengxu/space-vim-theme'
 Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 let g:gruvbox_sign_column = 'bg0'
 
 " Python
@@ -121,8 +122,8 @@ Plug 'autozimu/LanguageClient-neovim', {
   \ }
 
 let g:LanguageClient_serverCommands = {
-    \ 'scala': ['metals-vim'],
-    \ }
+  \ 'scala': ['metals-vim'],
+  \ }
 
 " Setting the windowLevelMessageLevel to 'Log' helps to see things like 'compiling 32%'.
 let g:LanguageClient_windowLogMessageLevel = 'Log'
@@ -198,6 +199,8 @@ Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 " PGSQL
 "
 Plug 'lifepillar/pgsql.vim', { 'for': 'sql' }
+let g:sql_type_default = 'pgsql'
+
 
 " Linting
 "
@@ -205,13 +208,14 @@ Plug 'w0rp/ale'
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'scala': ['scalafmt'],
-\   'sql': ['sqlint'],
+\   'sql': ['sql-lint'],
 \   'javascript': ['prettier'],
 \}
 " Set this variable to 1 to fix files when you save them.
 let g:ale_fix_on_save = 1
 " scalafmt
 let g:ale_scala_scalafmt_executable = '/Users/lucas.rondenet/repos/gemini/bazel-bin/build/scalafmt'
+let g:ale_scala_sqllint_executable = '/Users/lucas.rondenet/.nvm/versions/node/v12.18.4/bin/sql-lint'
 
 " Color
 "
@@ -361,7 +365,7 @@ syntax enable
 set fileformats=unix,dos,mac
 
 " colorscheme
-colorscheme gruvbox
+colorscheme gruvbox-material
 set background=dark
 
 " Files, backups, and undo
