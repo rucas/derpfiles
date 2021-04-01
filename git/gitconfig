@@ -34,4 +34,4 @@
     # List contributors with number of commits
     contributors = shortlog --summary --numbered
 [color]
-	ui = always
+	ui = auto
