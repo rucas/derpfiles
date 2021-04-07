@@ -21,6 +21,19 @@ function tre() {
     tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
+# generates a short uuid that is url safe
+#
+# uuidgen -hdr          to get hex uuid output
+# tail -n 1             to get the output
+# cut -d',' -f 2-       to get the hex output in decent comma seperated list
+# xxd -r -p             to get the hex to hexdump
+# base64                base64 it
+# tr '/+' '_-'          make it url safe by swapping / with _ and + with -
+# tr -d '='             remove left over endline ==
+function shortuuid() {
+    uuidgen -hdr | tail -n 1 | cut -d',' -f 2- | xxd -r -p | base64 | tr '/+' '_-' | tr -d '='
+}
+
 # random rgb color
 function color() {
     rand=$(openssl rand -hex 3)
@@ -153,6 +166,6 @@ bcp() {
 }
 
 appz() {
-  f=$(fd --type d --exclude .git -d 1 . '/Applications'| FZF) 
+  f=$(fd --type d --exclude .git -d 1 . '/Applications'| FZF)
   open -a "$f"
 }
