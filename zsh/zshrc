@@ -67,10 +67,10 @@ zplug "zdharma/fast-syntax-highlighting", \
     defer:2
 
 # History
-# 
+#
 zplug "zsh-users/zsh-history-substring-search"
 
-# Prezto modules 
+# Prezto modules
 #
 zplug "sorin-ionescu/prezto", \
     as:plugin, \
@@ -99,10 +99,18 @@ zplug "b4b4r07/httpstat", \
     lazy:true
 
 # testssl.sh
-# 
+#
 zplug "drwetter/testssl.sh", \
     as:command, \
     use:'(*).sh', \
+    rename-to:'$1', \
+    lazy:true
+
+# prettyping
+#
+zplug "denilsonsa/prettyping", \
+    as:command, \
+    use:'(*)', \
     rename-to:'$1', \
     lazy:true
 
