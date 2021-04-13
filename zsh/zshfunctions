@@ -113,7 +113,7 @@ function cheat() {
 
 # list all defaults line per line
 function osx-defaults() {
-  defaults domains | tr ',' '\n'
+  defaults domains | tr ',' '\n' | fzf
 }
 
 # kills process using fzf
