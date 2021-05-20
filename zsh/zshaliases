@@ -38,7 +38,7 @@ alias gd=" git diff"
 alias vi=" nvim"
 alias view=" nvim -R"
 # open recent uncommited git changes
-alias vr=" nvim $(git status --porcelain | cut -c4-)"
+alias vr=" nvim $(git status --porcelain | cut -c4- | tr '\n' ' ')"
 
 # urlecoder
 alias urldecode=' python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
