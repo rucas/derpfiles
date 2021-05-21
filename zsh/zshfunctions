@@ -67,6 +67,11 @@ function gitdocs() {
   echo -n '# Deploying'   > DEPLOYING.md
 }
 
+# open recent uncommited git changes
+function vi-recent() {
+  nvim $(git status --porcelain | cut -c4- | tr '\n' ' ')
+}
+
 # G - it
 # I - nteractive
 # P - review
