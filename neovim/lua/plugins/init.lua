@@ -139,13 +139,19 @@ return packer.startup(function()
     }
   }
 
-  use {
-    "windwp/nvim-autopairs",
-    config = function()
-      require "plugins.nvim-autopairs"
-    end,
-  }
+  --use {
+  --  "windwp/nvim-autopairs",
+  --  config = function()
+  --    require "plugins.nvim-autopairs"
+  --  end,
+  --}
   --  --after = "nvim-cmp",
   --}
 
+  use {
+    "aserowy/tmux.nvim",
+    config = function()
+      require "plugins.tmux"
+    end
+  }
 end)
