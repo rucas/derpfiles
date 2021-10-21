@@ -54,7 +54,6 @@ return packer.startup(function()
     },
   }
 
-  -- lua with packer.nvim
   use {
     "max397574/better-escape.nvim",
     config = function()
@@ -152,6 +151,15 @@ return packer.startup(function()
     "aserowy/tmux.nvim",
     config = function()
       require "plugins.tmux"
+    end
+  }
+  
+  use {
+    "RRethy/vim-illuminate",
+    event = "VimEnter",
+    config = function()
+      vim.g.Illuminate_delay = 500
+      --vim.g.Illuminate_ftblacklist = ["lua"]
     end
   }
 end)
