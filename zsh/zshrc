@@ -36,6 +36,7 @@ bindkey '\033' edit-command-line
 #
 pyenv() {
     eval "$( command pyenv init -)"
+    eval "$( command pyenv init --path)"
     eval "$( command pyenv virtualenv-init -)"
     pyenv "$@"
 }
