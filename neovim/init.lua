@@ -1,13 +1,13 @@
 local init_modules = {
-    "autocmds",
-    "options",
-    "mappings",
-    "disable"
+	"autocmds",
+	"options",
+	"mappings",
+	"disable",
 }
 
 for _, module in ipairs(init_modules) do
-   local ok, err = pcall(require, module)
-   if not ok then
-      error("Error loading " .. module .. "\n\n" .. err)
-   end
+	local ok, err = pcall(require, module)
+	if not ok then
+		error("Error loading " .. module .. "\n\n" .. err)
+	end
 end

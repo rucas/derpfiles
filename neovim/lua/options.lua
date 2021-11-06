@@ -1,4 +1,4 @@
-vim.opt.encoding = 'utf8'
+vim.opt.encoding = "utf8"
 -- vim.opt.scriptencoding = 'utf8'
 
 -- A buffer becomes hidden when it is abandoned
@@ -20,7 +20,7 @@ vim.opt.number = true
 vim.opt.laststatus = 0
 
 -- Mouse for all modes (visual, normal, insert, command line)
-vim.opt.mouse = 'a'
+vim.opt.mouse = "a"
 
 -- Searching
 --
@@ -42,9 +42,8 @@ vim.opt.showmatch = true
 -- How many tenths of a second to blink when matching brackets
 vim.opt.matchtime = 2
 
-
 -- Ignore compiled files
-vim.opt.wildignore = '*.o,*~,*.pyc'
+vim.opt.wildignore = "*.o,*~,*.pyc"
 
 -- Files, backups, and undo
 --
@@ -57,10 +56,8 @@ vim.opt.swapfile = false
 -- no undo
 vim.opt.undofile = false
 
-
 -- Don't redraw while executing macros (good performance config)
 vim.opt.lazyredraw = true
-
 
 -- Text, Tabs and indents
 --

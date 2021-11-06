@@ -1,7 +1,7 @@
 local is_present_better_escape, better_escape = pcall(require, "better_escape")
 
 if not is_present_better_escape then
-  return
+	return
 end
 
-better_escape.setup {}
+better_escape.setup({})
