@@ -10,7 +10,9 @@ ln -sf "$(pwd)/zsh/zshfunctions" ~/.zshfunctions
 # Vim
 mkdir -p ~/.config/nvim
 ln -sf "$(pwd)/neovim/vimrc" ~/.vimrc
-ln -sf "$(pwd)/neovim/vimrc" ~/.config/nvim/init.vim
+# ln -sf "$(pwd)/neovim/vimrc" ~/.config/nvim/init.vim
+ln -sf "$(pwd)/neovim/init.lua" ~/.config/nvim/init.lua
+ln -sf "$(pwd)/neovim/lua" ~/.config/nvim/lua
 
 # Tmux
 mkdir -p ~/.tmux/bin
