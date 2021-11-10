@@ -83,6 +83,11 @@ function gip() {
   [[ -n "$files" ]] && ${EDITOR:-nvim} "${files[@]}"
 }
 
+function gbf() {
+  branch=$(git branch --sort=committerdate --format "%(refname:short)" | fzf --multi)
+  git checkout "$branch"
+}
+
 function night() { pmset sleepnow }
 
 function osx-purge-dns-cache() { sudo killall -HUP mDNSResponder && echo macOS DNS Cache Reset }
