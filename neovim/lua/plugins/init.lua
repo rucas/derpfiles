@@ -170,6 +170,13 @@ return packer.startup(function()
 		end,
 	})
 
+	use({
+		"sunjon/shade.nvim",
+		config = function()
+			require("plugins.shade")
+		end,
+	})
+
 	-- BUG:
 	-- TODO:
 	-- FIX:
