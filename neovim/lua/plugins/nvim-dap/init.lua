@@ -13,6 +13,7 @@ dap.adapters.python = {
 	args = { "-m", "debugpy.adapter" },
 }
 
+-- TODO make better mappings for these
 utils.map("n", "<leader>dct", "<cmd>lua require('dap').continue()<cr>")
 utils.map("n", "<leader>dsv", "<cmd>lua require('dap').step_over()<cr>")
 utils.map("n", "<leader>dsi", "<cmd>lua require('dap').step_into()<cr>")
@@ -36,10 +37,6 @@ dap.configurations.python = {
 		type = "python",
 		request = "launch",
 		name = "Launch file",
-		--program = "${file}",
 		program = "${workspaceFolder}/${file}",
-		--pythonPath = function()
-		--	return "/usr/bin/python"
-		--end,
 	},
 }
