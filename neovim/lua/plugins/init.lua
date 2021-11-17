@@ -197,4 +197,12 @@ return packer.startup(function()
 			})
 		end,
 	})
+
+	use({
+		"mfussenegger/nvim-dap",
+		config = function()
+			require("plugins.nvim-dap")
+		end,
+		requires = { "theHamsta/nvim-dap-virtual-text" },
+	})
 end)
