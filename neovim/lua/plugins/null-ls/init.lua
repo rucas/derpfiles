@@ -11,7 +11,6 @@ local sources = {
 	null_ls.builtins.diagnostics.shellcheck.with({ diagnostics_format = "#{m} [#{c}]" }),
 }
 
-local bar = false
 local M = {}
 M.setup = function(on_attach)
 	null_ls.config({
