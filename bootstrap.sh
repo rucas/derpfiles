@@ -51,6 +51,10 @@ ln -sf "$(pwd)/bat/config" ~/.config/bat/config
 # alacritty
 ln -sf "$(pwd)/alacritty/alacritty.yml" ~/.alacritty.yml
 
+# gh 
+mkdir -p ~/.config/gh
+ln -sf "$(pwd)/gh/config.yml" ~/.config/gh/config.yml
+
 # FZF key bindings and fuzzy completion
 if [ -f ~/.fzf.zsh ]; then
   echo 'FZF key bindings, and completion already installed...skipping'
