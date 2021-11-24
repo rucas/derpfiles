@@ -216,4 +216,11 @@ return packer.startup(function()
 			})
 		end,
 	})
+
+	use({
+		"steelsojka/pears.nvim",
+		config = function()
+			require("pears").setup()
+		end,
+	})
 end)
