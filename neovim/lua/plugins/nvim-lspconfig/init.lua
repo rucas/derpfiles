@@ -85,24 +85,24 @@ require("lspinstall/servers").bash = vim.tbl_extend("error", bash_config, {})
 
 local lua_config = require("lspinstall/util").extract_config("sumneko_lua")
 local lua_settings = {
-  Lua = {
-    runtime = {
-      -- LuaJIT in the case of Neovim
-      version = 'LuaJIT',
-      path = vim.split(package.path, ';'),
-    },
-    diagnostics = {
-      -- Get the language server to recognize the `vim` global
-      globals = {'vim'},
-    },
-    workspace = {
-      -- Make the server aware of Neovim runtime files
-      library = {
-        [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-        [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-      },
-    },
-  }
+	Lua = {
+		runtime = {
+			-- LuaJIT in the case of Neovim
+			version = "LuaJIT",
+			path = vim.split(package.path, ";"),
+		},
+		diagnostics = {
+			-- Get the language server to recognize the `vim` global
+			globals = { "vim" },
+		},
+		workspace = {
+			-- Make the server aware of Neovim runtime files
+			library = {
+				[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+				[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+			},
+		},
+	},
 }
 lua_config.default_config.settings = lua_settings
 lua_config.default_config.cmd = { "./sumneko-lua-language-server" }
