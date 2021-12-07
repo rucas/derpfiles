@@ -123,7 +123,7 @@ return packer.startup(function()
 		end,
 		requires = {
 			{
-				"kabouzeid/nvim-lspinstall",
+				"williamboman/nvim-lsp-installer",
 			},
 			{
 				"ms-jpg/coq_nvim",
