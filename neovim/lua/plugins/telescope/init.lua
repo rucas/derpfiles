@@ -35,7 +35,8 @@ tele.load_extension("fzf")
 
 utils.map("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
 utils.map("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
-utils.map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
+utils.map("n", "<leader>fg", "<cmd>Telescope grep_string<cr>")
+utils.map("n", "<leader>fgg", "<cmd>Telescope live_grep<cr>")
 utils.map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 utils.map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
 
