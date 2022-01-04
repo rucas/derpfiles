@@ -6,8 +6,9 @@ if not present then
 end
 
 nnn.setup({
-	command = "nnn -C",
+	command = "nnn -d -o -C",
 	set_default_mappings = false,
+	replace_netrw = 1,
 	layout = {
 		window = {
 			width = 0.9,
@@ -21,5 +22,3 @@ nnn.setup({
 		["<C-v>"] = "vsplit", -- open file in vert split
 	},
 })
-
--- utils.map("n", "<leader>nn", "<cmd>NnnPicker<cr>")

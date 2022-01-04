@@ -30,3 +30,4 @@ vim.cmd("silent! command PackerUpdate lua require 'plugins' require('packer').up
 
 -- Nnn ---
 utils.map("n", "<leader>nn", "<cmd>NnnPicker<cr>")
+utils.map("n", "<leader>nc", "<cmd>NnnPicker %:p:h<cr>")
