@@ -5,3 +5,6 @@ vim.cmd([[ autocmd Filetype yaml setlocal ts=2 sts=2 sw=2 expandtab ]])
 
 -- Jenkinsfile
 vim.cmd([[ autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy ]])
+
+-- ZSH functions
+vim.cmd([[ autocmd BufNewFile,BufRead **/zsh/zfuncs/* set filetype=zsh ]])

@@ -22,6 +22,14 @@ source ~/.zplug/init.zsh
 . ~/.zshaliases
 . ~/.zshfunctions
 
+fpath=(
+    ~/.zsh/zfuncs
+    ~/.zsh/zfuncs/**/*~*/(CVS)#(/N)
+    "${fpath[@]}"
+)
+# automagically load zfuncs
+autoload -Uz $fpath[1]/*(.:t)
+
 # handy docker functions
 . ~/.dockerfuncs
 

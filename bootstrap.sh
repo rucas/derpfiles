@@ -6,13 +6,13 @@ ln -sf "$(pwd)/zsh/zshenv" ~/.zshenv
 ln -sf "$(pwd)/zsh/zshsetopt" ~/.zshsetopt
 ln -sf "$(pwd)/zsh/zshaliases" ~/.zshaliases
 ln -sf "$(pwd)/zsh/zshfunctions" ~/.zshfunctions
+ln -sf "$(pwd)/zsh/zfuncs/" ~/.zsh/
 
 # Vim
 mkdir -p ~/.config/nvim
 ln -sf "$(pwd)/neovim/vimrc" ~/.vimrc
-# ln -sf "$(pwd)/neovim/vimrc" ~/.config/nvim/init.vim
 ln -sf "$(pwd)/neovim/init.lua" ~/.config/nvim/init.lua
-ln -sf "$(pwd)/neovim/lua" ~/.config/nvim/lua
+ln -sf "$(pwd)/neovim/lua" ~/.config/nvim/
 
 # Tmux
 mkdir -p ~/.tmux/bin
