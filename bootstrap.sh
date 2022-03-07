@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+set -e
+set -o errexit
+set -o pipefail
+set -o nounset
+# set -o xtrace
+
 # zsh
 ln -sf "$(pwd)/zsh/zshrc" ~/.zshrc
 ln -sf "$(pwd)/zsh/zshenv" ~/.zshenv
@@ -54,6 +60,11 @@ ln -sf "$(pwd)/alacritty/alacritty.yml" ~/.alacritty.yml
 # gh 
 mkdir -p ~/.config/gh
 ln -sf "$(pwd)/gh/config.yml" ~/.config/gh/config.yml
+
+# vale
+mkdir -p  ~/.config/vale
+ln -sf "$(pwd)/vale/vale.ini" ~/.vale.ini
+ln -sf "$(pwd)/vale/styles" ~/.config/vale
 
 # FZF key bindings and fuzzy completion
 if [ -f ~/.fzf.zsh ]; then
