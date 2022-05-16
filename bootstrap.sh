@@ -66,6 +66,10 @@ mkdir -p  ~/.config/vale
 ln -sf "$(pwd)/vale/vale.ini" ~/.vale.ini
 ln -sf "$(pwd)/vale/styles" ~/.config/vale
 
+# ptpython
+mkdir -p  ~/.config/ptpython
+ln -sf "$(pwd)/ptpython/config.py" ~/.config/ptpython/config.py
+
 # FZF key bindings and fuzzy completion
 if [ -f ~/.fzf.zsh ]; then
   echo 'FZF key bindings, and completion already installed...skipping'
