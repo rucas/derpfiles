@@ -2,29 +2,24 @@ local is_present_lsp_config, lsp_config = pcall(require, "lspconfig")
 local is_present_lsp_inst, lsp_install = pcall(require, "nvim-lsp-installer")
 local is_present_coq, coq = pcall(require, "coq")
 
+local u = require("utils")
+
 if not (is_present_lsp_config or is_present_lsp_inst or is_present_coq) then
 	error("Error loading " .. "\n\n" .. lsp_config .. lsp_install .. coq)
 	return
 end
 
 -- NOTE: need to do nvm use stable to get npm...and node...
-local servers = {
-	"bashls",
-	"dockerls",
-	"pyright",
-	"sumneko_lua",
-}
-
-for _, name in pairs(servers) do
-	local ok, server = lsp_install.get_server(name)
-	-- Check that the server is supported in nvim-lsp-installer
-	if ok then
-		if not server:is_installed() then
-			print("Installing " .. name)
-			server:install()
-		end
-	end
-end
+lsp_install.setup({
+	ensure_installed = {
+		"bashls",
+		"dockerls",
+		"jsonls",
+		"pyright",
+		"sumneko_lua",
+	},
+	automatic_installation = true,
+})
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -63,71 +58,18 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
 	buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
 	buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+
+	if client.name == "sumneko_lua" then
+		client.resolved_capabilities.document_formatting = false
+		client.resolved_capabilities.document_range_formatting = false
+	end
 end
 
-lsp_install.on_server_ready(function(server)
-	-- Specify the default options which we'll use for pyright and solargraph
-	-- Note: These are automatically setup from nvim-lspconfig.
-	-- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-
-	local default_opts = coq.lsp_ensure_capabilities({
-		on_attach = on_attach,
-		flags = {
-			debounce_text_changes = 150,
-		},
-	})
-
-	-- Now we'll create a server_opts table where we'll specify our custom LSP server configuration
-    local node_bin = "/Users/lucas.rondenet/.nvm/versions/node/v16.13.1/bin/node"
-	local server_opts = {
-		["bashls"] = function()
-			default_opts.cmd = {
-				node_bin,
-				"/Users/lucas.rondenet/.local/share/nvim/lsp_servers/bash/node_modules/.bin/bash-language-server",
-				"start",
-			}
-		end,
-		["pyright"] = function()
-			default_opts.cmd = {
-                node_bin,
-				"/Users/lucas.rondenet/.local/share/nvim/lsp_servers/python/node_modules/.bin/pyright-langserver",
-				"--stdio",
-			}
-		end,
-        ["dockerls"] = function()
-            default_opts.cmd = {
-                node_bin,
-				"/Users/lucas.rondenet/.local/share/nvim/lsp_servers/dockerfile/node_modules/.bin/docker-langserver",
-				"--stdio",
-			}
-        end,
-		["sumneko_lua"] = function()
-			default_opts.settings = {
-				Lua = {
-					runtime = {
-						-- LuaJIT in the case of Neovim
-						version = "LuaJIT",
-						path = vim.split(package.path, ";"),
-					},
-					diagnostics = {
-						-- Get the language server to recognize the `vim` global
-						globals = { "vim" },
-					},
-					workspace = {
-						-- Make the server aware of Neovim runtime files
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-						},
-					},
-				},
-			}
-		end,
-	}
-
-	-- We check to see if any custom server_opts exist for the LSP server, if so, load them, if not, use our default_opts
-	server:setup(server_opts[server.name] and server_opts[server.name]() or default_opts)
-	vim.cmd([[ do User LspAttachBuffers ]])
+local capabilities = coq.lsp_ensure_capabilities({})
+local servers = u.fmap(lsp_install.get_installed_servers(), function(item)
+	return item.name
 end)
-
-require("plugins/null-ls").setup(on_attach)
+table.insert(servers, "null-ls")
+for _, server in ipairs(servers) do
+	require("lsp." .. server).setup(on_attach, capabilities)
+end

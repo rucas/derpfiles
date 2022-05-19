@@ -1,1 +1,0 @@
--- TODO: remove since nvim-lspinstall and nvim-lspcofig work hand in hand
