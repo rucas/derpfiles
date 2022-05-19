@@ -7,7 +7,7 @@ ts_config.setup({
 	--autopairs = {
 	--	enable = true
 	--},
-	ensure_installed = "maintained",
+	ensure_installed = "all",
 	indent = {
 		enable = true,
 	},

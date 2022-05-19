@@ -13,6 +13,7 @@ return packer.startup(function()
 		event = "VimEnter",
 	})
 
+	use("kyazdani42/nvim-web-devicons")
 	use({
 		"eddyekofo94/gruvbox-flat.nvim",
 		after = "packer.nvim",
@@ -36,6 +37,7 @@ return packer.startup(function()
 		config = function()
 			require("plugins.nvim-treesitter")
 		end,
+		run = ":TSUpdate",
 	})
 
 	use({
@@ -91,6 +93,9 @@ return packer.startup(function()
 				"nvim-telescope/telescope-fzf-native.nvim",
 				run = "make",
 			},
+			{
+				"nvim-telescope/telescope-symbols.nvim",
+			},
 		},
 	})
 
@@ -116,6 +121,8 @@ return packer.startup(function()
 		end,
 	})
 
+	use("folke/lua-dev.nvim")
+	use("b0o/schemastore.nvim")
 	use({
 		"neovim/nvim-lspconfig",
 		config = function()

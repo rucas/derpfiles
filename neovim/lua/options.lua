@@ -80,7 +80,6 @@ vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.wrap = true
 
--- TODO:
 vim.opt.timeoutlen = 500
 vim.opt.updatetime = 500
 

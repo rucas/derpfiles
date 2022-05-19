@@ -6,15 +6,82 @@ if not present then
 end
 
 tele.setup({
+	defaults = {
+		preview = {
+			-- if file is too big...just the tip
+			filesize_hook = function(filepath, bufnr, opts)
+				local max_bytes = 10000
+				local cmd = { "head", "-c", max_bytes, filepath }
+				require("telescope.previewers.utils").job_maker(cmd, bufnr, opts)
+			end,
+		},
+		vimgrep_arguments = {
+			"rg",
+			"--color=never",
+			"--no-heading",
+			"--with-filename",
+			"--line-number",
+			"--column",
+			"--smart-case",
+			"--trim",
+		},
+		prompt_prefix = "   ",
+		selection_caret = "  ",
+		entry_prefix = "  ",
+		initial_mode = "insert",
+		selection_strategy = "reset",
+		sorting_strategy = "ascending",
+		layout_strategy = "horizontal",
+		layout_config = {
+			horizontal = {
+				prompt_position = "top",
+				preview_width = 0.55,
+				results_width = 0.8,
+			},
+			vertical = {
+				mirror = false,
+			},
+			width = 0.87,
+			height = 0.80,
+			preview_cutoff = 120,
+		},
+		path_display = { "truncate" },
+		winblend = 0,
+		border = false,
+		color_devicons = true,
+		use_less = true,
+		set_env = { ["COLORTERM"] = "truecolor" },
+		mappings = {
+			n = { ["q"] = require("telescope.actions").close },
+		},
+	},
 	pickers = {
 		find_files = {
-			find_command = { "fd", "--type", "f", "--hidden", "--follow", "--exclude", "{.git,.idea}" },
+			find_command = {
+				"fd",
+				"--type",
+				"f",
+				"--hidden",
+				"--follow",
+				"--exclude",
+				"{.git,.idea}",
+				"--strip-cwd-prefix",
+			},
+		},
+		commands = {
+			preview = false,
 		},
 		git_files = {
-			find_command = { "fd", "--type", "f", "--hidden", "--follow", "--exclude", "{.git,.idea}" },
-		},
-		live_grep = {
-			find_command = { "rg", "--smart_case", "--no-heading" },
+			find_command = {
+				"fd",
+				"--type",
+				"f",
+				"--hidden",
+				"--follow",
+				"--exclude",
+				"{.git,.idea}",
+				"--strip-cwd-prefix",
+			},
 		},
 		lsp_definitions = {
 			timeout = 1000,
@@ -35,10 +102,56 @@ tele.load_extension("fzf")
 
 utils.map("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
 utils.map("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
-utils.map("n", "<leader>fg", "<cmd>Telescope grep_string<cr>")
-utils.map("n", "<leader>fgg", "<cmd>Telescope live_grep<cr>")
+utils.map("n", "<leader>fs", "<cmd>Telescope grep_string<cr>")
+utils.map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
 utils.map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 utils.map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
 
 utils.map("n", "<leader>ft", "<cmd>Telescope treesitter<cr>")
+
+-- Commands
+utils.map("n", "<leader>fc", "<cmd>lua require'plugins.telescope'.command_finder()<cr>")
+utils.map("n", "<leader>fch", "<cmd>lua require'plugins.telescope'.command_history_finder()<cr>")
+
+-- LSP
 utils.map("n", "<leader>fr", "<cmd>Telescope lsp_references<cr>")
+utils.map("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<cr>")
+utils.map("n", "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<cr>")
+
+-- Git
+utils.map("n", "<leader>fgc", "<cmd>Telescope git_commits<cr>")
+utils.map("n", "<leader>fgb", "<cmd>Telescope git_branches<cr>")
+utils.map("n", "<leader>fgbc", "<cmd>Telescope git_bcommits<cr>")
+utils.map("n", "<leader>fgs", "<cmd>Telescope git_status<cr>")
+
+-- Emojis
+utils.map("n", "<leader>fe", "<cmd>Telescope symbols<cr>")
+
+local finders = {}
+
+-- Dropdown list theme using a builtin theme definitions :
+-- print(vim.inspect(entry))
+local center_list = require("telescope.themes").get_dropdown({
+	entry_maker = function(entry)
+		return {
+			value = entry,
+			display = entry.name,
+			ordinal = entry.name,
+		}
+	end,
+	border = false,
+})
+
+finders.command_finder = function()
+	local opts = vim.deepcopy(center_list)
+	opts.cwd = vim.fn.stdpath("config")
+	require("telescope.builtin").commands(opts)
+end
+
+finders.command_history_finder = function()
+	local opts = vim.deepcopy(center_list)
+	opts.cwd = vim.fn.stdpath("config")
+	require("telescope.builtin").command_history(opts)
+end
+
+return finders
