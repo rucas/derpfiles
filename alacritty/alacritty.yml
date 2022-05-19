@@ -106,7 +106,7 @@ window:
 font:
   # Normal (roman) font face
   normal: 
-    family: Hack
+    family: Hack Nerd Font Mono
     # Font family
     #
     # Default:
