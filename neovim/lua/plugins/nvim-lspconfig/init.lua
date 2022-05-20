@@ -3,6 +3,7 @@ local is_present_lsp_inst, lsp_install = pcall(require, "nvim-lsp-installer")
 local is_present_coq, coq = pcall(require, "coq")
 
 local u = require("utils")
+local c = require("configs")
 
 if not (is_present_lsp_config or is_present_lsp_inst or is_present_coq) then
 	error("Error loading " .. "\n\n" .. lsp_config .. lsp_install .. coq)
@@ -11,13 +12,7 @@ end
 
 -- NOTE: need to do nvm use stable to get npm...and node...
 lsp_install.setup({
-	ensure_installed = {
-		"bashls",
-		"dockerls",
-		"jsonls",
-		"pyright",
-		"sumneko_lua",
-	},
+	ensure_installed = c.LSP_SERVERS,
 	automatic_installation = true,
 })
 
