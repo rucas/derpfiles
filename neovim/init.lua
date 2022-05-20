@@ -1,5 +1,6 @@
 local init_modules = {
 	"autocmds",
+	"commands",
 	"options",
 	"mappings",
 	"disable",
