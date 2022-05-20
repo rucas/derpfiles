@@ -121,7 +121,9 @@ return packer.startup(function()
 		end,
 	})
 
-	use("folke/lua-dev.nvim")
+	use({
+		"folke/lua-dev.nvim",
+	})
 	use("b0o/schemastore.nvim")
 	use({
 		"neovim/nvim-lspconfig",
@@ -184,24 +186,12 @@ return packer.startup(function()
 		end,
 	})
 
-	-- BUG:
-	-- TODO:
-	-- FIX:
-	-- HACK
-	-- WARN:
-	-- PERF:
-	-- NOTE:
 	use({
 		"folke/todo-comments.nvim",
 		event = "VimEnter",
 		requires = "nvim-lua/plenary.nvim",
 		config = function()
-			require("todo-comments").setup({
-				-- your configuration comes here
-				-- or leave it empty to use the default settings
-				-- refer to the configuration section below
-				signs = false,
-			})
+			require("plugins.todo-comments")
 		end,
 	})
 
