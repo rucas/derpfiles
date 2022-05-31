@@ -8,11 +8,11 @@ which_key.register({
 		name = "+commands",
 		s = { "<cmd>lua require'plugins.telescope'.command_finder()<cr>", "Commands" },
 		h = { "<cmd>lua require'plugins.telescope'.command_history_finder()<cr>", "Command History" },
-    },
+	},
 	["<leader>e"] = {
 		name = "+emojis",
 		s = { "<cmd>Telescope symbols<cr>", "Emojis" },
-    },
+	},
 	["<leader>f"] = {
 		name = "+file",
 		f = { "<cmd>Telescope find_files<cr>", "Find File" },
@@ -41,9 +41,9 @@ which_key.register({
 		h = { "<cmd>Telescope help_tags<cr>", "Search Help Tags" },
 	},
 	["<leader>t"] = {
-        name = "+treesitter",
+		name = "+treesitter",
 		s = { "<cmd>Telescope treesitter<cr>", "Treesitter" },
-    },
+	},
 })
 
 which_key.setup({})

@@ -100,33 +100,6 @@ tele.setup({
 
 tele.load_extension("fzf")
 
-utils.map("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
-utils.map("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
-utils.map("n", "<leader>fs", "<cmd>Telescope grep_string<cr>")
-utils.map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
-utils.map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
-utils.map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
-
-utils.map("n", "<leader>ft", "<cmd>Telescope treesitter<cr>")
-
--- Commands
-utils.map("n", "<leader>fc", "<cmd>lua require'plugins.telescope'.command_finder()<cr>")
-utils.map("n", "<leader>fch", "<cmd>lua require'plugins.telescope'.command_history_finder()<cr>")
-
--- LSP
-utils.map("n", "<leader>fr", "<cmd>Telescope lsp_references<cr>")
-utils.map("n", "<leader>fd", "<cmd>Telescope lsp_document_symbols<cr>")
-utils.map("n", "<leader>fw", "<cmd>Telescope lsp_workspace_symbols<cr>")
-
--- Git
-utils.map("n", "<leader>fgc", "<cmd>Telescope git_commits<cr>")
-utils.map("n", "<leader>fgb", "<cmd>Telescope git_branches<cr>")
-utils.map("n", "<leader>fgbc", "<cmd>Telescope git_bcommits<cr>")
-utils.map("n", "<leader>fgs", "<cmd>Telescope git_status<cr>")
-
--- Emojis
-utils.map("n", "<leader>fe", "<cmd>Telescope symbols<cr>")
-
 local finders = {}
 
 -- Dropdown list theme using a builtin theme definitions :
