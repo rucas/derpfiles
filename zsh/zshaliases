@@ -33,6 +33,7 @@ alias ga=" git add"
 alias gaa=" git add -A"
 alias gl=" git l"
 alias gd=" git diff"
+alias gu=" gitui"
 
 # NeoVim really...just less typing
 alias vi=" nvim"

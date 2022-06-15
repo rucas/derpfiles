@@ -70,6 +70,11 @@ ln -sf "$(pwd)/vale/styles" ~/.config/vale
 mkdir -p  ~/.config/ptpython
 ln -sf "$(pwd)/ptpython/config.py" ~/.config/ptpython/config.py
 
+# gitui
+mkdir -p  ~/.config/gitui
+ln -sf "$(pwd)/gitui/key_bindings.ron" ~/.config/gitui/key_bindings.ron
+
+
 # FZF key bindings and fuzzy completion
 if [ -f ~/.fzf.zsh ]; then
   echo 'FZF key bindings, and completion already installed...skipping'
