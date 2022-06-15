@@ -73,6 +73,7 @@ ln -sf "$(pwd)/ptpython/config.py" ~/.config/ptpython/config.py
 # gitui
 mkdir -p  ~/.config/gitui
 ln -sf "$(pwd)/gitui/key_bindings.ron" ~/.config/gitui/key_bindings.ron
+ln -sf "$(pwd)/gitui/theme.ron" ~/.config/gitui/theme.ron
 
 
 # FZF key bindings and fuzzy completion
