@@ -29,9 +29,6 @@ ln -sf "$(pwd)/tmux/bin/wifi.sh" ~/.tmux/bin/wifi
 ln -sf "$(pwd)/git/gitignore_global" ~/.gitignore_global
 ln -sf "$(pwd)/git/gitconfig" ~/.gitconfig
 
-# TaskWarrior
-ln -sf "$(pwd)/taskwarrior/taskrc" ~/.taskrc
-
 # yabai
 ln -sf "$(pwd)/yabai/yabairc" ~/.yabairc
 
@@ -40,9 +37,6 @@ ln -sf "$(pwd)/skhd/skhdrc" ~/.skhdrc
 
 # Go
 ln -sf "$(pwd)/go/cobra.yaml" ~/.cobra.yaml
-
-# tig
-ln -sf "$(pwd)/tig/tigrc" ~/.tigrc
 
 # docker
 ln -sf "$(pwd)/docker/dockerfuncs" ~/.dockerfuncs

@@ -22,9 +22,6 @@ The project is divided into directories to manage individual programs. Below is 
 ## [ skhdrc ](skhdrc/)
 [ website ](https://github.com/koekeishiya/skhd)
 
-## [ taskwarrior ](taskwarrior/)
-[ website ](https://taskwarrior.org)
-
 ## [ tmux ](tmux/)
 [ website ](https://github.com/tmux/tmux/wiki)
 

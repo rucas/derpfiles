@@ -1,4 +1,0 @@
-bind main R !git rebase -i %(commit)^
-bind diff R !git rebase -i %(commit)^
-
-bind main V <sh -c 'nvim $(git diff --name-only %(commit)~ %(commit))'

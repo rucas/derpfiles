@@ -85,13 +85,7 @@ Checkout individual README's in directories for detailed descriptions
 
 - [ skhd ](skhd/)
 
-- [ taskwarrior ](task/)
-
-- [ tig ](tig/)
-
 - [ tmux ](tmux/)
-
-- [ ubersicht ](ubersicht/)
 
 - [ zsh ](zsh/)
 
