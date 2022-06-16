@@ -216,4 +216,16 @@ return packer.startup(function()
 			require("pears").setup()
 		end,
 	})
+
+	use({
+		"nvim-neorg/neorg",
+		config = function()
+			require("plugins.neorg")
+		end,
+		after = "nvim-treesitter",
+		requires = {
+			{ "nvim-lua/plenary.nvim" },
+			{ "nvim-treesitter/nvim-treesitter" },
+		},
+	})
 end)
