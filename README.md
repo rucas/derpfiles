@@ -59,6 +59,31 @@ $ launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
 # may get warning about using bootstrap instead... 
 ```
 
+start nix build
+
+```sh
+$ nix build --impure '.#darwinConfigurations.[HOSTNAME].system'
+```
+
+let nix-darwin take the wheel...
+
+```sh
+./result/sw/bin/darwin-rebuild switch --flake '.#[HOSTNAME]' --impure
+
+# you may get an error on first run...
+# follow the instructions...
+#
+# error: Directory /run does not exist, aborting activation
+# Create a symlink to /var/run with:
+# ...
+```
+
+may get error about `/etc/nix/nix.conf` already exists. To fix:
+
+```
+$ sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.bak
+```
+
 *os x system*
 
 ```sh
