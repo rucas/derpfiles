@@ -1,9 +1,0 @@
-# What protocol to use when performing git operations. Supported values: ssh, https
-git_protocol: https
-# What editor gh should run when creating issues, pull requests, etc. If blank, will refer to environment.
-editor:
-# Aliases allow you to create nicknames for gh commands
-aliases: {
-  co: '!id="$(GH_FORCE_TTY=100% gh pr list -L100 | FZF --ansi | awk ''{print $1}'')"; [ -n "$id" ] && gh pr checkout "$id"', 
-  pv: '!id="$(GH_FORCE_TTY=100% gh pr list -L100 | FZF --ansi | awk ''{print $1}'')"; [ -n "$id" ] && gh pr view "$id"'
-}

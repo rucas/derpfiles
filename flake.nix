@@ -34,5 +34,21 @@
           }
         ];
       };
+
+      hosts.c889f3b8f7d7 = {
+        builder = nix-darwin.lib.darwinSystem;
+        system = "aarch64-darwin";
+        output = "darwinConfigurations";
+
+        modules = [
+          ./hosts/c889f3b8f7d7/darwin.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.lucas = import ./hosts/c889f3b8f7d7/home.nix;
+          }
+        ];
+      };
     };
 }

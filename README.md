@@ -13,6 +13,28 @@
 
 ## Install
 
+## OS X System
+
+install nix multi-user mode
+
+```sh
+$ sh <(curl -L https://nixos.org/nix/install) --daemon
+```
+
+install homebrew
+
+```sh
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# make sure to follow steps at end to add brew to $PATH
+```
+
+mkdir `~/Code`
+
+```sh
+$ mkdir Code
+```
+
 *os x system*
 
 ```sh

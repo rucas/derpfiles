@@ -9,7 +9,7 @@
 
   programs.home-manager.enable = true;
 
-  home.username = "lucas";
+  home.username = "awslucas";
 
   home.stateVersion = "22.05";
 
