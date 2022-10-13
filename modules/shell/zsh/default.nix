@@ -13,12 +13,13 @@
     #enableAutosuggestions = true;
     #enableSyntaxHighlighting = true;
     shellAliases = {
-      cat = "bat --paging=never";
+      cat = "bat -n --paging=never";
       h = "history";
       j = "jobs";
       ls = "exa --group-directories-first";
       la = "exa --group-directories-first -a";
     };
+    sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
     shellGlobalAliases = { G = "| grep"; };
     initExtraFirst = "";
     initExtra = ''
@@ -60,6 +61,21 @@
         setopt extendedglob 
         [[ $1 != ''${~HISTORY_IGNORE} ]]
       }
+
+      fpath=(
+        ~/.zfuncs
+        ~/.zfuncs/**/*~*/(CVS)#(/N)
+        "''${fpath[@]}"
+      )
+      # automagically load zfuncs
+      autoload -Uz $fpath[1]/*(.:t)
     '';
+
+  };
+
+  home.file.".zfuncs" = {
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/Code/derpfiles/modules/shell/zsh/zfuncs/";
+    recursive = true;
   };
 }

@@ -8,13 +8,12 @@
       "aerial"
       "appcleaner"
       "blackhole-16ch"
-      "chrome-cli"
       "dash"
       "dropbox"
       "slack"
       "obs"
       "vlc"
     ];
-    brews = [ "sharewifi" ];
+    brews = [ "blueutil" "chrome-cli" "sharewifi" ];
   };
 }

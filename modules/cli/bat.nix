@@ -4,6 +4,7 @@
     config = {
       theme = "gruvbox-dark";
       italic-text = "always";
+      map-syntax = "**/.zfuncs/*:Bourne Again Shell (bash)";
     };
   };
 }

@@ -14,7 +14,6 @@
     inetutils
     jq
 
-    (lib.mkIf pkgs.stdenv.isDarwin blueutil)
     (lib.mkIf pkgs.stdenv.isDarwin m-cli)
 
     neofetch
