@@ -46,7 +46,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.lucas = import ./hosts/c889f3b8f7d7/home.nix;
+            home-manager.users.awslucas = import ./hosts/c889f3b8f7d7/home.nix;
           }
         ];
       };
