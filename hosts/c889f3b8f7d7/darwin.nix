@@ -12,7 +12,7 @@
   services.nix-daemon.enable = true;
 
   # TODO: better way to do users.users?
-  users.users.lucas = { home = "/Users/awslucas"; };
+  users.users.awslucas = { home = "/Users/awslucas"; };
 
   # NOTE: needed or else correct zsh path wont be set
   # correct path is /etc/profiles/per-user/lucas/bin/zsh

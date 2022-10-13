@@ -35,6 +35,30 @@ mkdir `~/Code`
 $ mkdir Code
 ```
 
+clone repo
+
+```sh
+$ git clone https://github.com/rucas/derpfiles.git
+```
+
+enable flakes
+
+```sh
+mkdir -p ~/.config/nix
+    cat >> ~/.config/nix/nix.conf <<EOL
+experimental-features = nix-command flakes
+EOL
+```
+
+reload the nix-daemon
+
+```
+$ launchctl remove org.nixos.nix-daemon 
+$ launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
+
+# may get warning about using bootstrap instead... 
+```
+
 *os x system*
 
 ```sh
