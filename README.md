@@ -7,13 +7,12 @@
 ## Table of Contents
 
 - [Install](#install)
-- [Usage](#usage)
 - [Contribute](#contribute)
 - [License](#license)
 
 ## Install
 
-## OS X System
+### OS X System
 
 install nix multi-user mode
 
@@ -29,10 +28,12 @@ $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
 # make sure to follow steps at end to add brew to $PATH
 ```
 
-mkdir `~/Code`
+mkdir worksoace in `~`
 
 ```sh
-$ mkdir Code
+$ mkdir ~/Code
+$ mkdir ~/Work
+
 ```
 
 clone repo
@@ -83,82 +84,6 @@ may get error about `/etc/nix/nix.conf` already exists. To fix:
 ```
 $ sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.bak
 ```
-
-*os x system*
-
-```sh
-$ cd setup
-$ ./start.sh
-
-$ cd homebrew
-$ brew bundle
-
-# Edit /etc/shells
-$ sudo sh -c 'echo /usr/local/bin/zsh >> /etc/shells'
-
-# Then run iterm2 setup script
-$ cd iterm2
-$ ./start.sh
-
-# Set dotfiles (.zshrc, .zshenv, .zshaliases, ...)
-$ ./bootstrap.sh
-
-# Quit terminal and open iTerm
-
-# zplug will prompt for downloading zsh plugins
-# procede with a Y
-
-# Then run osx defaults (KeyRepeat, etc.)
-$ cd osx
-$ ./start.sh
-
-# log out
-# and then log back in to see osx changes
-
-# Then run neovim setup script
-$ cd neovim
-$ ./start.sh
-
-# Go into neovim
-$ nvim
-
-:PlugInstall
-:UpdateRemotePlugins
-
-# launch tmux
-$ tmux new-session
-# prefix - I to fetch plugins
-
-# Set ubersicht widgets folder to ./ubersicht
-...
-
-```
-
-## Usage
-
-Checkout individual README's in directories for detailed descriptions
-
-- [ yabai ](yabai/)
-
-- [ git ](git/)
-
-- [ github ](github/)
-
-- [ go ](go/)
-
-- [ homebrew ](homebrew/)
-
-- [ iterm2 ](iterm2/)
-
-- [ neovim ](neovim/)
-
-- [ osx ](osx/)
-
-- [ skhd ](skhd/)
-
-- [ tmux ](tmux/)
-
-- [ zsh ](zsh/)
 
 ## Contribute
 
