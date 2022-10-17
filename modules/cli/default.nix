@@ -29,6 +29,7 @@
     ripgrep
     tree
     wget
+    xz
     yq
   ];
 }

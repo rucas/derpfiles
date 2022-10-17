@@ -14,6 +14,6 @@
       "obs"
       "vlc"
     ];
-    brews = [ "blueutil" "chrome-cli" "sharewifi" ];
+    brews = [ "blueutil" "chrome-cli" "pyenv" "sharewifi" ];
   };
 }
