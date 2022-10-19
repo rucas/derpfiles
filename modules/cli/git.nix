@@ -18,6 +18,10 @@
         path = "~/.config/git/work.gitconfig";
         condition = "gitdir:~/Work/";
       }
+      {
+        path = "~/.config/git/work.gitconfig";
+        condition = "gitdir:~/workplace/";
+      }
     ];
     aliases = {
       l =
