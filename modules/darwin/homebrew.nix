@@ -16,4 +16,6 @@
     ];
     brews = [ "blueutil" "chrome-cli" "pyenv" "sharewifi" ];
   };
+
+  environment.variables = { HOMEBREW_NO_ANALYTICS = "1"; };
 }
