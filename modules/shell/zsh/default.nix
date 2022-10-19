@@ -10,8 +10,8 @@
       extended = true;
     };
     autocd = true;
-    #enableAutosuggestions = true;
-    #enableSyntaxHighlighting = true;
+    enableAutosuggestions = true;
+    # enableSyntaxHighlighting = true;
     shellAliases = {
       cat = "bat -n --paging=never";
       h = "history";
