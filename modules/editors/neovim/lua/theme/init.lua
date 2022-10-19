@@ -1,0 +1,6 @@
+vim.cmd([[let g:gruvbox_material_foreground = 'material']])
+vim.cmd([[let g:gruvbox_material_background = 'medium']])
+vim.cmd([[let g:gruvbox_material_better_performance = 1]])
+vim.cmd([[let g:gruvbox_material_enable_italic = 1]])
+vim.cmd([[let g:gruvbox_material_enable_bold = 1]])
+vim.cmd([[colorscheme gruvbox-material]])
