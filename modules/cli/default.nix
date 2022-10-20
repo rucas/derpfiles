@@ -1,5 +1,13 @@
 { config, options, lib, pkgs, ... }: {
-  imports = [ ./bat.nix ./exa.nix ./fzf.nix ./gh.nix ./git.nix ./tealdeer.nix ];
+  imports = [
+    ./atuin.nix
+    ./bat.nix
+    ./exa.nix
+    ./fzf.nix
+    ./gh.nix
+    ./git.nix
+    ./tealdeer.nix
+  ];
   home.packages = with pkgs; [
     awscli
     bandwhich
