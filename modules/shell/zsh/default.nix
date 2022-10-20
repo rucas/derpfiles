@@ -1,5 +1,5 @@
 { config, options, lib, pkgs, ... }: {
-  imports = [ ./fsh.nix ./starship.nix ];
+  imports = [ ./autopairs.nix ./fsh.nix ./starship.nix ];
   programs.zsh = {
     enable = true;
 
