@@ -35,6 +35,7 @@
     # procs
 
     ripgrep
+    sqlite
     tree
     wget
     xz

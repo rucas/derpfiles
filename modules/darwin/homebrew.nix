@@ -14,7 +14,7 @@
       "obs"
       "vlc"
     ];
-    brews = [ "blueutil" "chrome-cli" "pyenv" "sharewifi" ];
+    brews = [ "blueutil" "chrome-cli" "node@12" "pyenv" "sharewifi" ];
   };
 
   environment.variables = { HOMEBREW_NO_ANALYTICS = "1"; };

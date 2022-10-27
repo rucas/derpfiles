@@ -1,0 +1,47 @@
+h_help () {
+    echo "Usage: h <subcommand> [options]\n"
+    echo "Subcommands:"
+    echo "    delete    delete command from history"
+    echo ""
+    echo "For help with each subcommand run:"
+    echo "h <subcommand> -h|--help"
+    echo ""
+}
+
+h_delete () {
+    local db="~/.local/share/atuin/history.db"
+    local cmds=("${(@f)$(sqlite3 ~/.local/share/atuin/history.db "select distinct command from history;" | fzf --multi)}")
+
+    for i in "${cmds[@]}"
+    do
+        local params=$params"command = '${i//\'/\'\'}' OR "
+    done
+
+    local paramsV2=${params:0:-4}
+    echo "$params --> $paramsV2"
+    local cmd="sqlite3 $db ""\"DELETE from history WHERE $paramsV2;\""  
+    #sqlite3 "..." "... bundleId = '${SEARCH_PARAM//\'/\'\'}';"
+
+    echo "$cmd"
+    #eval "$cmd"
+}
+
+h () {
+    if (( ${#} == 0 )); then
+        h_help
+        return 0
+    fi
+
+    case ${1} in
+        help | delete )
+            h_$1 "${@:2}"
+        ;;
+        * )
+            echo "unknown command: $1"
+            h_help 1;
+            return 1;
+        ;;
+    esac    
+}
+
+h "$@"

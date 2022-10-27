@@ -1,5 +1,0 @@
-pyclean () {
-    fd -HI -pg '**/__pycache__/*.pyc' -x rm
-}
-
-pyclean "$@"

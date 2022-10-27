@@ -14,7 +14,6 @@
     # enableSyntaxHighlighting = true;
     shellAliases = {
       cat = "bat -n --paging=never";
-      h = "history";
       j = "jobs";
       ls = "exa --group-directories-first";
       la = "exa --group-directories-first -a";

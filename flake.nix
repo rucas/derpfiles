@@ -13,8 +13,9 @@
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils }:
-    utils.lib.mkFlake {
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, ... }:
+    let theme = import ./modules/theme.nix;
+    in (utils.lib.mkFlake) {
       inherit self inputs;
 
       channelsConfig.allowUnfree = true;

@@ -47,7 +47,12 @@
       zen-mode-nvim
       rest-nvim
     ];
-    extraPackages = with pkgs; [ rnix-lsp sumneko-lua-language-server ];
+    extraPackages = with pkgs; [
+      shellcheck
+      shfmt
+      rnix-lsp
+      sumneko-lua-language-server
+    ];
     viAlias = true;
   };
   xdg.configFile."nvim/lua" = {
