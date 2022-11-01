@@ -10,6 +10,7 @@ vim.opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 require("indent_blankline").setup({
 	filetype_exclude = {
 		"alpha",
+		"dashboard",
 		"help",
 		"terminal",
 		"packer",

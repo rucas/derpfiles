@@ -18,7 +18,7 @@
       fidget-nvim
       gitsigns-nvim
       glow-nvim
-      gruvbox-flat-nvim
+      gruvbox-nvim
       indent-blankline-nvim
       lspkind-nvim
       lua-dev-nvim
@@ -28,11 +28,12 @@
       nvim-colorizer-lua
       nvim-lspconfig
       nvim-tree-lua
-      nvim-treesitter
+      (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars))
       nvim-ts-rainbow
       nvim-web-devicons
       nvim-cmp
       packer-nvim
+      playground
       plenary-nvim
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
@@ -48,6 +49,10 @@
       rest-nvim
     ];
     extraPackages = with pkgs; [
+      nodePackages.bash-language-server
+      nodePackages.dockerfile-language-server-nodejs
+      nodePackages.vscode-json-languageserver
+      nodePackages.pyright
       shellcheck
       shfmt
       rnix-lsp

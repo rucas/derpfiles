@@ -1,8 +1,9 @@
-vim.g.Illuminate_delay = 500
-vim.g.Illuminate_ftblacklist = {
-	"NvimTree",
-	"help",
-	"terminal",
-	"TelescopePrompt",
-	"TelescopeResults",
-}
+require("illuminate").configure({
+	filetypes_denylist = {
+		"NvimTree",
+		"help",
+		"terminal",
+		"TelescopePrompt",
+		"TelescopeResults",
+	}
+})
