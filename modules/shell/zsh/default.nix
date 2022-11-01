@@ -18,6 +18,7 @@
       j = "jobs";
       ls = "exa --group-directories-first";
       la = "exa --group-directories-first -a";
+      v = "nvim";
     };
     sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
     shellGlobalAliases = { G = "| grep"; };
