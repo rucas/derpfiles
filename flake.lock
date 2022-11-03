@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "fidget-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666667813,
+        "narHash": "sha256-p41t+Xd64aWSzay3JCwHhlADGQ+3pFUiBDOSykalyRM=",
+        "owner": "j-hui",
+        "repo": "fidget.nvim",
+        "rev": "2cf9997d3bde2323a1a0934826ec553423005a26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "j-hui",
+        "repo": "fidget.nvim",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1644229661,
@@ -12,6 +28,38 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "gitsigns-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1667233331,
+        "narHash": "sha256-dpCw1JsYfr+dwxRUrqBJvq8nAARI3m5MHIbMRN/3j2w=",
+        "owner": "lewis6991",
+        "repo": "gitsigns.nvim",
+        "rev": "d3a8ba0b0d34bbac482b963e52b346065169fa20",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lewis6991",
+        "repo": "gitsigns.nvim",
+        "type": "github"
+      }
+    },
+    "gruvbox-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1667325425,
+        "narHash": "sha256-uJtJXXQ2qMPdLcCKIbWVh3oDbpVsxH431FOYARVKYkI=",
+        "owner": "ellisonleao",
+        "repo": "gruvbox.nvim",
+        "rev": "9002dc7a717d38b7bbe212febe6370fd7d047308",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ellisonleao",
+        "repo": "gruvbox.nvim",
         "type": "github"
       }
     },
@@ -74,10 +122,30 @@
     },
     "root": {
       "inputs": {
+        "fidget-nvim": "fidget-nvim",
+        "gitsigns-nvim": "gitsigns-nvim",
+        "gruvbox-nvim": "gruvbox-nvim",
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
+        "todo-comments-nvim": "todo-comments-nvim",
         "utils": "utils_2"
+      }
+    },
+    "todo-comments-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1666961860,
+        "narHash": "sha256-8sSPpg6G/EHVCm2bZV5LZHn/+Kxdq47IEum4oWyrYa4=",
+        "owner": "folke",
+        "repo": "todo-comments.nvim",
+        "rev": "530eb3a896e9eef270f00f4baafa102361afc93b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "folke",
+        "repo": "todo-comments.nvim",
+        "type": "github"
       }
     },
     "utils": {

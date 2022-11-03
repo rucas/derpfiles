@@ -3,4 +3,8 @@ if not is_present_todo then
 	return
 end
 
-todo.setup({})
+todo.setup({
+	--highlight = {
+	--	keyword = "wide_bg"
+	--}
+})
