@@ -2,13 +2,11 @@
   programs.neovim = {
     enable = true;
 
-    # TODO: missing
-    # * Pocco81/AutoSave.nvim
-    # * lukas-reineke/headlines.nvim
-    # * ixru/nvim-markdown
     plugins = with pkgs.vimPlugins; [
+      (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars))
       SchemaStore-nvim
       Shade-nvim
+      auto-save-nvim
       better-escape-nvim
       cmp-buffer
       cmp-cmdline
@@ -19,34 +17,34 @@
       gitsigns-nvim
       glow-nvim
       gruvbox-nvim
+      headlines-nvim
       indent-blankline-nvim
       lspkind-nvim
       lua-dev-nvim
       luasnip
+      neorg
       null-ls-nvim
       nvim-autopairs
+      nvim-cmp
       nvim-colorizer-lua
       nvim-lspconfig
+      nvim-markdown
       nvim-tree-lua
-      (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars))
       nvim-ts-rainbow
       nvim-web-devicons
-      nvim-cmp
-      packer-nvim
       playground
       plenary-nvim
+      rest-nvim
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
       telescope-nvim
       telescope-symbols-nvim
       todo-comments-nvim
+      twilight-nvim
       vim-illuminate
       vim-nix
       which-key-nvim
-      neorg
-      twilight-nvim
       zen-mode-nvim
-      rest-nvim
     ];
     extraPackages = with pkgs; [
       nodePackages.bash-language-server

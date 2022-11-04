@@ -28,12 +28,12 @@ $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
 # make sure to follow steps at end to add brew to $PATH
 ```
 
-mkdir worksoace in `~`
+mkdirs in `~`
 
 ```sh
 $ mkdir ~/Code
 $ mkdir ~/Work
-
+$ mkdir -p ~/Documents/notes/gtd ~/Documents/notes/home ~/Documents/notes/work
 ```
 
 clone repo

@@ -5,6 +5,7 @@
     ../../modules/shell/zsh
     ../../modules/desktop/term
     ../../modules/desktop/editors
+    ../../modules/editors/neovim
   ];
 
   programs.home-manager.enable = true;

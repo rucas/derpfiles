@@ -11,60 +11,225 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
-
+    auto-save-nvim = {
+      url = "github:Pocco81/auto-save.nvim";
+      flake = false;
+    };
+    better-escape-nvim = {
+      url = "github:max397574/better-escape.nvim";
+      flake = false;
+    };
+    cmp-buffer = {
+      url = "github:hrsh7th/cmp-buffer";
+      flake = false;
+    };
+    "cmp-cmdline" = {
+      url = "github:hrsh7th/cmp-cmdline";
+      flake = false;
+    };
+    "cmp-nvim-lsp" = {
+      url = "github:hrsh7th/cmp-nvim-lsp";
+      flake = false;
+    };
+    "cmp-path" = {
+      url = "github:hrsh7th/cmp-path";
+      flake = false;
+    };
+    dashboard-nvim = {
+      url = "github:glepnir/dashboard-nvim";
+      flake = false;
+    };
     fidget-nvim = {
       url = "github:j-hui/fidget.nvim";
       flake = false;
     };
-
-    todo-comments-nvim = {
-      url = "github:folke/todo-comments.nvim";
-      flake = false;
-    };
-
     gitsigns-nvim = {
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;
     };
-
+    glow-nvim = {
+      url = "github:ellisonleao/glow.nvim";
+      flake = false;
+    };
     gruvbox-nvim = {
       url = "github:ellisonleao/gruvbox.nvim";
+      flake = false;
+    };
+    headlines-nvim = {
+      url = "github:lukas-reineke/headlines.nvim";
+      flake = false;
+    };
+    indent-blankline-nvim = {
+      url = "github:lukas-reineke/indent-blankline.nvim";
+      flake = false;
+    };
+    lspkind-nvim = {
+      url = "github:onsails/lspkind.nvim";
+      flake = false;
+    };
+    lua-dev-nvim = {
+      url = "github:folke/neodev.nvim";
+      flake = false;
+    };
+    luasnip = {
+      url = "github:L3MON4D3/LuaSnip";
+      flake = false;
+    };
+    neorg = {
+      url = "github:nvim-neorg/neorg";
+      flake = false;
+    };
+    null-ls-nvim = {
+      url = "github:jose-elias-alvarez/null-ls.nvim";
+      flake = false;
+    };
+    nvim-autopairs = {
+      url = "github:windwp/nvim-autopairs";
+      flake = false;
+    };
+    nvim-colorizer-lua = {
+      url = "github:norcalli/nvim-colorizer.lua";
+      flake = false;
+    };
+    nvim-lspconfig = {
+      url = "github:neovim/nvim-lspconfig";
+      flake = false;
+    };
+    nvim-markdown = {
+      url = "github:ixru/nvim-markdown";
+      flake = false;
+    };
+    nvim-tree-lua = {
+      url = "github:nvim-tree/nvim-tree.lua";
+      flake = false;
+    };
+    nvim-ts-rainbow = {
+      url = "github:p00f/nvim-ts-rainbow";
+      flake = false;
+    };
+    nvim-web-devicons = {
+      url = "github:nvim-tree/nvim-web-devicons";
+      flake = false;
+    };
+    nvim-cmp = {
+      url = "github:hrsh7th/nvim-cmp";
+      flake = false;
+    };
+    plenary-nvim = {
+      url = "github:nvim-lua/plenary.nvim";
+      flake = false;
+    };
+    rest-nvim = {
+      url = "github:rest-nvim/rest.nvim";
+      flake = false;
+    };
+    telescope-file-browser-nvim = {
+      url = "github:nvim-telescope/telescope-file-browser.nvim";
+      flake = false;
+    };
+    # TODO: nvim-treesitter and telescope-fzf-native-nvim flake
+    #telescope-fzf-native-nvim = {
+    #  url = "github:nvim-telescope/telescope-fzf-native.nvim";
+    #  flake = false;
+    #};
+    telescope-nvim = {
+      url = "github:nvim-telescope/telescope.nvim";
+      flake = false;
+    };
+    telescope-symbols-nvim = {
+      url = "github:nvim-telescope/telescope-symbols.nvim";
+      flake = false;
+    };
+    todo-comments-nvim = {
+      url = "github:folke/todo-comments.nvim";
+      flake = false;
+    };
+    twilight-nvim = {
+      url = "github:folke/twilight.nvim";
+      flake = false;
+    };
+    vim-illuminate = {
+      url = "github:RRethy/vim-illuminate";
+      flake = false;
+    };
+    vim-nix = {
+      url = "github:LnL7/vim-nix";
+      flake = false;
+    };
+    which-key-nvim = {
+      url = "github:folke/which-key.nvim";
+      flake = false;
+    };
+    zen-mode-nvim = {
+      url = "github:folke/zen-mode.nvim";
       flake = false;
     };
   };
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, ... }:
-    let theme = import ./modules/theme.nix;
+    let
+      theme = import ./modules/theme.nix;
+      vimPlugins = [
+        #"SchemaStore-nvim"
+        #"Shade-nvim"
+        "autosave-nvim"
+        "better-escape-nvim"
+        "cmp-buffer"
+        "cmp-cmdline"
+        "cmp-nvim-lsp"
+        "cmp-path"
+        "dashboard-nvim"
+        "fidget-nvim"
+        "gitsigns-nvim"
+        "glow-nvim"
+        "gruvbox-nvim"
+        "headlines-nvim"
+        "indent-blankline-nvim"
+        "lspkind-nvim"
+        "lua-dev-nvim"
+        "luasnip"
+        "neorg"
+        "null-ls-nvim"
+        "nvim-autopairs"
+        "nvim-colorizer-lua"
+        "nvim-markdown"
+        "nvim-lspconfig"
+        "nvim-tree-lua"
+        "nvim-ts-rainbow"
+        "nvim-web-devicons"
+        "nvim-cmp"
+        "plenary-nvim"
+        "rest-nvim"
+        "telescope-file-browser-nvim"
+        #"telescope-fzf-native-nvim"
+        "telescope-nvim"
+        "telescope-symbols-nvim"
+        "todo-comments-nvim"
+        "twilight-nvim"
+        "vim-illuminate"
+        "vim-nix"
+        "which-key-nvim"
+        "zen-mode-nvim"
+      ];
 
+      neovimOverlay = (self: super:
+        let
+          buildPlug = name:
+            super.vimUtils.buildVimPluginFrom2Nix {
+              pname = name;
+              version = "master";
+              src = builtins.getAttr name inputs;
+            };
+          neovimPlugins = builtins.listToAttrs (map (name: {
+            name = name;
+            value = buildPlug name;
+          }) vimPlugins);
+        in { vimPlugins = super.vimPlugins // neovimPlugins; });
     in (utils.lib.mkFlake) {
       inherit self inputs;
 
       channelsConfig.allowUnfree = true;
-      sharedOverlays = [
-        (self: super:
-          let
-            fidget-nvim = super.vimUtils.buildVimPluginFrom2Nix {
-              name = "fidget-nvim";
-              src = inputs.fidget-nvim;
-            };
-            gitsigns-nvim = super.vimUtils.buildVimPluginFrom2Nix {
-              name = "gitsigns-nvim";
-              src = inputs.gitsigns-nvim;
-            };
-            todo-comments-nvim = super.vimUtils.buildVimPluginFrom2Nix {
-              name = "todo-comments-nvim";
-              src = inputs.todo-comments-nvim;
-            };
-            gruvbox-nvim = super.vimUtils.buildVimPluginFrom2Nix {
-              name = "gruvbox-nvim";
-              src = inputs.gruvbox-nvim;
-            };
-          in {
-            vimPlugins = super.vimPlugins // {
-              inherit todo-comments-nvim gruvbox-nvim;
-            };
-          })
-      ];
+      sharedOverlays = [ neovimOverlay ];
       hosts.blkmrkt = {
         builder = nix-darwin.lib.darwinSystem;
         system = "x86_64-darwin";
