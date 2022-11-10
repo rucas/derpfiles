@@ -1,0 +1,37 @@
+chrome_help () {
+    echo "Usage: chrome <subcommand> [options]\n"
+    echo "Subcommands:"
+    echo "    testenv    creates chrome with no user data saved and CORS removed (unsafe)"
+    echo ""
+    echo "For help with each subcommand run:"
+    echo "h <subcommand> -h|--help"
+    echo ""
+}
+
+chrome_testenv () {
+  fresh_dir=$(mktemp -d)
+  open -na "Google Chrome" --args \
+    --user-data-dir=$fresh_dir \
+    --disable-web-security \
+    --auto-open-devtools-for-tabs 
+}
+
+chrome () {
+    if (( ${#} == 0 )); then
+        chrome_help
+        return 0
+    fi
+
+    case ${1} in
+        help | testenv )
+            chrome_$1 "${@:2}"
+        ;;
+        * )
+            echo "unknown command: $1"
+            chrome_help 1;
+            return 1;
+        ;;
+    esac    
+}
+
+chrome "$@"

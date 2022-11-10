@@ -1,5 +1,5 @@
 {
-  description = "the derpfiles original flake";
+  description = "The original derpfiles flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -164,9 +164,19 @@
       url = "github:folke/zen-mode.nvim";
       flake = false;
     };
+    yabai = {
+      url = "github:koekeishiya/yabai?ref=v5.0.1";
+      flake = false;
+    };
+    skhd = {
+      url = "github:koekeishiya/skhd?ref=v0.0.6";
+      flake = false;
+    };
+    spacebar = { url = "github:cmacrae/spacebar"; };
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, ... }:
+  outputs =
+    inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar, ... }:
     let
       theme = import ./modules/theme.nix;
       vimPlugins = [
@@ -229,7 +239,7 @@
       inherit self inputs;
 
       channelsConfig.allowUnfree = true;
-      sharedOverlays = [ neovimOverlay ];
+      sharedOverlays = [ neovimOverlay spacebar.overlay ];
       hosts.blkmrkt = {
         builder = nix-darwin.lib.darwinSystem;
         system = "x86_64-darwin";
@@ -252,6 +262,7 @@
         output = "darwinConfigurations";
 
         modules = [
+          #{ nixpkgs.overlays = [ inputs.spacebar.overlay ]; }
           ./hosts/c889f3b8f7d7/darwin.nix
           home-manager.darwinModules.home-manager
           {

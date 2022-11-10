@@ -6,6 +6,7 @@
     ./fzf.nix
     ./gh.nix
     ./git.nix
+    ./gitui.nix
     ./tealdeer.nix
   ];
   home.packages = with pkgs; [
@@ -30,6 +31,8 @@
 
     # TODO: seperate out to fonts.nix?
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "JetBrainsMono" ]; })
+
+    moreutils
 
     # TODO: fix by pinning to nonbroken nix pkgs
     # procs

@@ -4,7 +4,8 @@ if not is_present_todo then
 end
 
 todo.setup({
-	--highlight = {
-	--	keyword = "wide_bg"
-	--}
+	highlight = {
+		before = "",
+		keyword = "wide_bg"
+	}
 })

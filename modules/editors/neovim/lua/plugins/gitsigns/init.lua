@@ -5,8 +5,8 @@ end
 
 gitsigns.setup({
 	signs = {
-		add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
-		change = { hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+		add = { hl = "GitSignsAdd", text = "┃", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+		change = { hl = "GitSignsChange", text = "┃", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
 		delete = {
 			hl = "GitSignsDelete",
 			text = "_",
@@ -50,4 +50,3 @@ gitsigns.setup({
 		["+"] = "",
 	},
 })
-vim.cmd([[ highlight GitSignsCurrentLineBlame gui=bold,italic guifg=#ea6962 ]])

@@ -39,7 +39,6 @@
         x = 45;
         y = 45;
       };
-      use_thin_strokes = true;
       window.dynamic_title = true;
       window.decorations = "none";
       font = {
