@@ -15,6 +15,10 @@
       url = "github:Pocco81/auto-save.nvim";
       flake = false;
     };
+    SchemaStore-nvim = {
+      url = "github:b0o/SchemaStore.nvim";
+      flake = false;
+    };
     better-escape-nvim = {
       url = "github:max397574/better-escape.nvim";
       flake = false;
@@ -177,69 +181,14 @@
 
   outputs =
     inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar, ... }:
-    let
-      theme = import ./modules/theme.nix;
-      vimPlugins = [
-        #"SchemaStore-nvim"
-        #"Shade-nvim"
-        "autosave-nvim"
-        "better-escape-nvim"
-        "cmp-buffer"
-        "cmp-cmdline"
-        "cmp-nvim-lsp"
-        "cmp-path"
-        "dashboard-nvim"
-        "fidget-nvim"
-        "gitsigns-nvim"
-        "glow-nvim"
-        "gruvbox-nvim"
-        "headlines-nvim"
-        "indent-blankline-nvim"
-        "lspkind-nvim"
-        "lua-dev-nvim"
-        "luasnip"
-        "neorg"
-        "null-ls-nvim"
-        "nvim-autopairs"
-        "nvim-colorizer-lua"
-        "nvim-markdown"
-        "nvim-lspconfig"
-        "nvim-tree-lua"
-        "nvim-ts-rainbow"
-        "nvim-web-devicons"
-        "nvim-cmp"
-        "plenary-nvim"
-        "rest-nvim"
-        "telescope-file-browser-nvim"
-        #"telescope-fzf-native-nvim"
-        "telescope-nvim"
-        "telescope-symbols-nvim"
-        "todo-comments-nvim"
-        "twilight-nvim"
-        "vim-illuminate"
-        "vim-nix"
-        "which-key-nvim"
-        "zen-mode-nvim"
-      ];
-
-      neovimOverlay = (self: super:
-        let
-          buildPlug = name:
-            super.vimUtils.buildVimPluginFrom2Nix {
-              pname = name;
-              version = "master";
-              src = builtins.getAttr name inputs;
-            };
-          neovimPlugins = builtins.listToAttrs (map (name: {
-            name = name;
-            value = buildPlug name;
-          }) vimPlugins);
-        in { vimPlugins = super.vimPlugins // neovimPlugins; });
+    let theme = import ./modules/theme.nix;
     in (utils.lib.mkFlake) {
       inherit self inputs;
 
+      overlays = import ./overlays { inherit inputs; };
+
       channelsConfig.allowUnfree = true;
-      sharedOverlays = [ neovimOverlay spacebar.overlay ];
+      sharedOverlays = with self.overlays; [ neovim spacebar.overlay ];
       hosts.blkmrkt = {
         builder = nix-darwin.lib.darwinSystem;
         system = "x86_64-darwin";
@@ -262,7 +211,6 @@
         output = "darwinConfigurations";
 
         modules = [
-          #{ nixpkgs.overlays = [ inputs.spacebar.overlay ]; }
           ./hosts/c889f3b8f7d7/darwin.nix
           home-manager.darwinModules.home-manager
           {
