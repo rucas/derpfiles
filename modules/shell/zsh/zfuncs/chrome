@@ -13,7 +13,9 @@ chrome_testenv () {
   open -na "Google Chrome" --args \
     --user-data-dir=$fresh_dir \
     --disable-web-security \
-    --auto-open-devtools-for-tabs 
+    --auto-open-devtools-for-tabs \
+    --load-extension=~/Library/Application\ Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.25.0_0,~/Library/Application\ Support/Google/Chrome/Default/Extensions/cjpalhdlnbpafiamejdnhcphjbkeiagm/1.45.2_2,~/Library/Application\ Support/Google/Chrome/Default/Extensions/aeblfdkhhhdcdjpifhhbdiojplfjncoa/2.4.3_0 \
+    superuser.com stackoverflow.com google.com
 }
 
 chrome () {
