@@ -177,6 +177,18 @@
       flake = false;
     };
     spacebar = { url = "github:cmacrae/spacebar"; };
+    zsh-vi-mode = {
+      url = "github:jeffreytse/zsh-vi-mode";
+      flake = false;
+    };
+    zsh-autopair = {
+      url = "github:hlissner/zsh-autopair";
+      flake = false;
+    };
+    fast-syntax-highlighting = {
+      url = "github:zdharma-continuum/fast-syntax-highlighting";
+      flake = false;
+    };
   };
 
   outputs =
@@ -200,6 +212,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.lucas = import ./hosts/blkmrkt/home.nix;
           }
         ];
@@ -216,6 +229,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.awslucas = import ./hosts/c889f3b8f7d7/home.nix;
           }
         ];

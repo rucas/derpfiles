@@ -1,4 +1,5 @@
 { inputs, ... }: {
+  yabai = (final: prev: { });
   neovim = (final: prev:
     let
       vimFlakes = [

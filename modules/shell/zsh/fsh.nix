@@ -1,20 +1,16 @@
-{ config, options, lib, pkgs, ... }: {
+{ config, options, lib, pkgs, inputs, ... }: {
   programs.zsh = {
     initExtra = ''
       fast-theme -q base16
       # make zsh-syntax-highlighting comments easier to see
       # typeset -gA ZSH_HIGHLIGHT_STYLES
       # FAST_HIGHLIGHT_STYLES[comment]=fg=240,bold
+      FAST_HIGHLIGHT[ointeractive_comments]=1
     '';
     sessionVariables = { FAST_WORK_DIR = "$HOME/.cache/fsh"; };
     plugins = [{
       name = "fast-syntax-highlighting";
-      src = pkgs.fetchFromGitHub {
-        owner = "zdharma-continuum";
-        repo = "fast-syntax-highlighting";
-        rev = "13dd94ba828328c18de3f216ec4a746a9ad0ef55";
-        sha256 = "sha256-Vc/i0W+beKphNisGFS435r+9IL6BhQsYeGAFRlP8+tA=";
-      };
+      src = inputs.fast-syntax-highlighting;
     }];
   };
 
