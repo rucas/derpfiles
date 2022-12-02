@@ -1,21 +1,21 @@
 chrome_help () {
     echo "Usage: chrome <subcommand> [options]\n"
     echo "Subcommands:"
-    echo "    testenv    creates chrome with no user data saved and CORS removed (unsafe)"
+    echo "    env       launches chrome with a test env with no user data saved and CORS removed (unsafe)"
     echo ""
     echo "For help with each subcommand run:"
     echo "h <subcommand> -h|--help"
     echo ""
 }
 
-chrome_testenv () {
+chrome_env () {
   fresh_dir=$(mktemp -d)
   open -na "Google Chrome" --args \
     --user-data-dir=$fresh_dir \
     --disable-web-security \
     --auto-open-devtools-for-tabs \
-    --load-extension=~/Library/Application\ Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.25.0_0,~/Library/Application\ Support/Google/Chrome/Default/Extensions/cjpalhdlnbpafiamejdnhcphjbkeiagm/1.45.2_2,~/Library/Application\ Support/Google/Chrome/Default/Extensions/aeblfdkhhhdcdjpifhhbdiojplfjncoa/2.4.3_0 \
-    superuser.com stackoverflow.com google.com
+    --load-extension=~/Library/Application\ Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.25.0_0,~/Library/Application\ Support/Google/Chrome/Default/Extensions/cjpalhdlnbpafiamejdnhcphjbkeiagm/1.45.2_2 \
+    $@
 }
 
 chrome () {
@@ -25,7 +25,7 @@ chrome () {
     fi
 
     case ${1} in
-        help | testenv )
+        help | env )
             chrome_$1 "${@:2}"
         ;;
         * )

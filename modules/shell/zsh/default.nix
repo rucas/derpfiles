@@ -13,6 +13,7 @@
     enableAutosuggestions = true;
     # enableSyntaxHighlighting = true;
     shellAliases = {
+      b = "brazil";
       cat = "bat -n --paging=never";
       g = "git";
       j = "jobs";

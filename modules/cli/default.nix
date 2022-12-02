@@ -21,6 +21,7 @@
     htop
     hyperfine
     inetutils
+    jwt-cli
     jq
 
     (lib.mkIf pkgs.stdenv.isDarwin m-cli)
