@@ -10,11 +10,16 @@ chrome_help () {
 
 chrome_env () {
   fresh_dir=$(mktemp -d)
+  react_dev_tools='fmkadmapgofadopljbjfkapdkoienihi'
+  ublock_origin='cjpalhdlnbpafiamejdnhcphjbkeiagm'
+  chrome_extensions_dir="$HOME/Library/Application Support/Google/Chrome/Default/Extensions/"
+  pattern="($react_dev_tools|$ublock_origin)/[0-9].+"
+  extensions=$(fd -td -d 2 -p $pattern $chrome_extensions_dir | paste -d, -s -)
   open -na "Google Chrome" --args \
     --user-data-dir=$fresh_dir \
     --disable-web-security \
     --auto-open-devtools-for-tabs \
-    --load-extension=~/Library/Application\ Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.25.0_0,~/Library/Application\ Support/Google/Chrome/Default/Extensions/cjpalhdlnbpafiamejdnhcphjbkeiagm/1.45.2_2 \
+    --load-extension=$extensions \
     $@
 }
 
