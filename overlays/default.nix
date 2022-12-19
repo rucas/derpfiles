@@ -29,7 +29,6 @@
         "lspkind-nvim"
         "lua-dev-nvim"
         "luasnip"
-        #"lush"
         "neorg"
         "null-ls-nvim"
         "nvim-autopairs"

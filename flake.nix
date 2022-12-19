@@ -83,10 +83,6 @@
       url = "github:L3MON4D3/LuaSnip";
       flake = false;
     };
-    lush = {
-      url = "github:rktjmp/lush.nvim";
-      flake = false;
-    };
     neorg = {
       url = "github:nvim-neorg/neorg";
       flake = false;
@@ -177,7 +173,7 @@
       flake = false;
     };
     yabai = {
-      url = "github:koekeishiya/yabai?ref=v5.0.1";
+      url = "github:koekeishiya/yabai?ref=v5.0.2";
       flake = false;
     };
     skhd = {

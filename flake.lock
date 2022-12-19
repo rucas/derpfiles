@@ -355,22 +355,6 @@
         "type": "github"
       }
     },
-    "lush": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1667992663,
-        "narHash": "sha256-XHi9SHPxzHKkGtR4nJaHZ1wwsXfxRNCcpmZ92eFutvY=",
-        "owner": "rktjmp",
-        "repo": "lush.nvim",
-        "rev": "979f4d206e7111c2b710aa85cc723f6140d2ec98",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rktjmp",
-        "repo": "lush.nvim",
-        "type": "github"
-      }
-    },
     "neorg": {
       "flake": false,
       "locked": {
@@ -637,7 +621,6 @@
         "lspkind-nvim": "lspkind-nvim",
         "lua-dev-nvim": "lua-dev-nvim",
         "luasnip": "luasnip",
-        "lush": "lush",
         "neorg": "neorg",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
@@ -869,16 +852,16 @@
     "yabai": {
       "flake": false,
       "locked": {
-        "lastModified": 1664146107,
-        "narHash": "sha256-5WtWLfiWVOqshbsx50fuEv8ab3U0y6z5+yvXoxpLokU=",
+        "lastModified": 1671221132,
+        "narHash": "sha256-/HS8TDzDA4Zvmm56ZZeMXyCKHRRTcucd7qDHT0qbrQg=",
         "owner": "koekeishiya",
         "repo": "yabai",
-        "rev": "351e7e304e7d1bbdd89b611c14dff5c116430996",
+        "rev": "03b24836f27c8c4f3d9ff7c5be78aec191965b9a",
         "type": "github"
       },
       "original": {
         "owner": "koekeishiya",
-        "ref": "v5.0.1",
+        "ref": "v5.0.2",
         "repo": "yabai",
         "type": "github"
       }
