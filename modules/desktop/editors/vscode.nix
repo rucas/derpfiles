@@ -12,6 +12,12 @@
     userSettings = {
       "workbench.colorTheme" = "Gruvbox Material Dark";
       "editor.formatOnSave" = true;
+      "files.autoSave" = "afterDelay";
+      "files.autoSaveDelay" = 1000;
+      "files.trimTrailingWhitespace" = true;
+      "python.formatting.provider" = "black";
+      "python.formatting.blackPath" = "~/.pyenv/versions/3.11.0/bin/black";
+      "[python]" = { "editor.formatOnSave" = false; };
     };
   };
 }
