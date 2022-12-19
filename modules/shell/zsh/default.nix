@@ -2,7 +2,6 @@
   imports = [ ./autopairs.nix ./fsh.nix ./starship.nix ./zsh-vi-mode.nix ];
   programs.zsh = {
     enable = true;
-
     history = {
       ignorePatterns =
         [ "rm *" "pkill *" "touch *" "which *" "man *" "tldr *" ];
@@ -22,7 +21,12 @@
       v = "nvim";
     };
     sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
-    shellGlobalAliases = { G = "| grep"; };
+    shellGlobalAliases = {
+      G = "| grep";
+      J = "| jq ";
+      L = "| less";
+      W = "| wc -l";
+    };
     initExtraFirst = "";
     initExtra = ''
       setopt EXTENDED_GLOB
