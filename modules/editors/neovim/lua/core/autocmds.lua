@@ -13,22 +13,23 @@ vim.cmd([[ autocmd BufNewFile,BufRead **/zsh/zfuncs/* set filetype=zsh ]])
 
 -- Alacritty Padding
 function IncreasePadding()
-	u.format.sed("50", 0, 10, "~/.alacritty.yml")
 	u.format.sed("51", 0, 10, "~/.alacritty.yml")
+    vim.cmd("silent !alacritty msg config 'window.padding.x=45'")
+    vim.cmd("silent !alacritty msg config 'window.padding.y=45'")
 end
 
 function DecreasePadding()
-	u.format.sed("50", 10, 0, "~/.alacritty.yml")
-	u.format.sed("51", 10, 0, "~/.alacritty.yml")
+    vim.cmd("silent !alacritty msg config 'window.padding.x=2'")
+    vim.cmd("silent !alacritty msg config 'window.padding.y=2'")
 end
 
---vim.cmd([[
---  augroup AlacrittyPadding
---   au!
---   au VimEnter * lua DecreasePadding()
---   au VimLeavePre * lua IncreasePadding()
---  augroup END
---]])
+vim.cmd([[
+  augroup AlacrittyPadding
+   au!
+   au VimEnter * lua DecreasePadding()
+   au VimLeavePre * lua IncreasePadding()
+  augroup END
+]])
 
 -- set cursorline only on active buffer
 vim.cmd([[

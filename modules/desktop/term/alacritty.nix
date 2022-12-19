@@ -57,6 +57,32 @@
         size = 12;
       };
       mouse.hide_when_typing = true;
+      key_bindings = [
+        {
+          key = "Comma";
+          mods = "Command";
+          command = {
+            program = "sh";
+            args = [ "-c" "open ~/.config/alacritty/alacritty.yml" ];
+          };
+        }
+        {
+          key = "N";
+          mods = "Command";
+          action = "SpawnNewInstance";
+        }
+        {
+          key = "Space";
+          mods = "Alt";
+          chars = " ";
+        }
+        # TODO: finish off QOL key bindings...
+        #{
+        #  key = "Back";
+        #  mods = "Super";
+        #  chars = "\x15";
+        #}
+      ];
     };
   };
 }

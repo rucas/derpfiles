@@ -1,4 +1,13 @@
 { inputs, ... }: {
+  alacritty = (final: prev: {
+    alacritty = prev.alacritty.overrideAttrs (drv: rec {
+      src = inputs.alacritty;
+      cargoDeps = drv.cargoDeps.overrideAttrs (prev.lib.const {
+        inherit src;
+        outputHash = "sha256-3reMU7O3E7LXwvFlebm+oZ8QgK+gKPNhc35aW3ICZV0=";
+      });
+    });
+  });
   yabai = (final: prev: { });
   neovim = (final: prev:
     let
@@ -20,6 +29,7 @@
         "lspkind-nvim"
         "lua-dev-nvim"
         "luasnip"
+        #"lush"
         "neorg"
         "null-ls-nvim"
         "nvim-autopairs"

@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "alacritty": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1671038485,
+        "narHash": "sha256-XQxoJvR21ZzspQd66UFLPKl789l+RPYz9AxuHjHGZKs=",
+        "owner": "alacritty",
+        "repo": "alacritty",
+        "rev": "2291610f72d5fabbdd60ca080cc305301f0306f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alacritty",
+        "repo": "alacritty",
+        "type": "github"
+      }
+    },
     "auto-save-nvim": {
       "flake": false,
       "locked": {
@@ -225,11 +241,11 @@
     "gruvbox-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1667325425,
-        "narHash": "sha256-uJtJXXQ2qMPdLcCKIbWVh3oDbpVsxH431FOYARVKYkI=",
+        "lastModified": 1670867885,
+        "narHash": "sha256-9a0BfiV6ApbqplyQK+yTjOtzUeFxJyqYCKwcypABHmE=",
         "owner": "ellisonleao",
         "repo": "gruvbox.nvim",
-        "rev": "9002dc7a717d38b7bbe212febe6370fd7d047308",
+        "rev": "c64ec557672c9c8ecc71a438533525482021377f",
         "type": "github"
       },
       "original": {
@@ -336,6 +352,22 @@
       "original": {
         "owner": "L3MON4D3",
         "repo": "LuaSnip",
+        "type": "github"
+      }
+    },
+    "lush": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1667992663,
+        "narHash": "sha256-XHi9SHPxzHKkGtR4nJaHZ1wwsXfxRNCcpmZ92eFutvY=",
+        "owner": "rktjmp",
+        "repo": "lush.nvim",
+        "rev": "979f4d206e7111c2b710aa85cc723f6140d2ec98",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rktjmp",
+        "repo": "lush.nvim",
         "type": "github"
       }
     },
@@ -586,6 +618,7 @@
     "root": {
       "inputs": {
         "SchemaStore-nvim": "SchemaStore-nvim",
+        "alacritty": "alacritty",
         "auto-save-nvim": "auto-save-nvim",
         "better-escape-nvim": "better-escape-nvim",
         "cmp-buffer": "cmp-buffer",
@@ -604,6 +637,7 @@
         "lspkind-nvim": "lspkind-nvim",
         "lua-dev-nvim": "lua-dev-nvim",
         "luasnip": "luasnip",
+        "lush": "lush",
         "neorg": "neorg",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
@@ -722,11 +756,11 @@
     "todo-comments-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1667812634,
-        "narHash": "sha256-zkZvRP+f1ekJJ+wjVhAnOOA4dPvbbim01fjJADhenmc=",
+        "lastModified": 1671040364,
+        "narHash": "sha256-5BiXbxdoRQh83XE7zherFJmj238odr5kR5Yl7hbo9mQ=",
         "owner": "folke",
         "repo": "todo-comments.nvim",
-        "rev": "85984628d3908cc22d3f8c22d9400ab039874fdf",
+        "rev": "c1760010f46992165995aaa52ca967f473a2e8e6",
         "type": "github"
       },
       "original": {

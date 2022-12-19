@@ -11,6 +11,10 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    alacritty = {
+      url = "github:alacritty/alacritty";
+      flake = false;
+    };
     auto-save-nvim = {
       url = "github:Pocco81/auto-save.nvim";
       flake = false;
@@ -27,15 +31,15 @@
       url = "github:hrsh7th/cmp-buffer";
       flake = false;
     };
-    "cmp-cmdline" = {
+    cmp-cmdline = {
       url = "github:hrsh7th/cmp-cmdline";
       flake = false;
     };
-    "cmp-nvim-lsp" = {
+    cmp-nvim-lsp = {
       url = "github:hrsh7th/cmp-nvim-lsp";
       flake = false;
     };
-    "cmp-path" = {
+    cmp-path = {
       url = "github:hrsh7th/cmp-path";
       flake = false;
     };
@@ -77,6 +81,10 @@
     };
     luasnip = {
       url = "github:L3MON4D3/LuaSnip";
+      flake = false;
+    };
+    lush = {
+      url = "github:rktjmp/lush.nvim";
       flake = false;
     };
     neorg = {
@@ -200,7 +208,11 @@
       overlays = import ./overlays { inherit inputs; };
 
       channelsConfig.allowUnfree = true;
-      sharedOverlays = with self.overlays; [ neovim spacebar.overlay ];
+      sharedOverlays = with self.overlays; [
+        alacritty
+        neovim
+        spacebar.overlay
+      ];
       hosts.blkmrkt = {
         builder = nix-darwin.lib.darwinSystem;
         system = "x86_64-darwin";
