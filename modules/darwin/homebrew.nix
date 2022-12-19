@@ -11,6 +11,7 @@
       "dash"
       "dropbox"
       "slack"
+      "maccy"
       "obs"
       "vlc"
     ];
