@@ -13,6 +13,7 @@
     awscli
     bandwhich
     calc
+    coreutils
     curl
     du-dust
     fd
@@ -34,11 +35,10 @@
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "JetBrainsMono" ]; })
 
     moreutils
-
-    # TODO: fix by pinning to nonbroken nix pkgs
-    # procs
+    procs
 
     ripgrep
+    sd
     sqlite
     tree
     wget
