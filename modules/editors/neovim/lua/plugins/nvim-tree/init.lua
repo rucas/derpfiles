@@ -1,9 +1,4 @@
-local is_present, nvim_tree = pcall(require, "nvim-tree")
-
-if not is_present then
-	return
-end
-
+local nvim_tree = require("nvim-tree")
 local lib = require("nvim-tree.lib")
 local view = require("nvim-tree.view")
 

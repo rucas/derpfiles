@@ -1,5 +1,3 @@
-local c = require("core.configs")
-
 local M = {}
 
 M.setup = function(on_attach, capabilities)
@@ -11,11 +9,6 @@ M.setup = function(on_attach, capabilities)
 		},
 		on_attach = on_attach,
 		capabilities = capabilities,
-		cmd = {
-			c.NODE_BIN,
-			"/Users/lucas.rondenet/.local/share/nvim/lsp_servers/jsonls/node_modules/.bin/vscode-json-language-server",
-			"--stdio",
-		},
 	})
 end
 

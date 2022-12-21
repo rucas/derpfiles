@@ -75,7 +75,7 @@
       url = "github:onsails/lspkind.nvim";
       flake = false;
     };
-    lua-dev-nvim = {
+    neodev-nvim = {
       url = "github:folke/neodev.nvim";
       flake = false;
     };
@@ -87,6 +87,7 @@
       url = "github:nvim-neorg/neorg";
       flake = false;
     };
+    neovim-nightly = { url = "github:nix-community/neovim-nightly-overlay"; };
     null-ls-nvim = {
       url = "github:jose-elias-alvarez/null-ls.nvim";
       flake = false;
@@ -195,8 +196,8 @@
     };
   };
 
-  outputs =
-    inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar
+    , neovim-nightly, ... }:
     let theme = import ./modules/theme.nix;
     in (utils.lib.mkFlake) {
       inherit self inputs;
@@ -207,6 +208,7 @@
       sharedOverlays = with self.overlays; [
         alacritty
         neovim
+        neovim-nightly.overlay
         spacebar.overlay
       ];
       hosts.blkmrkt = {

@@ -1,11 +1,6 @@
-local ok_cmp, cmp = pcall(require, "cmp")
-local ok_snip, luasnip = pcall(require, "luasnip")
-local ok_lsp, lspkind = pcall(require, "lspkind")
-
-if not (ok_cmp or ok_snip or ok_lsp) then
-	error("Error loading " .. "\n\n" .. cmp .. luasnip .. lspkind)
-	return
-end
+local cmp = require("cmp")
+local luasnip = require("luasnip")
+local lspkind = require("lspkind")
 
 local has_words_before = function()
 	local line, col = unpack(vim.api.nvim_win_get_cursor(0))

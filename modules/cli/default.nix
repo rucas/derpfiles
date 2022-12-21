@@ -27,6 +27,7 @@
 
     (lib.mkIf pkgs.stdenv.isDarwin m-cli)
 
+    netcat
     neofetch
     nixfmt
     nmap

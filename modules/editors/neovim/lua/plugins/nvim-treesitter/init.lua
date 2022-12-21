@@ -1,9 +1,4 @@
-local ok_treesitter, treesitter = pcall(require, "nvim-treesitter.configs")
-local ok_gruvbox, gruvbox = pcall(require, "gruvbox")
-if not (ok_treesitter or ok_gruvbox) then
-	error("Error loading " .. "\n\n" .. treesitter .. gruvbox)
-	return
-end
+local treesitter = require("nvim-treesitter.configs")
 
 treesitter.setup({
 	ensure_installed = {},

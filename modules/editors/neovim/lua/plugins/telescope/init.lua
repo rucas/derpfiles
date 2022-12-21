@@ -1,9 +1,6 @@
-local present, tele = pcall(require, "telescope")
-if not present then
-	return
-end
+local telescope = require("telescope");
 
-tele.setup({
+telescope.setup({
 	defaults = {
 		preview = {
 			-- if file is too big...just the tip
@@ -101,8 +98,8 @@ tele.setup({
 	},
 })
 
-tele.load_extension("fzf")
-tele.load_extension("file_browser")
+telescope.load_extension("fzf")
+telescope.load_extension("file_browser")
 
 local finders = {}
 
@@ -130,5 +127,4 @@ finders.command_history_finder = function()
 	opts.cwd = vim.fn.stdpath("config")
 	require("telescope.builtin").command_history(opts)
 end
-
-return finders
+--return finders

@@ -51,13 +51,20 @@ experimental-features = nix-command flakes
 EOL
 ```
 
+optionally, add a github token to bypass 429 rate limits from Github
+
+```sh
+vi ~/.config/nix/nix.conf
+access-tokens = github.com=******
+```
+
 reload the nix-daemon
 
 ```
-$ launchctl remove org.nixos.nix-daemon 
+$ launchctl remove org.nixos.nix-daemon
 $ launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
 
-# may get warning about using bootstrap instead... 
+# may get warning about using bootstrap instead...
 ```
 
 start nix build
@@ -85,10 +92,18 @@ may get error about `/etc/nix/nix.conf` already exists. To fix:
 $ sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.bak
 ```
 
+## FAQ
+
+### How do I update a flake input?
+
+```sh
+$ nix flake lock --update-input <INPUT>
+```
+
 ## Contribute
 
 PRs accepted. Checkout [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
-MIT © Lucas Rondenet 
+MIT © Lucas Rondenet

@@ -1,7 +1,4 @@
-local present, which_key = pcall(require, "which-key")
-if not present then
-	return
-end
+local which_key = require("which-key")
 
 local show = which_key.show
 which_key.show = function(keys, opts)

@@ -1,20 +1,8 @@
-local ok_config, lsp_config = pcall(require, "lspconfig")
-local ok_install, lsp_install = pcall(require, "nvim-lsp-installer")
-local ok_illuminate, illuminate = pcall(require, "illuminate")
-
+local lsp_config = require("lspconfig")
+local illuminate = require("illuminate")
 local u = require("utils")
 local c = require("core.configs")
 
-if not (ok_config or ok_install or ok_illuminate) then
-	error("Error loading " .. "\n\n" .. lsp_config .. lsp_install .. illuminate)
-	return
-end
-
--- NOTE: need to do nvm use stable to get npm...and node...
-lsp_install.setup({
-	ensure_installed = c.LSP_SERVERS,
-	automatic_installation = true,
-})
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -61,13 +49,16 @@ local on_attach = function(client, bufnr)
 	end
 end
 
-local servers = u.functional.map(lsp_install.get_installed_servers(), function(item)
-	return item.name
-end)
-
--- add null-ls to installed servers
-table.insert(servers, "null-ls")
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local servers = {
+	"bashls",
+	"dockerls",
+	"jsonls",
+	"null-ls",
+	"pyright",
+	"sumneko_lua"
+}
+-- local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 for _, server in ipairs(servers) do
 	require("lsp." .. server).setup(on_attach, capabilities)
 end

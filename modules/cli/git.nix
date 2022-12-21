@@ -39,7 +39,7 @@
   '';
 
   home.file.".config/git/gitalias".text = ''
-    [alias] 
+    [alias]
       a = add
       b = branch
       c = commit

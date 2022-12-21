@@ -1,5 +1,14 @@
 local M = {}
 
+require("neodev").setup({
+	override = function(root_dir, library)
+	  if require("neodev.util").has_file(root_dir, "/etc/nixos") then
+		library.enabled = true
+		library.plugins = true
+	  end
+	end,
+  })
+
 local settings = {
 	Lua = {
 		diagnostics = {
@@ -18,17 +27,14 @@ local settings = {
 }
 
 M.setup = function(on_attach, capabilities)
-	local luadev = require("lua-dev").setup({
-		lspconfig = {
-			on_attach = on_attach,
-			settings = settings,
-			flags = {
-				debounce_text_changes = 150,
-			},
-			capabilities = capabilities,
+	require("lspconfig").sumneko_lua.setup({
+		on_attach = on_attach,
+		capabilities = capabilities,
+		settings = settings,
+		flags = {
+			debounce_text_changes = 150,
 		},
 	})
-	require("lspconfig").sumneko_lua.setup(luadev)
 end
 
 return M

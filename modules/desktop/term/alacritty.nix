@@ -83,6 +83,10 @@
         #  chars = "\x15";
         #}
       ];
+      #shell = {
+      #  program = "zsh";
+      #  args = [ "--login" ];
+      #};
     };
   };
 }

@@ -1,50 +1,127 @@
 { config, options, lib, pkgs, ... }: {
   programs.neovim = {
     enable = true;
-
+    extraConfig = "lua require('init')";
     plugins = with pkgs.vimPlugins; [
-      (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars))
+      {
+        plugin =
+          (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars));
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/telescope/init.lua);
+      }
       SchemaStore-nvim
-      Shade-nvim
-      auto-save-nvim
-      better-escape-nvim
+      {
+        plugin = auto-save-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/autosave/init.lua);
+      }
+      {
+        plugin = better-escape-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/better-escape/init.lua);
+      }
       cmp-buffer
       cmp-cmdline
       cmp-nvim-lsp
       cmp-path
+      #{ plugin = dashboard-nvim; config = builtins.readFile(./plugins/)}
       dashboard-nvim
-      fidget-nvim
-      gitsigns-nvim
+      {
+        plugin = fidget-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/fidget/init.lua);
+      }
+      {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/gitsigns/init.lua);
+      }
       glow-nvim
       gruvbox-nvim
       headlines-nvim
-      indent-blankline-nvim
+      {
+        plugin = indent-blankline-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/indent-blankline/init.lua);
+      }
       lspkind-nvim
-      lua-dev-nvim
       luasnip
-      neorg
+      neodev-nvim
+      {
+        plugin = neorg;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/neorg/init.lua);
+      }
       null-ls-nvim
-      nvim-autopairs
-      nvim-cmp
-      nvim-colorizer-lua
-      nvim-lspconfig
+      {
+        plugin = nvim-autopairs;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/nvim-autopairs/init.lua);
+      }
+      {
+        plugin = nvim-cmp;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/nvim-cmp/init.lua);
+      }
+      {
+        plugin = nvim-colorizer-lua;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/nvim-colorizer/init.lua);
+      }
+      {
+        plugin = nvim-lspconfig;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/nvim-lspconfig/init.lua);
+      }
       nvim-markdown
-      nvim-tree-lua
+      {
+        plugin = nvim-tree-lua;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/nvim-tree/init.lua);
+      }
       nvim-ts-rainbow
       nvim-web-devicons
       playground
       plenary-nvim
-      rest-nvim
+      {
+        plugin = rest-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/rest/init.lua);
+      }
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
-      telescope-nvim
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/telescope/init.lua);
+      }
       telescope-symbols-nvim
-      todo-comments-nvim
-      twilight-nvim
-      vim-illuminate
+      {
+        plugin = todo-comments-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/todo-comments/init.lua);
+      }
+      {
+        plugin = twilight-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/twilight/init.lua);
+      }
+      {
+        plugin = vim-illuminate;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/vim-illuminate/init.lua);
+      }
       vim-nix
-      which-key-nvim
-      zen-mode-nvim
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/which-key/init.lua);
+      }
+      {
+        plugin = zen-mode-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/zen-mode/init.lua);
+      }
     ];
     extraPackages = with pkgs; [
       nodePackages.bash-language-server
@@ -58,13 +135,11 @@
     ];
     viAlias = true;
   };
-  xdg.configFile."nvim/lua" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Code/derpfiles/modules/editors/neovim/lua/";
-    recursive = true;
-  };
-  xdg.configFile."nvim/init.lua" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Code/derpfiles/modules/editors/neovim/init.lua";
+
+  xdg.configFile = {
+    "nvim/lua" = {
+      source = ./lua;
+      recursive = true;
+    };
   };
 }

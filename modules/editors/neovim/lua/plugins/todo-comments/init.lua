@@ -1,8 +1,3 @@
-local is_present_todo, todo = pcall(require, "todo-comments")
-if not is_present_todo then
-	return
-end
-
 -- FIX:
 -- TODO:
 -- HACK:
@@ -10,7 +5,7 @@ end
 -- PERF:
 -- NOTE:
 -- TEST:
-todo.setup({
+require("todo-comments").setup({
 	signs = false,
 	highlight = {
 		before = "",
