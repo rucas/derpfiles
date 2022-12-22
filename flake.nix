@@ -10,7 +10,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    utils.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    utils = { url = "github:gytis-ivaskevicius/flake-utils-plus"; };
     alacritty = {
       url = "github:alacritty/alacritty";
       flake = false;

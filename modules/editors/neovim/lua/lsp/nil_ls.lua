@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(on_attach, capabilities)
-    require("lspconfig").dockerls.setup({
+    require("lspconfig").nil_ls.setup({
         on_attach = on_attach,
         capabilities = capabilities,
     })

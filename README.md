@@ -100,6 +100,12 @@ $ sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.bak
 $ nix flake lock --update-input <INPUT>
 ```
 
+### How do I update a nixpkgs in `home.packages` declared in home-manager and not as a flake?
+
+```sh
+$ nix flake lock --update-input nixpkgs
+```
+
 ## Contribute
 
 PRs accepted. Checkout [CONTRIBUTING.md](CONTRIBUTING.md)

@@ -1,6 +1,13 @@
 local colors = require("gruvbox.palette");
 local config = require("gruvbox").config
 
+--require("lspconfig.ui.windows").default_options = {
+--	border = "single"
+--}
+function lsp_overrides ()
+  require('lspconfig.ui.windows').default_options.border = "single"
+end
+
 require("gruvbox").setup({
     undercurl = true,
     underline = true,
@@ -28,6 +35,9 @@ require("gruvbox").setup({
     overrides = {
       --["@keyword"] = { link = "GruvboxPurple" },
       --["@keyword.function"] = { link = "GruvboxAqua" },
+      --FloatBorder = { fg = colors.dark0, bg = "#3e5751" },
+      Pmenu = { fg = "#d4be98", bg = colors.dark0  },
+      LspInfoBorder = { fg = colors.gray },
       SignColumn = { bg = colors.dark0  },
       --GitSignsCurrentLineBlame = { gui=bold,italic guifg=#ea6962 }
       GitSignsAdd = { fg = "#545b32", bg = colors.bg0, reverse = config.invert_signs },
@@ -36,5 +46,6 @@ require("gruvbox").setup({
     },
     dim_inactive = false,
     transparent_mode = false,
-  })
-  vim.cmd("colorscheme gruvbox")
+})
+vim.cmd([[ autocmd ColorScheme * lua lsp_overrides()]])
+vim.cmd("colorscheme gruvbox")

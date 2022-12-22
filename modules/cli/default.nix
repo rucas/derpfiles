@@ -29,7 +29,6 @@
 
     netcat
     neofetch
-    nixfmt
     nmap
 
     # TODO: seperate out to fonts.nix?

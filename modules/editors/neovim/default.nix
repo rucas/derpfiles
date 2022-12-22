@@ -124,13 +124,16 @@
       }
     ];
     extraPackages = with pkgs; [
+      nil
+      nixfmt
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.vscode-json-languageserver
       nodePackages.pyright
       shellcheck
       shfmt
-      rnix-lsp
+      statix
+      stylua
       sumneko-lua-language-server
     ];
     viAlias = true;
