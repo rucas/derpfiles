@@ -338,6 +338,22 @@
         "type": "github"
       }
     },
+    "iron-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1670248031,
+        "narHash": "sha256-CfSg5vCu9NgACN6oexjfddSwvCTfdjgkTGJCm5lCvko=",
+        "owner": "hkupty",
+        "repo": "iron.nvim",
+        "rev": "bd5ad2a04195fb7a739eb973fa2d9f7ccc35ab4b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hkupty",
+        "repo": "iron.nvim",
+        "type": "github"
+      }
+    },
     "lspkind-nvim": {
       "flake": false,
       "locked": {
@@ -709,6 +725,7 @@
         "headlines-nvim": "headlines-nvim",
         "home-manager": "home-manager",
         "indent-blankline-nvim": "indent-blankline-nvim",
+        "iron-nvim": "iron-nvim",
         "lspkind-nvim": "lspkind-nvim",
         "luasnip": "luasnip",
         "neodev-nvim": "neodev-nvim",

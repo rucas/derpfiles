@@ -25,6 +25,7 @@
       { path = "~/.config/git/gitalias"; }
     ];
     aliases = { conflicts = "diff --name-only --diff-filter=U"; };
+    extraConfig = { core = { editor = "nvim"; }; };
   };
 
   home.file.".config/git/work.gitconfig".text = ''

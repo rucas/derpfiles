@@ -1,7 +1,7 @@
 { config, options, lib, pkgs, inputs, ... }: {
   programs.zsh = {
     initExtra = ''
-      fast-theme -q base16
+      fast-theme -q base16 > /dev/null 2>&1
       # make zsh-syntax-highlighting comments easier to see
       # typeset -gA ZSH_HIGHLIGHT_STYLES
       # FAST_HIGHLIGHT_STYLES[comment]=fg=240,bold

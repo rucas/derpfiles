@@ -26,6 +26,7 @@
         "gruvbox-nvim"
         "headlines-nvim"
         "indent-blankline-nvim"
+        "iron-nvim"
         "lspkind-nvim"
         "luasnip"
         "neodev-nvim"

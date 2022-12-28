@@ -2,7 +2,7 @@
   description = "The original derpfiles flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs = { url = "github:nixos/nixpkgs/nixpkgs-unstable"; };
 
     nix-darwin.url = "github:lnl7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -69,6 +69,10 @@
     };
     indent-blankline-nvim = {
       url = "github:lukas-reineke/indent-blankline.nvim";
+      flake = false;
+    };
+    iron-nvim = {
+      url = "github:hkupty/iron.nvim";
       flake = false;
     };
     lspkind-nvim = {

@@ -44,6 +44,11 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/indent-blankline/init.lua);
       }
+      {
+        plugin = iron-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/iron-nvim/init.lua);
+      }
       lspkind-nvim
       luasnip
       neodev-nvim
@@ -124,6 +129,8 @@
       }
     ];
     extraPackages = with pkgs; [
+      isort
+      black
       nil
       nixfmt
       nodePackages.bash-language-server
