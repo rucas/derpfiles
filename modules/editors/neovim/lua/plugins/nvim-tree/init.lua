@@ -13,12 +13,12 @@ local function edit_or_open()
 
 	-- Just copy what's done normally with vsplit
 	if node.link_to and not node.nodes then
-		require("nvim-tree.actions.open-file").fn(action, node.link_to)
+		require("nvim-tree.actions.node.open-file").fn(action, node.link_to)
 		view.close() -- Close the tree if file was opened
 	elseif node.nodes ~= nil then
 		lib.expand_or_collapse(node)
 	else
-		require("nvim-tree.actions.open-file").fn(action, node.absolute_path)
+		require("nvim-tree.actions.node.open-file").fn(action, node.absolute_path)
 		view.close() -- Close the tree if file was opened
 	end
 end
@@ -30,11 +30,11 @@ local function vsplit_preview()
 
 	-- Just copy what's done normally with vsplit
 	if node.link_to and not node.nodes then
-		require("nvim-tree.actions.open-file").fn(action, node.link_to)
+		require("nvim-tree.actions.node.open-file").fn(action, node.link_to)
 	elseif node.nodes ~= nil then
 		lib.expand_or_collapse(node)
 	else
-		require("nvim-tree.actions.open-file").fn(action, node.absolute_path)
+		require("nvim-tree.actions.node.open-file").fn(action, node.absolute_path)
 	end
 
 	-- Finally refocus on tree if it was lost
@@ -43,6 +43,8 @@ end
 
 nvim_tree.setup({
 	view = {
+		cursorline = false,
+		hide_root_folder = false,
 		mappings = {
 			custom_only = false,
 			list = {
@@ -56,6 +58,17 @@ nvim_tree.setup({
 	actions = {
 		open_file = {
 			quit_on_open = false,
+		},
+	},
+	renderer = {
+		root_folder_label = function(_)
+			return ""
+		end,
+		indent_width = 1,
+		icons = {
+			show = {
+				git = false,
+			},
 		},
 	},
 })

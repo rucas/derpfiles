@@ -15,10 +15,13 @@ local M = {}
 
 M.setup = function(on_attach)
     null_ls.setup({
+        -- NOTE:
         -- debug = true,
         sources = sources,
         on_attach = on_attach,
     })
 end
+
+vim.lsp.buf.format({ timeout_ms = 5000 })
 
 return M

@@ -3,10 +3,6 @@ vim.opt.encoding = "utf8"
 -- A buffer becomes hidden when it is abandoned
 vim.opt.hidden = true
 
--- Node --
---
-vim.g.node_host_prog = "/Users/lucas.rondenet/.nvm/versions/node/v12.18.4/bin/node"
-
 -- UI
 --
 -- Always show current position
@@ -19,7 +15,8 @@ vim.opt.ruler = true
 vim.opt.laststatus = 3
 
 -- command area
-vim.opt.cmdheight = 1
+vim.opt.showmode = false
+vim.opt.cmdheight = 0
 
 -- Mouse for all modes (visual, normal, insert, command line)
 vim.opt.mouse = "a"
@@ -27,6 +24,9 @@ vim.opt.mouse = "a"
 vim.opt.termguicolors = true
 vim.opt.syntax = "enabled"
 vim.opt.background = "dark"
+
+-- shorter messages
+vim.opt.shortmess:append("c")
 
 -- Searching
 --

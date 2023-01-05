@@ -55,7 +55,7 @@
       {
         plugin = neorg;
         type = "lua";
-        config = builtins.readFile (./lua/plugins/neorg/init.lua);
+        #config = builtins.readFile (./lua/plugins/neorg/init.lua);
       }
       null-ls-nvim
       {
@@ -72,6 +72,11 @@
         plugin = nvim-colorizer-lua;
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-colorizer/init.lua);
+      }
+      {
+        plugin = nvim-lualine;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/nvim-lualine/init.lua);
       }
       {
         plugin = nvim-lspconfig;

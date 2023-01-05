@@ -1,4 +1,5 @@
-{ inputs, ... }: {
+# NOTE: https://www.fbrs.io/nix-overlays/
+{ self, inputs, ... }: {
   alacritty = (final: prev: {
     alacritty = prev.alacritty.overrideAttrs (drv: rec {
       src = inputs.alacritty;
@@ -8,59 +9,17 @@
       });
     });
   });
-  yabai = (final: prev: { });
-  neovim = (final: prev:
-    let
-      vimFlakes = [
-        "SchemaStore-nvim"
-        "autosave-nvim"
-        "better-escape-nvim"
-        "cmp-buffer"
-        "cmp-cmdline"
-        "cmp-nvim-lsp"
-        "cmp-path"
-        "dashboard-nvim"
-        "fidget-nvim"
-        "gitsigns-nvim"
-        "glow-nvim"
-        "gruvbox-nvim"
-        "headlines-nvim"
-        "indent-blankline-nvim"
-        "iron-nvim"
-        "lspkind-nvim"
-        "luasnip"
-        "neodev-nvim"
-        "neorg"
-        "null-ls-nvim"
-        "nvim-autopairs"
-        "nvim-colorizer-lua"
-        "nvim-markdown"
-        "nvim-lspconfig"
-        "nvim-tree-lua"
-        "nvim-ts-rainbow"
-        "nvim-web-devicons"
-        "nvim-cmp"
-        "plenary-nvim"
-        "rest-nvim"
-        "telescope-file-browser-nvim"
-        "telescope-nvim"
-        "telescope-symbols-nvim"
-        "todo-comments-nvim"
-        "twilight-nvim"
-        "vim-illuminate"
-        "vim-nix"
-        "which-key-nvim"
-        "zen-mode-nvim"
-      ];
-      buildPlug = name:
-        prev.vimUtils.buildVimPluginFrom2Nix {
-          pname = name;
-          version = "master";
-          src = builtins.getAttr name inputs;
-        };
-      neovimPlugins = builtins.listToAttrs (map (name: {
-        name = name;
-        value = buildPlug name;
-      }) vimFlakes);
-    in { vimPlugins = prev.vimPlugins // neovimPlugins; });
+  yabai = (final: prev: {
+    yabai = prev.yabai.overrideAttrs (old: {
+      src = final.fetchzip {
+        url =
+          "https://github.com/koekeishiya/yabai/releases/download/v5.0.2/yabai-v5.0.2.tar.gz";
+        sha256 = "sha256-NS8tMUgovhWqc6WdkNI4wKee411i/e/OE++JVc86kFE=";
+      };
+    });
+  });
+  vimPlugins = (final: prev: {
+    vimPlugins = prev.vimPlugins
+      // final.callPackage ../pkgs/vim-plugins { inherit inputs; };
+  });
 }

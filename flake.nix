@@ -16,7 +16,7 @@
       flake = false;
     };
     auto-save-nvim = {
-      url = "github:Pocco81/auto-save.nvim";
+      url = "github:Pocco81/auto-save.nvim/dev";
       flake = false;
     };
     SchemaStore-nvim = {
@@ -104,6 +104,10 @@
       url = "github:norcalli/nvim-colorizer.lua";
       flake = false;
     };
+    nvim-lualine = {
+      url = "github:nvim-lualine/lualine.nvim";
+      flake = false;
+    };
     nvim-lspconfig = {
       url = "github:neovim/nvim-lspconfig";
       flake = false;
@@ -114,6 +118,10 @@
     };
     nvim-tree-lua = {
       url = "github:nvim-tree/nvim-tree.lua";
+      flake = false;
+    };
+    nvim-treesitter = {
+      url = "github:nvim-treesitter/nvim-treesitter";
       flake = false;
     };
     nvim-ts-rainbow = {
@@ -128,6 +136,10 @@
       url = "github:hrsh7th/nvim-cmp";
       flake = false;
     };
+    colorful-winsep-nvim = {
+      url = "github:nvim-zh/colorful-winsep.nvim";
+      flake = false;
+    };
     plenary-nvim = {
       url = "github:nvim-lua/plenary.nvim";
       flake = false;
@@ -140,11 +152,11 @@
       url = "github:nvim-telescope/telescope-file-browser.nvim";
       flake = false;
     };
-    # TODO: nvim-treesitter and telescope-fzf-native-nvim flake
-    #telescope-fzf-native-nvim = {
-    #  url = "github:nvim-telescope/telescope-fzf-native.nvim";
-    #  flake = false;
-    #};
+    # TODO: nvim-treesitter
+    telescope-fzf-native-nvim = {
+      url = "github:nvim-telescope/telescope-fzf-native.nvim";
+      flake = false;
+    };
     telescope-nvim = {
       url = "github:nvim-telescope/telescope.nvim";
       flake = false;
@@ -178,7 +190,9 @@
       flake = false;
     };
     yabai = {
-      url = "github:koekeishiya/yabai?ref=v5.0.2";
+      type = "file";
+      url =
+        "https://github.com/koekeishiya/yabai/releases/download/v5.0.2/yabai-v5.0.2.tar.gz";
       flake = false;
     };
     skhd = {
@@ -202,19 +216,33 @@
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar
     , neovim-nightly, ... }:
-    let theme = import ./modules/theme.nix;
-    in (utils.lib.mkFlake) {
+    let inherit (utils.lib) mkFlake exportModules exportPackages exportOverlays;
+    in mkFlake {
       inherit self inputs;
 
-      overlays = import ./overlays { inherit inputs; };
-
       channelsConfig.allowUnfree = true;
-      sharedOverlays = with self.overlays; [
+
+      # overlay = import ./overlays { inherit self inputs; };
+      # overlays = exportOverlays { inherit (self) pkgs inputs; };
+      overlay = import ./overlays { inherit self inputs; };
+      sharedOverlays = with self.overlay; [
         alacritty
-        neovim
+        vimPlugins
         neovim-nightly.overlay
         spacebar.overlay
       ];
+
+      #sharedOverlays = with self.overlay; [
+      #  alacritty
+      #  neovim
+      #  neovim-nightly.overlay
+      #  spacebar.overlay
+      #];
+
+      #outputsBuilder = channels: {
+      #  packages = exportPackages self.overlays channels;
+      #};
+
       hosts.blkmrkt = {
         builder = nix-darwin.lib.darwinSystem;
         system = "x86_64-darwin";
@@ -236,7 +264,6 @@
         builder = nix-darwin.lib.darwinSystem;
         system = "aarch64-darwin";
         output = "darwinConfigurations";
-
         modules = [
           ./hosts/c889f3b8f7d7/darwin.nix
           home-manager.darwinModules.home-manager
