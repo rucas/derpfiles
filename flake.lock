@@ -803,6 +803,7 @@
         "telescope-nvim": "telescope-nvim",
         "telescope-symbols-nvim": "telescope-symbols-nvim",
         "todo-comments-nvim": "todo-comments-nvim",
+        "toggleterm-nvim": "toggleterm-nvim",
         "twilight-nvim": "twilight-nvim",
         "utils": "utils_2",
         "vim-illuminate": "vim-illuminate",
@@ -927,6 +928,22 @@
       "original": {
         "owner": "folke",
         "repo": "todo-comments.nvim",
+        "type": "github"
+      }
+    },
+    "toggleterm-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1670593071,
+        "narHash": "sha256-0n3WbUM3rYyR2BXgeyYuyTZIbIs5dzuIu8imsSvAc8U=",
+        "owner": "akinsho",
+        "repo": "toggleterm.nvim",
+        "rev": "b02a1674bd0010d7982b056fd3df4f717ff8a57a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "akinsho",
+        "repo": "toggleterm.nvim",
         "type": "github"
       }
     },

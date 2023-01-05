@@ -112,6 +112,11 @@
         config = builtins.readFile (./lua/plugins/todo-comments/init.lua);
       }
       {
+        plugin = toggleterm-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/toggleterm/init.lua);
+      }
+      {
         plugin = twilight-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/twilight/init.lua);

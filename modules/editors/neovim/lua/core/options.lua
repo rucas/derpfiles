@@ -28,6 +28,17 @@ vim.opt.background = "dark"
 -- shorter messages
 vim.opt.shortmess:append("c")
 
+-- no ~ at end of line
+-- for lualine misalign char
+vim.opt.fillchars = {
+	eob = " ",
+	fold = " ",
+	foldopen = "",
+	foldsep = " ",
+	foldclose = "",
+	vertright = " ",
+}
+
 -- Searching
 --
 -- Ignore case when searching

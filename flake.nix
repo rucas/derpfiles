@@ -169,6 +169,10 @@
       url = "github:folke/todo-comments.nvim";
       flake = false;
     };
+    toggleterm-nvim = {
+      url = "github:akinsho/toggleterm.nvim";
+      flake = false;
+    };
     twilight-nvim = {
       url = "github:folke/twilight.nvim";
       flake = false;

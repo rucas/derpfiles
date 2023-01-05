@@ -38,6 +38,7 @@ let
     "telescope-symbols-nvim"
     # "telescope-fzf-native-nvim"
     "todo-comments-nvim"
+    "toggleterm-nvim"
     "twilight-nvim"
     "vim-illuminate"
     "vim-nix"

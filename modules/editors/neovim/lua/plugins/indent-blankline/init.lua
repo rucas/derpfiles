@@ -4,13 +4,6 @@ vim.opt.listchars:append("eol:↴")
 vim.opt.listchars:append("tab:› ")
 vim.opt.listchars:append("trail:•")
 
--- no ~ at end of line
-vim.opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
--- for lualine misalign char
-vim.opt.fillchars = {
-	vertright = " ",
-}
-
 require("indent_blankline").setup({
 	filetype_exclude = {
 		"alpha",
