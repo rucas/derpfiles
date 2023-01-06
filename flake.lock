@@ -49,6 +49,22 @@
         "type": "github"
       }
     },
+    "auto-session": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1670893768,
+        "narHash": "sha256-VhInEXvjJNuJG0VtRZqeCV9uH9GMnNNfrKW9ZANKAnw=",
+        "owner": "rmagatti",
+        "repo": "auto-session",
+        "rev": "c8b2f4048f846387361bd04cc185bf1aa7d2e3d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rmagatti",
+        "repo": "auto-session",
+        "type": "github"
+      }
+    },
     "better-escape-nvim": {
       "flake": false,
       "locked": {
@@ -760,6 +776,7 @@
         "SchemaStore-nvim": "SchemaStore-nvim",
         "alacritty": "alacritty",
         "auto-save-nvim": "auto-save-nvim",
+        "auto-session": "auto-session",
         "better-escape-nvim": "better-escape-nvim",
         "cmp-buffer": "cmp-buffer",
         "cmp-cmdline": "cmp-cmdline",

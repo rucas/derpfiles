@@ -8,9 +8,6 @@ vim.opt.hidden = true
 -- Always show current position
 vim.opt.ruler = true
 
--- show line numbers
--- vim.opt.number = true
-
 -- one status line only on bottom buffer
 vim.opt.laststatus = 3
 

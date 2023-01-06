@@ -30,7 +30,10 @@ require("lualine").setup({
 			statusline = { "Dashboard" },
 			winbar = {},
 		},
-		ignore_focus = {},
+		ignore_focus = {
+			"NvimTree",
+			"toggleterm",
+		},
 		always_divide_middle = true,
 		globalstatus = true,
 		refresh = {

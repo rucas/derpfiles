@@ -16,6 +16,11 @@
         config = builtins.readFile (./lua/plugins/autosave/init.lua);
       }
       {
+        plugin = auto-session;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/auto-session/init.lua);
+      }
+      {
         plugin = better-escape-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/better-escape/init.lua);

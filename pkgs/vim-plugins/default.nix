@@ -3,6 +3,7 @@ let
   vimFlakes = [
     "SchemaStore-nvim"
     "autosave-nvim"
+    "auto-session"
     "better-escape-nvim"
     "cmp-buffer"
     "cmp-cmdline"

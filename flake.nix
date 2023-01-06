@@ -19,6 +19,10 @@
       url = "github:Pocco81/auto-save.nvim/dev";
       flake = false;
     };
+    auto-session = {
+      url = "github:rmagatti/auto-session";
+      flake = false;
+    };
     SchemaStore-nvim = {
       url = "github:b0o/SchemaStore.nvim";
       flake = false;

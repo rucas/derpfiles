@@ -1,7 +1,5 @@
 -- TODO: figure out how to do grouping of auto commands
 
-local u = require("utils")
-
 -- YAML
 vim.cmd([[ autocmd Filetype yaml setlocal ts=2 sts=2 sw=2 expandtab ]])
 
@@ -13,14 +11,13 @@ vim.cmd([[ autocmd BufNewFile,BufRead **/zsh/zfuncs/* set filetype=zsh ]])
 
 -- Alacritty Padding
 function IncreasePadding()
-	u.format.sed("51", 0, 10, "~/.alacritty.yml")
-    vim.cmd("silent !alacritty msg config 'window.padding.x=45'")
-    vim.cmd("silent !alacritty msg config 'window.padding.y=45'")
+	vim.cmd("silent !alacritty msg config 'window.padding.x=45'")
+	vim.cmd("silent !alacritty msg config 'window.padding.y=45'")
 end
 
 function DecreasePadding()
-    vim.cmd("silent !alacritty msg config 'window.padding.x=2'")
-    vim.cmd("silent !alacritty msg config 'window.padding.y=2'")
+	vim.cmd("silent !alacritty msg config 'window.padding.x=2'")
+	vim.cmd("silent !alacritty msg config 'window.padding.y=2'")
 end
 
 vim.cmd([[

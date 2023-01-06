@@ -1,6 +1,7 @@
 local colors = require("gruvbox.palette")
 local config = require("gruvbox").config
 
+-- TODO: change this to local
 function lsp_overrides()
 	require("lspconfig.ui.windows").default_options.border = "single"
 end
@@ -43,8 +44,10 @@ require("gruvbox").setup({
 
 		-- StatusLine = { fg = "#d4be98", bg = "#a89984" },
 		NvimTreeNormal = { fg = "#d4be98", bg = "#2b2b2b" },
-		NvimTreeWinStatusLineNC = { fg = colors.dark0, bg = colors.dark0 },
-		NvimTreeWinSeparator = { fg = colors.dark0, bg = colors.dark0 },
+		WinSeparator = { guibg = nil, fg = "#383838" },
+		NvimTreeWinSeparator = { guibg = nil, fg = "#2b2b2b" },
+
+		--VertSplit = { fg = "#383838", bg = colors.dark0 },
 	},
 	dim_inactive = false,
 	transparent_mode = false,
