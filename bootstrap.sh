@@ -1,6 +1,5 @@
 #!/usr/bin/env bash 
 set -euo pipefail
-
 # TODO: set up to work for both osx and ubuntu
 if ! command -v nix &> /dev/null 
 then
