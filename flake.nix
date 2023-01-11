@@ -71,10 +71,6 @@
       url = "github:lukas-reineke/headlines.nvim";
       flake = false;
     };
-    heirline-nvim = {
-      url = "github:rebelot/heirline.nvim";
-      flake = false;
-    };
     indent-blankline-nvim = {
       url = "github:lukas-reineke/indent-blankline.nvim";
       flake = false;
