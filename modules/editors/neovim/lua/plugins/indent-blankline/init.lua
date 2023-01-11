@@ -13,6 +13,7 @@ require("indent_blankline").setup({
 		"packer",
 		"lspinfo",
 		"markdown",
+		"NvimTree",
 		"lsp-installer",
 		"TelescopePrompt",
 		"TelescopeResults",

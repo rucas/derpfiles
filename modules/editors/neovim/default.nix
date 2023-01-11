@@ -45,6 +45,11 @@
       gruvbox-nvim
       headlines-nvim
       {
+        plugin = heirline-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/heirline-nvim/init.lua);
+      }
+      {
         plugin = indent-blankline-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/indent-blankline/init.lua);
@@ -78,11 +83,11 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-colorizer/init.lua);
       }
-      {
-        plugin = nvim-lualine;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/nvim-lualine/init.lua);
-      }
+      # {
+      #   plugin = nvim-lualine;
+      #   type = "lua";
+      #   config = builtins.readFile (./lua/plugins/nvim-lualine/init.lua);
+      # }
       {
         plugin = nvim-lspconfig;
         type = "lua";
@@ -103,6 +108,7 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/rest/init.lua);
       }
+      session-lens
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
       {

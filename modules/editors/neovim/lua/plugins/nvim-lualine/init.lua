@@ -31,8 +31,8 @@ require("lualine").setup({
 			winbar = {},
 		},
 		ignore_focus = {
-			"NvimTree",
-			"toggleterm",
+			--"NvimTree",
+			--"toggleterm",
 		},
 		always_divide_middle = true,
 		globalstatus = true,
@@ -50,7 +50,7 @@ require("lualine").setup({
 				end,
 				cond = require("nvim-tree.view").is_visible,
 				padding = { left = 1, right = 1 },
-				color = { fg = "#d4be98", bg = "#2b2b2b" },
+				--color = { fg = "#d4be98", bg = "#2b2b2b" },
 			},
 		},
 		lualine_b = {},
@@ -60,17 +60,17 @@ require("lualine").setup({
 				icon_only = true,
 				padding = { left = 1, right = 0 },
 			},
-			{
-				"filename",
-				file_status = true,
-				newfile_status = false,
-				symbols = {
-					modified = "[+]", -- Text to show when the file is modified.
-					readonly = "[]", -- Text to show when the file is non-modifiable or readonly.
-					unnamed = "[No Name]", -- Text to show for unnamed buffers.
-					newfile = "[New]", -- Text to show for new created file before first writting
-				},
-			},
+			--{
+			--	"filename",
+			--	file_status = true,
+			--	newfile_status = false,
+			--	symbols = {
+			--		modified = "[+]", -- Text to show when the file is modified.
+			--		readonly = "[]", -- Text to show when the file is non-modifiable or readonly.
+			--		unnamed = "[No Name]", -- Text to show for unnamed buffers.
+			--		newfile = "[New]", -- Text to show for new created file before first writting
+			--	},
+			--},
 		},
 		lualine_x = { "encoding", "fileformat" },
 		lualine_y = { { "branch", icon = "" } },
@@ -87,5 +87,7 @@ require("lualine").setup({
 	tabline = {},
 	winbar = {},
 	inactive_winbar = {},
-	extensions = { telescope_extension },
+	extensions = {
+		-- telescope_extension
+	},
 })

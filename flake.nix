@@ -71,6 +71,10 @@
       url = "github:lukas-reineke/headlines.nvim";
       flake = false;
     };
+    heirline-nvim = {
+      url = "github:rebelot/heirline.nvim";
+      flake = false;
+    };
     indent-blankline-nvim = {
       url = "github:lukas-reineke/indent-blankline.nvim";
       flake = false;
@@ -150,6 +154,10 @@
     };
     rest-nvim = {
       url = "github:rest-nvim/rest.nvim";
+      flake = false;
+    };
+    session-lens = {
+      url = "github:rmagatti/session-lens";
       flake = false;
     };
     telescope-file-browser-nvim = {
