@@ -1,13 +1,29 @@
--- TODO: figure out how to do grouping of auto commands
-
 -- YAML
-vim.cmd([[ autocmd Filetype yaml setlocal ts=2 sts=2 sw=2 expandtab ]])
+-- vim.cmd([[ autocmd Filetype yaml setlocal ts=2 sts=2 sw=2 expandtab ]])
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "yaml",
+	callback = function()
+		vim.cmd([[setlocal ts=2 sts=2 sw=2 expandtab]])
+	end,
+})
 
 -- Jenkinsfile
-vim.cmd([[ autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy ]])
+-- vim.cmd([[ autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy ]])
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+	pattern = "Jenkinsfile",
+	callback = function()
+		vim.bo.filetype = "groovy"
+	end,
+})
 
 -- ZSH functions
-vim.cmd([[ autocmd BufNewFile,BufRead **/zsh/zfuncs/* set filetype=zsh ]])
+-- vim.cmd([[ autocmd BufNewFile,BufRead **/zsh/zfuncs/* set filetype=zsh ]])
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+	pattern = "**/zsh/zfuncs/*",
+	callback = function()
+		vim.bo.filetype = "zsh"
+	end,
+})
 
 -- Alacritty Padding
 function IncreasePadding()
@@ -36,3 +52,13 @@ vim.cmd([[
     au WinLeave * setlocal nocursorline
     augroup END
 ]])
+
+vim.api.nvim_create_autocmd("TermOpen", {
+	pattern = "term://*toggleterm#*",
+	callback = function()
+		vim.keymap.set("t", "<C-h>", ":wincmd h<CR>", { buffer = 0, silent = true })
+		vim.keymap.set("t", "<C-j>", ":wincmd j<CR>", { buffer = 0, silent = true })
+		vim.keymap.set("t", "<C-k>", ":wincmd k<CR>", { buffer = 0, silent = true })
+		vim.keymap.set("t", "<C-l>", ":wincmd l<CR>", { buffer = 0, silent = true })
+	end,
+})

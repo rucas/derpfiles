@@ -6,6 +6,8 @@ vim.opt.listchars:append("trail:•")
 
 require("indent_blankline").setup({
 	filetype_exclude = {
+		-- NOTE: "" for lsp hover with no ft? idk man
+		"",
 		"alpha",
 		"dashboard",
 		"help",

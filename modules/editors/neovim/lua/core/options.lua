@@ -96,3 +96,6 @@ vim.opt.wrap = true
 
 vim.opt.timeoutlen = 500
 vim.opt.updatetime = 500
+
+-- Autocomplete
+vim.opt.completeopt = "menu,menuone,noselect"

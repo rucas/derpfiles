@@ -1,6 +1,12 @@
 local which_key = require("which-key")
+--local terms = require("plugins.toggleterm")
 
 which_key.register({
+	["<leader>b"] = {
+		name = "buffers",
+		d = { "<cmd>bp | bd #<cr>", "Soft Delete Buffer (keep window arrangment)" },
+		D = { "<cmd>bd<cr>", "Hard Delete Buffer (remove window)" },
+	},
 	["<leader>c"] = {
 		name = "commands",
 		s = { "<cmd>lua require'plugins.telescope'.command_finder()<cr>", "Commands" },
@@ -13,6 +19,7 @@ which_key.register({
 	["<leader>f"] = {
 		name = "file",
 		f = { "<cmd>Telescope find_files<cr>", "Find File" },
+		g = { "<cmd>Telescope git_files<cr>", "Git Files" },
 		o = { "<cmd>Telescope oldfiles<cr>", "Recent Files" },
 		b = { "<cmd>Telescope buffers<cr>", "Search Files in Buffers" },
 	},
@@ -37,6 +44,7 @@ which_key.register({
 		b = { "<cmd>Telescope git_branches<cr>", "Git Branches" },
 		B = { "<cmd>Gitsigns toggle_current_line_blame<cr>", "Git Blame" },
 		s = { "<cmd>Telescope git_status<cr>", "Git Status" },
+		--u = { terms.gitui:toggle(), "Gitui" },
 	},
 	["<leader>r"] = {
 		name = "repl",
@@ -78,6 +86,13 @@ which_key.setup({
 		breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
 		separator = "→", -- symbol used between a key and it's label
 		group = "+", -- symbol prepended to a group
+	},
+	window = {
+		border = "none",
+		margin = { 1, 30, 1, 0 },
+	},
+	layout = {
+		align = "center",
 	},
 	disable = {
 		buftypes = {},

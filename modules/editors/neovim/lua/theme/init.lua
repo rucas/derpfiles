@@ -1,11 +1,6 @@
 local colors = require("gruvbox.palette")
 local config = require("gruvbox").config
 
--- TODO: change this to local
-function lsp_overrides()
-	require("lspconfig.ui.windows").default_options.border = "single"
-end
-
 require("gruvbox").setup({
 	undercurl = true,
 	underline = true,
@@ -31,26 +26,50 @@ require("gruvbox").setup({
 		faded_blue = "#3e5751",
 	},
 	overrides = {
-		--["@keyword"] = { link = "GruvboxPurple" },
-		--["@keyword.function"] = { link = "GruvboxAqua" },
-		--FloatBorder = { fg = colors.dark0, bg = "#3e5751" },
-		Pmenu = { fg = "#d4be98", bg = colors.dark0 },
-		LspInfoBorder = { fg = colors.gray },
+		Pmenu = { fg = "#d4be98", bg = "#2b2b2b" },
 		SignColumn = { bg = colors.dark0 },
+
 		--GitSignsCurrentLineBlame = { gui=bold,italic guifg=#ea6962 }
 		GitSignsAdd = { fg = "#545b32", bg = colors.bg0, reverse = config.invert_signs },
 		GitSignsChange = { fg = "#3e5751", bg = colors.bg0, reverse = config.invert_signs },
 		GitSignsDelete = { fg = "#ea6962", bg = colors.bg0, reverse = config.invert_signs },
 
-		-- StatusLine = { fg = "#d4be98", bg = "#a89984" },
-		NvimTreeNormal = { fg = "#d4be98", bg = "#2b2b2b" },
 		WinSeparator = { guibg = nil, fg = "#383838" },
+
+		NvimTreeNormal = { fg = "#d4be98", bg = "#2b2b2b" },
 		NvimTreeWinSeparator = { guibg = nil, fg = "#2b2b2b" },
 
-		--VertSplit = { fg = "#383838", bg = colors.dark0 },
+		NormalFloat = { bg = "#2b2b2b" },
+		--FloatBorder = { fg = "#2b2b2b", bg = "#2b2b2b" },
+		LspInfoBorder = { bg = "#2b2b2b", fg = nil },
 	},
 	dim_inactive = false,
 	transparent_mode = false,
 })
-vim.cmd([[ autocmd ColorScheme * lua lsp_overrides()]])
+
+require("nvim-web-devicons").set_icon({
+	md = {
+		icon = "",
+		color = "#d4be98",
+		cterm_color = "white",
+		name = "Md",
+	},
+})
+
+local nvim_web_devicons = require("nvim-web-devicons")
+local current_icons = nvim_web_devicons.get_icons()
+local new_icons = {}
+
+for key, icon in pairs(current_icons) do
+	icon.color = "#d4be98"
+	icon.cterm_color = 198
+	new_icons[key] = icon
+end
+
+nvim_web_devicons.set_icon(new_icons)
+
 vim.cmd("colorscheme gruvbox")
+
+-- NOTE: adding other colors to gruvbox
+colors["other_dark"] = "#2b2b2b"
+--print(vim.inspect(colors))

@@ -12,13 +12,9 @@ end
 require("toggleterm").setup({
 	shade_terminals = false,
 	open_mapping = [[<c-\>]],
-	on_open = set_nvimtree_when_open_term,
-	highlights = {
-		Normal = {
-			guibg = "#2b2b2b",
-		},
-		SignColumn = {
-			guibg = "#2b2b2b",
-		},
-	},
+	on_open = function(terminal)
+		set_nvimtree_when_open_term(terminal)
+	end,
+	on_close = function(_) end,
+	highlights = {},
 })

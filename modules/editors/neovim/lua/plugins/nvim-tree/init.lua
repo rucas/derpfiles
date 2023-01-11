@@ -42,8 +42,8 @@ local function vsplit_preview()
 end
 
 nvim_tree.setup({
-	sync_root_with_cwd = true,
-	respect_buf_cwd = true,
+	--sync_root_with_cwd = true,
+	--respect_buf_cwd = true,
 	update_focused_file = {
 		enable = true,
 		update_root = true,
@@ -70,8 +70,9 @@ nvim_tree.setup({
 		root_folder_label = function(_)
 			return ""
 		end,
-		indent_width = 1,
+		indent_width = 2,
 		icons = {
+			padding = " ",
 			show = {
 				git = false,
 			},

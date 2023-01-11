@@ -29,7 +29,6 @@
       cmp-cmdline
       cmp-nvim-lsp
       cmp-path
-      #{ plugin = dashboard-nvim; config = builtins.readFile(./plugins/)}
       dashboard-nvim
       {
         plugin = fidget-nvim;
@@ -44,11 +43,6 @@
       glow-nvim
       gruvbox-nvim
       headlines-nvim
-      {
-        plugin = heirline-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/heirline-nvim/init.lua);
-      }
       {
         plugin = indent-blankline-nvim;
         type = "lua";
@@ -83,11 +77,11 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-colorizer/init.lua);
       }
-      # {
-      #   plugin = nvim-lualine;
-      #   type = "lua";
-      #   config = builtins.readFile (./lua/plugins/nvim-lualine/init.lua);
-      # }
+      {
+        plugin = nvim-lualine;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/nvim-lualine/init.lua);
+      }
       {
         plugin = nvim-lspconfig;
         type = "lua";

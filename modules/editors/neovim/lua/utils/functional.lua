@@ -8,9 +8,4 @@ M.map = function(tbl, f)
 	return t
 end
 
-local function test(n)
-	n = n + 1
-	print(n)
-end
-
 return M
