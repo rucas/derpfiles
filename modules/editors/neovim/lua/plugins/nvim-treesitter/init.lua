@@ -20,7 +20,6 @@ treesitter.setup({
 			"#d3869b",
 			"#8ec07c",
 			"#fe8019",
-			"#cc241d",
 			"#98971a",
 			"#d79921",
 			"#458588",
@@ -33,7 +32,6 @@ treesitter.setup({
 			"#076678",
 			"#8f3f71",
 			"#427b58",
-			"#af3a03"
 		},
 		playground = {
 			enable = true,

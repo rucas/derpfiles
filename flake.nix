@@ -91,10 +91,7 @@
       url = "github:L3MON4D3/LuaSnip";
       flake = false;
     };
-    neorg = {
-      url = "github:nvim-neorg/neorg";
-      flake = false;
-    };
+    neorg-overlay = { url = "github:nvim-neorg/nixpkgs-neorg-overlay"; };
     neovim-nightly = { url = "github:nix-community/neovim-nightly-overlay"; };
     null-ls-nvim = {
       url = "github:jose-elias-alvarez/null-ls.nvim";
@@ -124,10 +121,10 @@
       url = "github:nvim-tree/nvim-tree.lua";
       flake = false;
     };
-    nvim-treesitter = {
-      url = "github:nvim-treesitter/nvim-treesitter";
-      flake = false;
-    };
+    #nvim-treesitter = {
+    #  url = "github:nvim-treesitter/nvim-treesitter";
+    #  flake = false;
+    #};
     nvim-ts-rainbow = {
       url = "github:p00f/nvim-ts-rainbow";
       flake = false;
@@ -227,7 +224,7 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar
-    , neovim-nightly, ... }:
+    , neovim-nightly, neorg-overlay, ... }:
     let inherit (utils.lib) mkFlake exportModules exportPackages exportOverlays;
     in mkFlake {
       inherit self inputs;
@@ -239,9 +236,10 @@
       overlay = import ./overlays { inherit self inputs; };
       sharedOverlays = with self.overlay; [
         alacritty
-        vimPlugins
         neovim-nightly.overlay
+        neorg-overlay.overlays.default
         spacebar.overlay
+        vimPlugins
       ];
 
       #sharedOverlays = with self.overlay; [

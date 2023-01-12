@@ -1,5 +1,5 @@
 local which_key = require("which-key")
---local terms = require("plugins.toggleterm")
+local terms = require("terminals")
 
 which_key.register({
 	["<leader>b"] = {
@@ -44,7 +44,12 @@ which_key.register({
 		b = { "<cmd>Telescope git_branches<cr>", "Git Branches" },
 		B = { "<cmd>Gitsigns toggle_current_line_blame<cr>", "Git Blame" },
 		s = { "<cmd>Telescope git_status<cr>", "Git Status" },
-		--u = { terms.gitui:toggle(), "Gitui" },
+		u = {
+			function()
+				terms.gitui()
+			end,
+			"Launch Gitui",
+		},
 	},
 	["<leader>r"] = {
 		name = "repl",
@@ -92,14 +97,14 @@ which_key.setup({
 		margin = { 1, 30, 1, 0 },
 	},
 	layout = {
-		align = "center",
+		align = "left",
 	},
 	disable = {
 		buftypes = {},
 		filetypes = {
 			"TelescopePrompt",
-			"norg",
-			"neorg",
+			--"norg",
+			--"neorg",
 		},
 	},
 	show_help = false,

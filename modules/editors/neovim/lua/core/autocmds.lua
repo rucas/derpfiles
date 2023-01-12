@@ -53,6 +53,7 @@ vim.cmd([[
     augroup END
 ]])
 
+-- Navigate out of toggle terminal
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "term://*toggleterm#*",
 	callback = function()

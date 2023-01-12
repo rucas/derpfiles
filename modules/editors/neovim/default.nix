@@ -7,7 +7,7 @@
         plugin =
           (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars));
         type = "lua";
-        config = builtins.readFile (./lua/plugins/telescope/init.lua);
+        config = builtins.readFile (./lua/plugins/nvim-treesitter/init.lua);
       }
       SchemaStore-nvim
       {
@@ -59,7 +59,7 @@
       {
         plugin = neorg;
         type = "lua";
-        #config = builtins.readFile (./lua/plugins/neorg/init.lua);
+        config = builtins.readFile (./lua/plugins/neorg/init.lua);
       }
       null-ls-nvim
       {

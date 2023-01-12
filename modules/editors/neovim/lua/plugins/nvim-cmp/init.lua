@@ -65,6 +65,12 @@ cmp.setup({
 	}),
 })
 
+cmp.setup.filetype("norg", {
+	sources = cmp.config.sources({
+		{ name = "neorg" },
+	}),
+})
+
 -- Set configuration for specific filetype.
 cmp.setup.filetype("gitcommit", {
 	sources = cmp.config.sources({

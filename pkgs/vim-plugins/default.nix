@@ -20,7 +20,6 @@ let
     "lspkind-nvim"
     "luasnip"
     "neodev-nvim"
-    "neorg"
     "null-ls-nvim"
     "nvim-autopairs"
     "nvim-colorizer-lua"
