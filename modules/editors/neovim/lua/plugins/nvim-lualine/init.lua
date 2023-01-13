@@ -2,7 +2,8 @@ local colors = require("gruvbox.palette")
 
 local NvimTree = {
 	function()
-		return string.rep(" ", require("nvim-tree").config.view.width - 1)
+		--return string.rep(" ", require("nvim-tree").config.view.width - 1)
+		return string.rep(" ", require("nvim-tree.view").View.width - 1)
 	end,
 	cond = require("nvim-tree.view").is_visible,
 	padding = { left = 0, right = 0 },
@@ -38,6 +39,17 @@ local ViMode = {
 		}
 		return { fg = mode_color[vim.fn.mode()] }
 	end,
+}
+
+local ScrollBar = {
+	function()
+		local sbar = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
+		local curr_line = vim.api.nvim_win_get_cursor(0)[1]
+		local lines = vim.api.nvim_buf_line_count(0)
+		local i = math.floor((curr_line - 1) / lines * #sbar) + 1
+		return string.rep(sbar[i], 2)
+	end,
+	color = { fg = colors.faded_blue, bg = colors.other_dark },
 }
 
 local telescope_extension = {
@@ -112,10 +124,7 @@ require("lualine").setup({
 			statusline = { "Dashboard" },
 			winbar = {},
 		},
-		ignore_focus = {
-			-- "NvimTree",
-			-- "toggleterm",
-		},
+		ignore_focus = {},
 		always_divide_middle = true,
 		globalstatus = true,
 		refresh = {
@@ -145,9 +154,9 @@ require("lualine").setup({
 				},
 			},
 		},
-		lualine_x = { "encoding", "fileformat" },
-		lualine_y = { { "branch", icon = "" } },
-		lualine_z = {},
+		lualine_x = { ScrollBar, { "location", color = { fg = colors.neutral_green, bg = colors.other_dark } } },
+		lualine_y = { "fileformat" },
+		lualine_z = { { "branch", icon = "", color = { fg = colors.light1, bg = colors.other_dark } } },
 	},
 	inactive_sections = {
 		lualine_a = {},
