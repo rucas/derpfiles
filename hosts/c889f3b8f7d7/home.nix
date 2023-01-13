@@ -16,6 +16,8 @@
 
   fonts.fontconfig.enable = true;
 
+  home.sessionPath = [ "$HOME/.toolbox/bin" ];
+
   #home.activation = {
   #  copyApplications = lib.mkIf pkgs.stdenv.isDarwin (let
   #    apps = pkgs.buildEnv {
