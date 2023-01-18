@@ -144,14 +144,15 @@
       }
     ];
     extraPackages = with pkgs; [
-      isort
       black
+      isort
       nil
       nixfmt
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
-      nodePackages.vscode-json-languageserver
       nodePackages.pyright
+      nodePackages.vscode-json-languageserver
+      python310Packages.flake8
       shellcheck
       shfmt
       statix
