@@ -74,7 +74,12 @@ which_key.register({
 		--	c = { "<cmd>Neorg gtd capture<cr>", "Neorg Task Capture" },
 		--	v = { "<cmd>Neorg gtd views<cr>", "Neorg Task Views" },
 	},
-	["<leader>w"] = { "<cmd>update!<cr>", "Save" },
+	["<leader>W"] = {
+		function()
+			vim.cmd("update!")
+		end,
+		"Save",
+	},
 	["<leader>Z"] = { "<cmd>ZenMode<cr>", "Zen Mode" },
 })
 
