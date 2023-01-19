@@ -9,15 +9,7 @@
       });
     });
   });
-  yabai = (final: prev: {
-    yabai = prev.yabai.overrideAttrs (old: {
-      src = final.fetchzip {
-        url =
-          "https://github.com/koekeishiya/yabai/releases/download/v5.0.2/yabai-v5.0.2.tar.gz";
-        sha256 = "sha256-NS8tMUgovhWqc6WdkNI4wKee411i/e/OE++JVc86kFE=";
-      };
-    });
-  });
+  yabai = (final: prev: { yabai = prev.callPackage ../pkgs/yabai { }; });
   vimPlugins = (final: prev: {
     vimPlugins = prev.vimPlugins
       // final.callPackage ../pkgs/vim-plugins { inherit inputs; };

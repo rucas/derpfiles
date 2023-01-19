@@ -198,16 +198,6 @@
       url = "github:folke/zen-mode.nvim";
       flake = false;
     };
-    yabai = {
-      type = "file";
-      url =
-        "https://github.com/koekeishiya/yabai/releases/download/v5.0.2/yabai-v5.0.2.tar.gz";
-      flake = false;
-    };
-    skhd = {
-      url = "github:koekeishiya/skhd?ref=v0.0.6";
-      flake = false;
-    };
     spacebar = { url = "github:cmacrae/spacebar"; };
     zsh-vi-mode = {
       url = "github:jeffreytse/zsh-vi-mode";
@@ -231,8 +221,6 @@
 
       channelsConfig.allowUnfree = true;
 
-      # overlay = import ./overlays { inherit self inputs; };
-      # overlays = exportOverlays { inherit (self) pkgs inputs; };
       overlay = import ./overlays { inherit self inputs; };
       sharedOverlays = with self.overlay; [
         alacritty
@@ -240,18 +228,8 @@
         neorg-overlay.overlays.default
         spacebar.overlay
         vimPlugins
+        yabai
       ];
-
-      #sharedOverlays = with self.overlay; [
-      #  alacritty
-      #  neovim
-      #  neovim-nightly.overlay
-      #  spacebar.overlay
-      #];
-
-      #outputsBuilder = channels: {
-      #  packages = exportPackages self.overlays channels;
-      #};
 
       hosts.blkmrkt = {
         builder = nix-darwin.lib.darwinSystem;

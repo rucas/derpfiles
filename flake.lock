@@ -1002,7 +1002,6 @@
         "plenary-nvim": "plenary-nvim",
         "rest-nvim": "rest-nvim",
         "session-lens": "session-lens",
-        "skhd": "skhd",
         "spacebar": "spacebar",
         "telescope-file-browser-nvim": "telescope-file-browser-nvim",
         "telescope-fzf-native-nvim": "telescope-fzf-native-nvim",
@@ -1015,7 +1014,6 @@
         "vim-illuminate": "vim-illuminate",
         "vim-nix": "vim-nix",
         "which-key-nvim": "which-key-nvim",
-        "yabai": "yabai",
         "zen-mode-nvim": "zen-mode-nvim",
         "zsh-autopair": "zsh-autopair",
         "zsh-vi-mode": "zsh-vi-mode"
@@ -1034,23 +1032,6 @@
       "original": {
         "owner": "rmagatti",
         "repo": "session-lens",
-        "type": "github"
-      }
-    },
-    "skhd": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1502492849,
-        "narHash": "sha256-fPAIhY+AZOOT2XVsALoMSL6GBbYFMtxuk6CPZJ5i4m4=",
-        "owner": "koekeishiya",
-        "repo": "skhd",
-        "rev": "2d0f8f425c11b2a5e5077a3c273293da5b61d45b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "koekeishiya",
-        "ref": "v0.0.6",
-        "repo": "skhd",
         "type": "github"
       }
     },
@@ -1264,18 +1245,6 @@
         "owner": "folke",
         "repo": "which-key.nvim",
         "type": "github"
-      }
-    },
-    "yabai": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-2r5uUUMBma7VNdhijGp3NODVKpSmSvQduDQqFksG6V8=",
-        "type": "file",
-        "url": "https://github.com/koekeishiya/yabai/releases/download/v5.0.2/yabai-v5.0.2.tar.gz"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://github.com/koekeishiya/yabai/releases/download/v5.0.2/yabai-v5.0.2.tar.gz"
       }
     },
     "zen-mode-nvim": {
