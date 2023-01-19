@@ -13,6 +13,7 @@
     # enableSyntaxHighlighting = true;
     shellAliases = {
       b = "brazil";
+      bb = "brazil-build";
       cat = "bat -n --paging=never";
       g = "git";
       j = "jobs";
@@ -44,10 +45,10 @@
       setopt HIST_NO_STORE
 
       # Expire a duplicate event first when trimming history.
-      setopt HIST_EXPIRE_DUPS_FIRST   
+      setopt HIST_EXPIRE_DUPS_FIRST
 
       # Delete an old recorded event if a new event is a duplicate.
-      setopt HIST_IGNORE_ALL_DUPS  
+      setopt HIST_IGNORE_ALL_DUPS
 
       # When writing out the history file, older commands that duplicate newer ones are omitted.
       setopt HIST_SAVE_NO_DUPS
@@ -64,7 +65,7 @@
 
       zshaddhistory() {
         emulate -L zsh
-        setopt extendedglob 
+        setopt extendedglob
         [[ $1 != ''${~HISTORY_IGNORE} ]]
       }
 
