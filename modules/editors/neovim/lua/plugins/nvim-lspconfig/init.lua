@@ -1,5 +1,28 @@
 local illuminate = require("illuminate")
 
+
+-- LSP Diagnostics
+vim.diagnostic.config({
+	underline = true,
+	update_in_insert = false,
+	virtual_text = {
+		spacing = 4,
+		prefix = "●",
+		format = function(diagnostic)
+			return string.format("%s: %s", diagnostic.source, diagnostic.message)
+		end,
+	},
+	severity_sort = true,
+})
+
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+
+for type, icon in pairs(signs) do
+	local hl = "DiagnosticSign" .. type
+	--vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
@@ -43,6 +66,21 @@ local on_attach = function(client, bufnr)
 			async = true,
 		})
 	end, bufopts)
+
+	-- LSP diagnostic popup
+	vim.api.nvim_create_autocmd("CursorHold", {
+		buffer = bufnr,
+		callback = function()
+			vim.diagnostic.open_float(nil, {
+				focusable = false,
+				close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+				border = "rounded",
+				source = "always",
+				prefix = " ",
+				scope = "cursor",
+			})
+		end,
+	})
 end
 
 -- LSPINFO UI

@@ -42,6 +42,18 @@ require("gruvbox").setup({
 		NormalFloat = { bg = "#2b2b2b" },
 		--FloatBorder = { fg = "#2b2b2b", bg = "#2b2b2b" },
 		LspInfoBorder = { bg = "#2b2b2b", fg = nil },
+
+		-- NOTE: this doesnt work for some reason...
+		-- see https://github.com/ellisonleao/gruvbox.nvim/issues/138
+		-- DiagnosticError = { bg = colors.bg0 },
+		-- DiagnosticWarn = { bg = colors.bg0 },
+		-- DiagnosticSignHint = { bg = colors.bg0, fg = colors.red },
+		-- DiagnosticSignInfo = { bg = colors.bg0, fg = colors.red },
+		-- LSP signs
+		GruvboxRedSign = { bg = "NONE" },
+		GruvboxYellowSign = { bg = "NONE" },
+		GruvboxBlueSign = { bg = "NONE" },
+		GruvboxAquaSign = { bg = "NONE" },
 	},
 	dim_inactive = false,
 	transparent_mode = false,
@@ -72,4 +84,3 @@ vim.cmd("colorscheme gruvbox")
 
 -- NOTE: adding other colors to gruvbox
 colors["other_dark"] = "#2b2b2b"
---print(vim.inspect(colors))
