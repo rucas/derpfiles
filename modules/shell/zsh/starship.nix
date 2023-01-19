@@ -6,6 +6,7 @@
         style = "purple";
         symbol = "";
       };
+      command_timeout = 1000;
     };
   };
 }
