@@ -42,14 +42,11 @@ local function vsplit_preview()
 end
 
 nvim_tree.setup({
-	--sync_root_with_cwd = true,
-	--respect_buf_cwd = true,
 	update_focused_file = {
 		enable = true,
 		update_root = true,
 	},
 	view = {
-		adaptive_size = true,
 		cursorline = false,
 		hide_root_folder = false,
 		mappings = {
