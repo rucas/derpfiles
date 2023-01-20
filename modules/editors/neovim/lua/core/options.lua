@@ -92,7 +92,8 @@ vim.opt.textwidth = 80
 -- autoindent, smart, and wrap it up
 vim.opt.autoindent = true
 vim.opt.smartindent = true
-vim.opt.wrap = true
+vim.opt.wrap = false
+vim.opt.formatoptions:remove("t")
 
 vim.opt.timeoutlen = 500
 vim.opt.updatetime = 500

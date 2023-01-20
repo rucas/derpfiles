@@ -5,5 +5,5 @@ require("illuminate").configure({
 		"terminal",
 		"TelescopePrompt",
 		"TelescopeResults",
-	}
+	},
 })
