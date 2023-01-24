@@ -70,9 +70,25 @@ which_key.register({
 		t = { "<cmd>NvimTreeToggle<cr>", "Open/Close nvim-tree" },
 		f = { "<cmd>NvimTreeFocus<cr>", "Open and Focus on nvim-tree" },
 		F = { "<cmd>NvimTreeFindFile<cr>", "Open nvim-tree to Current File" },
+		s = { "<cmd>AerialToggle<cr>", "Open LSP Document Symbols Tree" },
 		--	e = { "<cmd>Neorg gtd edit<cr>", "Neorg Task Edit" },
 		--	c = { "<cmd>Neorg gtd capture<cr>", "Neorg Task Capture" },
 		--	v = { "<cmd>Neorg gtd views<cr>", "Neorg Task Views" },
+	},
+	["<leader>T"] = {
+		name = "Terminal",
+		g = {
+			function()
+				terms.gitui()
+			end,
+			"Launch Gitui",
+		},
+		p = {
+			function()
+				terms.procs()
+			end,
+			"Launch Procs",
+		},
 	},
 	["<leader>W"] = {
 		function()

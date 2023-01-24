@@ -10,10 +10,20 @@ local gitui = Terminal:new({
 	hidden = true,
 })
 
+local procs = Terminal:new({
+	cmd = "procs",
+	direction = "float",
+	hidden = true,
+})
+
 local Terms = {}
 
 Terms.gitui = function()
 	gitui:toggle()
+end
+
+Terms.procs = function()
+	procs:toggle()
 end
 
 return Terms
