@@ -2,6 +2,7 @@
 let
   vimFlakes = [
     "SchemaStore-nvim"
+    "aerial-nvim"
     "autosave-nvim"
     "auto-session"
     "better-escape-nvim"

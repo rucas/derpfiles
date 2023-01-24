@@ -11,6 +11,11 @@
       }
       SchemaStore-nvim
       {
+        plugin = aerial-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/aerial-nvim/init.lua);
+      }
+      {
         plugin = auto-save-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/autosave/init.lua);
