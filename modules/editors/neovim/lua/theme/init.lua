@@ -54,6 +54,47 @@ require("gruvbox").setup({
 		GruvboxYellowSign = { bg = "NONE" },
 		GruvboxBlueSign = { bg = "NONE" },
 		GruvboxAquaSign = { bg = "NONE" },
+
+		-- NOTE: Telescope Highlights
+		-- SEE: https://github.com/nvim-telescope/telescope.nvim/blob/master/plugin/telescope.lua
+		TelescopeNormal = {
+			bg = "#2b2b2b",
+		},
+		TelescopeBorder = {
+			fg = "#2b2b2b",
+			bg = "#2b2b2b",
+		},
+		-- Telescope Prompt: this is where you type in Telescope
+		TelescopePromptNormal = {
+			fg = "#d4be98",
+			bg = colors.dark1,
+		},
+		TelescopePromptBorder = {
+			fg = colors.dark1,
+			bg = colors.dark1,
+		},
+		TelescopePromptTitle = {
+			fg = colors.dark1,
+			bg = colors.dark1,
+		},
+		TelescopePromptCounter = {
+			fg = colors.dark4,
+			bg = colors.dark1,
+		},
+		TelescopePreviewBorder = {
+			fg = "#2b2b2b",
+			bg = "#2b2b2b",
+		},
+		TelescopeResultsBorder = {
+			fg = "#2b2b2b",
+			bg = "#2b2b2b",
+		},
+		TelescopeSelection = { bg = "#3e5751", bold = true },
+		TelescopeMatching = { fg = "#ea6962" },
+		TelescopeResultsTitle = {
+			fg = "#2b2b2b",
+			bg = "#2b2b2b",
+		},
 	},
 	dim_inactive = false,
 	transparent_mode = false,

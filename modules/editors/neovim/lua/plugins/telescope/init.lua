@@ -1,4 +1,4 @@
-local telescope = require("telescope");
+local telescope = require("telescope")
 
 telescope.setup({
 	defaults = {
@@ -20,7 +20,7 @@ telescope.setup({
 			"--smart-case",
 			"--trim",
 		},
-		prompt_prefix = "   ",
+		prompt_prefix = " ",
 		selection_caret = "  ",
 		entry_prefix = "  ",
 		initial_mode = "insert",
@@ -36,13 +36,13 @@ telescope.setup({
 			vertical = {
 				mirror = false,
 			},
-			width = 0.87,
-			height = 0.80,
-			preview_cutoff = 120,
+			width = 0.80,
+			height = 0.60,
+			preview_cutoff = 80,
 		},
 		path_display = { "truncate" },
 		winblend = 0,
-		border = false,
+		border = true,
 		color_devicons = true,
 		use_less = true,
 		set_env = { ["COLORTERM"] = "truecolor" },
@@ -100,31 +100,3 @@ telescope.setup({
 
 telescope.load_extension("fzf")
 telescope.load_extension("file_browser")
-
-local finders = {}
-
--- Dropdown list theme using a builtin theme definitions :
--- print(vim.inspect(entry))
-local center_list = require("telescope.themes").get_dropdown({
-	entry_maker = function(entry)
-		return {
-			value = entry,
-			display = entry.name,
-			ordinal = entry.name,
-		}
-	end,
-	border = false,
-})
-
-finders.command_finder = function()
-	local opts = vim.deepcopy(center_list)
-	opts.cwd = vim.fn.stdpath("config")
-	require("telescope.builtin").commands(opts)
-end
-
-finders.command_history_finder = function()
-	local opts = vim.deepcopy(center_list)
-	opts.cwd = vim.fn.stdpath("config")
-	require("telescope.builtin").command_history(opts)
-end
---return finders
