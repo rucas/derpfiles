@@ -87,6 +87,14 @@
         program = "zsh";
         args = [ "--login" ];
       };
+      #hints = {
+      #  enabled = [{
+      #    regex =
+      #      "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+";
+      #    command = "open";
+      #    mouse = { enabled = true; };
+      #  }];
+      #};
     };
   };
 }
