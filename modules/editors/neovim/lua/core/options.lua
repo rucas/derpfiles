@@ -7,6 +7,10 @@ vim.opt.hidden = true
 --
 -- Always show current position
 vim.opt.ruler = true
+vim.opt.relativenumber = true
+-- vim.wo.number = true
+-- vim.opt.number = true
+-- vim.opt.relativenumber = true
 
 -- one status line only on bottom buffer
 vim.opt.laststatus = 3
@@ -26,13 +30,13 @@ vim.opt.background = "dark"
 vim.opt.shortmess:append("c")
 
 -- no ~ at end of line
--- for lualine misalign char
 vim.opt.fillchars = {
 	eob = " ",
 	fold = " ",
 	foldopen = "",
 	foldsep = " ",
 	foldclose = "",
+    -- for lualine misalign char
 	vertright = " ",
 }
 
