@@ -1,15 +1,13 @@
-local present, zen_mode = pcall(require, "zen-mode")
-if not present then
-	return
-end
-zen_mode.setup({
+local lualine = require("lualine")
+
+require("zen-mode").setup({
 	window = {
 		backdrop = 0.95, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
 		-- height and width can be:
 		-- * an absolute number of cells when > 1
 		-- * a percentage of the width / height of the editor when <= 1
 		-- * a function that returns the width or the height
-		width = 120, -- width of the Zen window
+		width = .60, -- width of the Zen window
 		height = 1, -- height of the Zen window
 		-- by default, no options are changed for the Zen window
 		-- uncomment any of the options below, or add other vim.wo options you want to apply
@@ -33,22 +31,15 @@ zen_mode.setup({
 		},
 		twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
 		gitsigns = { enabled = true }, -- disables git signs
-		tmux = { enabled = true }, -- disables the tmux statusline
-		-- this will change the font size on kitty when in zen mode
-		-- to make this work, you need to set the following kitty options:
-		-- - allow_remote_control socket-only
-		-- - listen_on unix:/tmp/kitty
-		kitty = {
-			enabled = false,
-			font = "+4", -- font size increment
-		},
 	},
-	-- callback where you can add custom code when the Zen window opens
-	on_open = function(win)
-		vim.cmd(":silent lua require'shade'.toggle()")
+	on_open = function()
+		lualine.hide()
+		vim.o.statusline = " "
+		--vim.cmd("silent !alacritty msg config 'font.size=24'")
+		vim.cmd("silent !alacritty msg config 'font.size=16'")
 	end,
-	-- callback where you can add custom code when the Zen window closes
 	on_close = function()
-		vim.cmd(":silent lua require'shade'.toggle()")
+		lualine.hide({ unhide = true })
+		vim.cmd("silent !alacritty msg config 'font.size=12'")
 	end,
 })

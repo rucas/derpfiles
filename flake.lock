@@ -1267,11 +1267,11 @@
     "zen-mode-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1662368212,
-        "narHash": "sha256-n69FYW16uns+OXTsPCUeEPF5Z3dOJq997O/XTttpKBI=",
+        "lastModified": 1674564876,
+        "narHash": "sha256-US+kO8TN80uSBktqaYNpnxCDWvMHRj+//lKlRXs8aEc=",
         "owner": "folke",
         "repo": "zen-mode.nvim",
-        "rev": "6f5702db4fd4a4c9a212f8de3b7b982f3d93b03c",
+        "rev": "2c8f9f3758a4c430ff867e547741424ac16208bb",
         "type": "github"
       },
       "original": {
