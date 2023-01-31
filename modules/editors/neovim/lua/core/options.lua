@@ -8,9 +8,6 @@ vim.opt.hidden = true
 -- Always show current position
 vim.opt.ruler = true
 vim.opt.relativenumber = true
--- vim.wo.number = true
--- vim.opt.number = true
--- vim.opt.relativenumber = true
 
 -- one status line only on bottom buffer
 vim.opt.laststatus = 3
@@ -36,7 +33,7 @@ vim.opt.fillchars = {
 	foldopen = "",
 	foldsep = " ",
 	foldclose = "",
-    -- for lualine misalign char
+	-- for lualine misalign char
 	vertright = " ",
 }
 

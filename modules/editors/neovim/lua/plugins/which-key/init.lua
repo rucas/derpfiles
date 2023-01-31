@@ -25,7 +25,7 @@ which_key.register({
 	},
 	["<leader>l"] = {
 		name = "lsp",
-		r = { "<cmd>Telescope lsp_references<cr>", "LSP References" },
+		r = { "<cmd>Telescope lsp_references show_line=false<cr>", "LSP References" },
 		i = { "<cmd>Telescope lsp_implementations<cr>", "LSP Implementations" },
 		d = { "<cmd>Telescope lsp_document_symbols<cr>", "LSP Document Symbols" },
 		t = { "<cmd>Telescope lsp_type_definitions<cr>", "LSP Type Definitions" },
@@ -77,6 +77,12 @@ which_key.register({
 	},
 	["<leader>T"] = {
 		name = "Terminal",
+		c = {
+			function()
+				terms.cal()
+			end,
+			"Launch Calendar",
+		},
 		g = {
 			function()
 				terms.gitui()
