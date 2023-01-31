@@ -8,6 +8,7 @@ local sources = {
 	null_ls.builtins.code_actions.statix,
 	null_ls.builtins.formatting.black,
 	null_ls.builtins.formatting.isort,
+	null_ls.builtins.formatting.jq,
 	null_ls.builtins.diagnostics.flake8,
 	null_ls.builtins.diagnostics.shellcheck.with({ diagnostics_format = "#{m} [#{c}]" }),
 }

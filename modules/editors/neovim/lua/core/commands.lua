@@ -1,3 +1,1 @@
--- JSON --
---
-vim.cmd([[ command! JSONFormat %! jq . ]])
+-- NOTE: add custom vim commands here

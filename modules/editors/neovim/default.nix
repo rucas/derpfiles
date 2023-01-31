@@ -156,7 +156,7 @@
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.pyright
-      nodePackages.vscode-json-languageserver
+      nodePackages.vscode-langservers-extracted
       python310Packages.flake8
       shellcheck
       shfmt
