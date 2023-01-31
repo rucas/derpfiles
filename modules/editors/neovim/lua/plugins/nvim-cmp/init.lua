@@ -7,6 +7,7 @@ local has_words_before = function()
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+-- NOTE: C-n for next completion C-p for previous
 cmp.setup({
 	snippet = {
 		expand = function(args)
@@ -14,9 +15,11 @@ cmp.setup({
 		end,
 	},
 	formatting = {
+		--      
 		format = lspkind.cmp_format({
 			mode = "symbol_text", -- show only symbol annotations
 			maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+			preset = "codicons",
 		}),
 	},
 	window = {
@@ -90,7 +93,10 @@ cmp.setup.cmdline("/", {
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(":", {
-	mapping = cmp.mapping.preset.cmdline(),
+	mapping = cmp.mapping.preset.cmdline({
+		["<Down>"] = { c = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }) },
+		["<Up>"] = { c = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }) },
+	}),
 	sources = cmp.config.sources({
 		{ name = "path" },
 	}, {
