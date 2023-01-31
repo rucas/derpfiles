@@ -10,6 +10,7 @@
       "blackhole-16ch"
       "dash"
       "dropbox"
+      "dynobase"
       "slack"
       "maccy"
       "obs"
