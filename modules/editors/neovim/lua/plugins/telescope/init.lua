@@ -1,4 +1,5 @@
 local telescope = require("telescope")
+local telescope_actions = require("telescope.actions")
 
 telescope.setup({
 	defaults = {
@@ -47,10 +48,19 @@ telescope.setup({
 		use_less = true,
 		set_env = { ["COLORTERM"] = "truecolor" },
 		mappings = {
-			n = { ["q"] = require("telescope.actions").close },
+			n = { ["q"] = telescope_actions.close },
 		},
 	},
 	pickers = {
+		buffers = {
+			show_all_buffers = true,
+			sort_mru = true,
+			mappings = {
+				i = {
+					["<C-d>"] = telescope_actions.delete_buffer,
+				},
+			},
+		},
 		find_files = {
 			find_command = {
 				"fd",
