@@ -98,6 +98,8 @@ require("gruvbox").setup({
 			bg = "#2b2b2b",
 		},
 		LineNr = { fg = colors.dark1 },
+		CursorLineNr = { fg = colors.dark1, bg = "#3c3836" },
+		FoldColumn = { fg = colors.dark2, bg = colors.dark0 },
 	},
 	dim_inactive = false,
 	transparent_mode = false,

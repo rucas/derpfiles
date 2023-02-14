@@ -36,6 +36,7 @@ vim.opt.fillchars = {
 	-- for lualine misalign char
 	vertright = " ",
 }
+vim.opt.foldcolumn = "auto"
 
 -- Searching
 --
@@ -97,7 +98,7 @@ vim.opt.wrap = false
 vim.opt.formatoptions:remove("t")
 
 vim.opt.timeoutlen = 500
-vim.opt.updatetime = 500
+vim.opt.updatetime = 200
 
 -- Autocomplete
 vim.opt.completeopt = "menu,menuone,noselect"
