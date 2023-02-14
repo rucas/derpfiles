@@ -11,11 +11,6 @@
       }
       SchemaStore-nvim
       {
-        plugin = aerial-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/aerial-nvim/init.lua);
-      }
-      {
         plugin = auto-save-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/autosave/init.lua);
@@ -24,6 +19,11 @@
         plugin = auto-session;
         type = "lua";
         config = builtins.readFile (./lua/plugins/auto-session/init.lua);
+      }
+      {
+        plugin = barbecue-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/barbecue-nvim/init.lua);
       }
       {
         plugin = better-escape-nvim;
@@ -88,10 +88,16 @@
         config = builtins.readFile (./lua/plugins/nvim-lualine/init.lua);
       }
       {
+        plugin = aerial-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/aerial-nvim/init.lua);
+      }
+      {
         plugin = nvim-lspconfig;
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-lspconfig/init.lua);
       }
+      nvim-navic
       nvim-markdown
       {
         plugin = nvim-tree-lua;
@@ -107,7 +113,11 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/rest/init.lua);
       }
-      session-lens
+      {
+        plugin = session-lens;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/session-lens/init.lua);
+      }
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
       {

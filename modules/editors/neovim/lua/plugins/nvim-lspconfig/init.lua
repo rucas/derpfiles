@@ -1,4 +1,5 @@
 local illuminate = require("illuminate")
+local navic = require("nvim-navic")
 
 -- LSP Diagnostics
 vim.diagnostic.config({
@@ -34,6 +35,11 @@ vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts)
 local on_attach = function(client, bufnr)
 	-- setup illuminate
 	illuminate.on_attach(client)
+
+	-- setup navic
+	if client.server_capabilities.documentSymbolProvider then
+		navic.attach(client, bufnr)
+	end
 
 	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")

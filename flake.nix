@@ -31,6 +31,10 @@
       url = "github:b0o/SchemaStore.nvim";
       flake = false;
     };
+    barbecue-nvim = {
+      url = "github:utilyre/barbecue.nvim";
+      flake = false;
+    };
     better-escape-nvim = {
       url = "github:max397574/better-escape.nvim";
       flake = false;
@@ -115,6 +119,10 @@
     };
     nvim-lspconfig = {
       url = "github:neovim/nvim-lspconfig";
+      flake = false;
+    };
+    nvim-navic = {
+      url = "github:smiteshp/nvim-navic";
       flake = false;
     };
     nvim-markdown = {
@@ -219,7 +227,7 @@
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar
     , neovim-nightly, neorg-overlay, ... }:
-    let inherit (utils.lib) mkFlake exportModules exportPackages exportOverlays;
+    let inherit (utils.lib) mkFlake;
     in mkFlake {
       inherit self inputs;
 
