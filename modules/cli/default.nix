@@ -34,7 +34,8 @@
     # TODO: seperate out to fonts.nix?
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "JetBrainsMono" ]; })
 
-    moreutils
+    # moreutils
+    parallel
     procs
 
     ripgrep
