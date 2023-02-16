@@ -1,6 +1,7 @@
 local nvim_tree = require("nvim-tree")
 local lib = require("nvim-tree.lib")
 local view = require("nvim-tree.view")
+local api = require("nvim-tree.api")
 
 local function collapse_all()
 	require("nvim-tree.actions.collapse-all").fn()
@@ -41,6 +42,11 @@ local function vsplit_preview()
 	view.focus()
 end
 
+local function change_root_to_global_cwd()
+	local global_cwd = vim.fn.getcwd(-1, -1)
+	api.tree.change_root(global_cwd)
+end
+
 nvim_tree.setup({
 	update_focused_file = {
 		enable = true,
@@ -56,6 +62,7 @@ nvim_tree.setup({
 				{ key = "L", action = "vsplit_preview", action_cb = vsplit_preview },
 				{ key = "h", action = "close_node" },
 				{ key = "H", action = "collapse_all", action_cb = collapse_all },
+				{ key = "<C-c>", action = "global_cwd", action_cb = change_root_to_global_cwd },
 			},
 		},
 	},
