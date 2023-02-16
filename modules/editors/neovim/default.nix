@@ -1,11 +1,13 @@
-{ config, options, lib, pkgs, ... }: {
+{ config, options, lib, pkgs, inputs, ... }: {
   programs.neovim = {
     enable = true;
     extraConfig = "lua require('init')";
     plugins = with pkgs.vimPlugins; [
       {
-        plugin =
-          (nvim-treesitter.withPlugins (_: pkgs.tree-sitter.allGrammars));
+        plugin = (nvim-treesitter.withAllGrammars).overrideAttrs (_: {
+          version = "2023-02-15";
+          src = inputs.nvim-treesitter;
+        });
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-treesitter/init.lua);
       }

@@ -133,10 +133,10 @@
       url = "github:nvim-tree/nvim-tree.lua";
       flake = false;
     };
-    #nvim-treesitter = {
-    #  url = "github:nvim-treesitter/nvim-treesitter";
-    #  flake = false;
-    #};
+    nvim-treesitter = {
+      url = "github:nvim-treesitter/nvim-treesitter";
+      flake = false;
+    };
     nvim-ts-rainbow = {
       url = "github:p00f/nvim-ts-rainbow";
       flake = false;
