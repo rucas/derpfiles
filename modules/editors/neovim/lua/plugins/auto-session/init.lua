@@ -7,4 +7,5 @@ end
 require("auto-session").setup({
 	log_level = "error",
 	post_restore_cmds = { restore_nvim_tree },
+	auto_session_use_git_branch = true,
 })
