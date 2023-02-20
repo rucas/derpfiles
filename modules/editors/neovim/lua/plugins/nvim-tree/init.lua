@@ -86,6 +86,7 @@ nvim_tree.setup({
 	filters = {
 		custom = {
 			"^.git$",
+			"^.pytest_cache$",
 		},
 	},
 })
