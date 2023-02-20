@@ -1,5 +1,6 @@
 local telescope = require("telescope")
 local telescope_actions = require("telescope.actions")
+local telescope_utils = require("telescope.utils")
 
 telescope.setup({
 	defaults = {
@@ -41,7 +42,7 @@ telescope.setup({
 			height = 0.60,
 			preview_cutoff = 80,
 		},
-		path_display = { "truncate" },
+		path_display = { "absolute" },
 		winblend = 0,
 		border = true,
 		color_devicons = true,
@@ -54,6 +55,10 @@ telescope.setup({
 	pickers = {
 		buffers = {
 			show_all_buffers = true,
+			path_display = function(opts, path)
+				local tail = telescope_utils.path_smart(path)
+				return string.format("%s", tail:sub(4))
+			end,
 			sort_mru = true,
 			mappings = {
 				i = {
@@ -93,6 +98,10 @@ telescope.setup({
 		},
 		oldfiles = {
 			only_cwd = true,
+			path_display = function(opts, path)
+				local tail = telescope_utils.path_smart(path)
+				return string.format("%s", tail:sub(4))
+			end,
 		},
 	},
 	file_ignore_patterns = { "node_modules", ".pytest_cache" },
