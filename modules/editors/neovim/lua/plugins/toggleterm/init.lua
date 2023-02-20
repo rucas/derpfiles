@@ -14,6 +14,11 @@ require("toggleterm").setup({
 	open_mapping = [[<c-\>]],
 	on_open = function(terminal)
 		set_nvimtree_when_open_term(terminal)
+		vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], { buffer = 0, silent = true })
+		vim.keymap.set("t", "jk", [[<C-\><C-n>]], { buffer = 0, silent = true })
+		vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<CR>", { buffer = 0, silent = true })
+		vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<CR>", { buffer = 0, silent = true })
+		vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<CR>", { buffer = 0, silent = true })
 	end,
 	on_close = function(_) end,
 	highlights = {},
