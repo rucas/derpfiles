@@ -9,6 +9,7 @@
       "appcleaner"
       "blackhole-16ch"
       "dash"
+      "docker"
       "dropbox"
       "dynobase"
       "slack"
