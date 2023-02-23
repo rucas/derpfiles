@@ -36,19 +36,36 @@ function DecreasePadding()
 	vim.cmd("silent !alacritty msg config 'window.padding.y=2'")
 end
 
-vim.cmd([[
-  augroup AlacrittyPadding
-   au!
-   au VimEnter * lua DecreasePadding()
-   au VimLeavePre * lua IncreasePadding()
-  augroup END
-]])
+vim.api.nvim_create_autocmd({ "VimEnter" }, {
+	pattern = "*",
+	callback = function()
+		DecreasePadding()
+	end,
+})
 
--- set cursorline only on active buffer
-vim.cmd([[
-    augroup CursorLine
-    au!
-    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-    au WinLeave * setlocal nocursorline
-    augroup END
-]])
+vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
+	pattern = "*",
+	callback = function()
+		IncreasePadding()
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
+	pattern = "*",
+	callback = function(_)
+		local ft = vim.bo.filetype
+		if ft ~= "toggleterm" then
+			vim.wo.cursorline = true
+		end
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "WinLeave" }, {
+	pattern = "*",
+	callback = function(_)
+		local ft = vim.bo.filetype
+		if ft ~= "toggleterm" then
+			vim.wo.cursorline = false
+		end
+	end,
+})
