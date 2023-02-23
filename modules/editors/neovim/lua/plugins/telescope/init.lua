@@ -57,7 +57,7 @@ telescope.setup({
 			show_all_buffers = true,
 			path_display = function(opts, path)
 				local tail = telescope_utils.path_smart(path)
-				return string.format("%s", tail:sub(4))
+				return string.format("%s", tail:gsub("%../", ""))
 			end,
 			sort_mru = true,
 			mappings = {
@@ -100,7 +100,7 @@ telescope.setup({
 			only_cwd = true,
 			path_display = function(opts, path)
 				local tail = telescope_utils.path_smart(path)
-				return string.format("%s", tail:sub(4))
+				return string.format("%s", tail:gsub("%../", ""))
 			end,
 		},
 	},
