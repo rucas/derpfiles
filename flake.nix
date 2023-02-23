@@ -59,6 +59,10 @@
       url = "github:glepnir/dashboard-nvim";
       flake = false;
     };
+    diffview-nvim = {
+      url = "github:sindrets/diffview.nvim";
+      flake = false;
+    };
     fidget-nvim = {
       url = "github:j-hui/fidget.nvim";
       flake = false;
@@ -93,6 +97,10 @@
     };
     neodev-nvim = {
       url = "github:folke/neodev.nvim";
+      flake = false;
+    };
+    neogen = {
+      url = "github:danymat/neogen";
       flake = false;
     };
     luasnip = {

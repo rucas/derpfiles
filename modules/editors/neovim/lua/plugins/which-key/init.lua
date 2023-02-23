@@ -32,6 +32,13 @@ which_key.register({
 		w = { "<cmd>Telescope lsp_workspace_symbols<cr>", "LSP Workspace Symbols" },
 		x = { "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "LSP Dynamic Workspace Symbols" },
 	},
+	["<leader>n"] = {
+		name = "neogen",
+		c = "Generate Comment for Class",
+		f = "Generate Comment for Function",
+		F = "Generate Comment for File",
+		t = "Generate Comment for Type",
+	},
 	["<leader>p"] = {
 		name = "project",
 		s = { "<cmd>SearchSession<cr>", "Search Project Sessions" },

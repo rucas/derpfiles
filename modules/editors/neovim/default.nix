@@ -37,6 +37,7 @@
       cmp-nvim-lsp
       cmp-path
       dashboard-nvim
+      diffview-nvim
       {
         plugin = fidget-nvim;
         type = "lua";
@@ -63,6 +64,11 @@
       lspkind-nvim
       luasnip
       neodev-nvim
+      {
+        plugin = neogen;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/neogen/init.lua);
+      }
       {
         plugin = neorg;
         type = "lua";

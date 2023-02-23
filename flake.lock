@@ -209,6 +209,22 @@
         "type": "github"
       }
     },
+    "diffview-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1675685478,
+        "narHash": "sha256-B3MkC24F+c4+cM0vGm2HZBnA+CuoZTDEZ0d5oNAuNIA=",
+        "owner": "sindrets",
+        "repo": "diffview.nvim",
+        "rev": "11827d46e939b4748dbdb7e0df4982a63bd59d26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sindrets",
+        "repo": "diffview.nvim",
+        "type": "github"
+      }
+    },
     "fast-syntax-highlighting": {
       "flake": false,
       "locked": {
@@ -541,6 +557,22 @@
       "original": {
         "owner": "folke",
         "repo": "neodev.nvim",
+        "type": "github"
+      }
+    },
+    "neogen": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1673861523,
+        "narHash": "sha256-I8vlVDSJQqFfLkqRS8lwdVAEUxKwi+IKSGFVqZ6l2SE=",
+        "owner": "danymat",
+        "repo": "neogen",
+        "rev": "465af9d6c6fb7f360175991dcc23fc10917e3a06",
+        "type": "github"
+      },
+      "original": {
+        "owner": "danymat",
+        "repo": "neogen",
         "type": "github"
       }
     },
@@ -1039,6 +1071,7 @@
         "cmp-path": "cmp-path",
         "colorful-winsep-nvim": "colorful-winsep-nvim",
         "dashboard-nvim": "dashboard-nvim",
+        "diffview-nvim": "diffview-nvim",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
         "fidget-nvim": "fidget-nvim",
         "gitsigns-nvim": "gitsigns-nvim",
@@ -1051,6 +1084,7 @@
         "lspkind-nvim": "lspkind-nvim",
         "luasnip": "luasnip",
         "neodev-nvim": "neodev-nvim",
+        "neogen": "neogen",
         "neorg-overlay": "neorg-overlay",
         "neovim-nightly": "neovim-nightly",
         "nix-darwin": "nix-darwin",
