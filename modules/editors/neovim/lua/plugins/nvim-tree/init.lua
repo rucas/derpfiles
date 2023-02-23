@@ -87,6 +87,7 @@ nvim_tree.setup({
 		custom = {
 			"^.git$",
 			"^.pytest_cache$",
+			"^.DS_Store$",
 		},
 	},
 })
