@@ -103,6 +103,7 @@ local servers = {
 	"nil_ls",
 	"pyright",
 	"sumneko_lua",
+	"tsserver",
 	"null-ls", -- NOTE: null-ls always last
 }
 
