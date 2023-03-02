@@ -37,7 +37,11 @@
       cmp-nvim-lsp
       cmp-path
       dashboard-nvim
-      diffview-nvim
+      {
+        plugin = diffview-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/diffview-nvim/init.lua);
+      }
       {
         plugin = fidget-nvim;
         type = "lua";
@@ -174,6 +178,7 @@
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.pyright
+      nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
       python310Packages.flake8
       shellcheck
