@@ -105,3 +105,5 @@ vim.opt.completeopt = "menu,menuone,noselect"
 
 -- Sessions
 vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+vim.opt.splitkeep = "screen"
