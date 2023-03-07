@@ -157,8 +157,8 @@
       url = "github:hrsh7th/nvim-cmp";
       flake = false;
     };
-    colorful-winsep-nvim = {
-      url = "github:nvim-zh/colorful-winsep.nvim";
+    overseer-nvim = {
+      url = "github:stevearc/overseer.nvim";
       flake = false;
     };
     plenary-nvim = {
@@ -177,7 +177,6 @@
       url = "github:nvim-telescope/telescope-file-browser.nvim";
       flake = false;
     };
-    # TODO: nvim-treesitter
     telescope-fzf-native-nvim = {
       url = "github:nvim-telescope/telescope-fzf-native.nvim";
       flake = false;

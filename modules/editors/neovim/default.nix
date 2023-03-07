@@ -90,6 +90,11 @@
         config = builtins.readFile (./lua/plugins/nvim-cmp/init.lua);
       }
       {
+        plugin = overseer-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/overseer-nvim/init.lua);
+      }
+      {
         plugin = nvim-colorizer-lua;
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-colorizer/init.lua);
@@ -178,6 +183,7 @@
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.pyright
+      nodePackages.prettier
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
       python310Packages.flake8

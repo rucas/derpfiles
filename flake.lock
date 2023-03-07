@@ -177,22 +177,6 @@
         "type": "github"
       }
     },
-    "colorful-winsep-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1671614457,
-        "narHash": "sha256-96USBiU22uXe1s43668V/S9sAIf0cREhTWv1fSuUBFU=",
-        "owner": "nvim-zh",
-        "repo": "colorful-winsep.nvim",
-        "rev": "2323e7682cd7e7d1448595de3ca5a4762abbbe72",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nvim-zh",
-        "repo": "colorful-winsep.nvim",
-        "type": "github"
-      }
-    },
     "dashboard-nvim": {
       "flake": false,
       "locked": {
@@ -1024,6 +1008,22 @@
         "type": "github"
       }
     },
+    "overseer-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1677997060,
+        "narHash": "sha256-IiYvtlfQWAjAGUHymhmQc/mSzmATH/Owi4mrtfJGorY=",
+        "owner": "stevearc",
+        "repo": "overseer.nvim",
+        "rev": "979f93c57885739f1141e37542bad808a29f7a9a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stevearc",
+        "repo": "overseer.nvim",
+        "type": "github"
+      }
+    },
     "plenary-nvim": {
       "flake": false,
       "locked": {
@@ -1069,7 +1069,6 @@
         "cmp-cmdline": "cmp-cmdline",
         "cmp-nvim-lsp": "cmp-nvim-lsp",
         "cmp-path": "cmp-path",
-        "colorful-winsep-nvim": "colorful-winsep-nvim",
         "dashboard-nvim": "dashboard-nvim",
         "diffview-nvim": "diffview-nvim",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
@@ -1101,6 +1100,7 @@
         "nvim-treesitter": "nvim-treesitter",
         "nvim-ts-rainbow": "nvim-ts-rainbow",
         "nvim-web-devicons": "nvim-web-devicons",
+        "overseer-nvim": "overseer-nvim",
         "plenary-nvim": "plenary-nvim",
         "rest-nvim": "rest-nvim",
         "session-lens": "session-lens",
