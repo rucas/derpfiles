@@ -43,6 +43,11 @@
         config = builtins.readFile (./lua/plugins/diffview-nvim/init.lua);
       }
       {
+        plugin = dressing-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/dressing-nvim/init.lua);
+      }
+      {
         plugin = fidget-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/fidget/init.lua);
@@ -92,7 +97,7 @@
       {
         plugin = overseer-nvim;
         type = "lua";
-        config = builtins.readFile (./lua/plugins/overseer-nvim/init.lua);
+        config = builtins.readFile (./lua/plugins/overseer/init.lua);
       }
       {
         plugin = nvim-colorizer-lua;

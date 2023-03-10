@@ -63,6 +63,10 @@
       url = "github:sindrets/diffview.nvim";
       flake = false;
     };
+    dressing-nvim = {
+      url = "github:stevearc/dressing.nvim";
+      flake = false;
+    };
     fidget-nvim = {
       url = "github:j-hui/fidget.nvim";
       flake = false;

@@ -209,6 +209,22 @@
         "type": "github"
       }
     },
+    "dressing-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1677218794,
+        "narHash": "sha256-89HwP+zxMN5CPPN3dd3yMfCB07mtBhv6lcWuEWnedfw=",
+        "owner": "stevearc",
+        "repo": "dressing.nvim",
+        "rev": "5f44f829481640be0f96759c965ae22a3bcaf7ce",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stevearc",
+        "repo": "dressing.nvim",
+        "type": "github"
+      }
+    },
     "fast-syntax-highlighting": {
       "flake": false,
       "locked": {
@@ -1071,6 +1087,7 @@
         "cmp-path": "cmp-path",
         "dashboard-nvim": "dashboard-nvim",
         "diffview-nvim": "diffview-nvim",
+        "dressing-nvim": "dressing-nvim",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
         "fidget-nvim": "fidget-nvim",
         "gitsigns-nvim": "gitsigns-nvim",

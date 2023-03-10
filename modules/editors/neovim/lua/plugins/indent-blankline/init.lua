@@ -16,6 +16,7 @@ require("indent_blankline").setup({
 		"lspinfo",
 		"markdown",
 		"NvimTree",
+		"OverseerForm",
 		"lsp-installer",
 		"TelescopePrompt",
 		"TelescopeResults",

@@ -13,6 +13,7 @@ let
     "cmp-path"
     "dashboard-nvim"
     "diffview-nvim"
+    "dressing-nvim"
     "fidget-nvim"
     "gitsigns-nvim"
     "glow-nvim"
