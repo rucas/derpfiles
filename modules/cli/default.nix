@@ -31,11 +31,11 @@
     neofetch
     nmap
 
-    # TODO: seperate out to fonts.nix?
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "JetBrainsMono" ]; })
 
     # moreutils
     parallel
+    poetry
     procs
 
     ripgrep
