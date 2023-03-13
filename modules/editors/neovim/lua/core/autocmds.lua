@@ -69,3 +69,10 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 		end
 	end,
 })
+
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+	pattern = "*",
+	callback = function(_)
+		vim.cmd([[setlocal nonumber norelativenumber]])
+	end,
+})
