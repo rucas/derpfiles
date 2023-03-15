@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, inputs, ... }: {
+{ inputs, ... }: {
   programs.zsh = {
     sessionVariables = { ZVM_INIT_MODE = "sourcing"; };
     plugins = [{

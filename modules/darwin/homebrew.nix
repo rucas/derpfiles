@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }: {
+{ ... }: {
   homebrew = {
     enable = true;
     onActivation = { cleanup = "zap"; };

@@ -1,4 +1,4 @@
-{ config, option, lib, pkgs, inputs, ... }: {
+{ inputs, ... }: {
   programs.zsh = {
     plugins = [{
       name = "zsh-autopairs";

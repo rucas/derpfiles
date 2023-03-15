@@ -1,1 +1,1 @@
-{ config, options, lib, pkgs, ... }: { programs.gh = { enable = true; }; }
+{ ... }: { programs.gh = { enable = true; }; }

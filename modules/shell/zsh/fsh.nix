@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, inputs, ... }: {
+{ config, lib, pkgs, inputs, ... }: {
   programs.zsh = {
     initExtra = ''
       fast-theme -q base16 > /dev/null 2>&1

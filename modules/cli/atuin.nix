@@ -1,1 +1,1 @@
-{ config, options, lib, pkgs, ... }: { programs.atuin = { enable = true; }; }
+{ ... }: { programs.atuin = { enable = true; }; }

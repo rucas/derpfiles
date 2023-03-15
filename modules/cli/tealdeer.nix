@@ -1,1 +1,1 @@
-{ config, options, lib, pkgs, ... }: { programs.tealdeer = { enable = true; }; }
+{ ... }: { programs.tealdeer = { enable = true; }; }

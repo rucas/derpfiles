@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }: {
+{ config, ... }: {
   imports = [ ./autopairs.nix ./fsh.nix ./starship.nix ./zsh-vi-mode.nix ];
   programs.zsh = {
     enable = true;

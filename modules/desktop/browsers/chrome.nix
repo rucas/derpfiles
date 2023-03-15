@@ -1,5 +1,4 @@
-{ config, lib, pkgs, ... }:
-
+{ lib, ... }:
 let
   inherit (lib) mkMerge optionalAttrs listToAttrs;
   inherit (lib.systems.elaborate { system = builtins.currentSystem; })

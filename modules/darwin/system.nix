@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }: {
+{ ... }: {
 
   system.defaults.dock.autohide = true;
   system.defaults.dock.show-recents = false;

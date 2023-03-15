@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }: {
+{ lib, pkgs, ... }: {
   imports = [
     ./atuin.nix
     ./bat.nix

@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }: {
+{ ... }: {
   #idk = theme.theme.colors.primary.background;
   programs.bat = {
     enable = true;

@@ -1,1 +1,1 @@
-{ config, options, lib, pkgs, ... }: { imports = [ ./vscode.nix ]; }
+{ ... }: { imports = [ ./vscode.nix ]; }

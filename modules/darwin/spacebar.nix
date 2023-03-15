@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }: {
+{ pkgs, ... }: {
   services.spacebar.enable = true;
   services.spacebar.package = pkgs.spacebar;
   services.spacebar.config = {
@@ -14,7 +14,7 @@
     spacing_right = 15;
     text_font = ''"Hack Nerd Font:Regular:10.0"'';
     icon_font = ''"Hack Nerd Font:Regular:10.0"'';
-    background_color = "0xff202020";
+    background_color = "0xff282828";
     foreground_color = "0xffa8a8a8";
     power_icon_color = "0xffcd950c";
     battery_icon_color = "0xffd75f5f";
@@ -32,7 +32,7 @@
     space_icon_color_tertiary = "0xfffff9b0";
     clock_icon = "";
     dnd_icon = "";
-    clock_format = ''"%d/%m/%y %R"'';
+    clock_format = ''"%m/%d/%y %R"'';
     right_shell = "off";
   };
 }

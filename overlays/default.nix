@@ -1,5 +1,5 @@
 # NOTE: https://www.fbrs.io/nix-overlays/
-{ self, inputs, ... }: {
+{ inputs, ... }: {
   alacritty = (final: prev: {
     alacritty = prev.alacritty.overrideAttrs (drv: rec {
       src = inputs.alacritty;
