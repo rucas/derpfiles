@@ -1,4 +1,4 @@
-local colors = require("gruvbox.palette")
+local colors = require("gruvbox.palette").colors
 local config = require("gruvbox").config
 
 require("gruvbox").setup({
@@ -30,14 +30,15 @@ require("gruvbox").setup({
 		SignColumn = { bg = colors.dark0 },
 
 		--GitSignsCurrentLineBlame = { gui=bold,italic guifg=#ea6962 }
-		GitSignsAdd = { fg = "#545b32", bg = colors.bg0, reverse = config.invert_signs },
-		GitSignsChange = { fg = "#3e5751", bg = colors.bg0, reverse = config.invert_signs },
-		GitSignsDelete = { fg = "#ea6962", bg = colors.bg0, reverse = config.invert_signs },
+		GitSignsAdd = { fg = "#545b32", bg = colors.dark0, reverse = config.invert_signs },
+		GitSignsChange = { fg = "#3e5751", bg = colors.dark0, reverse = config.invert_signs },
+		GitSignsDelete = { fg = "#ea6962", bg = colors.dark0, reverse = config.invert_signs },
 
 		WinSeparator = { guibg = nil, fg = "#383838" },
 
 		NvimTreeNormal = { fg = "#d4be98", bg = "#2b2b2b" },
 		NvimTreeWinSeparator = { guibg = nil, fg = "#2b2b2b" },
+		NvimTreeWindowPicker = { fg = "#ea6962", bg = colors.dark1 },
 
 		NormalFloat = { bg = "#2b2b2b" },
 		--FloatBorder = { fg = "#2b2b2b", bg = "#2b2b2b" },
@@ -47,7 +48,7 @@ require("gruvbox").setup({
 		-- see https://github.com/ellisonleao/gruvbox.nvim/issues/138
 		-- DiagnosticError = { bg = colors.bg0 },
 		-- DiagnosticWarn = { bg = colors.bg0 },
-		-- DiagnosticSignHint = { bg = colors.bg0, fg = colors.red },
+		-- DiagnosticSignHint = { bg = solors.bg0, fg = colors.red },
 		-- DiagnosticSignInfo = { bg = colors.bg0, fg = colors.red },
 		-- LSP signs
 		GruvboxRedSign = { bg = "NONE" },
@@ -105,6 +106,8 @@ require("gruvbox").setup({
 	transparent_mode = false,
 })
 
+-- setup must be called before loading
+
 require("nvim-web-devicons").set_icon({
 	md = {
 		icon = "",
@@ -127,6 +130,7 @@ end
 nvim_web_devicons.set_icon(new_icons)
 
 vim.cmd("colorscheme gruvbox")
+--vim.cmd("colorscheme kanagawa")
 
 -- NOTE: adding other colors to gruvbox
 colors["other_dark"] = "#2b2b2b"

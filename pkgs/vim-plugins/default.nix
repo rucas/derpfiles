@@ -1,4 +1,4 @@
-{ pkgs, inputs, vimUtils, ... }:
+{ inputs, vimUtils, ... }:
 let
   vimFlakes = [
     "SchemaStore-nvim"
@@ -41,10 +41,8 @@ let
     "plenary-nvim"
     "rest-nvim"
     "session-lens"
-    "telescope-file-browser-nvim"
     "telescope-nvim"
     "telescope-symbols-nvim"
-    # "telescope-fzf-native-nvim"
     "todo-comments-nvim"
     "toggleterm-nvim"
     "twilight-nvim"

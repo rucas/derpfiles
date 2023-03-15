@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }: {
   programs.neovim = {
     enable = true;
     extraConfig = "lua require('init')";
@@ -17,11 +17,11 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/autosave/init.lua);
       }
-      {
-        plugin = auto-session;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/auto-session/init.lua);
-      }
+      #{
+      #  plugin = auto-session;
+      #  type = "lua";
+      #  config = builtins.readFile (./lua/plugins/auto-session/init.lua);
+      #}
       {
         plugin = barbecue-nvim;
         type = "lua";
@@ -36,7 +36,7 @@
       cmp-cmdline
       cmp-nvim-lsp
       cmp-path
-      dashboard-nvim
+      #dashboard-nvim
       {
         plugin = diffview-nvim;
         type = "lua";
@@ -58,7 +58,6 @@
         config = builtins.readFile (./lua/plugins/gitsigns/init.lua);
       }
       glow-nvim
-      gruvbox-nvim
       headlines-nvim
       {
         plugin = indent-blankline-nvim;
@@ -70,6 +69,7 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/iron-nvim/init.lua);
       }
+      gruvbox-nvim
       lspkind-nvim
       luasnip
       neodev-nvim
@@ -135,12 +135,11 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/rest/init.lua);
       }
-      {
-        plugin = session-lens;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/session-lens/init.lua);
-      }
-      telescope-file-browser-nvim
+      #{
+      #  plugin = session-lens;
+      #  type = "lua";
+      #  config = builtins.readFile (./lua/plugins/session-lens/init.lua);
+      #}
       telescope-fzf-native-nvim
       {
         plugin = telescope-nvim;
@@ -196,7 +195,7 @@
       shfmt
       statix
       stylua
-      sumneko-lua-language-server
+      lua-language-server
     ];
     viAlias = true;
   };

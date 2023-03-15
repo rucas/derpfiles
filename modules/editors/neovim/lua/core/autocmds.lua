@@ -54,7 +54,7 @@ vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
 	pattern = "*",
 	callback = function(_)
 		local ft = vim.bo.filetype
-		if ft ~= "toggleterm" then
+		if not (ft == "toggleterm" or ft == "NvimTree") then
 			vim.wo.cursorline = true
 		end
 	end,
@@ -64,7 +64,7 @@ vim.api.nvim_create_autocmd({ "WinLeave" }, {
 	pattern = "*",
 	callback = function(_)
 		local ft = vim.bo.filetype
-		if ft ~= "toggleterm" then
+		if not (ft == "toggleterm" or ft == "NvimTree") then
 			vim.wo.cursorline = false
 		end
 	end,

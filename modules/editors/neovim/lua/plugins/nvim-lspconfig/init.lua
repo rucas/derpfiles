@@ -95,7 +95,7 @@ local servers = {
 	"jsonls",
 	"nil_ls",
 	"pyright",
-	"sumneko_lua",
+	"lua_ls",
 	"tsserver",
 	"null-ls", -- NOTE: null-ls always last
 }

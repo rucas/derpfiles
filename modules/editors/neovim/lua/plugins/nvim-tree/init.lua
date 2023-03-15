@@ -80,6 +80,14 @@ nvim_tree.setup({
 			padding = " ",
 			show = {
 				git = false,
+				folder_arrow = false,
+			},
+			glyphs = {
+				folder = {
+					default = "",
+					open = "",
+					empty = "",
+				},
 			},
 		},
 	},

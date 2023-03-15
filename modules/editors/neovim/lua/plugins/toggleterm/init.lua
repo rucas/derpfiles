@@ -1,11 +1,11 @@
 local function set_nvimtree_when_open_term(terminal)
-	local nvimtree = require("nvim-tree")
+	local nvimtree_api = require("nvim-tree.api")
 	local nvimtree_view = require("nvim-tree.view")
 	if nvimtree_view.is_visible() and terminal.direction == "horizontal" then
 		local nvimtree_width = vim.fn.winwidth(nvimtree_view.get_winnr())
-		nvimtree.toggle()
+		nvimtree_api.tree.toggle()
 		nvimtree_view.View.width = nvimtree_width
-		nvimtree.toggle(false, true)
+		nvimtree_api.tree.toggle({ focus = false })
 	end
 end
 
