@@ -5,7 +5,7 @@
       src = inputs.alacritty;
       cargoDeps = drv.cargoDeps.overrideAttrs (prev.lib.const {
         inherit src;
-        outputHash = "sha256-3reMU7O3E7LXwvFlebm+oZ8QgK+gKPNhc35aW3ICZV0=";
+        outputHash = "sha256-lMauqBB1noXym0SQgIl3WE7fHvumpi0pKHaku+0xHCE=";
       });
     });
   });
