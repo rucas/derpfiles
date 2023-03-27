@@ -25,6 +25,13 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 	end,
 })
 
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "TelescopePrompt",
+	callback = function()
+		vim.cmd([[setlocal nocursorline]])
+	end,
+})
+
 -- Alacritty Padding
 function IncreasePadding()
 	vim.cmd("silent !alacritty msg config 'window.padding.x=45'")
@@ -74,5 +81,21 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
 	pattern = "*",
 	callback = function(_)
 		vim.cmd([[setlocal nonumber norelativenumber]])
+	end,
+})
+
+-- NOTE: fix for auto-session
+-- This autocmd will check whether nvim-tree is open when the session is restored and refresh it.
+-- SEE: https://github.com/nvim-tree/nvim-tree.lua/wiki/Recipes#workaround-when-using-rmagattiauto-session
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+	pattern = "NvimTree*",
+	callback = function()
+		local view = require("nvim-tree.view")
+		local is_visible = view.is_visible()
+
+		local api = require("nvim-tree.api")
+		if not is_visible then
+			api.tree.open()
+		end
 	end,
 })

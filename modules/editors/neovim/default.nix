@@ -20,11 +20,11 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/autosave/init.lua);
       }
-      #{
-      #  plugin = auto-session;
-      #  type = "lua";
-      #  config = builtins.readFile (./lua/plugins/auto-session/init.lua);
-      #}
+      {
+        plugin = auto-session;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/auto-session/init.lua);
+      }
       {
         plugin = barbecue-nvim;
         type = "lua";
