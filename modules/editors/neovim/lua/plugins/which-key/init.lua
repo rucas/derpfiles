@@ -28,11 +28,12 @@ which_key.register({
 		x = { "Dynamic Workspace Symbols" },
 	},
 	["<leader>n"] = {
-		name = "neogen",
-		c = "Generate Comment for Class",
-		f = "Generate Comment for Function",
-		F = "Generate Comment for File",
-		t = "Generate Comment for Type",
+		name = "neogen/neorg",
+		c = "Class comment",
+		f = "Function comment",
+		F = "File comment",
+		t = "Type comment",
+		n = "New note",
 	},
 	["<leader>p"] = {
 		name = "project",
@@ -43,8 +44,10 @@ which_key.register({
 		name = "repl",
 		t = { "Toggle repl" },
 		r = { "Restart repl" },
-		f = { "Focus repl" },
+		f = { "Send file to repl" },
+		F = { "Focus repl" },
 		h = { "Hide repl" },
+		m = { "Send mark to repl" },
 	},
 	["<leader>/"] = { name = "search" },
 	["<leader>t"] = {
@@ -76,7 +79,7 @@ which_key.setup({
 	layout = {
 		align = "left",
 		height = { min = 4, max = 25 }, -- min and max height of the columns
-		width = { min = 20, max = 50 }, -- min and max width of the columns
+		width = { min = 20, max = 60 }, -- min and max width of the columns
 		spacing = 30, -- spacing between columns
 	},
 	disable = {

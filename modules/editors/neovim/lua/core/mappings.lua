@@ -22,7 +22,7 @@ vim.keymap.set({ "n" }, "<C-h>", "<cmd>wincmd h<cr>", { noremap = true, silent =
 vim.keymap.set({ "n" }, "<C-l>", "<cmd>wincmd l<cr>", { noremap = true, silent = true })
 
 -- neogen
---
+
 vim.keymap.set({ "n" }, "<Leader>nc", "<cmd>Neogen class<cr>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "<Leader>nf", "<cmd>Neogen func<cr>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "<Leader>nF", "<cmd>Neogen file<cr>", { noremap = true, silent = true })
@@ -37,8 +37,10 @@ vim.keymap.set({ "n" }, "<Leader>bD", "<cmd>bd<cr>", { noremap = true, silent = 
 --
 vim.keymap.set({ "n" }, "<Leader>rt", "<cmd>IronRepl<cr>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "<Leader>rr", "<cmd>IronRestart<cr>", { noremap = true, silent = true })
-vim.keymap.set({ "n" }, "<Leader>rf", "<cmd>IronFocus<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n" }, "<Leader>rF", "<cmd>IronFocus<cr>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "<Leader>rh", "<cmd>IronHide<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n" }, "<Leader>rf", "<cmd>:lua require('iron.core').send_file()<cr>")
+vim.keymap.set({ "n" }, "<Leader>rm", "<cmd>:lua require('iron.core').send_mark()<cr>")
 
 -- files
 --
