@@ -51,6 +51,7 @@ nvim_tree.setup({
 	update_focused_file = {
 		enable = true,
 		update_root = true,
+		ignore_list = { "toggleterm", "term" },
 	},
 	view = {
 		cursorline = false,
@@ -93,9 +94,10 @@ nvim_tree.setup({
 	},
 	filters = {
 		custom = {
+			"^.DS_Store$",
 			"^.git$",
 			"^.pytest_cache$",
-			"^.DS_Store$",
+			"^.scratch$",
 			"^.vscode$",
 		},
 	},
