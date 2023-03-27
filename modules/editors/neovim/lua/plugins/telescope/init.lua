@@ -24,6 +24,7 @@ telescope.setup({
 		},
 		prompt_prefix = "",
 		selection_caret = " ",
+		multi_icon = " ",
 		entry_prefix = "  ",
 		initial_mode = "insert",
 		selection_strategy = "reset",
@@ -38,7 +39,7 @@ telescope.setup({
 			vertical = {
 				mirror = false,
 			},
-			width = 0.80,
+			width = 0.70,
 			height = 0.60,
 			preview_cutoff = 80,
 		},
