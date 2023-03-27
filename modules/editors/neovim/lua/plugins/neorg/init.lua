@@ -1,6 +1,12 @@
 require("neorg").setup({
 	load = {
 		["core.defaults"] = {},
+		["core.norg.manoeuvre"] = {},
+		["core.keybinds"] = {
+			config = {
+				neorg_leader = "<Leader>",
+			},
+		},
 		["core.norg.dirman"] = {
 			config = {
 				workspaces = {
@@ -18,8 +24,7 @@ require("neorg").setup({
 							icon = "",
 						},
 						pending = {
-							icon = "",
-							--icon = "",
+							icon = "",
 						},
 						uncertain = {
 							icon = "",
@@ -28,7 +33,7 @@ require("neorg").setup({
 							icon = "",
 						},
 						undone = {
-							icon = "",
+							icon = "_",
 						},
 						cancelled = {
 							icon = "ﮊ",
@@ -42,6 +47,5 @@ require("neorg").setup({
 				engine = "nvim-cmp",
 			},
 		},
-		["core.norg.manoeuvre"] = {},
 	},
 })
