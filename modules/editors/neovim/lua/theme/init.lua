@@ -5,7 +5,12 @@ require("gruvbox").setup({
 	undercurl = true,
 	underline = true,
 	bold = true,
-	italic = true,
+	italic = {
+		strings = true,
+		comments = true,
+		operators = false,
+		folds = true,
+	},
 	strikethrough = true,
 	invert_selection = false,
 	invert_signs = false,
@@ -69,7 +74,6 @@ require("gruvbox").setup({
 		-- Telescope Prompt: this is where you type in Telescope
 		TelescopePromptNormal = {
 			fg = "#d4be98",
-			-- fg = colors.bright_green,
 			bg = colors.dark1,
 		},
 		TelescopePromptBorder = {
@@ -99,7 +103,8 @@ require("gruvbox").setup({
 			bg = "#2b2b2b",
 		},
 		LineNr = { fg = colors.dark1 },
-		CursorLineNr = { fg = colors.dark1, bg = "#3c3836" },
+		CursorLine = { bg = "#303030" },
+		CursorLineNr = { fg = colors.dark1, bg = "#303030" },
 		FoldColumn = { fg = colors.dark2, bg = colors.dark0 },
 	},
 	dim_inactive = false,
