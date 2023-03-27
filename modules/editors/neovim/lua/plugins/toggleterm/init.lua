@@ -16,7 +16,7 @@ require("toggleterm").setup({
 		vim.bo.scrollback = 100000
 		set_nvimtree_when_open_term(terminal)
 		vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], { buffer = 0, silent = true })
-		--vim.keymap.set("t", "jk", [[<C-\><C-n>]], { buffer = 0, silent = true })
+		vim.keymap.set("t", "jk", [[<C-\><C-n>]], { buffer = 0, silent = true })
 		vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<CR>", { buffer = 0, silent = true })
 		vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<CR>", { buffer = 0, silent = true })
 		vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<CR>", { buffer = 0, silent = true })
@@ -24,12 +24,6 @@ require("toggleterm").setup({
 		vim.keymap.set("t", "<C-w>", function()
 			vim.fn.feedkeys("\x0c", "n")
 		end, { buffer = 0, silent = true })
-		--vim.keymap.set("t", "<C-f>", function()
-		--	vim.fn.feedkeys("\x0c", "n")
-		--	local sb = vim.bo.scrollback
-		--	vim.bo.scrollback = 1
-		--	vim.bo.scrollback = sb
-		--end, { buffer = 0, silent = true })
 	end,
 	on_close = function(_) end,
 	highlights = {},
