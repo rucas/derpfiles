@@ -1,7 +1,10 @@
 { pkgs, inputs, ... }: {
   programs.neovim = {
     enable = true;
-    extraConfig = "lua require('init')";
+    defaultEditor = true;
+    extraLuaConfig = ''
+      require("init");
+    '';
     plugins = with pkgs.vimPlugins; [
       {
         plugin = (nvim-treesitter.withAllGrammars).overrideAttrs (_: {
@@ -37,11 +40,11 @@
       cmp-nvim-lsp
       cmp-path
       #dashboard-nvim
-      {
-        plugin = diffview-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/diffview-nvim/init.lua);
-      }
+      #{
+      #  plugin = diffview-nvim;
+      #  type = "lua";
+      #  config = builtins.readFile (./lua/plugins/diffview-nvim/init.lua);
+      #}
       {
         plugin = dressing-nvim;
         type = "lua";
