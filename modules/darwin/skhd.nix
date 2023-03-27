@@ -26,5 +26,11 @@
 
     # reload skhd and yabai
     shift + ctrl + alt - r: pkill yabai && ${pkgs.skhd}/bin/skhd -r
+
+    # i3 madness
+    ctrl + cmd - h : yabai -m window west --resize right:-20:0 2> /dev/null || yabai -m window --resize right:-20:0
+    ctrl + cmd - j : yabai -m window north --resize bottom:0:20 2> /dev/null || yabai -m window --resize bottom:0:20
+    ctrl + cmd - k : yabai -m window south --resize top:0:-20 2> /dev/null || yabai -m window --resize top:0:-20
+    ctrl + cmd - l : yabai -m window east --resize left:20:0 2> /dev/null || yabai -m window --resize left:20:0
   '';
 }
