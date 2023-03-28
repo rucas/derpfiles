@@ -26,6 +26,7 @@
 
     # reload skhd and yabai
     shift + ctrl + alt - r: pkill yabai && ${pkgs.skhd}/bin/skhd -r
+    shift + ctrl + alt - t: open -na ~/Applications/Home\ Manager\ Apps/Alacritty.app
 
     # i3 madness
     ctrl + cmd - h : yabai -m window west --resize right:-20:0 2> /dev/null || yabai -m window --resize right:-20:0
