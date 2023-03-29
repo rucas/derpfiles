@@ -7,6 +7,15 @@ local function collapse_all()
 	require("nvim-tree.actions.collapse-all").fn()
 end
 
+local function telescope_live_grep()
+	local node = lib.get_node_at_cursor()
+	local is_folder = node.fs_stat and node.fs_stat.type == "directory" or false
+	local basedir = is_folder and node.absolute_path or vim.fn.fnamemodify(node.absolute_path, ":h")
+	local opts = {}
+	opts.cwd = basedir
+	return require("telescope.builtin")["live_grep"](opts)
+end
+
 local function edit_or_open()
 	-- open as vsplit on current node
 	local action = "edit"
@@ -64,6 +73,7 @@ nvim_tree.setup({
 				{ key = "h", action = "close_node" },
 				{ key = "H", action = "collapse_all", action_cb = collapse_all },
 				{ key = "<C-c>", action = "global_cwd", action_cb = change_root_to_global_cwd },
+				{ key = "<C-g>", action = "telescope_live_grep", action_cb = telescope_live_grep },
 			},
 		},
 	},
