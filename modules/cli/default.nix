@@ -43,6 +43,7 @@
     sqlite
     tree
     wget
+    xsv
     xz
     yq
   ];
