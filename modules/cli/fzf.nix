@@ -2,6 +2,8 @@
   programs.fzf = {
     enable = true;
     fileWidgetCommand = "fd --type f";
+    fileWidgetOptions = [ "--preview 'head {}'" ];
+    changeDirWidgetCommand = "fd --type d";
     defaultOptions = [
       "--color=fg:#a89984,bg:#282828,hl:#d79921"
       "--color=fg+:#ebdbb2,bg+:#282828,hl+:#fabd2f"

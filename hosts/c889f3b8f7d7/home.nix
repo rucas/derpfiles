@@ -16,7 +16,4 @@
   home.stateVersion = "22.11";
 
   fonts.fontconfig.enable = true;
-
-  home.sessionPath = [ "$HOME/.toolbox/bin" ];
-
 }
