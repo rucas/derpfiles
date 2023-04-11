@@ -2,8 +2,10 @@
   programs.fzf = {
     enable = true;
     fileWidgetCommand = "fd --type f";
-    fileWidgetOptions = [ "--preview 'head {}'" ];
+    fileWidgetOptions =
+      [ "--preview 'bat --color=always --line-range=:500 --style=plain {}'" ];
     changeDirWidgetCommand = "fd --type d";
+    changeDirWidgetOptions = [ "--preview 'tree -C {} | head -200'" ];
     defaultOptions = [
       "--color=fg:#a89984,bg:#282828,hl:#d79921"
       "--color=fg+:#ebdbb2,bg+:#282828,hl+:#fabd2f"

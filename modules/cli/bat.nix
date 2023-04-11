@@ -1,5 +1,4 @@
 { ... }: {
-  #idk = theme.theme.colors.primary.background;
   programs.bat = {
     enable = true;
     config = {
