@@ -107,3 +107,5 @@ vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 vim.opt.splitkeep = "screen"
+
+vim.opt.conceallevel = 2

@@ -25,6 +25,16 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+	pattern = { "*.md", "*.norg" },
+	callback = function()
+		vim.bo.textwidth = 80
+		vim.bo.wrapmargin = 0
+		vim.bo.formatoptions = vim.bo.formatoptions .. "t"
+		vim.cmd([[setlocal linebreak]])
+	end,
+})
+
 vim.api.nvim_create_autocmd("Filetype", {
 	pattern = "TelescopePrompt",
 	callback = function()
