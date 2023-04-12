@@ -4,7 +4,7 @@
     fileWidgetCommand = "fd --type f";
     fileWidgetOptions =
       [ "--preview 'bat --color=always --line-range=:500 --style=plain {}'" ];
-    changeDirWidgetCommand = "fd --type d";
+    changeDirWidgetCommand = "fd -L --max-depth=2 --type=directory";
     changeDirWidgetOptions = [ "--preview 'tree -C {} | head -200'" ];
     defaultOptions = [
       "--color=fg:#a89984,bg:#282828,hl:#d79921"

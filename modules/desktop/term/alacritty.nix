@@ -57,6 +57,7 @@
         size = 12;
       };
       mouse.hide_when_typing = true;
+      # NOTE: https://github.com/alacritty/alacritty/issues/93#issuecomment-1364783147
       key_bindings = [
         {
           key = "Comma";
@@ -76,17 +77,23 @@
           mods = "Alt";
           chars = " ";
         }
-        # TODO: finish off QOL key bindings...
-        #{
-        #  key = "Back";
-        #  mods = "Super";
-        #  chars = "\x15";
-        #}
+        {
+          key = "Back";
+          mods = "Super";
+          chars = "\\x15";
+        }
+        # FZF alt-c change directory widget
+        {
+          key = "C";
+          mods = "Alt";
+          chars = "\\x1bc";
+        }
       ];
       shell = {
         program = "zsh";
         args = [ "--login" ];
       };
+      env = { TERM = "xterm-256color"; };
       #hints = {
       #  enabled = [{
       #    regex =
