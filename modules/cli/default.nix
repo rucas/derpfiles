@@ -20,6 +20,7 @@
     grex
     gnumake
     htop
+    hurl
     hyperfine
     inetutils
     jwt-cli
