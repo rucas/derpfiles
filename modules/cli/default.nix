@@ -15,6 +15,7 @@
     calc
     coreutils
     curl
+    dogdns
     du-dust
     fd
     grex
