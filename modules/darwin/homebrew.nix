@@ -13,6 +13,7 @@
       "dropbox"
       "dynobase"
       "slack"
+      "shortcat"
       "maccy"
       "obs"
       "vlc"
