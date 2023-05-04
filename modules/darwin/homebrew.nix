@@ -2,7 +2,7 @@
   homebrew = {
     enable = true;
     onActivation = { cleanup = "zap"; };
-    taps = [ "homebrew/cask-fonts" "bradyjoslin/sharewifi" ];
+    taps = [ "bradyjoslin/sharewifi" "espanso/espanso" "homebrew/cask-fonts" ];
     casks = [
       "1password"
       "aerial"
@@ -12,6 +12,7 @@
       "docker"
       "dropbox"
       "dynobase"
+      "espanso"
       "slack"
       "shortcat"
       "maccy"

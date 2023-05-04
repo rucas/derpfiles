@@ -7,6 +7,7 @@
     ../../modules/desktop/editors
     ../../modules/editors/neovim
     ../../modules/desktop/browsers
+    ../../modules/desktop/productivity
   ];
 
   programs.home-manager.enable = true;
