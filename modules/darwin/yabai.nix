@@ -16,7 +16,7 @@
     };
     extraConfig = ''
       yabai -m rule --add app='System Preferences' manage=off
-      yabai -m rule --add app='Microsoft Outlook' manage=off
+      yabai -m rule --add app='Cisco AnyConnect Secure Mobility Client' manage=off
     '';
   };
 }
