@@ -25,4 +25,9 @@
   system.defaults.screencapture.location = "/tmp";
 
   system.defaults.NSGlobalDomain._HIHideMenuBar = true;
+
+  system.activationScripts.postActivation.text = ''
+    # Disable Dock icons bouncing
+    defaults write com.apple.dock no-bouncing -bool true
+  '';
 }
