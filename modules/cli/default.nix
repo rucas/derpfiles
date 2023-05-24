@@ -43,6 +43,7 @@
     ripgrep
     sd
     sqlite
+    timer
     tree
     wget
     xsv
