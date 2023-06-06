@@ -55,14 +55,16 @@ end
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, {
 	pattern = "*",
-	callback = function()
+	callback = function(ev)
+        print(string.format('event fired: %s', vim.inspect(ev)))
 		DecreasePadding()
 	end,
 })
 
 vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
 	pattern = "*",
-	callback = function()
+	callback = function(ev)
+        print(string.format('event fired: %s', vim.inspect(ev)))
 		IncreasePadding()
 	end,
 })

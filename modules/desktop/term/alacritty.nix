@@ -93,7 +93,7 @@
         program = "zsh";
         args = [ "--login" ];
       };
-      env = { TERM = "xterm-256color"; };
+      env = { TERM = "alacritty"; };
       #hints = {
       #  enabled = [{
       #    regex =

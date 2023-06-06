@@ -8,6 +8,7 @@
     ./git.nix
     ./gitui.nix
     ./tealdeer.nix
+    ./tmux.nix
   ];
   home.packages = with pkgs; [
     awscli
