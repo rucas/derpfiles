@@ -42,32 +42,34 @@ vim.api.nvim_create_autocmd("Filetype", {
 	end,
 })
 
+-- TODO: figure out how to do this with tmux hooks
+-- 
 -- Alacritty Padding
-function IncreasePadding()
-	vim.cmd("silent !alacritty msg config 'window.padding.x=45'")
-	vim.cmd("silent !alacritty msg config 'window.padding.y=45'")
-end
-
-function DecreasePadding()
-	vim.cmd("silent !alacritty msg config 'window.padding.x=2'")
-	vim.cmd("silent !alacritty msg config 'window.padding.y=2'")
-end
-
-vim.api.nvim_create_autocmd({ "VimEnter" }, {
-	pattern = "*",
-	callback = function(ev)
-        print(string.format('event fired: %s', vim.inspect(ev)))
-		DecreasePadding()
-	end,
-})
-
-vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
-	pattern = "*",
-	callback = function(ev)
-        print(string.format('event fired: %s', vim.inspect(ev)))
-		IncreasePadding()
-	end,
-})
+--function IncreasePadding()
+--	vim.cmd("silent !alacritty msg config 'window.padding.x=45'")
+--	vim.cmd("silent !alacritty msg config 'window.padding.y=45'")
+--end
+--
+--function DecreasePadding()
+--	vim.cmd("silent !alacritty msg config 'window.padding.x=2'")
+--	vim.cmd("silent !alacritty msg config 'window.padding.y=2'")
+--end
+--
+--vim.api.nvim_create_autocmd({ "VimEnter" }, {
+--	pattern = "*",
+--	callback = function(ev)
+--        print(string.format('event fired: %s', vim.inspect(ev)))
+--		DecreasePadding()
+--	end,
+--})
+--
+--vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
+--	pattern = "*",
+--	callback = function(ev)
+--        print(string.format('event fired: %s', vim.inspect(ev)))
+--		IncreasePadding()
+--	end,
+--})
 
 vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
 	pattern = "*",
