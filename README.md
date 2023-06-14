@@ -106,6 +106,10 @@ $ nix flake lock --update-input <INPUT>
 $ nix flake lock --update-input nixpkgs
 ```
 
+### How do I open the current terminal line in my editor in Normal mode (zsh-vi-mode)?
+
+In Normal mode you can type `vv` to edit current command line in an editor 
+
 ## Contribute
 
 PRs accepted. Checkout [CONTRIBUTING.md](CONTRIBUTING.md)
