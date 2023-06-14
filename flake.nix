@@ -277,7 +277,11 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              theme = builtins.fromTOML
+                (builtins.readFile ./modules/themes/gruvbox.toml);
+            };
             home-manager.users.awslucas = import ./hosts/c889f3b8f7d7/home.nix;
           }
         ];
