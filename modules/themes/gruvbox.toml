@@ -1,5 +1,5 @@
-#scheme = "Gruvbox?"
-#author = "rucas"
+# scheme = "Gruvbox?"
+# author = "rucas"
 [colors]
   # Default colors
   [colors.primary]
@@ -9,6 +9,7 @@
     other_foreground = "#d4be98"
     dark1 = "#3c3836"
     red = "#ea6962"
+    orange = "#e78a4e"
 
   # Normal colors
   [colors.normal]

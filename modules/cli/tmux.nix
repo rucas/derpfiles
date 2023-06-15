@@ -1,6 +1,7 @@
 { pkgs, theme, ... }: {
   programs.tmux = {
     aggressiveResize = true;
+    disableConfirmationPrompt = true;
     enable = true;
     keyMode = "vi";
     prefix = "C-a";
@@ -35,20 +36,28 @@
       # status line on the top
       set -g status-position top
 
-      # add a border for status line
+      # theme color variables
+      set -g @THM_FG      "${theme.colors.primary.other_foreground}"
+      set -g @THM_BG      "${theme.colors.primary.other_background}"
+      set -g @THM_BLK     "${theme.colors.primary.dark1}"
+      set -g @THM_BRW     "${theme.colors.bright.black}"
+      set -g @THM_GRY     "${theme.colors.normal.dark_grey}"
+      set -g @THM_ORG     "${theme.colors.primary.orange}"
+      set -g @THM_RD      "${theme.colors.primary.red}"
+
+      set -g @THM_BRD_FG  "${theme.colors.normal.dark_grey}"
+
+      # adds a border seperator for status line
       setw -g pane-border-status top
       setw -g pane-border-format ""
-      setw -g pane-active-border-style fg=${theme.colors.normal.dark_grey}
+      setw -g pane-active-border-style "fg=#{@THM_GRY}"
 
       # left window list
       set -g status-justify left
-      set -g status-style bg=${theme.colors.primary.other_background},fg=${theme.colors.primary.other_foreground}
+      set -g status-style "bg=#{@THM_BG},fg=#{@THM_FG}"
 
-      # setw -g window-status-seperator ' '
-
-      ## {?pane_in_mode,#[fg=#2b2b2b#,bg=#e78a4e],}\
       # status left styles
-      set -g status-left "#[fg=#d4be98,bg=#2b2b2b,bold]\
+      set -g status-left "#[bg=#{@THM_BG},fg=#{@THM_FG},bold]\
       #{?window_zoomed_flag,#[bg=colour39],}\
       #{?client_prefix,#[fg=#7daea3],}\
       #{?pane_in_mode,#[fg=#2b2b2b#,bg=#e78a4e],}\
@@ -57,18 +66,18 @@
 
       # status right styles
       # NOTE: https://github.com/tmux-plugins/tmux-continuum/issues/48#issuecomment-603476019
-
-      set -g status-right '#[fg=#d4be98,bg=#2b2b2b] #(TZ="America/Los_Angeles" date +"%%H:%%M") \
+      set -g status-right '#[bg=#{@THM_BG},fg=#{@THM_FG}] \
+      #(TZ="America/Los_Angeles" date +"%%H:%%M") \
       (UTC #(TZ=GMT date +"%%H:%%M"))\
       #(${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/scripts/continuum_save.sh)'
       set -g status-right-length 100
 
       # inactive window style
-      set -g window-status-style fg=${theme.colors.bright.black},bg=${theme.colors.primary.dark1}
+      set -g window-status-style "bg=#{@THM_BLK},fg=#{@THM_BRW}"
       set -g window-status-format '  #W  '
 
       # active window style
-      set -g window-status-current-style fg=${theme.colors.primary.red},bg=${theme.colors.primary.dark1}
+      set -g window-status-current-style "bg=#{@THM_BLK},fg=#{@THM_RD}"
       set -g window-status-current-format '  #W  '
 
       # message command style
