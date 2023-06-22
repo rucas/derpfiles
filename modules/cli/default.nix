@@ -6,6 +6,7 @@
     ./fzf.nix
     ./gh.nix
     ./git.nix
+    ./gitmux.nix
     ./gitui.nix
     ./tealdeer.nix
     ./tmux.nix
@@ -16,11 +17,16 @@
     calc
     coreutils
     curl
+    dateutils
     dogdns
     du-dust
     fd
+
+    gitmux
     grex
     gnumake
+
+    hexyl
     htop
     hurl
     hyperfine
@@ -33,6 +39,8 @@
     netcat
     neofetch
     nmap
+
+    onefetch
 
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "JetBrainsMono" ]; })
 

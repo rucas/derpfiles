@@ -68,7 +68,8 @@
       # NOTE: https://github.com/tmux-plugins/tmux-continuum/issues/48#issuecomment-603476019
       set -g status-right '#[bg=#{@THM_BG},fg=#{@THM_FG}] \
       #(TZ="America/Los_Angeles" date +"%%H:%%M") \
-      (UTC #(TZ=GMT date +"%%H:%%M"))\
+      (UTC #(TZ=GMT date +"%%H:%%M"))  \
+      #(gitmux -cfg $HOME/.config/gitmux/gitmux.conf "#{pane_current_path}")\
       #(${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/scripts/continuum_save.sh)'
       set -g status-right-length 100
 
@@ -81,7 +82,7 @@
       set -g window-status-current-format '  #W  '
 
       # message command style
-      set -g message-style bg=${theme.colors.primary.other_background},fg=${theme.colors.primary.other_foreground}
+      set -g message-style "bg=#{@THM_BG},fg=#{@THM_FG}"
 
       # highlight window when it has new activity
       set -g monitor-activity on
