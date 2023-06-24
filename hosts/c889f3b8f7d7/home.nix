@@ -1,4 +1,4 @@
-{ ... }: {
+{ lib, pkgs, ... }: {
 
   imports = [
     ../../modules/cli
@@ -17,6 +17,11 @@
   home.stateVersion = "22.11";
 
   fonts.fontconfig.enable = true;
+
+  home.packages = [
+    # (lib.mkIf pkgs.stdenv.isDarwin (import ../../pkgs/dnd pkgs))
+    (import ../../pkgs/dnd pkgs)
+  ];
 
   home.sessionPath = [ "$HOME/.toolbox/bin" ];
 }

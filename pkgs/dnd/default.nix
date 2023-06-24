@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-  dnd = pkgs.writeShellScriptBin "dnd" ''
-    echo Hello!
-  '';
-}
+{ writeShellScriptBin, ... }:
+
+writeShellScriptBin "dnd" ''
+  echo Hello fucker!!!
+''
