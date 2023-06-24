@@ -14,12 +14,15 @@
   home.packages = with pkgs; [
     awscli
     bandwhich
+
     calc
     coreutils
     curl
+
     dateutils
     dogdns
     du-dust
+
     fd
 
     gitmux
@@ -30,7 +33,9 @@
     htop
     hurl
     hyperfine
+
     inetutils
+
     jwt-cli
     jq
 
@@ -50,11 +55,15 @@
     procs
 
     ripgrep
+
     sd
     sqlite
+
     timer
     tree
+
     wget
+
     xsv
     xz
     yq
