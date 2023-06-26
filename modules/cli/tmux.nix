@@ -44,6 +44,7 @@
       set -g @THM_GRY     "${theme.colors.normal.dark_grey}"
       set -g @THM_ORG     "${theme.colors.primary.orange}"
       set -g @THM_RD      "${theme.colors.primary.red}"
+      set -g @THM_BLU     "${theme.colors.bright.blue}"
 
       set -g @THM_BRD_FG  "${theme.colors.normal.dark_grey}"
 
@@ -67,9 +68,9 @@
       # status right styles
       # NOTE: https://github.com/tmux-plugins/tmux-continuum/issues/48#issuecomment-603476019
       set -g status-right '#[bg=#{@THM_BG},fg=#{@THM_FG}] \
-      #(TZ="America/Los_Angeles" date +"%%H:%%M") \
-      (UTC #(TZ=GMT date +"%%H:%%M"))  \
-      #(gitmux -cfg $HOME/.config/gitmux/gitmux.conf "#{pane_current_path}")\
+      ⋮ #(gitmux -cfg $HOME/.config/gitmux/gitmux.conf "#{pane_current_path}") \
+      ⋮ #[fg=#{@THM_BLU}] #(TZ="America/Los_Angeles" date +"%%H:%%M") \
+      #[fg=#{@THM_BRW}](UTC #(TZ=GMT date +"%%H:%%M")) \
       #(${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/scripts/continuum_save.sh)'
       set -g status-right-length 100
 
