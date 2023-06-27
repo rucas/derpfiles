@@ -1,20 +1,13 @@
-{ pkgs, ... }:
+{ writeShellApplication, ... }:
 
-##writeShellApplication "dnd" ''
-##  echo Hello fucker!!!
-##''
-
-##xdg.configFile."dnd/dnd.shortcut" {
-##  text = ''sup''
-##};
-
-pkgs.writeShellApplication {
+writeShellApplication {
   name = "dnd";
 
   runtimeInputs = [ ];
 
   text = ''
 
+    shortcut_cmd="macos-focus-mode"
     command="$(basename "$0")"
 
     help() {
@@ -23,12 +16,16 @@ pkgs.writeShellApplication {
       printf -- "    on        Turn ON do-not-disturb (DND) mode\n"
       printf -- "    off       Turn OFF do-not-disturb (DND) mode\n"
       printf -- "    install   Install macos-focus-mode shortcut\n"
-      printf -- "    toggle   Toggle do-not-disturb (DND) mode ON and OFF\n"
-      printf -- "    status   Get the current status of do-not-disturb (DND) mode\n"
+      printf -- "    toggle    Toggle do-not-disturb (DND) mode ON and OFF\n"
+      printf -- "    status    Get the current status of do-not-disturb (DND) mode\n"
     }
 
     install() {
-      open "$HOME/.config/dnd/macos-focus-mode.shortcut"
+      open "$HOME/Code/derpfiles/modules/darwin/shortcuts/macos-focus-mode.shortcut"
+    }
+
+    on() {
+      shortcuts run "$shortcut_cmd" <<< "on"
     }
 
     status() {

@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }: {
+{ pkgs, ... }: {
 
   imports = [
     ../../modules/cli
@@ -19,10 +19,11 @@
   fonts.fontconfig.enable = true;
 
   home.packages = [
-    # (lib.mkIf pkgs.stdenv.isDarwin (import ../../pkgs/dnd pkgs))
-    (import ../../pkgs/dnd { inherit pkgs; })
-    (import ../../pkgs/nah pkgs)
-
+    #   # (lib.mkIf pkgs.stdenv.isDarwin (import ../../pkgs/dnd pkgs))
+    #   # (import ../../pkgs/dnd { inherit pkgs; })
+    #   # (import ../../pkgs/dnd pkgs).dnd
+    (import ../../pkgs/dnd pkgs)
+    #   # (import ../../pkgs/nah pkgs)
   ];
 
   home.sessionPath = [ "$HOME/.toolbox/bin" ];
