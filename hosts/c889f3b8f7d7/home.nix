@@ -18,13 +18,7 @@
 
   fonts.fontconfig.enable = true;
 
-  home.packages = [
-    #   # (lib.mkIf pkgs.stdenv.isDarwin (import ../../pkgs/dnd pkgs))
-    #   # (import ../../pkgs/dnd { inherit pkgs; })
-    #   # (import ../../pkgs/dnd pkgs).dnd
-    (import ../../pkgs/dnd pkgs)
-    #   # (import ../../pkgs/nah pkgs)
-  ];
+  home.packages = [ (import ../../pkgs/dnd pkgs) ];
 
   home.sessionPath = [ "$HOME/.toolbox/bin" ];
 }
