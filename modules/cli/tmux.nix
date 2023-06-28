@@ -62,7 +62,7 @@
       #{?window_zoomed_flag,#[bg=colour39],}\
       #{?client_prefix,#[fg=#7daea3],}\
       #{?pane_in_mode,#[fg=#2b2b2b#,bg=#e78a4e],}\
-       ﬿ #S ⋮ "
+        #S ⋮ "
       set -g status-left-length 200
 
       # status right styles
