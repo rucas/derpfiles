@@ -246,7 +246,7 @@
 
       overlay = import ./overlays { inherit self inputs; };
       sharedOverlays = with self.overlay; [
-        alacritty
+        # alacritty
         neovim-nightly.overlay
         neorg-overlay.overlays.default
         spacebar.overlay
