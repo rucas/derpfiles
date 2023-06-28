@@ -1,13 +1,13 @@
 require("neorg").setup({
 	load = {
 		["core.defaults"] = {},
-		["core.norg.manoeuvre"] = {},
+		["core.manoeuvre"] = {},
 		["core.keybinds"] = {
 			config = {
 				neorg_leader = "<Leader>",
 			},
 		},
-		["core.norg.dirman"] = {
+		["core.dirman"] = {
 			config = {
 				workspaces = {
 					work = "~/Documents/notes/work",
@@ -15,7 +15,7 @@ require("neorg").setup({
 				},
 			},
 		},
-		["core.norg.concealer"] = {
+		["core.concealer"] = {
 			config = {
 				icons = {
 					todo = {
@@ -42,7 +42,7 @@ require("neorg").setup({
 				},
 			},
 		},
-		["core.norg.completion"] = {
+		["core.completion"] = {
 			config = {
 				engine = "nvim-cmp",
 			},
