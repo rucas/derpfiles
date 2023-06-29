@@ -26,6 +26,9 @@
 
   system.defaults.NSGlobalDomain._HIHideMenuBar = true;
 
+  # dont respond to ping or icmp requests
+  system.defaults.alf.stealthenabled = 1;
+
   system.activationScripts.postActivation.text = ''
     # Disable Dock icons bouncing
     defaults write com.apple.dock no-bouncing -bool true
