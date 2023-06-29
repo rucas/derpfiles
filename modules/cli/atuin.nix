@@ -1,0 +1,1 @@
+{ ... }: { programs.atuin = { enable = true; }; }

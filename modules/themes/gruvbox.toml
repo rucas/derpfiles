@@ -1,0 +1,35 @@
+# scheme = "Gruvbox?"
+# author = "rucas"
+[colors]
+  # Default colors
+  [colors.primary]
+    background = "#282828"
+    other_background = "#2b2b2b"
+    foreground = "#ebdbb2"
+    other_foreground = "#d4be98"
+    dark1 = "#3c3836"
+    red = "#ea6962"
+    orange = "#e78a4e"
+
+  # Normal colors
+  [colors.normal]
+    black     = "#282828"
+    red       = "#cc241d"
+    green     = "#98971a"
+    yellow    = "#d79921"
+    blue      = "#458588"
+    magenta   = "#b16286"
+    cyan      = "#689d6a"
+    white     = "#a89984"
+    dark_grey = "#383838"
+
+  # Bright colors
+  [colors.bright]
+    black   = "#928374"
+    red     = "#fb4934"
+    green   = "#b8bb26"
+    yellow  = "#fabd2f"
+    blue    = "#83a598"
+    magenta = "#d3869b"
+    cyan    = "#8ec07c"
+    white   = "#ebdbb2"

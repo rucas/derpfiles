@@ -1,0 +1,44 @@
+chrome_help () {
+    echo "Usage: chrome <subcommand> [options]\n"
+    echo "Subcommands:"
+    echo "    env       launches chrome with a test env with no user data saved and CORS removed (unsafe)"
+    echo ""
+    echo "For help with each subcommand run:"
+    echo "h <subcommand> -h|--help"
+    echo ""
+}
+
+chrome_env () {
+  fresh_dir=$(mktemp -d)
+  react_dev_tools='fmkadmapgofadopljbjfkapdkoienihi'
+  ublock_origin='cjpalhdlnbpafiamejdnhcphjbkeiagm'
+  chrome_extensions_dir="$HOME/Library/Application Support/Google/Chrome/Default/Extensions/"
+  pattern="($react_dev_tools|$ublock_origin)/[0-9].+"
+  extensions=$(fd -td -d 2 -p $pattern $chrome_extensions_dir | paste -d, -s -)
+  open -na "Google Chrome" --args \
+    --user-data-dir=$fresh_dir \
+    --disable-web-security \
+    --auto-open-devtools-for-tabs \
+    --load-extension=$extensions \
+    $@
+}
+
+chrome () {
+    if (( ${#} == 0 )); then
+        chrome_help
+        return 0
+    fi
+
+    case ${1} in
+        help | env )
+            chrome_$1 "${@:2}"
+        ;;
+        * )
+            echo "unknown command: $1"
+            chrome_help 1;
+            return 1;
+        ;;
+    esac    
+}
+
+chrome "$@"
