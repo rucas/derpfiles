@@ -1090,7 +1090,6 @@
         "overseer-nvim": "overseer-nvim",
         "plenary-nvim": "plenary-nvim",
         "rest-nvim": "rest-nvim",
-        "session-lens": "session-lens",
         "spacebar": "spacebar",
         "telescope-fzf-native-nvim": "telescope-fzf-native-nvim",
         "telescope-nvim": "telescope-nvim",
@@ -1105,22 +1104,6 @@
         "zen-mode-nvim": "zen-mode-nvim",
         "zsh-autopair": "zsh-autopair",
         "zsh-vi-mode": "zsh-vi-mode"
-      }
-    },
-    "session-lens": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1682827344,
-        "narHash": "sha256-ZSzUp3i3JZMwzN2f9nG5zS+qWq0qE2J+djEv042IMI0=",
-        "owner": "rmagatti",
-        "repo": "session-lens",
-        "rev": "1b65d8e1bcd1836c5135cce118ba18d662a9dabd",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rmagatti",
-        "repo": "session-lens",
-        "type": "github"
       }
     },
     "spacebar": {

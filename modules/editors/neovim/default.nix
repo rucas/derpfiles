@@ -132,11 +132,6 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/rest/init.lua);
       }
-      #{
-      #  plugin = session-lens;
-      #  type = "lua";
-      #  config = builtins.readFile (./lua/plugins/session-lens/init.lua);
-      #}
       telescope-fzf-native-nvim
       {
         plugin = telescope-nvim;

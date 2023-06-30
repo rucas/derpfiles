@@ -169,10 +169,6 @@
       url = "github:rest-nvim/rest.nvim";
       flake = false;
     };
-    session-lens = {
-      url = "github:rmagatti/session-lens";
-      flake = false;
-    };
     telescope-fzf-native-nvim = {
       url = "github:nvim-telescope/telescope-fzf-native.nvim";
       flake = false;

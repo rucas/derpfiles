@@ -38,7 +38,6 @@ let
     "overseer-nvim"
     "plenary-nvim"
     "rest-nvim"
-    "session-lens"
     "telescope-nvim"
     "telescope-symbols-nvim"
     "todo-comments-nvim"
