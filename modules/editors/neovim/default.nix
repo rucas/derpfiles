@@ -26,11 +26,6 @@
         config = builtins.readFile (./lua/plugins/auto-session/init.lua);
       }
       {
-        plugin = barbecue-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/barbecue-nvim/init.lua);
-      }
-      {
         plugin = better-escape-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/better-escape/init.lua);
@@ -122,7 +117,6 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-lspconfig/init.lua);
       }
-      nvim-navic
       nvim-markdown
       {
         plugin = nvim-tree-lua;

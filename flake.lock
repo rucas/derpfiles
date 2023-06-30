@@ -81,22 +81,6 @@
         "type": "github"
       }
     },
-    "barbecue-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1682697315,
-        "narHash": "sha256-lI4NA31KA0xG8qkO/k2Z7SCcdqyJy0en8GzQb1v69Go=",
-        "owner": "utilyre",
-        "repo": "barbecue.nvim",
-        "rev": "cd7e7da622d68136e13721865b4d919efd6325ed",
-        "type": "github"
-      },
-      "original": {
-        "owner": "utilyre",
-        "repo": "barbecue.nvim",
-        "type": "github"
-      }
-    },
     "better-escape-nvim": {
       "flake": false,
       "locked": {
@@ -948,22 +932,6 @@
         "type": "github"
       }
     },
-    "nvim-navic": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1687699503,
-        "narHash": "sha256-AUs1Y5agzQfn9H9lRTOgjTzTp+aSvkPkcQzMCRrkWOw=",
-        "owner": "smiteshp",
-        "repo": "nvim-navic",
-        "rev": "32cff45f1c84bec5e2a7bf15c0f3c6739b64c85d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "smiteshp",
-        "repo": "nvim-navic",
-        "type": "github"
-      }
-    },
     "nvim-tree-lua": {
       "flake": false,
       "locked": {
@@ -1083,7 +1051,6 @@
         "alacritty": "alacritty",
         "auto-save-nvim": "auto-save-nvim",
         "auto-session": "auto-session",
-        "barbecue-nvim": "barbecue-nvim",
         "better-escape-nvim": "better-escape-nvim",
         "cmp-buffer": "cmp-buffer",
         "cmp-cmdline": "cmp-cmdline",
@@ -1116,7 +1083,6 @@
         "nvim-lspconfig": "nvim-lspconfig",
         "nvim-lualine": "nvim-lualine",
         "nvim-markdown": "nvim-markdown",
-        "nvim-navic": "nvim-navic",
         "nvim-tree-lua": "nvim-tree-lua",
         "nvim-treesitter": "nvim-treesitter",
         "nvim-ts-rainbow": "nvim-ts-rainbow",
