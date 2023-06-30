@@ -12,5 +12,15 @@ require("neogen").setup({
 				annotation_convention = "reST",
 			},
 		},
+		javascript = {
+			template = {
+				annotation_convention = "jsdoc",
+			},
+		},
+		javascriptreact = {
+			template = {
+				annotation_convention = "jsdoc",
+			},
+		},
 	},
 })
