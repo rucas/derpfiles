@@ -1,5 +1,6 @@
-local colors = require("gruvbox.palette").colors
+local palette = require("gruvbox.palette")
 local config = require("gruvbox").config
+local colors = palette.colors
 
 require("gruvbox").setup({
 	undercurl = true,

@@ -1,4 +1,5 @@
-local colors = require("gruvbox.palette")
+local palette = require("gruvbox.palette")
+local colors = palette.colors
 
 local NvimTree = {
 	function()
