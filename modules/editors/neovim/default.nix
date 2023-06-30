@@ -34,7 +34,6 @@
       cmp-cmdline
       cmp-nvim-lsp
       cmp-path
-      #dashboard-nvim
       #{
       #  plugin = diffview-nvim;
       #  type = "lua";

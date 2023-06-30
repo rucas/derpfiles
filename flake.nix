@@ -51,10 +51,6 @@
       url = "github:hrsh7th/cmp-path";
       flake = false;
     };
-    dashboard-nvim = {
-      url = "github:glepnir/dashboard-nvim";
-      flake = false;
-    };
     diffview-nvim = {
       url = "github:sindrets/diffview.nvim";
       flake = false;

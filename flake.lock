@@ -161,22 +161,6 @@
         "type": "github"
       }
     },
-    "dashboard-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1686720490,
-        "narHash": "sha256-UDrUQUO9J6mjFBlCMYELuMff/VQCsFca0EFLyDpMsa4=",
-        "owner": "glepnir",
-        "repo": "dashboard-nvim",
-        "rev": "ab84915f7cfd7bc7a5bfe7409c3eccf8d09c162a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "glepnir",
-        "repo": "dashboard-nvim",
-        "type": "github"
-      }
-    },
     "diffview-nvim": {
       "flake": false,
       "locked": {
@@ -1040,7 +1024,6 @@
         "cmp-cmdline": "cmp-cmdline",
         "cmp-nvim-lsp": "cmp-nvim-lsp",
         "cmp-path": "cmp-path",
-        "dashboard-nvim": "dashboard-nvim",
         "diffview-nvim": "diffview-nvim",
         "dressing-nvim": "dressing-nvim",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
