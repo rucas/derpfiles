@@ -55,7 +55,6 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/gitsigns/init.lua);
       }
-      glow-nvim
       headlines-nvim
       {
         plugin = indent-blankline-nvim;

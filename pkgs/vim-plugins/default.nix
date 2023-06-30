@@ -15,7 +15,6 @@ let
     "dressing-nvim"
     "fidget-nvim"
     "gitsigns-nvim"
-    "glow-nvim"
     "gruvbox-nvim"
     "headlines-nvim"
     "indent-blankline-nvim"

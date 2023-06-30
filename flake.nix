@@ -73,10 +73,6 @@
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;
     };
-    glow-nvim = {
-      url = "github:ellisonleao/glow.nvim";
-      flake = false;
-    };
     gruvbox-nvim = {
       url = "github:ellisonleao/gruvbox.nvim";
       flake = false;
