@@ -1,10 +1,27 @@
 local palette = require("gruvbox.palette")
+local api = require("nvim-tree.api")
+
 local colors = palette.colors
+local Event = api.events.Event
+local nvimTreeWidth = 0
+
+-- NOTE: this keeps lualine in place when moving nvim-tree around
+api.events.subscribe(Event.Resize, function(size)
+	nvimTreeWidth = size
+	require("lualine").refresh({
+		place = { "statusline" },
+	})
+end)
 
 local NvimTree = {
 	function()
-		--return string.rep(" ", require("nvim-tree").config.view.width - 1)
-		return string.rep(" ", require("nvim-tree.view").View.width - 1)
+		if nvimTreeWidth == 0 then
+	        local nvimtree_view = require("nvim-tree.view")
+		    local nvimtree_width = vim.fn.winwidth(nvimtree_view.get_winnr())
+			nvimTreeWidth = nvimtree_width
+            print("shit ", nvimTreeWidth)
+		end
+		return string.rep(" ", nvimTreeWidth)
 	end,
 	cond = require("nvim-tree.view").is_visible,
 	padding = { left = 0, right = 0 },
@@ -115,6 +132,7 @@ gruvybox.inactive.a.bg = colors.other_dark
 gruvybox.command.a.bg = colors.other_dark
 gruvybox.replace.a.bg = colors.other_dark
 
+-- TODO add back filename winbar...idk where it went
 require("lualine").setup({
 	options = {
 		icons_enabled = true,
@@ -122,7 +140,7 @@ require("lualine").setup({
 		component_separators = { left = "", right = "" },
 		section_separators = { left = "", right = "" },
 		disabled_filetypes = {
-			statusline = { "Dashboard" },
+			statusline = {},
 			winbar = {},
 		},
 		ignore_focus = {},
