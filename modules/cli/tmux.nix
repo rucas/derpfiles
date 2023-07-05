@@ -71,6 +71,7 @@
       ⋮ #(gitmux -cfg $HOME/.config/gitmux/gitmux.conf "#{pane_current_path}") \
       ⋮ #[fg=#{@THM_BLU}] #(TZ="America/Los_Angeles" date +"%%H:%%M") \
       #[fg=#{@THM_BRW}](UTC #(TZ=GMT date +"%%H:%%M")) \
+      ⋮ #[fg=#{@THM_RD},bold,italics] 󰵚 DND #(dnd status) \
       #(${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/scripts/continuum_save.sh)'
       set -g status-right-length 100
 
