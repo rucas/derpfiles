@@ -121,10 +121,14 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-tree/init.lua);
       }
-      nvim-ts-rainbow
       nvim-web-devicons
       playground
       plenary-nvim
+      {
+        plugin = rainbow-delimiters;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/rainbow-delimiters/init.lua);
+      }
       {
         plugin = rest-nvim;
         type = "lua";

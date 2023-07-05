@@ -932,22 +932,6 @@
         "type": "github"
       }
     },
-    "nvim-ts-rainbow": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1672675794,
-        "narHash": "sha256-4RQptdc3ktaj+Vw1Ykr6jD4q1JEsKNyBNUgUEdNDu1E=",
-        "owner": "p00f",
-        "repo": "nvim-ts-rainbow",
-        "rev": "ef95c15a935f97c65a80e48e12fe72d49aacf9b9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "p00f",
-        "repo": "nvim-ts-rainbow",
-        "type": "github"
-      }
-    },
     "nvim-web-devicons": {
       "flake": false,
       "locked": {
@@ -994,6 +978,22 @@
         "owner": "nvim-lua",
         "repo": "plenary.nvim",
         "type": "github"
+      }
+    },
+    "rainbow-delimiters": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1688571206,
+        "narHash": "sha256-b7M4YOBGcr9+VF1QTaI4M0NbGlLEFHhzjAPgscHjTPM=",
+        "ref": "refs/heads/master",
+        "rev": "5801463f9c67582529e3a10b5b18ad0c581a8dcf",
+        "revCount": 569,
+        "type": "git",
+        "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
       }
     },
     "rest-nvim": {
@@ -1051,10 +1051,10 @@
         "nvim-markdown": "nvim-markdown",
         "nvim-tree-lua": "nvim-tree-lua",
         "nvim-treesitter": "nvim-treesitter",
-        "nvim-ts-rainbow": "nvim-ts-rainbow",
         "nvim-web-devicons": "nvim-web-devicons",
         "overseer-nvim": "overseer-nvim",
         "plenary-nvim": "plenary-nvim",
+        "rainbow-delimiters": "rainbow-delimiters",
         "rest-nvim": "rest-nvim",
         "spacebar": "spacebar",
         "telescope-fzf-native-nvim": "telescope-fzf-native-nvim",

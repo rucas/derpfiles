@@ -62,7 +62,8 @@
     # TODO:
     # pinned until complete rewrite is out.
     fidget-nvim = {
-      url = "github:j-hui/fidget.nvim?rev=0ba1e16d07627532b6cae915cc992ecac249fb97";
+      url =
+        "github:j-hui/fidget.nvim?rev=0ba1e16d07627532b6cae915cc992ecac249fb97";
       flake = false;
     };
     gitsigns-nvim = {
@@ -104,7 +105,10 @@
     neorg-overlay = { url = "github:nvim-neorg/nixpkgs-neorg-overlay"; };
     # TODO: update once this is fixed
     # https://github.com/nix-community/neovim-nightly-overlay/issues/176
-    neovim-nightly = { url = "github:nix-community/neovim-nightly-overlay?rev=c57746e2b9e3b42c0be9d9fd1d765f245c3827b7"; };
+    neovim-nightly = {
+      url =
+        "github:nix-community/neovim-nightly-overlay?rev=c57746e2b9e3b42c0be9d9fd1d765f245c3827b7";
+    };
     null-ls-nvim = {
       url = "github:jose-elias-alvarez/null-ls.nvim";
       flake = false;
@@ -137,10 +141,6 @@
       url = "github:nvim-treesitter/nvim-treesitter";
       flake = false;
     };
-    nvim-ts-rainbow = {
-      url = "github:p00f/nvim-ts-rainbow";
-      flake = false;
-    };
     nvim-web-devicons = {
       url = "github:nvim-tree/nvim-web-devicons";
       flake = false;
@@ -155,6 +155,10 @@
     };
     plenary-nvim = {
       url = "github:nvim-lua/plenary.nvim";
+      flake = false;
+    };
+    rainbow-delimiters = {
+      url = "git+https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git";
       flake = false;
     };
     rest-nvim = {
