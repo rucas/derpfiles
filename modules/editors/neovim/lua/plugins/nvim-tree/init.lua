@@ -131,17 +131,6 @@ nvim_tree.setup({
 	view = {
 		cursorline = false,
 		hide_root_folder = false,
-		--mappings = {
-		--	custom_only = false,
-		--	list = {
-		--		{ key = "l", action = "edit", action_cb = edit_or_open },
-		--		{ key = "L", action = "vsplit_preview", action_cb = vsplit_preview },
-		--		{ key = "h", action = "close_node" },
-		--		{ key = "H", action = "collapse_all", action_cb = collapse_all },
-		--		{ key = "<C-c>", action = "global_cwd", action_cb = change_root_to_global_cwd },
-		--		{ key = "<C-g>", action = "telescope_live_grep", action_cb = telescope_live_grep },
-		--	},
-		--},
 	},
 	actions = {
 		open_file = {
@@ -170,8 +159,9 @@ nvim_tree.setup({
 		},
 	},
 	filters = {
+		dotfiles = true,
 		custom = {
-			"^.DS_Store$",
+			"^.ds_store$",
 			"^.git$",
 			"^.pytest_cache$",
 			"^.scratch$",
