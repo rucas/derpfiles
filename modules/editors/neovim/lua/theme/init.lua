@@ -144,7 +144,6 @@ end
 nvim_web_devicons.set_icon(new_icons)
 
 vim.cmd("colorscheme gruvbox")
---vim.cmd("colorscheme kanagawa")
 
 -- NOTE: adding other colors to gruvbox
 colors["other_dark"] = "#2b2b2b"
