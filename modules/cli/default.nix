@@ -26,8 +26,9 @@
     fd
 
     gitmux
-    grex
     gnumake
+    gnused
+    grex
 
     hexyl
     htop
