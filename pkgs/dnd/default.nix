@@ -28,6 +28,10 @@ writeShellApplication {
       shortcuts run "$shortcut_cmd" <<< "on"
     }
 
+    off () {
+      shortcuts run "$shortcut_cmd" <<< "off"
+    }
+
     status() {
       if [[ "$(defaults read com.apple.controlcenter "NSStatusItem Visible FocusModes")" == 1 ]]; then
         echo "on"
