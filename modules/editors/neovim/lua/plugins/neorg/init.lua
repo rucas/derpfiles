@@ -19,24 +19,29 @@ require("neorg").setup({
 			config = {
 				icons = {
 					todo = {
-						enabled = true,
+						cancelled = {
+							icon = "󰚌",
+						},
+						done = {
+							icon = "",
+						},
 						on_hold = {
 							icon = "",
 						},
 						pending = {
-							icon = "",
+							icon = "",
+						},
+						recurring = {
+							icon = "",
 						},
 						uncertain = {
 							icon = "",
 						},
-						urgent = {
-							icon = "",
-						},
 						undone = {
-							icon = "_",
+							icon = " ",
 						},
-						cancelled = {
-							icon = "ﮊ",
+						urgent = {
+							icon = "",
 						},
 					},
 				},
