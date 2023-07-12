@@ -43,7 +43,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 })
 
 -- TODO: figure out how to do this with tmux hooks
--- 
+--
 -- Alacritty Padding
 --function IncreasePadding()
 --	vim.cmd("silent !alacritty msg config 'window.padding.x=45'")
@@ -111,5 +111,12 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 		if not is_visible then
 			api.tree.open()
 		end
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
+	pattern = "*",
+	callback = function()
+		vim.cmd([[checktime]])
 	end,
 })

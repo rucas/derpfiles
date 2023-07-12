@@ -109,3 +109,6 @@ vim.opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpo
 vim.opt.splitkeep = "screen"
 
 vim.opt.conceallevel = 2
+
+-- NOTE: needs checktime autocommand still...idk why
+vim.opt.autoread = true
