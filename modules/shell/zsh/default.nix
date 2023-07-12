@@ -25,9 +25,11 @@
     };
     sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
     shellGlobalAliases = {
+      F = "| fzf";
       G = "| grep";
       J = "| jq ";
       L = "| less";
+      R = "| rg";
       W = "| wc -l";
     };
     initExtraFirst = "";
