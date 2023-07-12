@@ -2,7 +2,7 @@
   programs.bat = {
     enable = true;
     config = {
-      theme = "gruvbox-dark";
+      theme = "base16";
       italic-text = "always";
       map-syntax = [
         "**/.zfuncs/*:Bourne Again Shell (bash)"
