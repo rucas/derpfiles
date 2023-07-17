@@ -24,6 +24,49 @@ let
           params = { cmd = "curl 'https://api.ipify.org'"; };
         }];
       }
+      {
+        trigger = ":md-break";
+        replace = "&nbsp;";
+      }
+      {
+        trigger = ":md-code";
+        replace = ''
+          ```
+          $|$
+          ```'';
+      }
+      {
+        trigger = ":md-link";
+        replace = "[$|$]({{clipboard}})";
+        vars = [{
+          name = "clipboard";
+          type = "clipboard";
+        }];
+      }
+      {
+        trigger = ":((";
+        replace = "($|$)";
+      }
+      {
+        trigger = ":[[";
+        replace = "[$|$]";
+      }
+      {
+        trigger = ":{{";
+        replace = "{$|$}";
+      }
+      {
+        trigger = ":<<";
+        replace = "<$|$>";
+      }
+      {
+        trigger = ":__";
+        replace = "_$|$_";
+      }
+      {
+        trigger = ":**";
+        replace = "*$|$*";
+      }
     ];
   };
 in mkMerge [
