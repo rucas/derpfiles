@@ -67,6 +67,10 @@ let
         trigger = ":**";
         replace = "*$|$*";
       }
+      {
+        trigger = ":``";
+        replace = "`$|$`";
+      }
     ];
   };
 in mkMerge [
