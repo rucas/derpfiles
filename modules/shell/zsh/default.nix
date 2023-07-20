@@ -14,8 +14,9 @@
     shellAliases = {
       b = "brazil";
       bb = "brazil-build";
-      bt = ''
+      bbt = ''
         fd test test/ | fzf | xargs -I {} sh -c "brazil-build && brazil-build test --addopts '{} --no-cov'" '';
+      bbp = "brazil-build && brazil-runtime-exec python ";
       cat = "bat -n --paging=never";
       g = "git";
       j = "jobs";
