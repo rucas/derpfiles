@@ -27,8 +27,10 @@
       { plugin = tmuxPlugins.tmux-thumbs; }
     ];
     extraConfig = ''
-      if 'infocmp -x alacritty > /dev/null 2>&1' 'set -g default-terminal "alacritty"'
-      set -ag terminal-overrides ",alacritty:RGB"
+      set -g default-terminal "tmux-256color"
+      set -sg terminal-overrides ",*:RGB"
+      set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
+
 
       # set update frequencey (default 15 seconds)
       set -g status-interval 5
