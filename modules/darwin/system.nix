@@ -32,5 +32,11 @@
   system.activationScripts.postActivation.text = ''
     # Disable Dock icons bouncing
     defaults write com.apple.dock no-bouncing -bool true
+
+    # Disable all the hot corners
+    defaults write com.apple.dock wvous-tl-corner -int 0
+    defaults write com.apple.dock wvous-tr-corner -int 0
+    defaults write com.apple.dock wvous-bl-corner -int 0
+    defaults write com.apple.dock wvous-br-corner -int 0
   '';
 }
