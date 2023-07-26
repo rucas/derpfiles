@@ -19,7 +19,6 @@ local NvimTree = {
 	        local nvimtree_view = require("nvim-tree.view")
 		    local nvimtree_width = vim.fn.winwidth(nvimtree_view.get_winnr())
 			nvimTreeWidth = nvimtree_width
-            print("shit ", nvimTreeWidth)
 		end
 		return string.rep(" ", nvimTreeWidth)
 	end,
