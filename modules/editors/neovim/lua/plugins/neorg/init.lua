@@ -44,6 +44,9 @@ require("neorg").setup({
 							icon = "",
 						},
 					},
+					heading = {
+						icons = { "◉", "◎", "○", "⊛", "¤", "∘" },
+					},
 				},
 			},
 		},
