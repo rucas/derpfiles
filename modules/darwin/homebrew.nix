@@ -7,6 +7,7 @@
       "1password"
       "aerial"
       "appcleaner"
+      "balenaetcher"
       "blackhole-16ch"
       "dash"
       "docker"
