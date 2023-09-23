@@ -278,17 +278,18 @@
       hosts.rucaslab = {
         builder = nixpkgs.lib.nixosSystem;
         system = "x86_64-linux";
-        specialArgs = inputs;
         modules = [
           ./hosts/rucaslab/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              theme = builtins.fromTOML
+                (builtins.readFile ./modules/themes/gruvbox.toml);
+            };
             home-manager.users.lucas = import ./hosts/rucaslab/home.nix;
-
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
           }
         ];
       };
