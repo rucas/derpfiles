@@ -1,10 +1,10 @@
 # The start of something...good?
-{ config, pkgs, home-manager, ... }: {
-  imports = [ (import "${home-manager}/nixos") ];
+{ ... }: {
+  imports = [ ../../modules/cli ../../modules/shell/zsh ];
 
-  home-manager.users.lucas = {
-    # This should be the same value as `system.stateVersion` in
-    # your `configuration.nix` file.
-    home.stateVersion = "23.05";
-  };
+  programs.home-manager.enable = true;
+
+  home.username = "lucas";
+
+  home.stateVersion = "23.05";
 }

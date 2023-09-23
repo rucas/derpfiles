@@ -5,6 +5,7 @@ M.setup = function(on_attach, capabilities, handlers)
 		on_attach = on_attach,
 		capabilities = capabilities,
 		handlers = handlers,
+		root_dir = require("lspconfig").util.root_pattern("package.json", "tsconfig.json", "jsconfig.json"),
 	})
 end
 
