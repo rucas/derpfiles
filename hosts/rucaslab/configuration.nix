@@ -58,6 +58,10 @@
     packages = with pkgs; [ ];
   };
 
+  # needed for NixOS to sell shell to zsh;
+  programs.zsh.enable = true;
+  users.users.lucas.shell = pkgs.zsh;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
