@@ -59,6 +59,7 @@
   };
 
   # needed for NixOS to sell shell to zsh;
+  # NOTE: https://nixos.wiki/wiki/Command_Shell
   programs.zsh.enable = true;
   users.users.lucas.shell = pkgs.zsh;
 
