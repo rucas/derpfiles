@@ -119,11 +119,18 @@
         "Switch" . 'choose-session -Zw' Last l "switch-client -l" "" \
         Exit q detach
 
-      bind C-f display-popup -E "tmux list-windows -a -F '#{session_name}:#{window_index} - #{window_name}' \
+      bind C-x display-popup -E "tmux list-windows -a -F '#{session_name}:#{window_index} - #{window_name}' \
                           | grep -v \"^$(tmux display-message -p '#S')\$\" \
                           | fzf --reverse \
                           | sed -E 's/\s-.*$//' \
                           | xargs -r tmux switch-client -t"
+
+      bind C-f display-popup -E "tmux list-windows -F '#{session_name}:#{window_index} - #{window_name}' \
+                          | grep -v \"^$(tmux display-message -p '#S')\$\" \
+                          | fzf --reverse \
+                          | sed -E 's/\s-.*$//' \
+                          | xargs -r tmux switch-client -t"
+
 
       bind-key R source-file ~/.config/tmux/tmux.conf \; display-message " 󰑓 tmux reloaded"
     '';
