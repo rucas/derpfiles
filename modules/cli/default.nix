@@ -67,6 +67,8 @@
 
     xsv
     xz
+
     yq
+    yubikey-manager
   ];
 }
