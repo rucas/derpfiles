@@ -5,13 +5,23 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # Setup keyfile
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
+
+  # Enable swap on luks
+  boot.initrd.luks.devices."luks-2da48510-45d3-40c0-ac58-1a10c28c424f".device = "/dev/disk/by-uuid/2da48510-45d3-40c0-ac58-1a10c28c424f";
+  boot.initrd.luks.devices."luks-2da48510-45d3-40c0-ac58-1a10c28c424f".keyFile = "/crypto_keyfile.bin";
 
   networking.hostName = "rucaslab"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -55,10 +65,10 @@
     isNormalUser = true;
     description = "Lucas";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ ];
+    packages = with pkgs; [];
   };
 
-  # needed for NixOS to sell shell to zsh;
+  # needed for NixOs to set shell to zsh.
   # NOTE: https://nixos.wiki/wiki/Command_Shell
   programs.zsh.enable = true;
   users.users.lucas.shell = pkgs.zsh;
@@ -70,7 +80,12 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [ vim git ];
+  environment.systemPackages = with pkgs; [
+  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  #  wget
+     git
+     vim
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
