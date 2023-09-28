@@ -65,6 +65,7 @@
 
     wget
 
+    (lib.mkIf pkgs.stdenv.isLinux xclip)
     xsv
     xz
 
