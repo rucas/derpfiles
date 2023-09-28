@@ -65,6 +65,9 @@
     description = "Lucas";
     extraGroups = [ "networkmanager" "wheel" ];
     # packages = with pkgs; [ ];
+    openssh.authorizedKeys.keys = [
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJf3dccPBrAkdTZExEqy5czmX9TpCful7TBHvn/5dWjAAAAABHNzaDo= lucas"
+    ];
   };
 
   # needed for NixOs to set shell to zsh.
@@ -104,7 +107,7 @@
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
   };
-
+  
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
