@@ -66,7 +66,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     # packages = with pkgs; [ ];
     openssh.authorizedKeys.keys = [
-      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJf3dccPBrAkdTZExEqy5czmX9TpCful7TBHvn/5dWjAAAAABHNzaDo= lucas"
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJf3dccPBrAkdTZExEqy5czmX9TpCful7TBHvn/5dWjAAAAABHNzaDo= lucas@rucaslab"
     ];
   };
 
@@ -82,11 +82,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
     git
     vim
   ];
@@ -107,7 +103,7 @@
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
   };
-  
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];

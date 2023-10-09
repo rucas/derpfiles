@@ -21,4 +21,7 @@
   home.packages = [ (import ../../pkgs/dnd pkgs) ];
 
   home.sessionPath = [ "$HOME/.toolbox/bin" ];
+
+  home.sessionVariables = { SSH_AUTH_SOCK = "/Users/awslucas/.ssh/agent"; };
+
 }
