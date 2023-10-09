@@ -1,4 +1,10 @@
 { ... }: {
-  imports =
-    [ ./homebrew.nix ./system.nix ./skhd.nix ./spacebar.nix ./yabai.nix ];
+  imports = [
+    ./homebrew.nix
+    ./skhd.nix
+    ./spacebar.nix
+    ./ssh-agent.nix
+    ./system.nix
+    ./yabai.nix
+  ];
 }
