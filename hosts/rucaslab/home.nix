@@ -1,6 +1,7 @@
 # The start of something...good?
 { ... }: {
-  imports = [ ../../modules/cli ../../modules/shell/zsh ];
+  imports =
+    [ ../../modules/cli ../../modules/shell/zsh ../../modules/editors/neovim ];
 
   programs.home-manager.enable = true;
 
