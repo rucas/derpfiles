@@ -55,5 +55,10 @@ require("neorg").setup({
 				engine = "nvim-cmp",
 			},
 		},
+		["core.presenter"] = {
+			config = {
+				zen_mode = "zen-mode",
+			},
+		},
 	},
 })
