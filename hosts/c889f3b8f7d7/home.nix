@@ -2,12 +2,12 @@
 
   imports = [
     ../../modules/cli
-    ../../modules/shell/zsh
-    ../../modules/desktop/term
-    ../../modules/desktop/editors
-    ../../modules/editors/neovim
     ../../modules/desktop/browsers
+    ../../modules/desktop/editors
     ../../modules/desktop/productivity
+    ../../modules/desktop/term
+    ../../modules/editors/neovim
+    ../../modules/shell/zsh
   ];
 
   programs.home-manager.enable = true;
