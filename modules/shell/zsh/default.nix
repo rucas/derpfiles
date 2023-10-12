@@ -20,8 +20,8 @@
       cat = "bat -n --paging=never";
       g = "git";
       j = "jobs";
-      ls = "exa --group-directories-first";
-      la = "exa --group-directories-first -a";
+      ls = "eza --group-directories-first";
+      la = "eza --group-directories-first -a";
       v = "nvim";
     };
     sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };

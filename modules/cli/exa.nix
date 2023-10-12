@@ -1,1 +1,0 @@
-{ ... }: { programs.exa = { enable = true; }; }

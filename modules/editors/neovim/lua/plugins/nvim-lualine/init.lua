@@ -1,7 +1,7 @@
-local palette = require("gruvbox.palette")
+local palette = require("gruvbox").palette
 local api = require("nvim-tree.api")
 
-local colors = palette.colors
+local colors = palette
 local Event = api.events.Event
 local nvimTreeWidth = 0
 
@@ -16,8 +16,8 @@ end)
 local NvimTree = {
 	function()
 		if nvimTreeWidth == 0 then
-	        local nvimtree_view = require("nvim-tree.view")
-		    local nvimtree_width = vim.fn.winwidth(nvimtree_view.get_winnr())
+			local nvimtree_view = require("nvim-tree.view")
+			local nvimtree_width = vim.fn.winwidth(nvimtree_view.get_winnr())
 			nvimTreeWidth = nvimtree_width
 		end
 		return string.rep(" ", nvimTreeWidth)

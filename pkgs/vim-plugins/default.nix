@@ -47,7 +47,7 @@ let
     "zen-mode-nvim"
   ];
   buildPlug = name:
-    vimUtils.buildVimPluginFrom2Nix {
+    vimUtils.buildVimPlugin {
       pname = name;
       version = "master";
       src = builtins.getAttr name inputs;
