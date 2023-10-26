@@ -130,7 +130,6 @@ nvim_tree.setup({
 	},
 	view = {
 		cursorline = false,
-		hide_root_folder = false,
 	},
 	actions = {
 		open_file = {
@@ -138,9 +137,7 @@ nvim_tree.setup({
 		},
 	},
 	renderer = {
-		root_folder_label = function(_)
-			return ""
-		end,
+		root_folder_label = false,
 		indent_width = 2,
 		icons = {
 			padding = " ",
