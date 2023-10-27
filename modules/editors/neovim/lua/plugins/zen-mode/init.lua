@@ -7,7 +7,7 @@ require("zen-mode").setup({
 		-- * an absolute number of cells when > 1
 		-- * a percentage of the width / height of the editor when <= 1
 		-- * a function that returns the width or the height
-		width = 0.60, -- width of the Zen window
+		width = 0.80, -- width of the Zen window
 		height = 1, -- height of the Zen window
 		-- by default, no options are changed for the Zen window
 		-- uncomment any of the options below, or add other vim.wo options you want to apply
@@ -28,15 +28,17 @@ require("zen-mode").setup({
 			enabled = true,
 			ruler = false, -- disables the ruler text in the cmd line area
 			showcmd = false, -- disables the command in the last line of the screen
+			laststatus = 0,
 		},
 		twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
 		gitsigns = { enabled = true }, -- disables git signs
+		tmux = { enabled = true },
 	},
 	on_open = function()
 		lualine.hide()
 		vim.o.statusline = " "
 		--vim.cmd("silent !alacritty msg config 'font.size=24'")
-		vim.cmd("silent !alacritty msg config 'font.size=16'")
+		vim.cmd("silent !alacritty msg config 'font.size=30'")
 	end,
 	on_close = function()
 		lualine.hide({ unhide = true })
