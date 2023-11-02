@@ -3,6 +3,8 @@
     aggressiveResize = true;
     disableConfirmationPrompt = true;
     enable = true;
+    escapeTime = 0;
+    historyLimit = 5000;
     keyMode = "vi";
     prefix = "C-a";
     mouse = true;
@@ -10,6 +12,7 @@
     terminal = "tmux-256color";
     shell = "${pkgs.zsh}/bin/zsh";
     sensibleOnTop = false;
+    customPaneNavigationAndResize = true;
     plugins = with pkgs; [
       {
         plugin = tmuxPlugins.resurrect;
