@@ -4,11 +4,15 @@
   inputs = {
     nixpkgs = { url = "github:nixos/nixpkgs/nixpkgs-unstable"; };
 
-    nix-darwin.url = "github:lnl7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin = {
+      url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     utils = { url = "github:gytis-ivaskevicius/flake-utils-plus"; };
     aerial-nvim = {
@@ -19,6 +23,7 @@
       url = "github:alacritty/alacritty";
       flake = false;
     };
+    alacritty-theme = { url = "github:alexghr/alacritty-theme.nix"; };
     auto-save-nvim = {
       url = "github:Pocco81/auto-save.nvim/dev";
       flake = false;
@@ -107,7 +112,7 @@
     # https://github.com/nix-community/neovim-nightly-overlay/issues/176
     neovim-nightly = {
       url =
-        "github:nix-community/neovim-nightly-overlay?rev=c57746e2b9e3b42c0be9d9fd1d765f245c3827b7";
+        "github:nix-community/neovim-nightly-overlay?rev=5240f631102f4aba8c498f07b3996355edbe62fa";
     };
     null-ls-nvim = {
       url = "github:jose-elias-alvarez/null-ls.nvim";
@@ -221,7 +226,7 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar
-    , neovim-nightly, neorg-overlay, ... }:
+    , neovim-nightly, neorg-overlay, alacritty-theme, ... }:
     let inherit (utils.lib) mkFlake;
     in mkFlake {
       inherit self inputs;
@@ -231,6 +236,7 @@
       overlay = import ./overlays { inherit self inputs; };
       sharedOverlays = with self.overlay; [
         # alacritty
+        alacritty-theme.overlays.default
         neovim-nightly.overlay
         neorg-overlay.overlays.default
         spacebar.overlay
