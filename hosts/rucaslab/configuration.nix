@@ -66,7 +66,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     # packages = with pkgs; [ ];
     openssh.authorizedKeys.keys = [
-      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJf3dccPBrAkdTZExEqy5czmX9TpCful7TBHvn/5dWjAAAAABHNzaDo= lucas@rucaslab"
+      "sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBH7vTIFFWPIaNBlnZLRyqckUs/VFsejs1xR62lXSWtEpSIqps9orJWWchHRSDULC3w+uymUnOjJkSE3K/GqOLcIAAAAMc3NoOnJ1Y2FzbGFi lucas@rucaslab"
     ];
   };
 
