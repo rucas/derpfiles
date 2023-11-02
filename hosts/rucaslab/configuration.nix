@@ -77,15 +77,9 @@
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-  ];
+  environment.systemPackages = with pkgs; [ git vim ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
