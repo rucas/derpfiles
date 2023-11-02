@@ -3,7 +3,8 @@
   imports = [ ../../modules/darwin ];
 
   nix.extraOptions = ''
-    auto-optimise-store = true
+    # NOTE: https://github.com/NixOS/nix/issues/7273
+    # auto-optimise-store = true
     experimental-features = nix-command flakes
   '';
 
