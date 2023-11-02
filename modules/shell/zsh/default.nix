@@ -10,7 +10,6 @@
     };
     autocd = true;
     enableAutosuggestions = true;
-    # enableSyntaxHighlighting = true;
     shellAliases = {
       b = "brazil";
       bb = "brazil-build";

@@ -30,6 +30,8 @@
     gnused
     grex
 
+    haskellPackages.patat
+
     hexyl
     htop
     hurl
@@ -62,6 +64,7 @@
 
     timer
     tree
+    tokei
 
     wget
 
