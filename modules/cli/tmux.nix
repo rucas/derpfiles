@@ -73,7 +73,7 @@
       # status right styles
       # NOTE: https://github.com/tmux-plugins/tmux-continuum/issues/48#issuecomment-603476019
       set -g status-right '#[bg=#{@THM_BG},fg=#{@THM_FG}] \
-      ⋮ #(gitmux -cfg $HOME/.config/gitmux/gitmux.conf "#{pane_current_path}") \
+      ⋮ #(gitmux -cfg $HOME/.config/gitmux/gitmux.conf "#{pane_current_path}" || echo "@$(whoami)") \
       ⋮ #[fg=#{@THM_BLU}] #(TZ="America/Los_Angeles" date +"%%H:%%M") \
       #[fg=#{@THM_BRW}](UTC #(TZ=GMT date +"%%H:%%M")) \
       ⋮ #[fg=#{@THM_RD},bold,italics] 󰵚 DND #(dnd status) \
