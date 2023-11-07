@@ -84,6 +84,9 @@
 
   };
 
+  # TODO:
+  # Fix this to not use mkOutOfStoreSymlink?
+  # Error Log: Existing file...will be skipped since they are the same
   home.file.".zfuncs" = {
     source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/Code/derpfiles/modules/shell/zsh/zfuncs/";
