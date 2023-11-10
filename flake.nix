@@ -108,12 +108,7 @@
       flake = false;
     };
     neorg-overlay = { url = "github:nvim-neorg/nixpkgs-neorg-overlay"; };
-    # TODO: update once this is fixed
-    # https://github.com/nix-community/neovim-nightly-overlay/issues/176
-    neovim-nightly = {
-      url =
-        "github:nix-community/neovim-nightly-overlay?rev=5240f631102f4aba8c498f07b3996355edbe62fa";
-    };
+    neovim-nightly = { url = "github:nix-community/neovim-nightly-overlay"; };
     null-ls-nvim = {
       url = "github:jose-elias-alvarez/null-ls.nvim";
       flake = false;
