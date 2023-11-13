@@ -21,6 +21,7 @@
       j = "jobs";
       ls = "eza --group-directories-first";
       la = "eza --group-directories-first -a";
+      zreload = "source ~/.zshenv && source ~/.zshrc";
       v = "nvim";
     };
     sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
