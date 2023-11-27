@@ -64,11 +64,8 @@
       url = "github:stevearc/dressing.nvim";
       flake = false;
     };
-    # TODO:
-    # pinned until complete rewrite is out.
     fidget-nvim = {
-      url =
-        "github:j-hui/fidget.nvim?rev=0ba1e16d07627532b6cae915cc992ecac249fb97";
+      url = "github:j-hui/fidget.nvim";
       flake = false;
     };
     gitsigns-nvim = {
