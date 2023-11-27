@@ -27,7 +27,12 @@
           set -g @continuum-save-interval '5'
         '';
       }
-      { plugin = tmuxPlugins.tmux-thumbs; }
+      {
+        plugin = tmuxPlugins.tmux-thumbs;
+        extraConfig = ''
+          set -g @thumbs-command 'echo -n {} | pbcopy'
+        '';
+      }
     ];
     extraConfig = ''
       set -g default-terminal "tmux-256color"
@@ -106,8 +111,8 @@
       # keep windows numbering linear
       set -g renumber-windows on
 
-      # jump back to previous window
-      bind-key Space last-window
+      # jump back to last window
+      bind-key l last-window
 
       # C-a n to jump to next window
       # C-a p to jump to previous window
