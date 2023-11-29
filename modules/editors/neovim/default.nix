@@ -34,11 +34,6 @@
       cmp-cmdline
       cmp-nvim-lsp
       cmp-path
-      #{
-      #  plugin = diffview-nvim;
-      #  type = "lua";
-      #  config = builtins.readFile (./lua/plugins/diffview-nvim/init.lua);
-      #}
       {
         plugin = dressing-nvim;
         type = "lua";

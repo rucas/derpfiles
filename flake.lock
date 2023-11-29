@@ -197,22 +197,6 @@
         "type": "github"
       }
     },
-    "diffview-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1700506468,
-        "narHash": "sha256-3EdnBUka9Rh5Brl6TWpN6GlD9z32mmY3Ip+wyiKob/8=",
-        "owner": "sindrets",
-        "repo": "diffview.nvim",
-        "rev": "3dc498c9777fe79156f3d32dddd483b8b3dbd95f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sindrets",
-        "repo": "diffview.nvim",
-        "type": "github"
-      }
-    },
     "dressing-nvim": {
       "flake": false,
       "locked": {
@@ -1167,7 +1151,6 @@
         "cmp-cmdline": "cmp-cmdline",
         "cmp-nvim-lsp": "cmp-nvim-lsp",
         "cmp-path": "cmp-path",
-        "diffview-nvim": "diffview-nvim",
         "dressing-nvim": "dressing-nvim",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
         "fidget-nvim": "fidget-nvim",

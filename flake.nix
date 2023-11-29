@@ -56,10 +56,6 @@
       url = "github:hrsh7th/cmp-path";
       flake = false;
     };
-    diffview-nvim = {
-      url = "github:sindrets/diffview.nvim";
-      flake = false;
-    };
     dressing-nvim = {
       url = "github:stevearc/dressing.nvim";
       flake = false;
@@ -223,7 +219,6 @@
 
       overlay = import ./overlays { inherit self inputs; };
       sharedOverlays = with self.overlay; [
-        # alacritty
         alacritty-theme.overlays.default
         neovim-nightly.overlay
         neorg-overlay.overlays.default
