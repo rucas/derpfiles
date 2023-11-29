@@ -60,11 +60,6 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/indent-blankline/init.lua);
       }
-      {
-        plugin = iron-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/iron-nvim/init.lua);
-      }
       gruvbox-nvim
       lspkind-nvim
       luasnip
