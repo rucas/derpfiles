@@ -55,6 +55,8 @@
       set -g @THM_ORG     "${theme.colors.primary.orange}"
       set -g @THM_RD      "${theme.colors.primary.red}"
       set -g @THM_BLU     "${theme.colors.bright.blue}"
+      set -g @THM_GRN     "${theme.colors.normal.green}"
+      set -g @THM_MGN     "${theme.colors.bright.magenta}"
 
       set -g @THM_BRD_FG  "${theme.colors.normal.dark_grey}"
 
@@ -70,8 +72,8 @@
       # status left styles
       set -g status-left "#[bg=#{@THM_BG},fg=#{@THM_FG},bold]\
       #{?window_zoomed_flag,#[bg=colour39],}\
-      #{?client_prefix,#[fg=#7daea3],}\
-      #{?pane_in_mode,#[fg=#2b2b2b#,bg=#e78a4e],}\
+      #{?client_prefix,#[fg=#{@THM_BLU}],}\
+      #{?pane_in_mode,#[fg=#{@THM_MGN}#,italics],}\
         #S ⋮ "
       set -g status-left-length 200
 
@@ -92,6 +94,9 @@
       # active window style
       set -g window-status-current-style "bg=#{@THM_BLK},fg=#{@THM_RD}"
       set -g window-status-current-format '  #W  '
+
+      # copy-mode style?
+      set -g mode-style 'bg=#{@THM_BG},fg=#{@THM_MGN}'
 
       # message command style
       set -g message-style "bg=#{@THM_BG},fg=#{@THM_FG}"
