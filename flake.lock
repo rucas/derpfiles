@@ -1074,22 +1074,6 @@
         "type": "github"
       }
     },
-    "overseer-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1698522209,
-        "narHash": "sha256-Q/W2i7FydgTj05/+yi4G0vzbJWhPEmsyq4F3KKtpuP8=",
-        "owner": "stevearc",
-        "repo": "overseer.nvim",
-        "rev": "6f462a61ce9a5f47743cbf78454bed14a855eb03",
-        "type": "github"
-      },
-      "original": {
-        "owner": "stevearc",
-        "repo": "overseer.nvim",
-        "type": "github"
-      }
-    },
     "plenary-nvim": {
       "flake": false,
       "locked": {
@@ -1177,7 +1161,6 @@
         "nvim-tree-lua": "nvim-tree-lua",
         "nvim-treesitter": "nvim-treesitter",
         "nvim-web-devicons": "nvim-web-devicons",
-        "overseer-nvim": "overseer-nvim",
         "plenary-nvim": "plenary-nvim",
         "rainbow-delimiters": "rainbow-delimiters",
         "rest-nvim": "rest-nvim",

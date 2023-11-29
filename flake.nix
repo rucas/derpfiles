@@ -138,10 +138,6 @@
       url = "github:hrsh7th/nvim-cmp";
       flake = false;
     };
-    overseer-nvim = {
-      url = "github:stevearc/overseer.nvim";
-      flake = false;
-    };
     plenary-nvim = {
       url = "github:nvim-lua/plenary.nvim";
       flake = false;

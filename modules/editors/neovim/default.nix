@@ -81,11 +81,6 @@
         config = builtins.readFile (./lua/plugins/nvim-cmp/init.lua);
       }
       {
-        plugin = overseer-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/overseer/init.lua);
-      }
-      {
         plugin = nvim-colorizer-lua;
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-colorizer/init.lua);

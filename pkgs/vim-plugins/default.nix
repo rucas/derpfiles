@@ -30,7 +30,6 @@ let
     "nvim-tree-lua"
     "nvim-web-devicons"
     "nvim-cmp"
-    "overseer-nvim"
     "plenary-nvim"
     "rainbow-delimiters"
     "rest-nvim"
