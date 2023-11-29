@@ -17,6 +17,7 @@ require("neorg").setup({
 		},
 		["core.concealer"] = {
 			config = {
+				folds = true,
 				icons = {
 					todo = {
 						cancelled = {
@@ -60,5 +61,6 @@ require("neorg").setup({
 				zen_mode = "zen-mode",
 			},
 		},
+		["core.ui.calendar"] = {},
 	},
 })
