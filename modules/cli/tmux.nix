@@ -89,7 +89,7 @@
       set -g status-right-length 100
 
       # inactive window style
-      set -g window-status-style "bg=#{@THM_BLK},fg=#{@THM_BRW}"
+      set -g window-status-style "bg=#{@THM_BLK},fg=#{@THM_BRW},dim"
       set -g window-status-format '  #W  '
 
       # active window style
@@ -109,7 +109,7 @@
       set -g allow-rename off
 
       # activity window style
-      setw -g window-status-activity-style "bg=#{@THM_BLK},fg=#{@THM_YLW},bold"
+      setw -g window-status-activity-style "bg=#{@THM_BLK},fg=#{@THM_YLW},bold,nodim"
 
       # focus events for nvim+tmux happiness
       set -g focus-events on
