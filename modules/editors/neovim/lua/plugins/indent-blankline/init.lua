@@ -4,6 +4,10 @@ vim.opt.list = true
 vim.opt.listchars:append("tab:› ")
 vim.opt.listchars:append("trail:•")
 
+local hooks = require("ibl.hooks")
+hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
+hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
+
 require("ibl").setup({
 	exclude = {
 		filetypes = {
@@ -26,8 +30,6 @@ require("ibl").setup({
 		},
 	},
 	scope = {
-		-- space_char_blankline = " ",
-		-- show_trailing_blankline_indent = false,
 		show_start = false,
 		show_exact_scope = true,
 	},
