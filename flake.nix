@@ -12,10 +12,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     utils = { url = "github:gytis-ivaskevicius/flake-utils-plus"; };
-    aerial-nvim = {
-      url = "github:stevearc/aerial.nvim";
-      flake = false;
-    };
     alacritty = {
       url = "github:alacritty/alacritty";
       flake = false;

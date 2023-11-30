@@ -86,11 +86,6 @@
         config = builtins.readFile (./lua/plugins/nvim-lualine/init.lua);
       }
       {
-        plugin = aerial-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/aerial-nvim/init.lua);
-      }
-      {
         plugin = nvim-lspconfig;
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-lspconfig/init.lua);

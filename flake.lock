@@ -16,22 +16,6 @@
         "type": "github"
       }
     },
-    "aerial-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1700864529,
-        "narHash": "sha256-rdViCf8AVsrhUHuumazWnAbZ44o2UzOrfC1ByOm5I9c=",
-        "owner": "stevearc",
-        "repo": "aerial.nvim",
-        "rev": "88764566f96bf900a64b3dcd6d178cfb69b1c8ce",
-        "type": "github"
-      },
-      "original": {
-        "owner": "stevearc",
-        "repo": "aerial.nvim",
-        "type": "github"
-      }
-    },
     "alacritty": {
       "flake": false,
       "locked": {
@@ -1125,7 +1109,6 @@
     "root": {
       "inputs": {
         "SchemaStore-nvim": "SchemaStore-nvim",
-        "aerial-nvim": "aerial-nvim",
         "alacritty": "alacritty",
         "alacritty-theme": "alacritty-theme",
         "auto-save-nvim": "auto-save-nvim",
