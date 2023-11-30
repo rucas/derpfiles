@@ -10,7 +10,7 @@ let
     "cmp-cmdline"
     "cmp-nvim-lsp"
     "cmp-path"
-    "dressing-nvim"
+    "conform-nvim"
     "fidget-nvim"
     "gitsigns-nvim"
     "gruvbox-nvim"

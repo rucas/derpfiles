@@ -35,11 +35,6 @@
       cmp-nvim-lsp
       cmp-path
       {
-        plugin = dressing-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/dressing-nvim/init.lua);
-      }
-      {
         plugin = fidget-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/fidget/init.lua);

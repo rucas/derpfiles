@@ -3,17 +3,14 @@
 
   inputs = {
     nixpkgs = { url = "github:nixos/nixpkgs/nixpkgs-unstable"; };
-
     nix-darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     utils = { url = "github:gytis-ivaskevicius/flake-utils-plus"; };
     aerial-nvim = {
       url = "github:stevearc/aerial.nvim";
@@ -56,8 +53,8 @@
       url = "github:hrsh7th/cmp-path";
       flake = false;
     };
-    dressing-nvim = {
-      url = "github:stevearc/dressing.nvim";
+    conform-nvim = {
+      url = "github:stevearc/conform.nvim";
       flake = false;
     };
     fidget-nvim = {
