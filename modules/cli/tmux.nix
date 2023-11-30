@@ -57,6 +57,7 @@
       set -g @THM_BLU     "${theme.colors.bright.blue}"
       set -g @THM_GRN     "${theme.colors.normal.green}"
       set -g @THM_MGN     "${theme.colors.bright.magenta}"
+      set -g @THM_YLW     "${theme.colors.normal.yellow}"
 
       set -g @THM_BRD_FG  "${theme.colors.normal.dark_grey}"
 
@@ -108,7 +109,7 @@
       set -g allow-rename off
 
       # activity window style
-      setw -g window-status-activity-style fg=yellow,bg=red
+      setw -g window-status-activity-style "bg=#{@THM_BLK},fg=#{@THM_YLW},bold"
 
       # focus events for nvim+tmux happiness
       set -g focus-events on
