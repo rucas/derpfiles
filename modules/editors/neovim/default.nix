@@ -92,6 +92,11 @@
       }
       nvim-markdown
       {
+        plugin = nvim-window-picker;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/nvim-window-picker/init.lua);
+      }
+      {
         plugin = nvim-tree-lua;
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-tree/init.lua);

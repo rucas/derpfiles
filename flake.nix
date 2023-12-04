@@ -131,6 +131,10 @@
       url = "github:hrsh7th/nvim-cmp";
       flake = false;
     };
+    nvim-window-picker = {
+      url = "github:s1n7ax/nvim-window-picker";
+      flake = false;
+    };
     plenary-nvim = {
       url = "github:nvim-lua/plenary.nvim";
       flake = false;

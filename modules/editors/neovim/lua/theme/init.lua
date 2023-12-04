@@ -44,7 +44,6 @@ require("gruvbox").setup({
 
 		NvimTreeNormal = { fg = "#d4be98", bg = "#2b2b2b" },
 		NvimTreeWinSeparator = { guibg = nil, fg = "#2b2b2b" },
-		NvimTreeWindowPicker = { fg = "#ea6962", bg = colors.dark1 },
 
 		NormalFloat = { bg = "#2b2b2b" },
 		--FloatBorder = { fg = "#2b2b2b", bg = "#2b2b2b" },

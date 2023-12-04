@@ -28,6 +28,7 @@ let
     "nvim-lualine"
     "nvim-tree-lua"
     "nvim-web-devicons"
+    "nvim-window-picker"
     "nvim-cmp"
     "plenary-nvim"
     "rainbow-delimiters"

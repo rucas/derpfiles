@@ -24,7 +24,7 @@ local NvimTree = {
 	end,
 	cond = require("nvim-tree.view").is_visible,
 	padding = { left = 0, right = 0 },
-	color = { fg = colors.light1, bg = colors.other_dark },
+	color = { fg = colors.other_dark, bg = colors.other_dark },
 }
 
 local ViMode = {

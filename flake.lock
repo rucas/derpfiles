@@ -1058,6 +1058,22 @@
         "type": "github"
       }
     },
+    "nvim-window-picker": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695547794,
+        "narHash": "sha256-IpaWJMZH5TUtQhQZzzSA35liZhZ2YMrJm2E/6hdohQY=",
+        "owner": "s1n7ax",
+        "repo": "nvim-window-picker",
+        "rev": "e7b6699fbd007bbe61dc444734b9bade445b2984",
+        "type": "github"
+      },
+      "original": {
+        "owner": "s1n7ax",
+        "repo": "nvim-window-picker",
+        "type": "github"
+      }
+    },
     "plenary-nvim": {
       "flake": false,
       "locked": {
@@ -1144,6 +1160,7 @@
         "nvim-tree-lua": "nvim-tree-lua",
         "nvim-treesitter": "nvim-treesitter",
         "nvim-web-devicons": "nvim-web-devicons",
+        "nvim-window-picker": "nvim-window-picker",
         "plenary-nvim": "plenary-nvim",
         "rainbow-delimiters": "rainbow-delimiters",
         "rest-nvim": "rest-nvim",
