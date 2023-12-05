@@ -19,7 +19,6 @@ let
     "luasnip"
     "neodev-nvim"
     "neogen"
-    "null-ls-nvim"
     "nvim-autopairs"
     "nvim-colorizer-lua"
     "nvim-lualine"

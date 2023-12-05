@@ -35,6 +35,11 @@
       cmp-nvim-lsp
       cmp-path
       {
+        plugin = conform-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/conform-nvim/init.lua);
+      }
+      {
         plugin = fidget-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/fidget/init.lua);
@@ -64,7 +69,6 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/neorg/init.lua);
       }
-      null-ls-nvim
       {
         plugin = nvim-autopairs;
         type = "lua";
@@ -164,6 +168,7 @@
       nodePackages.prettier
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
+      prettierd
       python310Packages.flake8
       shellcheck
       shfmt

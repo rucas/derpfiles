@@ -36,7 +36,7 @@ local on_attach = function(client, bufnr)
 	illuminate.on_attach(client)
 
 	-- Enable completion triggered by <c-x><c-o>
-	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+	vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -48,15 +48,15 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<space>wl", function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, bufopts)
-	vim.keymap.set("n", "<space>F", function()
-		vim.lsp.buf.format({
-			filter = function(c)
-				-- apply whatever logic you want (in this example, we'll only use null-ls)
-				return c.name == "null-ls"
-			end,
-			async = true,
-		})
-	end, bufopts)
+	-- vim.keymap.set("n", "<space>F", function()
+	-- 	vim.lsp.buf.format({
+	-- 		filter = function(c)
+	-- 			-- apply whatever logic you want (in this example, we'll only use null-ls)
+	-- 			return c.name == "null-ls"
+	-- 		end,
+	-- 		async = true,
+	-- 	})
+	-- end, bufopts)
 
 	-- LSP diagnostic popup
 	vim.api.nvim_create_autocmd("CursorHold", {
@@ -91,7 +91,6 @@ local servers = {
 	"pyright",
 	"lua_ls",
 	"tsserver",
-	"null-ls", -- NOTE: null-ls always last
 }
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()

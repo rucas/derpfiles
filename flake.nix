@@ -91,10 +91,6 @@
     };
     neorg-overlay = { url = "github:nvim-neorg/nixpkgs-neorg-overlay"; };
     neovim-nightly = { url = "github:nix-community/neovim-nightly-overlay"; };
-    null-ls-nvim = {
-      url = "github:jose-elias-alvarez/null-ls.nvim";
-      flake = false;
-    };
     nvim-autopairs = {
       url = "github:windwp/nvim-autopairs";
       flake = false;
