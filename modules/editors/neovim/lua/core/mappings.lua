@@ -35,12 +35,6 @@ vim.keymap.set({ "n" }, "<Leader>bD", "<cmd>bd<cr>", { noremap = true, silent = 
 
 -- repl
 --
-vim.keymap.set({ "n" }, "<Leader>rt", "<cmd>IronRepl<cr>", { noremap = true, silent = true })
-vim.keymap.set({ "n" }, "<Leader>rr", "<cmd>IronRestart<cr>", { noremap = true, silent = true })
-vim.keymap.set({ "n" }, "<Leader>rF", "<cmd>IronFocus<cr>", { noremap = true, silent = true })
-vim.keymap.set({ "n" }, "<Leader>rh", "<cmd>IronHide<cr>", { noremap = true, silent = true })
-vim.keymap.set({ "n" }, "<Leader>rf", "<cmd>:lua require('iron.core').send_file()<cr>")
-vim.keymap.set({ "n" }, "<Leader>rm", "<cmd>:lua require('iron.core').send_mark()<cr>")
 
 -- files
 --
