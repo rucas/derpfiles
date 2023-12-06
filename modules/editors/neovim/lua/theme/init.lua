@@ -3,6 +3,7 @@ local config = require("gruvbox").config
 local colors = palette
 
 require("gruvbox").setup({
+	terminal_colors = true,
 	undercurl = true,
 	underline = true,
 	bold = true,

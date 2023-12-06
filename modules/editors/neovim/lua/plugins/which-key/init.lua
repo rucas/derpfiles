@@ -55,7 +55,12 @@ which_key.register({
 		g = { "Gitui" },
 		p = { "Procs" },
 	},
-	["<leader>F"] = { "Format" },
+	["<leader>F"] = {
+		function()
+			vim.cmd("Format")
+		end,
+		"Format",
+	},
 	["<leader>W"] = {
 		function()
 			vim.cmd("update!")
