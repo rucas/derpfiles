@@ -48,15 +48,6 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<space>wl", function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, bufopts)
-	-- vim.keymap.set("n", "<space>F", function()
-	-- 	vim.lsp.buf.format({
-	-- 		filter = function(c)
-	-- 			-- apply whatever logic you want (in this example, we'll only use null-ls)
-	-- 			return c.name == "null-ls"
-	-- 		end,
-	-- 		async = true,
-	-- 	})
-	-- end, bufopts)
 
 	-- LSP diagnostic popup
 	vim.api.nvim_create_autocmd("CursorHold", {
@@ -87,9 +78,10 @@ local servers = {
 	"bashls",
 	"dockerls",
 	"jsonls",
+	"lua_ls",
+	"marksman",
 	"nil_ls",
 	"pyright",
-	"lua_ls",
 	"tsserver",
 }
 

@@ -160,12 +160,14 @@
     extraPackages = with pkgs; [
       black
       isort
+      lua-language-server
+      marksman
       nil
       nixfmt
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
-      nodePackages.pyright
       nodePackages.prettier
+      nodePackages.pyright
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
       prettierd
@@ -174,7 +176,6 @@
       shfmt
       statix
       stylua
-      lua-language-server
     ];
     viAlias = true;
   };
