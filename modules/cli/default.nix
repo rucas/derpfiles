@@ -12,7 +12,9 @@
     ./tmux.nix
   ];
   home.packages = with pkgs; [
+    ast-grep
     awscli
+
     bandwhich
 
     calc
