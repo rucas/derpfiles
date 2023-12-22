@@ -16,7 +16,10 @@
       url = "github:alacritty/alacritty";
       flake = false;
     };
-    alacritty-theme = { url = "github:alexghr/alacritty-theme.nix"; };
+    alacritty-theme = {
+      url =
+        "github:alexghr/alacritty-theme.nix/2cd654fa494fc8ecb226ca1e7c5f91cf1cebbba9";
+    };
     auto-save-nvim = {
       url = "github:Pocco81/auto-save.nvim/dev";
       flake = false;
