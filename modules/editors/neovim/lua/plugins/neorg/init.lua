@@ -19,6 +19,7 @@ require("neorg").setup({
 			config = {
 				folds = true,
 				icons = {
+					code_block = { conceal = true },
 					todo = {
 						cancelled = {
 							icon = "󰚌",
