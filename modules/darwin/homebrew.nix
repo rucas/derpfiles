@@ -14,10 +14,11 @@
       "dropbox"
       "dynobase"
       "espanso"
-      "slack"
-      "shortcat"
       "maccy"
       "obs"
+      "shortcat"
+      "sketch"
+      "slack"
       "vlc"
     ];
     brews = [ "blueutil" "chrome-cli" "pyenv" "sharewifi" "openssh" ];
