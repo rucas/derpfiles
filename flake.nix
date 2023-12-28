@@ -216,7 +216,6 @@
         neorg-overlay.overlays.default
         spacebar.overlay
         vimPlugins
-        yabai
       ];
 
       hosts.blkmrkt = {
