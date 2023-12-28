@@ -15,7 +15,7 @@
         y = 45;
       };
       window.dynamic_title = true;
-      window.decorations = "none";
+      window.decorations = "None";
       font = {
         normal = {
           family = "Hack Nerd Font";
@@ -33,7 +33,7 @@
       };
       mouse.hide_when_typing = true;
       # NOTE: https://github.com/alacritty/alacritty/issues/93#issuecomment-1364783147
-      key_bindings = [
+      keyboard.bindings = [
         {
           key = "Comma";
           mods = "Command";
@@ -55,13 +55,13 @@
         {
           key = "Back";
           mods = "Super";
-          chars = "\\x15";
+          chars = "\\\\x15";
         }
         # FZF alt-c change directory widget
         {
           key = "C";
           mods = "Alt";
-          chars = "\\x1bc";
+          chars = "\\\\x1bc";
         }
       ];
       shell = {
