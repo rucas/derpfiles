@@ -1,0 +1,1 @@
+{ ... }: { services = { caddy = { enable = true; }; }; }
