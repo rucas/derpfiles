@@ -16,9 +16,7 @@
       url = "github:alacritty/alacritty";
       flake = false;
     };
-    alacritty-theme = {
-      url = "github:rucas/alacritty-theme.nix?ref=bugfix_withoutTOMLExtension";
-    };
+    alacritty-theme = { url = "github:alexghr/alacritty-theme.nix"; };
     auto-save-nvim = {
       url = "github:Pocco81/auto-save.nvim/dev";
       flake = false;
