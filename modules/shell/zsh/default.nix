@@ -74,13 +74,13 @@
         [[ $1 != ''${~HISTORY_IGNORE} ]]
       }
 
-      fpath=(
-        ~/.zfuncs
-        ~/.zfuncs/**/*~*/(CVS)#(/N)
-        "''${fpath[@]}"
-      )
-      # automagically load zfuncs
-      autoload -Uz $fpath[1]/*(.:t)
+      #fpath=(
+      #  ~/.zfuncs
+      #  ~/.zfuncs/**/*~*/(CVS)#(/N)
+      #  "''${fpath[@]}"
+      #)
+      ## automagically load zfuncs
+      #autoload -Uz $fpath[1]/*(.:t)
     '';
 
   };
@@ -88,9 +88,10 @@
   # TODO:
   # Fix this to not use mkOutOfStoreSymlink?
   # Error Log: Existing file...will be skipped since they are the same
-  home.file.".zfuncs" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Code/derpfiles/modules/shell/zsh/zfuncs/";
-    recursive = true;
-  };
+  # SEE: https://github.com/nix-community/home-manager/issues/4692
+  #home.file.".zfuncs" = {
+  #  source = config.lib.file.mkOutOfStoreSymlink
+  #    "${config.home.homeDirectory}/Code/derpfiles/modules/shell/zsh/zfuncs/";
+  #  recursive = true;
+  #};
 }
