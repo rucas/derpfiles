@@ -10,8 +10,8 @@ local function close_floating_windows()
 end
 
 local function close_toggleterm()
-    -- NOTE: we do this so we can start in normal mode
-    -- toggleterm sets to insertmode start
+	-- NOTE: we do this so we can start in normal mode
+	-- toggleterm sets to insertmode start
 	toggleterm.toggle_all()
 end
 
@@ -21,7 +21,10 @@ end
 
 require("auto-session").setup({
 	log_level = "error",
-	pre_save_cmds = { close_floating_windows, close_toggleterm },
-	post_restore_cmds = { clear_jumps },
+	pre_save_cmds = { close_floating_windows, close_toggleterm, "NvimTreeClose" },
+	post_restore_cmds = { clear_jumps, "NvimTreeOpen" },
 	auto_session_use_git_branch = true,
+	save_extra_cmds = {
+		"NvimTreeOpen",
+	},
 })
