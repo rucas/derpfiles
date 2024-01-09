@@ -26,6 +26,8 @@
     dogdns
     du-dust
 
+    eva
+
     fd
 
     gitmux
