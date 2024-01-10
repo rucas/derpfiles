@@ -6,7 +6,7 @@
   });
   alacritty = (final: prev: {
     alacritty = prev.alacritty.overrideAttrs (drv: rec {
-      version = "0.13.0";
+      version = "0.13.1";
       pname = "alacritty";
 
       src = prev.fetchFromGitHub {
@@ -14,7 +14,7 @@
         repo = pname;
         rev = "v${version}";
         sha256 = ''
-          sha256-5jStrLwuuFWlKHIPS5QJ4DUQj9kXLqlpRxeVDXK/uzU=
+          sha256-Nn/G7SkRuHXRSRgNjlmdX1G07sp7FPx8UyAn63Nivfg=
         '';
       };
       nativeBuildInputs = drv.nativeBuildInputs ++ [ prev.pkgs.scdoc ];
@@ -44,15 +44,11 @@
           scdoc < extra/man/alacritty.5.scd | gzip -c > "$out/share/man/man5/alacritty.5.gz"
           scdoc < extra/man/alacritty-bindings.5.scd | gzip -c > "$out/share/man/man5/alacritty-bindings.5.gz"
         ''
-        # This file is empty because it is no longer included since 0.13.0.
-        ''
-          rm $out/share/doc/alacritty.yml
-        ''
       ];
 
       cargoDeps = drv.cargoDeps.overrideAttrs (prev.lib.const {
         inherit src;
-        outputHash = "sha256-FHiLrtEg1j0m//6aDcmURskOJDrWv0e/MzOSFGQfQUA=";
+        outputHash = "sha256-vCoKaDd0mQRF6NNfK679FhEXuAdn/1o3F1gTfT8NK+0=";
       });
     });
   });
