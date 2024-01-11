@@ -20,6 +20,7 @@
         "^g "
         "^mwinit"
         "^nvim"
+        "^nix flake update"
       ];
     };
   };
