@@ -2,6 +2,7 @@
   description = "The original derpfiles flake";
 
   inputs = {
+    agenix = { url = "github:ryantm/agenix"; };
     nixpkgs = { url = "github:nixos/nixpkgs/nixpkgs-unstable"; };
     nix-darwin = {
       url = "github:lnl7/nix-darwin";
@@ -198,8 +199,8 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, utils, spacebar
-    , neovim-nightly, neorg-overlay, alacritty-theme, ... }:
+  outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, home-manager, utils
+    , spacebar, neovim-nightly, neorg-overlay, alacritty-theme, ... }:
     let inherit (utils.lib) mkFlake;
     in mkFlake {
       inherit self inputs;
@@ -258,6 +259,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/rucaslab/configuration.nix
+          agenix.nixosModules.default
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

@@ -2,12 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/adguard
+    # ../../modules/caddy
+    # ../../modules/tailscale
   ];
 
   # Bootloader.
@@ -68,6 +70,7 @@
     # packages = with pkgs; [ ];
     openssh.authorizedKeys.keys = [
       "sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBH7vTIFFWPIaNBlnZLRyqckUs/VFsejs1xR62lXSWtEpSIqps9orJWWchHRSDULC3w+uymUnOjJkSE3K/GqOLcIAAAAMc3NoOnJ1Y2FzbGFi lucas@rucaslab"
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKCLdEAArRtMhdvIdXKbBE19qhS3R2pL4Ws79d0U3czlAAAAEHNzaDpydWNhc2xhYi5jb20= lucas@rucaslab.com"
     ];
   };
 
@@ -80,7 +83,11 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  environment.systemPackages = with pkgs; [ git vim ];
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+    inputs.agenix.packages."${system}".default
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -91,6 +98,9 @@
   # };
 
   # List services that you want to enable:
+
+  # Start up ssh-agent
+  # programs.ssh.startAgent = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {

@@ -13,6 +13,8 @@
     ./tmux.nix
   ];
   home.packages = with pkgs; [
+    age
+    age-plugin-yubikey
     ast-grep
     awscli
 
