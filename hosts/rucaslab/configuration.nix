@@ -86,7 +86,6 @@
   environment.systemPackages = with pkgs; [
     git
     vim
-    inputs.agenix.packages."${system}".default
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

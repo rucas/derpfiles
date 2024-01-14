@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }: {
+{ lib, pkgs, inputs, ... }: {
   imports = [
     ./atuin.nix
     ./bat.nix
@@ -44,6 +44,7 @@
     hurl
     hyperfine
 
+    inputs.agenix.packages."${system}".default
     inetutils
 
     jwt-cli
