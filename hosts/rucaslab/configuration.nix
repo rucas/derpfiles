@@ -2,15 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/adguard
-    # ../../modules/caddy
-    # ../../modules/tailscale
+    ../../modules/tailscale
   ];
+
+  age.secrets = { tailscale = { file = ./secrets/tailscale.age; }; };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -83,10 +84,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  environment.systemPackages = with pkgs; [
-    git
-    vim
-  ];
+  environment.systemPackages = with pkgs; [ git vim ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
