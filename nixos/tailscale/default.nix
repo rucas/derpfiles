@@ -1,6 +1,11 @@
 { pkgs, config, ... }: {
   services.tailscale = { enable = true; };
 
+  networking.firewall = {
+    trustedInterfaces = [ config.services.tailscale.interfaceName ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
+  };
+
   systemd.services.tailscale-autoconnect = {
     description = "Automatic connection to Tailscale";
 

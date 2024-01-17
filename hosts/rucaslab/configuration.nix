@@ -2,13 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
     ./hardware-configuration.nix
-    ../../modules/adguard
-    ../../modules/tailscale
+    ../../nixos/adguard
+    ../../nixos/ssh
+    ../../nixos/tailscale
   ];
 
   age.secrets = { tailscale = { file = ./secrets/tailscale.age; }; };
@@ -68,11 +69,6 @@
     isNormalUser = true;
     description = "Lucas";
     extraGroups = [ "networkmanager" "wheel" ];
-    # packages = with pkgs; [ ];
-    openssh.authorizedKeys.keys = [
-      "sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBH7vTIFFWPIaNBlnZLRyqckUs/VFsejs1xR62lXSWtEpSIqps9orJWWchHRSDULC3w+uymUnOjJkSE3K/GqOLcIAAAAMc3NoOnJ1Y2FzbGFi lucas@rucaslab"
-      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKCLdEAArRtMhdvIdXKbBE19qhS3R2pL4Ws79d0U3czlAAAAEHNzaDpydWNhc2xhYi5jb20= lucas@rucaslab.com"
-    ];
   };
 
   # needed for NixOs to set shell to zsh.
@@ -95,23 +91,6 @@
   # };
 
   # List services that you want to enable:
-
-  # Start up ssh-agent
-  # programs.ssh.startAgent = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
-  };
-
-  networking.firewall = {
-    # trustedInterfaces = ["tailscale0"];
-    trustedInterfaces = [ config.services.tailscale.interfaceName ];
-    allowedTCPPorts = [ 22 ];
-    allowedUDPPorts = [ config.services.tailscale.port ];
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
