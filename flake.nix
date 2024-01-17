@@ -201,7 +201,46 @@
 
   outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, home-manager, utils
     , spacebar, neovim-nightly, neorg-overlay, alacritty-theme, ... }:
-    let inherit (utils.lib) mkFlake;
+    let
+      inherit (utils.lib) mkFlake;
+      mkDarwin = host: username: {
+        builder = nix-darwin.lib.darwinSystem;
+        system = "x86_64-darwin";
+        output = "darwinConfigurations";
+        modules = [
+          ./hosts/${host}/darwin.nix
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              theme = builtins.fromTOML
+                (builtins.readFile ./modules/themes/gruvbox.toml);
+            };
+            home-manager.users.${username} = import ./hosts/${host}/home.nix;
+          }
+        ];
+      };
+      mkNixOs = host: username: {
+        builder = nixpkgs.lib.nixosSystem;
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/${host}/configuration.nix
+          agenix.nixosModules.default
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              theme = builtins.fromTOML
+                (builtins.readFile ./modules/themes/gruvbox.toml);
+            };
+            home-manager.users.${username} = import ./hosts/${host}/home.nix;
+          }
+        ];
+      };
     in mkFlake {
       inherit self inputs;
 
@@ -217,61 +256,8 @@
         vimPlugins
       ];
 
-      hosts.blkmrkt = {
-        builder = nix-darwin.lib.darwinSystem;
-        system = "x86_64-darwin";
-        output = "darwinConfigurations";
-
-        modules = [
-          ./hosts/blkmrkt/darwin.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.lucas = import ./hosts/blkmrkt/home.nix;
-          }
-        ];
-      };
-
-      hosts.c889f3b8f7d7 = {
-        builder = nix-darwin.lib.darwinSystem;
-        system = "aarch64-darwin";
-        output = "darwinConfigurations";
-        modules = [
-          ./hosts/c889f3b8f7d7/darwin.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              theme = builtins.fromTOML
-                (builtins.readFile ./modules/themes/gruvbox.toml);
-            };
-            home-manager.users.awslucas = import ./hosts/c889f3b8f7d7/home.nix;
-          }
-        ];
-      };
-
-      hosts.rucaslab = {
-        builder = nixpkgs.lib.nixosSystem;
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/rucaslab/configuration.nix
-          agenix.nixosModules.default
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              theme = builtins.fromTOML
-                (builtins.readFile ./modules/themes/gruvbox.toml);
-            };
-            home-manager.users.lucas = import ./hosts/rucaslab/home.nix;
-          }
-        ];
-      };
+      hosts.blkmrkt = mkDarwin "blkmrkt" "lucas";
+      hosts.c889f3b8f7d7 = mkDarwin "c889f3b8f7d7" "awslucas";
+      hosts.rucaslab = mkNixOs "rucaslab" "lucas";
     };
 }
