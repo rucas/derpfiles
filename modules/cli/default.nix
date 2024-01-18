@@ -62,7 +62,6 @@
 
     # moreutils
     parallel
-    poetry
     procs
 
     ripgrep

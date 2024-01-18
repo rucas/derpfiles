@@ -203,9 +203,9 @@
     , spacebar, neovim-nightly, neorg-overlay, alacritty-theme, ... }:
     let
       inherit (utils.lib) mkFlake;
-      mkDarwin = host: username: {
+      mkDarwin = host: username: systemm: {
         builder = nix-darwin.lib.darwinSystem;
-        system = "x86_64-darwin";
+        system = systemm;
         output = "darwinConfigurations";
         modules = [
           ./hosts/${host}/darwin.nix
@@ -256,8 +256,8 @@
         vimPlugins
       ];
 
-      hosts.blkmrkt = mkDarwin "blkmrkt" "lucas";
-      hosts.c889f3b8f7d7 = mkDarwin "c889f3b8f7d7" "awslucas";
+      hosts.blkmrkt = mkDarwin "blkmrkt" "lucas" "x86_64-darwin";
+      hosts.c889f3b8f7d7 = mkDarwin "c889f3b8f7d7" "awslucas" "aarch64-darwin";
       hosts.rucaslab = mkNixOs "rucaslab" "lucas";
     };
 }
