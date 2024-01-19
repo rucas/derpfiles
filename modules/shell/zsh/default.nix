@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ ... }: {
   imports = [ ./autopairs.nix ./fsh.nix ./starship.nix ./zsh-vi-mode.nix ];
   programs.zsh = {
     enable = true;
@@ -19,12 +19,13 @@
       cat = "bat -n --paging=never";
       g = "git";
       j = "jobs";
-      ls = "eza --group-directories-first";
-      la = "eza --group-directories-first -a";
       zreload = "source ~/.zshenv && source ~/.zshrc";
       v = "nvim";
     };
-    sessionVariables = { MANPAGER = "sh -c 'col -bx | bat -l man -p'"; };
+    sessionVariables = {
+      MANPAGER = "sh -c 'col -bx | bat --theme=base16-256 -l man -p'";
+      MANROFFOPT = "-c";
+    };
     shellGlobalAliases = {
       F = "| fzf";
       G = "| grep";
