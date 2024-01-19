@@ -6,6 +6,8 @@
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
 
+  # NOTE: https://github.com/NixOS/nixpkgs/issues/180175
+  systemd.services.NetworkManager-wait-online.enable = false;
   systemd.services.tailscale-autoconnect = {
     description = "Automatic connection to Tailscale";
 
