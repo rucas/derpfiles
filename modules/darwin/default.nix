@@ -5,6 +5,7 @@
     ./spacebar.nix
     ./ssh-agent.nix
     ./system.nix
+    ./tailscale.nix
     ./yabai.nix
   ];
 }
