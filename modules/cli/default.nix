@@ -39,6 +39,7 @@
 
     haskellPackages.patat
 
+    haveged
     hexyl
     htop
     hurl
@@ -73,6 +74,7 @@
     timer
     tree
     tokei
+    tor
 
     wget
 

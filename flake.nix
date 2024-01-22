@@ -226,7 +226,11 @@
           }] ++ lib.optionals isDarwin [
             ./hosts/${host}/darwin.nix
             home-manager.darwinModules.home-manager
-          ] ++ lib.optionals isNixOs [ agenix.nixosModules.default ];
+          ] ++ lib.optionals isNixOs [
+            ./hosts/${host}/configuration.nix
+            home-manager.nixosModules.home-manager
+            agenix.nixosModules.default
+          ];
         } // lib.optionalAttrs isDarwin { output = "darwinConfigurations"; };
     in mkFlake {
       inherit self inputs;
