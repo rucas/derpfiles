@@ -176,6 +176,7 @@
       shfmt
       statix
       stylua
+      taplo
     ];
     viAlias = true;
   };

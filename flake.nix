@@ -221,6 +221,7 @@
             home-manager.extraSpecialArgs = {
               inherit inputs;
               theme = fromTOML (readFile ./modules/themes/gruvbox.toml);
+              host = fromTOML (readFile ./hosts/configs.toml).hosts.${host};
             };
             home-manager.users.${username} = import ./hosts/${host}/home.nix;
           }] ++ lib.optionals isDarwin [

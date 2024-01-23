@@ -6,6 +6,7 @@ require("conform").setup({
 		nix = { "nixfmt" },
 		python = { "isort", "black" },
 		sh = { "shellcheck" },
+		toml = { "taplo" },
 		["*"] = { "trim_whitespace" },
 	},
 	-- log_level = vim.log.levels.TRACE,
