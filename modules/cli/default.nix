@@ -39,7 +39,7 @@
 
     haskellPackages.patat
 
-    haveged
+    (lib.mkIf pkgs.stdenv.isLinux haveged)
     hexyl
     htop
     hurl
@@ -74,7 +74,7 @@
     timer
     tree
     tokei
-    tor
+    (lib.mkIf pkgs.stdenv.isLinux tor)
 
     wget
 
