@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ lib, pkgs, config, ... }: {
   services.tailscale = { enable = true; };
 
   networking.firewall = {
@@ -6,8 +6,23 @@
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
 
+  networking.nameservers =
+    [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = [ "~." ];
+    fallbackDns = [ "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one" ];
+    extraConfig = ''
+      DNSOverTLS=yes
+    '';
+  };
+
   # NOTE: https://github.com/NixOS/nixpkgs/issues/180175
-  systemd.services.NetworkManager-wait-online.enable = false;
+  systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
+  systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
+
   systemd.services.tailscale-autoconnect = {
     description = "Automatic connection to Tailscale";
 
