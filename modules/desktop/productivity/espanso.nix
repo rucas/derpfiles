@@ -71,6 +71,14 @@ let
         trigger = ":``";
         replace = "`$|$`";
       }
+      {
+        regex = ":(?P<TT_ID>APN-.*?)\\.";
+        replace = "[{{TT_ID}}](https://taskei.amazon.dev/tasks/{{TT_ID}})";
+      }
+      {
+        regex = ":(?P<CR_ID>CR-.*?)\\.";
+        replace = "[{{CR_ID}}](https://code.amazon.com/reviews/{{CR_ID}})";
+      }
     ];
   };
 in mkMerge [
