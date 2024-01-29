@@ -26,6 +26,10 @@
       url = "github:rmagatti/auto-session";
       flake = false;
     };
+    autolist-nvim = {
+      url = "github:gaoDean/autolist.nvim";
+      flake = false;
+    };
     SchemaStore-nvim = {
       url = "github:b0o/SchemaStore.nvim";
       flake = false;
