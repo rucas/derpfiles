@@ -13,6 +13,8 @@
     ./tmux.nix
   ];
   home.packages = with pkgs; [
+    _1password
+
     age
     age-plugin-yubikey
     ast-grep
