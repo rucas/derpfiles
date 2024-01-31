@@ -39,7 +39,7 @@
           mods = "Command";
           command = {
             program = "sh";
-            args = [ "-c" "open ~/.config/alacritty/alacritty.yml" ];
+            args = [ "-c" "open ~/.config/alacritty/alacritty.toml" ];
           };
         }
         {
