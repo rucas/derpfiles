@@ -25,16 +25,16 @@ require("neorg").setup({
 							icon = "󰚌",
 						},
 						done = {
-							icon = "",
+							icon = "⌀",
 						},
 						on_hold = {
 							icon = "",
 						},
 						pending = {
-							icon = "",
+							icon = "◔",
 						},
 						recurring = {
-							icon = "",
+							icon = "",
 						},
 						uncertain = {
 							icon = "",

@@ -129,6 +129,12 @@ require("nvim-web-devicons").set_icon({
 		cterm_color = "white",
 		name = "Md",
 	},
+	norg = {
+		icon = "",
+		color = "#d4be98",
+		cterm_color = "white",
+		name = "Md",
+	},
 })
 
 local nvim_web_devicons = require("nvim-web-devicons")

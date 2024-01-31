@@ -33,9 +33,6 @@ vim.keymap.set({ "n" }, "<Leader>nt", "<cmd>Neogen type<cr>", { noremap = true, 
 vim.keymap.set({ "n" }, "<Leader>bd", "<cmd>bp | bd #<cr>", { noremap = true, silent = true })
 vim.keymap.set({ "n" }, "<Leader>bD", "<cmd>bd<cr>", { noremap = true, silent = true })
 
--- repl
---
-
 -- files
 --
 vim.keymap.set({ "n" }, "<Leader>ft", "<cmd>NvimTreeToggle<cr>", { noremap = true, silent = true })
