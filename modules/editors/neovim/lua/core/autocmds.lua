@@ -71,6 +71,20 @@ vim.api.nvim_create_autocmd("Filetype", {
 --	end,
 --})
 
+vim.api.nvim_create_autocmd({ "FocusGained" }, {
+	pattern = "*.norg",
+	callback = function(_)
+		vim.cmd("silent !alacritty msg config \"font.normal.family='Hack Nerd Font Mono'\" ")
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "FocusLost", "VimLeavePre" }, {
+	pattern = "*.norg",
+	callback = function(_)
+		vim.cmd("silent !alacritty msg config \"font.normal.family='Hack Nerd Font'\" ")
+	end,
+})
+
 vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "BufWinEnter" }, {
 	pattern = "*",
 	callback = function(_)

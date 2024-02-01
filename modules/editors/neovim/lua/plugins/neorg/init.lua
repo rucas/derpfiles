@@ -25,25 +25,25 @@ require("neorg").setup({
 							icon = "󰚌",
 						},
 						done = {
-							icon = "⌀",
+							icon = "",
 						},
 						on_hold = {
-							icon = "",
+							icon = "",
 						},
 						pending = {
-							icon = "◔",
+							icon = "󰪟",
 						},
 						recurring = {
-							icon = "",
+							icon = "󱞭",
 						},
 						uncertain = {
-							icon = "",
+							icon = "",
 						},
 						undone = {
-							icon = " ",
+							icon = "",
 						},
 						urgent = {
-							icon = "",
+							icon = "",
 						},
 					},
 					heading = {

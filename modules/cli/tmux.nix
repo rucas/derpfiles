@@ -38,7 +38,7 @@
       set -g default-terminal "tmux-256color"
       set -sg terminal-overrides ",*:RGB"
       set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
-
+      set -sg terminal-features ",alacritty:usstyle"
 
       # set update frequencey (default 15 seconds)
       set -g status-interval 5
