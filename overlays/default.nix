@@ -4,6 +4,16 @@
     vimPlugins = prev.vimPlugins
       // final.callPackage ../pkgs/vim-plugins { inherit inputs; };
   });
+  tmuxPlugins = (final: prev: {
+    tmuxPlugins = prev.tmuxPlugins // {
+      tmux-1password = prev.tmuxPlugins.mkTmuxPlugin {
+        pluginName = "tmux-1password";
+        version = "unstable-2024-01-30";
+        src = inputs.tmux-1password;
+        rtpFilePath = "plugin.tmux";
+      };
+    };
+  });
   alacritty = (final: prev: {
     alacritty = prev.alacritty.overrideAttrs (drv: rec {
       version = "0.13.1";

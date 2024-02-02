@@ -26,10 +26,6 @@
       url = "github:rmagatti/auto-session";
       flake = false;
     };
-    autolist-nvim = {
-      url = "github:gaoDean/autolist.nvim";
-      flake = false;
-    };
     SchemaStore-nvim = {
       url = "github:b0o/SchemaStore.nvim";
       flake = false;
@@ -160,6 +156,10 @@
       url = "github:nvim-telescope/telescope-symbols.nvim";
       flake = false;
     };
+    tmux-1password = {
+      url = "github:yardnsm/tmux-1password";
+      flake = false;
+    };
     todo-comments-nvim = {
       url = "github:folke/todo-comments.nvim";
       flake = false;
@@ -242,7 +242,9 @@
 
       channelsConfig.allowUnfree = true;
 
-      overlay = import ./overlays { inherit self inputs; };
+      overlay = import ./overlays {
+        inherit self inputs;
+      };
       sharedOverlays = with self.overlay; [
         alacritty
         alacritty-theme.overlays.default
@@ -250,6 +252,7 @@
         neorg-overlay.overlays.default
         spacebar.overlay
         vimPlugins
+        tmuxPlugins
       ];
 
       hosts.blkmrkt = mkHost {

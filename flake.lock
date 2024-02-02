@@ -1249,6 +1249,7 @@
         "telescope-fzf-native-nvim": "telescope-fzf-native-nvim",
         "telescope-nvim": "telescope-nvim",
         "telescope-symbols-nvim": "telescope-symbols-nvim",
+        "tmux-1password": "tmux-1password",
         "todo-comments-nvim": "todo-comments-nvim",
         "toggleterm-nvim": "toggleterm-nvim",
         "twilight-nvim": "twilight-nvim",
@@ -1385,6 +1386,22 @@
       "original": {
         "owner": "nvim-telescope",
         "repo": "telescope-symbols.nvim",
+        "type": "github"
+      }
+    },
+    "tmux-1password": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1654937490,
+        "narHash": "sha256-k+4mHE7oEjp85aPv0oOcjgecfvM/s0rG8x332bvn+4Y=",
+        "owner": "yardnsm",
+        "repo": "tmux-1password",
+        "rev": "bb1bbd2acfe1b4d5dcf917f6ddf3b0f634a13362",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yardnsm",
+        "repo": "tmux-1password",
         "type": "github"
       }
     },

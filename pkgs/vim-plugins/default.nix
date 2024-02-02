@@ -4,7 +4,6 @@ let
     "SchemaStore-nvim"
     "autosave-nvim"
     "auto-session"
-    "autolist-nvim"
     "better-escape-nvim"
     "cmp-buffer"
     "cmp-cmdline"

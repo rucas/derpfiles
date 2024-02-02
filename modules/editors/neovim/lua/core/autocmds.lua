@@ -78,7 +78,7 @@ vim.api.nvim_create_autocmd({ "FocusGained" }, {
 	end,
 })
 
-vim.api.nvim_create_autocmd({ "FocusLost", "VimLeavePre" }, {
+vim.api.nvim_create_autocmd({ "FocusLost" }, {
 	pattern = "*.norg",
 	callback = function(_)
 		vim.cmd("silent !alacritty msg config \"font.normal.family='Hack Nerd Font'\" ")
