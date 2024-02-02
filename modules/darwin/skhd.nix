@@ -26,8 +26,9 @@
 
     # reload skhd and yabai
     ctrl + cmd - r: pkill yabai && ${pkgs.skhd}/bin/skhd -r
-    ctrl + cmd - t: open -na ~/Applications/Home\ Manager\ Apps/Alacritty.app
-    ctrl + cmd - c: open -na /Applications/Google\ Chrome.app
+    ctrl + cmd - t: open -a ~/Applications/Home\ Manager\ Apps/Alacritty.app
+    ctrl + cmd - c: open -a /Applications/Google\ Chrome.app
+    ctrl + cmd - s: open -a /Applications/Slack.app; yabai -m window --toggle zoom-fullscreen;
 
     # i3 madness
     ctrl + cmd - h : yabai -m window west --resize right:-20:0 2> /dev/null || yabai -m window --resize right:-20:0
