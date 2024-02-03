@@ -31,7 +31,7 @@ vim.keymap.set({ "n" }, "<Leader>nt", "<cmd>Neogen type<cr>", { noremap = true, 
 -- buffers
 --
 vim.keymap.set({ "n" }, "<Leader>bd", "<cmd>bp | bd #<cr>", { noremap = true, silent = true })
-vim.keymap.set({ "n" }, "<Leader>bD", "<cmd>bd<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n" }, "<Leader>bD", "<cmd>w | bd<cr>", { noremap = true, silent = true })
 
 -- files
 --

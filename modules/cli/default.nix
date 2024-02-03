@@ -57,6 +57,7 @@
 
     netcat
     neofetch
+    neovim-remote
     nmap
 
     onefetch

@@ -122,22 +122,6 @@
         "type": "github"
       }
     },
-    "autolist-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1688728312,
-        "narHash": "sha256-lavDbTFidmbYDOxYPumCExkd27sesZ5uFgwHc1xNuW0=",
-        "owner": "gaoDean",
-        "repo": "autolist.nvim",
-        "rev": "5f70a5f99e96c8fe3069de042abd2a8ed2deb855",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gaoDean",
-        "repo": "autolist.nvim",
-        "type": "github"
-      }
-    },
     "better-escape-nvim": {
       "flake": false,
       "locked": {
@@ -1210,7 +1194,6 @@
         "alacritty-theme": "alacritty-theme",
         "auto-save-nvim": "auto-save-nvim",
         "auto-session": "auto-session",
-        "autolist-nvim": "autolist-nvim",
         "better-escape-nvim": "better-escape-nvim",
         "cmp-buffer": "cmp-buffer",
         "cmp-cmdline": "cmp-cmdline",
