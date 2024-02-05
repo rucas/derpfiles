@@ -11,6 +11,7 @@ let
     "cmp-path"
     "conform-nvim"
     "fidget-nvim"
+    "flatten-nvim"
     "gitsigns-nvim"
     "gruvbox-nvim"
     "headlines-nvim"

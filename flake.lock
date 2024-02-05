@@ -479,6 +479,22 @@
         "type": "github"
       }
     },
+    "flatten-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1706309105,
+        "narHash": "sha256-5J/jVrQt5qLLxfPtdDdMCJTBrLGPvsBgdxYYWuBKWKM=",
+        "owner": "willothy",
+        "repo": "flatten.nvim",
+        "rev": "92c59ae6200e6b04aff167577ebb8a9035a6d2b3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "willothy",
+        "repo": "flatten.nvim",
+        "type": "github"
+      }
+    },
     "gitsigns-nvim": {
       "flake": false,
       "locked": {
@@ -1202,6 +1218,7 @@
         "conform-nvim": "conform-nvim",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
         "fidget-nvim": "fidget-nvim",
+        "flatten-nvim": "flatten-nvim",
         "gitsigns-nvim": "gitsigns-nvim",
         "gruvbox-nvim": "gruvbox-nvim",
         "headlines-nvim": "headlines-nvim",

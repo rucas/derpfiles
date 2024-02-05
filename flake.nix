@@ -58,6 +58,10 @@
       url = "github:j-hui/fidget.nvim";
       flake = false;
     };
+    flatten-nvim = {
+      url = "github:willothy/flatten.nvim";
+      flake = false;
+    };
     gitsigns-nvim = {
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;

@@ -45,6 +45,11 @@
         config = builtins.readFile (./lua/plugins/fidget/init.lua);
       }
       {
+        plugin = flatten-nvim;
+        type = "lua";
+        config = builtins.readFile (./lua/plugins/flatten-nvim/init.lua);
+      }
+      {
         plugin = gitsigns-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/gitsigns/init.lua);
