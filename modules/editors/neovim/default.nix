@@ -191,5 +191,9 @@
       source = ./lua;
       recursive = true;
     };
+    "nvim/after" = {
+      source = ./after;
+      recursive = true;
+    };
   };
 }
