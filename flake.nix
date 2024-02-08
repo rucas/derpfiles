@@ -257,6 +257,7 @@
         spacebar.overlay
         vimPlugins
         tmuxPlugins
+        yabai
       ];
 
       hosts.blkmrkt = mkHost {
