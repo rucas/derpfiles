@@ -246,9 +246,7 @@
 
       channelsConfig.allowUnfree = true;
 
-      overlay = import ./overlays {
-        inherit self inputs;
-      };
+      overlay = import ./overlays { inherit self inputs; };
       sharedOverlays = with self.overlay; [
         alacritty
         alacritty-theme.overlays.default

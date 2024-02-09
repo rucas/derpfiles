@@ -1,8 +1,7 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
-  inherit (lib) mkMerge optionalAttrs listToAttrs;
-  inherit (lib.systems.elaborate { system = builtins.currentSystem; })
-    isLinux isDarwin;
+  inherit (lib) mkMerge listToAttrs;
+  inherit (pkgs.stdenv) isLinux isDarwin;
   extensions = [
     "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock
     "fmkadmapgofadopljbjfkapdkoienihi" # React Dev Tools
@@ -13,7 +12,7 @@ let
     "lmpnkcilhkcnpjbmdnkbepmlhjlnhkaf" # Isengard
   ];
 in mkMerge [
-  (optionalAttrs isLinux {
+  (lib.mkIf isLinux {
     programs.chromium = {
       # chromium isn't built for darwin so we'll want to avoid enabling it.
       enable = true;
@@ -21,7 +20,7 @@ in mkMerge [
     };
   })
 
-  (optionalAttrs isDarwin (let
+  (lib.mkIf isDarwin (let
     configDir = "Library/Application Support/Google/Chrome";
     extensionJson = ext: {
       name = "${configDir}/External Extensions/${ext}.json";

@@ -2,8 +2,7 @@
 let
   yamlFormat = pkgs.formats.yaml { };
   inherit (lib) mkMerge optionalAttrs;
-  inherit (lib.systems.elaborate { system = builtins.currentSystem; })
-    isLinux isDarwin;
+  inherit (pkgs.stdenv) isLinux isDarwin;
   settings = {
     matches = [
       {
@@ -82,14 +81,14 @@ let
     ];
   };
 in mkMerge [
-  (optionalAttrs isLinux {
+  (lib.mkIf isLinux {
     services.espanso = {
       enable = true;
       settings = settings;
     };
   })
 
-  (optionalAttrs isDarwin {
+  (lib.mkIf isDarwin {
     xdg.configFile."espanso/match/base.yml".source =
       yamlFormat.generate "default.yml" settings;
   })
