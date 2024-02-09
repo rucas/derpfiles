@@ -82,6 +82,9 @@
       #)
       ## automagically load zfuncs
       #autoload -Uz $fpath[1]/*(.:t)
+
+      # reverse tab completion with shift-tab
+      bindkey '^[[Z' reverse-menu-complete
     '';
 
   };
