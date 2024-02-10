@@ -1,13 +1,11 @@
-{ pkgs, ... }: {
+{ pkgs, configs, ... }: {
   # NOTE: https://nixos.wiki/wiki/Remote_LUKS_Unlocking
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
     enable = true;
     port = 22;
     shell = "/bin/cryptsetup-askpass";
-    authorizedKeys = [
-      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKCLdEAArRtMhdvIdXKbBE19qhS3R2pL4Ws79d0U3czlAAAAEHNzaDpydWNhc2xhYi5jb20= lucas@rucaslab.com"
-    ];
+    authorizedKeys = configs.hosts.rucaslab.trusted;
     hostKeys = [ "/etc/secrets/initrd/ssh_host_ed25519_key" ];
   };
   boot.kernelParams = [ "ip=dhcp" ];
