@@ -51,9 +51,11 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-    xkbOptions = "ctrl:swapcaps";
+    xkb = {
+      layout = "us";
+      variant = "";
+      options = "ctrl:swapcaps";
+    };
   };
 
   console.useXkbConfig = true;
