@@ -224,6 +224,7 @@
           }.${env};
           system = arch;
           specialArgs = {
+            # TODO: change to some other name to close to config nix namespace
             configs = fromTOML (readFile ./hosts/configs.toml);
           };
           modules = [{

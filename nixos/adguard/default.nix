@@ -30,6 +30,30 @@
           cache_size = 1024 * 1024 * 50;
           cache_optimistic = true;
         };
+        # NOTE:https://github.com/NixOS/nixpkgs/pull/247828
+        #filtering = {
+        #  filters = [
+        #    {
+        #      enabled = true;
+        #      url =
+        #        "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt";
+        #      name = "AdGuard DNS filter";
+        #      id = 1;
+        #    }
+        #    {
+        #      enabled = false;
+        #      url = "https://adaway.org/hosts.txt";
+        #      name = "AdAway Default Blocklist";
+        #      id = 2;
+        #    }
+        #    {
+        #      enabled = false;
+        #      url = "http://sbc.io/hosts/hosts";
+        #      name = "Steven Black's Hosts List";
+        #      id = 3;
+        #    }
+        #  ];
+        #};
       };
     };
   };
