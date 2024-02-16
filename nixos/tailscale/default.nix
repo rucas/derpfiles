@@ -11,5 +11,7 @@
   };
 
   # NOTE: we set use adguard as DNS
+  # make sure to set in tailscale app settings.
+  # https://akashrajpurohit.com/blog/adguard-home-tailscale-erase-ads-on-the-go/
   networking.nameservers = [ "edns0" ];
 }
