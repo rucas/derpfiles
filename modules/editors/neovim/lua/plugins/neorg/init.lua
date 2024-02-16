@@ -18,23 +18,24 @@ require("neorg").setup({
 		["core.concealer"] = {
 			config = {
 				folds = true,
+				init_open_folds = "never",
 				icons = {
 					code_block = { conceal = true },
 					todo = {
 						cancelled = {
-							icon = "󰚌",
+							icon = "",
 						},
 						done = {
 							icon = "",
 						},
 						on_hold = {
-							icon = "",
+							icon = "",
 						},
 						pending = {
-							icon = "󰪟",
+							icon = "",
 						},
 						recurring = {
-							icon = "󱞭",
+							icon = "",
 						},
 						uncertain = {
 							icon = "",

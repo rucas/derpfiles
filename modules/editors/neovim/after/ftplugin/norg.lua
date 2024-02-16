@@ -6,3 +6,4 @@ vim.opt_local.spelllang = "en"
 vim.opt_local.concealcursor = "nv"
 vim.opt_local.formatoptions = "tcqjn"
 vim.opt_local.formatlistpat = "^\\s*\\([~]\\+\\|[-]\\+\\)\\s*"
+vim.opt.foldlevelstart = 0
