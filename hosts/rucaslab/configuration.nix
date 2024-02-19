@@ -11,6 +11,7 @@
     ../../nixos/ssh
     ../../nixos/tailscale
     ../../nixos/unlockr
+    ../../nixos/caddy
   ];
 
   age.secrets = { tailscale = { file = ./secrets/tailscale.age; }; };
@@ -74,7 +75,10 @@
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    sandbox = false;
+    experimental-features = [ "nix-command" "flakes" ];
+  };
 
   environment.systemPackages = with pkgs; [ git vim ];
 
