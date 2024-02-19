@@ -5,4 +5,7 @@ let
   };
   system =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVJRnte7uoSXii9cPSpsvLqSwyzFu0hu5Rn3Mfm7W5d root@rucaslab";
-in { "tailscale.age".publicKeys = [ users.personal-5c-nano system ]; }
+in {
+  "tailscale.age".publicKeys = [ users.personal-5c-nano system ];
+  "cloudflare.age".publicKeys = [ users.personal-5c-nano system ];
+}
