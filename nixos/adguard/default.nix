@@ -14,7 +14,7 @@
           all_servers = true;
           bind_hosts = [ "0.0.0.0" ];
           rewrites = [{
-            domain = "adguard.home";
+            domain = "adguard.rucaslab.com";
             answer = "192.168.1.136";
           }];
           bootstrap_dns =

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   services = {
     caddy = {
       enable = true;
@@ -6,15 +6,12 @@
         plugins = [ "github.com/caddy-dns/cloudflare" ];
       };
       virtualHosts = {
-        ":8888" = {
+        "adguard.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :3000
-          '';
-        };
-        #NOTE: http:// works
-        "http://adguard.home" = {
-          extraConfig = ''
-            reverse_proxy :3000
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
           '';
         };
       };
@@ -25,7 +22,7 @@
       # Required to use ports < 1024
       AmbientCapabilities = "cap_net_bind_service";
       CapabilityBoundingSet = "cap_net_bind_service";
-      # EnvironmentFile = config.age.secrets."caddy-environment-file".path;
+      EnvironmentFile = config.age.secrets.cloudflare.path;
       TimeoutStartSec = "5m";
     };
   };

@@ -14,7 +14,10 @@
     ../../nixos/caddy
   ];
 
-  age.secrets = { tailscale = { file = ./secrets/tailscale.age; }; };
+  age.secrets = {
+    tailscale = { file = ./secrets/tailscale.age; };
+    cloudflare = { file = ./secrets/cloudflare.age; };
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
