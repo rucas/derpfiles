@@ -9,6 +9,16 @@
         "adguard.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :3000
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
+        "home.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :8123
+            encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
             }

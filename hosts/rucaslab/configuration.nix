@@ -12,6 +12,7 @@
     ../../nixos/tailscale
     ../../nixos/unlockr
     ../../nixos/caddy
+    ../../nixos/home-assistant
   ];
 
   age.secrets = {
