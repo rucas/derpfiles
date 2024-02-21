@@ -18,6 +18,7 @@
   age.secrets = {
     tailscale = { file = ./secrets/tailscale.age; };
     cloudflare = { file = ./secrets/cloudflare.age; };
+    lutron = { file = ./secrets/lutron.age; };
   };
 
   # Bootloader.

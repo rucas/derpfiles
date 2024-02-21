@@ -20,4 +20,10 @@
       };
     };
   };
+  xdg.configFile = {
+    "lutron" = {
+      source = ./lutron;
+      recursive = true;
+    };
+  };
 }
