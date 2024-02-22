@@ -66,6 +66,7 @@
       url = "github:lewis6991/gitsigns.nvim";
       flake = false;
     };
+    golink = { url = "github:tailscale/golink"; };
     gruvbox-nvim = {
       url = "github:ellisonleao/gruvbox.nvim";
       flake = false;
@@ -207,8 +208,8 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, home-manager, utils
-    , spacebar, neovim-nightly, neorg-overlay, alacritty-theme, ... }:
+  outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, golink, home-manager
+    , utils, spacebar, neovim-nightly, neorg-overlay, alacritty-theme, ... }:
     let
       inherit (utils.lib) mkFlake;
       inherit (nixpkgs) lib;
@@ -225,7 +226,7 @@
           system = arch;
           specialArgs = {
             # TODO: change to some other name to close to config nix namespace
-            configs = fromTOML (readFile ./hosts/configs.toml);
+            CONF = fromTOML (readFile ./hosts/configs.toml);
           };
           modules = [{
             home-manager.useGlobalPkgs = true;
@@ -239,6 +240,7 @@
             ./hosts/${host}/darwin.nix
             home-manager.darwinModules.home-manager
           ] ++ lib.optionals isNixOs [
+            golink.nixosModules.default
             ./hosts/${host}/configuration.nix
             home-manager.nixosModules.home-manager
             agenix.nixosModules.default
@@ -258,6 +260,7 @@
       sharedOverlays = with self.overlay; [
         alacritty
         alacritty-theme.overlays.default
+        golink.overlay
         neovim-nightly.overlay
         neorg-overlay.overlays.default
         spacebar.overlay

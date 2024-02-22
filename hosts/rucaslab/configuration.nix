@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   imports = [
@@ -13,13 +13,22 @@
     ../../nixos/unlockr
     ../../nixos/caddy
     ../../nixos/home-assistant
+    ../../nixos/golink
   ];
 
   age.secrets = {
     tailscale = { file = ./secrets/tailscale.age; };
-    tailscale_golink = { file = ./secrets/tailscale_golink.age; };
+    tailscale_golink = {
+      file = ./secrets/tailscale_golink.age;
+      owner = config.services.golink.user;
+    };
     cloudflare = { file = ./secrets/cloudflare.age; };
-    lutron = { file = ./secrets/lutron.age; };
+    lutron = {
+      file = ./secrets/lutron.age;
+      path = "/var/lib/hass/lutron.key";
+      owner = "hass";
+      group = "hass";
+    };
   };
 
   # Bootloader.
