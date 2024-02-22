@@ -166,6 +166,7 @@ nvim_tree.setup({
 			"^.pytest_cache$",
 			"^.scratch$",
 			"^.vscode$",
+			"^__pycache__$",
 		},
 	},
 })
