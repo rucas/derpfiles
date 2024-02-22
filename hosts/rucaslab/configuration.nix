@@ -17,6 +17,7 @@
 
   age.secrets = {
     tailscale = { file = ./secrets/tailscale.age; };
+    tailscale_golink = { file = ./secrets/tailscale_golink.age; };
     cloudflare = { file = ./secrets/cloudflare.age; };
     lutron = { file = ./secrets/lutron.age; };
   };

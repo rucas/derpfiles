@@ -9,4 +9,5 @@ in {
   "tailscale.age".publicKeys = [ users.personal-5c-nano system ];
   "cloudflare.age".publicKeys = [ users.personal-5c-nano system ];
   "lutron.age".publicKeys = [ users.personal-5c-nano system ];
+  "tailscale_golink.age".publicKeys = [ users.personal-5c-nano system ];
 }
