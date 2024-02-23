@@ -1,4 +1,4 @@
-{ CONF, config, ... }: {
+{ CONF, config, pkgs, ... }: {
   networking.firewall.allowedTCPPorts = [ 8123 ];
   services = {
     home-assistant = {
@@ -8,9 +8,16 @@
         "esphome"
         "lutron_caseta"
         "met"
-        "nest"
         "radio_browser"
-        "unifiprotect"
+        # "nest"
+        # "unifiprotect"
+      ];
+      customComponents = [
+        (pkgs.callPackage ../../pkgs/alarmo { })
+        (pkgs.callPackage ../../pkgs/home-assistant-petkit {
+          petkitaio =
+            (pkgs.python311Packages.callPackage ../../pkgs/petkitaio { });
+        })
       ];
       config = {
         default_config = { };
@@ -27,6 +34,21 @@
           certfile = "/etc/lutron/client.crt";
           ca_certs = "/etc/lutron/ca.crt";
         };
+        alarmo = { };
+        "scene manual" = [
+          {
+            name = "TV";
+            entities = { };
+          }
+          {
+            name = "Arrive";
+            entities = { };
+          }
+          {
+            name = "Leave";
+            entities = { "light.master_bedroom_main_lights" = "off"; };
+          }
+        ];
       };
     };
   };
