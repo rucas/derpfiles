@@ -75,7 +75,7 @@ telescope.setup({
 				"--hidden",
 				"--follow",
 				"--exclude",
-				"{.git,.idea}",
+				"{.git,.idea,.direnv,.pytest_cache,__pycache__}",
 				"--strip-cwd-prefix",
 			},
 		},
@@ -90,7 +90,7 @@ telescope.setup({
 				"--hidden",
 				"--follow",
 				"--exclude",
-				"{.git,.idea}",
+				"{.git,.idea,.direnv,.pytest_cache,__pycache__}",
 				"--strip-cwd-prefix",
 			},
 		},
@@ -105,7 +105,7 @@ telescope.setup({
 			end,
 		},
 	},
-	file_ignore_patterns = { "node_modules", ".pytest_cache" },
+	file_ignore_patterns = { "node_modules", ".pytest_cache", ".direnv" },
 	extensions = {
 		fzf = {
 			fuzzy = true, -- false will only do exact matching
