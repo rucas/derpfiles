@@ -98,7 +98,7 @@
     neorg-overlay = { url = "github:nvim-neorg/nixpkgs-neorg-overlay"; };
     neovim-nightly = { url = "github:nix-community/neovim-nightly-overlay"; };
     nvim-autopairs = {
-      url = "github:windwp/nvim-autopairs";
+      url = "github:windwp/nvim-autopairs?ref=00def0123a1a728c313a7dd448727eac71392c57";
       flake = false;
     };
     nvim-colorizer-lua = {
