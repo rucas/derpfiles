@@ -13,10 +13,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     utils = { url = "github:gytis-ivaskevicius/flake-utils-plus"; };
-    alacritty = {
-      url = "github:alacritty/alacritty";
-      flake = false;
-    };
     alacritty-theme = { url = "github:alexghr/alacritty-theme.nix"; };
     auto-save-nvim = {
       url = "github:Pocco81/auto-save.nvim/dev";
