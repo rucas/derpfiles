@@ -13,6 +13,7 @@
     shellAliases = {
       b = "brazil";
       bb = "brazil-build";
+      bre = "brazil-build && brazil-runtime-exec";
       bbt = ''
         fd test test/ | fzf | xargs -I {} sh -c "brazil-build && brazil-build test --addopts '{} --no-cov'" '';
       bbp = "brazil-build && brazil-runtime-exec python ";
