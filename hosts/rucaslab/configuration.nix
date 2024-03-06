@@ -23,6 +23,7 @@
       owner = config.services.golink.user;
     };
     cloudflare = { file = ./secrets/cloudflare.age; };
+    cloudflare_dynamicdns = { file = ./secrets/cloudflare_dynamicdns.age; };
     lutron = {
       file = ./secrets/lutron.age;
       path = "/var/lib/hass/lutron.key";

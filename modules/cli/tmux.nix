@@ -33,9 +33,7 @@
           set -g @thumbs-command 'echo -n {} | pbcopy'
         '';
       }
-      {
-        plugin = tmuxPlugins.tmux-1password;
-      }
+      { plugin = tmuxPlugins.tmux-1password; }
     ];
     extraConfig = ''
       set -g default-terminal "tmux-256color"
