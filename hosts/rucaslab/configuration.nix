@@ -14,6 +14,7 @@
     ../../nixos/caddy
     ../../nixos/home-assistant
     ../../nixos/golink
+    ../../nixos/dynamicdns
   ];
 
   age.secrets = {
