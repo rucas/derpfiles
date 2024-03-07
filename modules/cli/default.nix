@@ -78,6 +78,8 @@
     tokei
     (lib.mkIf pkgs.stdenv.isLinux tor)
 
+    (lib.mkIf pkgs.stdenv.isLinux usbutils)
+
     wget
 
     xsv
