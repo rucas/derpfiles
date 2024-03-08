@@ -12,6 +12,7 @@
         # "nest"
         # "unifiprotect"
       ];
+      extraPackages = ps: with ps; [ psycopg2 ];
       customComponents = [
         (pkgs.callPackage ../../pkgs/alarmo { })
         (pkgs.callPackage ../../pkgs/home-assistant-petkit {
@@ -21,6 +22,7 @@
       ];
       config = {
         default_config = { };
+        recorder.db_url = "postgresql://@/hass";
         homeassistant = { allowlist_external_dirs = [ "/etc" ]; };
         # Includes dependencies for a basic setup
         # https://www.home-assistant.io/integrations/default_config/
@@ -34,6 +36,7 @@
           certfile = "/etc/lutron/client.crt";
           ca_certs = "/etc/lutron/ca.crt";
         };
+        zwave_js = { };
         alarmo = { };
         "scene manual" = [
           {
@@ -52,5 +55,23 @@
       };
     };
   };
+
+  # NOTE: postgres for performance+historical
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ "hass" ];
+    ensureUsers = [{
+      name = "hass";
+      ensureDBOwnership = true;
+    }];
+  };
+
+  services.zwave-js-ui = {
+    enable = true;
+    openFirewall = true;
+    device = "/dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00";
+  };
+
+  # NOTE: lutron certs in /etc
   environment.etc = { lutron.source = ./lutron; };
 }

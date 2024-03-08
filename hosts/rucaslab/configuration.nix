@@ -15,6 +15,7 @@
     ../../nixos/home-assistant
     ../../nixos/golink
     ../../nixos/dynamicdns
+    ../../nixos/zwave-js-ui
   ];
 
   age.secrets = {

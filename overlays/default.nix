@@ -63,4 +63,6 @@
       });
     });
   });
+  zwave-js-ui =
+    (final: prev: { zwave-js-ui = prev.callPackage ../pkgs/zwave-js-ui { }; });
 }
