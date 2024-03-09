@@ -14,9 +14,6 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-YfknyVipaVw2mtYFyHNC8N8TsURg4VGYF/swS7vol74=";
 
-  # NOTE: is this actually needed?
-  # npmFlags = [ "--include=dev" ];
-
   passthru = { tests = { inherit (nixosTests) zwave-js; }; };
 
   meta = with lib; {
