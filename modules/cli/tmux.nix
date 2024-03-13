@@ -91,7 +91,7 @@
 
       # inactive window style
       set -g window-status-style "bg=#{@THM_BLK},fg=#{@THM_BRW},dim"
-      set -g window-status-format '  #W  '
+      set -g window-status-format '#{?window_activity_flag,#[fg=#{@THM_MGN}#,italics],}  #W  '
 
       # active window style
       set -g window-status-current-style "bg=#{@THM_BLK},fg=#{@THM_RD}"
@@ -108,9 +108,6 @@
 
       # dont rename window without my permission...
       set -g allow-rename off
-
-      # activity window style
-      setw -g window-status-activity-style "bg=#{@THM_BLK},fg=#{@THM_YLW},bold,nodim"
 
       # focus events for nvim+tmux happiness
       set -g focus-events on
