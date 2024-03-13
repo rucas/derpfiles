@@ -74,7 +74,6 @@ in {
     };
   };
 
-  # TODO: add open firewall
   config = mkIf cfg.enable {
     systemd.services.zwave-js-ui = let stateDir = "zwave-js-ui";
     in {
