@@ -107,6 +107,12 @@
     experimental-features = [ "nix-command" "flakes" ];
   };
 
+  nix.gc = {
+    automatic = true;
+    randomizedDelaySec = "14m";
+    options = "--delete-older-than 10d";
+  };
+
   environment.systemPackages = with pkgs; [ git vim ];
 
   # Some programs need SUID wrappers, can be configured further or are
