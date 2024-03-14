@@ -16,6 +16,8 @@
     ../../nixos/golink
     ../../nixos/dynamicdns
     ../../nixos/zwave-js-ui
+    ../../nixos/zigbee2mqtt
+    ../../nixos/mosquitto
   ];
 
   age.secrets = {
@@ -35,6 +37,8 @@
     zigbee2mqtt = {
       file = ./secrets/zigbee2mqtt.age;
       path = "/var/lib/zigbee2mqtt/secret.yaml";
+      owner = "zigbee2mqtt";
+      group = "zigbee2mqtt";
     };
     mosquitto = { file = ./secrets/mosquitto.age; };
   };

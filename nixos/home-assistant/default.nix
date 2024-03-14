@@ -15,10 +15,10 @@
       extraPackages = ps: with ps; [ psycopg2 ];
       customComponents = [
         (pkgs.callPackage ../../pkgs/alarmo { })
-        (pkgs.callPackage ../../pkgs/home-assistant-petkit {
-          petkitaio =
-            (pkgs.python311Packages.callPackage ../../pkgs/petkitaio { });
-        })
+        #(pkgs.callPackage ../../pkgs/home-assistant-petkit {
+        #  petkitaio =
+        #    (pkgs.python311Packages.callPackage ../../pkgs/petkitaio { });
+        #})
       ];
       config = {
         default_config = { };
@@ -52,6 +52,7 @@
             entities = { "light.master_bedroom_main_lights" = "off"; };
           }
         ];
+        mqtt = { };
       };
     };
   };
@@ -69,7 +70,7 @@
   services.zwave-js-ui = {
     enable = true;
     openFirewall = true;
-    device = "/dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00";
+    device = CONF.hosts.rucaslab.zwave.device;
   };
 
   # NOTE: lutron certs in /etc
