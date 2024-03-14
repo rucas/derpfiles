@@ -12,4 +12,5 @@ in {
   "lutron.age".publicKeys = [ users.personal-5c-nano system ];
   "tailscale_golink.age".publicKeys = [ users.personal-5c-nano system ];
   "zigbee2mqtt.age".publicKeys = [ users.personal-5c-nano system ];
+  "mosquitto.age".publicKeys = [ users.personal-5c-nano system ];
 }

@@ -36,6 +36,7 @@
       file = ./secrets/zigbee2mqtt.age;
       path = "/var/lib/zigbee2mqtt/secret.yaml";
     };
+    mosquitto = { file = ./secrets/mosquitto.age; };
   };
 
   # Bootloader.
