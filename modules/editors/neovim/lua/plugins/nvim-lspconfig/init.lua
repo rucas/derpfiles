@@ -50,7 +50,7 @@ local on_attach = function(client, bufnr)
 	end, bufopts)
 
 	-- LSP diagnostic popup
-	vim.api.nvim_create_autocmd("CursorHold", {
+	vim.api.nvim_create_autocmd({ "CursorHold" }, {
 		buffer = bufnr,
 		callback = function()
 			vim.diagnostic.open_float(nil, {

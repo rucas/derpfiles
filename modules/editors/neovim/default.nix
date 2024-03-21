@@ -183,6 +183,7 @@
       stylua
       taplo
     ];
+    extraLuaPackages = ps: [ ps.nvim-nio ps.xml2lua ps.lua-curl ];
     viAlias = true;
   };
 
