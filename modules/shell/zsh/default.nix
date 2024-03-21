@@ -9,7 +9,7 @@
       extended = true;
     };
     autocd = true;
-    enableAutosuggestions = true;
+    autosuggestion = { enable = true; };
     shellAliases = {
       b = "brazil";
       bb = "brazil-build";
