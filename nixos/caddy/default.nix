@@ -24,6 +24,24 @@
             }
           '';
         };
+        "zigbee.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :8080
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
+        "zwave.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :8091
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
       };
     };
   };
