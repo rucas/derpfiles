@@ -102,15 +102,16 @@
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
 
-  nix.settings = {
-    sandbox = false;
-    experimental-features = [ "nix-command" "flakes" ];
-  };
-
-  nix.gc = {
-    automatic = true;
-    randomizedDelaySec = "14m";
-    options = "--delete-older-than 10d";
+  nix = {
+    settings = {
+      sandbox = false;
+      experimental-features = [ "nix-command" "flakes" ];
+    };
+    gc = {
+      automatic = true;
+      randomizedDelaySec = "14m";
+      options = "--delete-older-than 10d";
+    };
   };
 
   environment.systemPackages = with pkgs; [ git vim ];

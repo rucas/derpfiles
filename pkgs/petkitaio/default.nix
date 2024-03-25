@@ -20,7 +20,7 @@ buildPythonPackage rec {
 
   doCheck = false;
 
-  #pythonImportsCheck = [ "petkitaio" ];
+  pythonImportsCheck = [ "petkitaio" ];
 
   meta = with lib; {
     description = "Asynchronous Python library for PetKit's API.";
