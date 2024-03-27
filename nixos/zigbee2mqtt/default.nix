@@ -8,7 +8,10 @@
       };
       serial = { port = CONF.hosts.rucaslab.zigbee.device; };
       frontend = true;
+      advanced = {
+        channel = 25;
+        network_key = "!secret.yaml network_key";
+      };
     };
   };
-  networking.firewall = { allowedTCPPorts = [ 8080 ]; };
 }
