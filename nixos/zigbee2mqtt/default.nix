@@ -11,6 +11,7 @@
       advanced = {
         channel = 25;
         network_key = "!secret.yaml network_key";
+        transmit_power = 20;
       };
     };
   };
