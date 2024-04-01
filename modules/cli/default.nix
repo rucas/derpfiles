@@ -55,6 +55,8 @@
 
     (lib.mkIf pkgs.stdenv.isDarwin m-cli)
 
+    lsof
+
     netcat
     neofetch
     nmap
