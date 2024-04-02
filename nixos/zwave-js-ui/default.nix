@@ -17,7 +17,7 @@ in {
 
     user = mkOption {
       default = "zwave-js-ui";
-      type = types.str;
+      type = str;
       description = lib.mdDoc ''
         User account under which zwave-js-ui runs.
 
@@ -31,7 +31,7 @@ in {
 
     group = mkOption {
       default = "zwave-js-ui";
-      type = types.str;
+      type = str;
       description = lib.mdDoc ''
         Group account under which zwave-js-ui runs.
 
@@ -66,10 +66,26 @@ in {
     };
 
     dataDir = mkOption {
-      type = types.path;
+      type = path;
       default = "/var/lib/zwave-js-ui";
       description = lib.mdDoc ''
         The data directory for zwave-js-ui.
+      '';
+    };
+
+    behindProxy = mkOption {
+      type = bool;
+      default = false;
+      description = lib.mdDoc ''
+        The express TRUST_PROXY env var.
+      '';
+    };
+
+    timezone = mkOption {
+      type = str;
+      default = "America/Los_Angeles";
+      description = lib.mdDoc ''
+        The timezone to you want in the UI.
       '';
     };
   };
@@ -85,6 +101,8 @@ in {
         STORE_DIR = "%S/${stateDir}";
         BACKUPS_DIR = "%S/${stateDir}/backups";
         ZWAVE_JS_EXTERNAL_CONFIG = "%S/${stateDir}/.config-db";
+        TRUST_PROXY = "${lib.trivial.boolToString cfg.behindProxy}";
+        TZ = cfg.timezone;
       };
 
       serviceConfig = {
