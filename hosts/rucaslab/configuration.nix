@@ -102,6 +102,10 @@
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
 
+  # NOTE:
+  # https://discourse.nixos.org/t/nixos-rebuild-switch-upgrade-networkmanager-wait-online-service-failure/30746/2
+  systemd.services.NetworkManager-wait-online.enable = pkgs.lib.mkForce false;
+
   nix = {
     settings = {
       sandbox = false;
