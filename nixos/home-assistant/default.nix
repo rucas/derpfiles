@@ -27,7 +27,7 @@
           certfile = "/etc/lutron/client.crt";
           ca_certs = "/etc/lutron/ca.crt";
         };
-        # zwave_js = { };
+        zwave_js = { };
         alarmo = { };
         "scene manual" = [
           {
