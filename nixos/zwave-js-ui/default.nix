@@ -2,7 +2,15 @@
 
 with lib;
 
-let cfg = config.services.zwave-js-ui;
+let
+  cfg = config.services.zwave-js-ui;
+
+  jsonType = (pkgs.formats.json { }).type;
+
+  configFile = pkgs.writeTextFile {
+    name = "merge_settings.json";
+    text = builtins.toJSON cfg.settings;
+  };
 
 in {
   # NOTE:
@@ -59,12 +67,6 @@ in {
       '';
     };
 
-    device = mkOption {
-      type = path;
-      example = "/dev/serial/by-id/insert_stick_reference_here";
-      description = "The serial port for the zwave usb stick";
-    };
-
     dataDir = mkOption {
       type = path;
       default = "/var/lib/zwave-js-ui";
@@ -88,6 +90,132 @@ in {
         The timezone to you want in the UI.
       '';
     };
+
+    networkKeyFile = mkOption {
+      type = path;
+      description = lib.mdDoc ''
+        The systemd environment file that holds all the zwave network hex keys.
+        SEE: https://zwave-js.github.io/zwave-js-ui/#/guide/env-vars
+      '';
+    };
+
+    settings = mkOption {
+      description = lib.mdDoc ''
+        The configuration for zwave-js-ui, see...
+      '';
+      default = { };
+      type = submodule {
+        freeformType = jsonType;
+        options = {
+          zwave = mkOption {
+            description = lib.mdDoc "zwave settings";
+            default = { };
+            type = submodule {
+              freeformType = jsonType;
+              options = {
+                port = mkOption {
+                  type = path;
+                  description =
+                    lib.mdDoc "The serial port for the zwave usb stick";
+                };
+                allowBootloaderOnly = mkOption {
+                  type = bool;
+                  default = false;
+                  description = lib.mdDoc "Not sure what this is...";
+                };
+                commandsTimeout = mkOption {
+                  type = int;
+                  default = 60;
+                  description = lib.mdDoc "The timeout for a command";
+                };
+                logLevel = mkOption {
+                  type = str;
+                  default = "Info";
+                  description = lib.mdDoc "The LOGLEVEL for logging zwave";
+                };
+                logEnabled = mkOption {
+                  type = bool;
+                  default = true;
+                  description = lib.mdDoc "To enable logs or not.";
+                };
+              };
+            };
+          };
+          backup = mkOption {
+            description = lib.mdDoc "Backup settings.";
+            default = { };
+            type = submodule {
+              freeformType = jsonType;
+              options = {
+                storeBackup = mkOption {
+                  default = false;
+                  type = bool;
+                  description = lib.mdDoc "Enable backups.";
+                };
+                storeCron = mkOption {
+                  default = "0 0 * * *";
+                  type = str;
+                  description =
+                    lib.mdDoc "Cron expression to schedule the job.";
+                };
+                storeKeep = mkOption {
+                  default = 7;
+                  type = int;
+                  description =
+                    lib.mdDoc "Max number of files to keep as backups.";
+                };
+                nvmBackup = mkOption {
+                  default = false;
+                  type = bool;
+                  description = lib.mdDoc "Enable NVM backups.";
+                };
+                nvmBackupOnEvent = mkOption {
+                  default = false;
+                  type = bool;
+                  description = lib.mdDoc "Enable backup on event.";
+                };
+                nvmCron = mkOption {
+                  default = "0 0 * * *";
+                  type = str;
+                  description =
+                    lib.mdDoc "Cron expression to schedule backup job";
+                };
+                nvmKeep = mkOption {
+                  default = 7;
+                  type = int;
+                  description =
+                    lib.mdDoc "Max number of files to keep nvm backups.";
+                };
+              };
+            };
+          };
+          ui = mkOption {
+            description = lib.mdDoc "UI settings";
+            default = { };
+            type = submodule {
+              freeformType = jsonType;
+              options = {
+                darkMode = mkOption {
+                  default = false;
+                  type = bool;
+                  description = lib.mdDoc "Enable dark mode.";
+                };
+                navTabs = mkOption {
+                  default = false;
+                  type = bool;
+                  description = lib.mdDoc "Enable navigation tabs.";
+                };
+                compactMode = mkOption {
+                  default = false;
+                  type = bool;
+                  description = lib.mdDoc "Enable compact mode.";
+                };
+              };
+            };
+          };
+        };
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -105,6 +233,14 @@ in {
         TZ = cfg.timezone;
       };
 
+      preStart =
+        # NOTE: merge the json
+        ''
+          cp "$STATE_DIRECTORY/settings.json" "$STATE_DIRECTORY/settings.json.bak"
+          rm -f "$STATE_DIRECTORY/settings.json"
+          ${pkgs.jq}/bin/jq -s ".[0] * .[1]" "$STATE_DIRECTORY/settings.json.bak" "${configFile}" > "$STATE_DIRECTORY/settings.json"
+        '';
+
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/zwave-js-ui";
         StateDirectory = "zwave-js-ui";
@@ -112,8 +248,10 @@ in {
         User = cfg.user;
         Group = cfg.group;
         Restart = "on-failure";
+        EnvironmentFile = cfg.networkKeyFile;
       };
     };
+
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
     users.users = optionalAttrs (cfg.user == "zwave-js-ui") {
       zwave-js-ui = {

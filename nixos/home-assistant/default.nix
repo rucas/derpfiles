@@ -1,25 +1,16 @@
 { CONF, config, pkgs, ... }: {
-  networking.firewall.allowedTCPPorts = [ 8123 ];
+  networking.firewall = {
+    allowedTCPPortRanges = [{
+      from = 1400;
+      to = 1500;
+    }];
+  };
   services = {
     home-assistant = {
       enable = true;
-      extraComponents = [
-        # Components required to complete the onboarding
-        "esphome"
-        "lutron_caseta"
-        "met"
-        "radio_browser"
-        # "nest"
-        # "unifiprotect"
-      ];
+      extraComponents = [ "esphome" "lutron_caseta" "met" "radio_browser" ];
       extraPackages = ps: with ps; [ psycopg2 ];
-      customComponents = [
-        (pkgs.callPackage ../../pkgs/alarmo { })
-        #(pkgs.callPackage ../../pkgs/home-assistant-petkit {
-        #  petkitaio =
-        #    (pkgs.python311Packages.callPackage ../../pkgs/petkitaio { });
-        #})
-      ];
+      customComponents = [ (pkgs.callPackage ../../pkgs/alarmo { }) ];
       config = {
         default_config = { };
         recorder.db_url = "postgresql://@/hass";
@@ -36,7 +27,7 @@
           certfile = "/etc/lutron/client.crt";
           ca_certs = "/etc/lutron/ca.crt";
         };
-        zwave_js = { };
+        # zwave_js = { };
         alarmo = { };
         "scene manual" = [
           {
@@ -53,6 +44,18 @@
           }
         ];
         mqtt = { };
+        sonos = { media_player = { hosts = [ "192.168.1.141" ]; }; };
+        apple_tv = { };
+        unifiprotect = { };
+        notify = [{
+          name = "all_mobile";
+          unique_id = "all_mobile";
+          platform = "group";
+          services = [{ service = "mobile_app_lucas_iphone"; }];
+        }];
+        "automation ui" = "!include automations.yaml";
+        #"automation manual" = [{ alias = "Nightly Backup"; }];
+        backup = { };
       };
     };
   };
@@ -69,8 +72,15 @@
 
   services.zwave-js-ui = {
     enable = true;
-    openFirewall = true;
-    device = CONF.hosts.rucaslab.zwave.device;
+    behindProxy = true;
+    settings = {
+      zwave = { port = CONF.hosts.rucaslab.zwave.device; };
+      ui = {
+        darkMode = true;
+        navTabs = true;
+      };
+    };
+    networkKeyFile = config.age.secrets.zwave-js-ui.path;
   };
 
   # NOTE: lutron certs in /etc

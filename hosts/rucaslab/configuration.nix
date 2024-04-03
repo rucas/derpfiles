@@ -41,6 +41,7 @@
       group = "zigbee2mqtt";
     };
     mosquitto = { file = ./secrets/mosquitto.age; };
+    zwave-js-ui = { file = ./secrets/zwave_js_ui.age; };
   };
 
   # Bootloader.
