@@ -17,7 +17,7 @@
   });
   alacritty = (final: prev: {
     alacritty = prev.alacritty.overrideAttrs (drv: rec {
-      version = "0.13.1";
+      version = "0.13.2";
       pname = "alacritty";
 
       src = prev.fetchFromGitHub {
@@ -59,7 +59,7 @@
 
       cargoDeps = drv.cargoDeps.overrideAttrs (prev.lib.const {
         inherit src;
-        outputHash = "sha256-vCoKaDd0mQRF6NNfK679FhEXuAdn/1o3F1gTfT8NK+0=";
+        outputHash = "sha256-WvOKsk9UGIMkGH6BRfWOKsVY985lhjy7M3ikafL16+4=";
       });
     });
   });
