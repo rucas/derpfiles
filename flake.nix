@@ -255,7 +255,6 @@
 
       overlay = import ./overlays { inherit self inputs; };
       sharedOverlays = with self.overlay; [
-        alacritty
         alacritty-theme.overlays.default
         golink.overlay
         neovim-nightly.overlay
