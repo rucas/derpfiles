@@ -26,7 +26,7 @@ in {
     user = mkOption {
       default = "zwave-js-ui";
       type = str;
-      description = lib.mdDoc ''
+      description = ''
         User account under which zwave-js-ui runs.
 
         ::: {.note}
@@ -40,7 +40,7 @@ in {
     group = mkOption {
       default = "zwave-js-ui";
       type = str;
-      description = lib.mdDoc ''
+      description = ''
         Group account under which zwave-js-ui runs.
 
         ::: {.note}
@@ -54,7 +54,7 @@ in {
     port = mkOption {
       type = port;
       default = 8091;
-      description = lib.mdDoc ''
+      description = ''
         Port to serve HTTP pages on.
       '';
     };
@@ -62,7 +62,7 @@ in {
     openFirewall = mkOption {
       type = bool;
       default = false;
-      description = lib.mdDoc ''
+      description = ''
         Open ports in the firewall for the zwave-js-ui web interface
       '';
     };
@@ -70,7 +70,7 @@ in {
     dataDir = mkOption {
       type = path;
       default = "/var/lib/zwave-js-ui";
-      description = lib.mdDoc ''
+      description = ''
         The data directory for zwave-js-ui.
       '';
     };
@@ -78,7 +78,7 @@ in {
     behindProxy = mkOption {
       type = bool;
       default = false;
-      description = lib.mdDoc ''
+      description = ''
         The express TRUST_PROXY env var.
       '';
     };
@@ -86,21 +86,21 @@ in {
     timezone = mkOption {
       type = str;
       default = "America/Los_Angeles";
-      description = lib.mdDoc ''
+      description = ''
         The timezone to you want in the UI.
       '';
     };
 
     networkKeyFile = mkOption {
       type = path;
-      description = lib.mdDoc ''
+      description = ''
         The systemd environment file that holds all the zwave network hex keys.
         SEE: https://zwave-js.github.io/zwave-js-ui/#/guide/env-vars
       '';
     };
 
     settings = mkOption {
-      description = lib.mdDoc ''
+      description = ''
         The configuration for zwave-js-ui, see...
       '';
       default = { };
@@ -108,41 +108,40 @@ in {
         freeformType = jsonType;
         options = {
           zwave = mkOption {
-            description = lib.mdDoc "zwave settings";
+            description = "zwave settings";
             default = { };
             type = submodule {
               freeformType = jsonType;
               options = {
                 port = mkOption {
                   type = path;
-                  description =
-                    lib.mdDoc "The serial port for the zwave usb stick";
+                  description = "The serial port for the zwave usb stick";
                 };
                 allowBootloaderOnly = mkOption {
                   type = bool;
                   default = false;
-                  description = lib.mdDoc "Not sure what this is...";
+                  description = "Not sure what this is...";
                 };
                 commandsTimeout = mkOption {
                   type = int;
                   default = 60;
-                  description = lib.mdDoc "The timeout for a command";
+                  description = "The timeout for a command";
                 };
                 logLevel = mkOption {
                   type = str;
                   default = "Info";
-                  description = lib.mdDoc "The LOGLEVEL for logging zwave";
+                  description = "The LOGLEVEL for logging zwave";
                 };
                 logEnabled = mkOption {
                   type = bool;
                   default = true;
-                  description = lib.mdDoc "To enable logs or not.";
+                  description = "To enable logs or not.";
                 };
               };
             };
           };
           backup = mkOption {
-            description = lib.mdDoc "Backup settings.";
+            description = "Backup settings.";
             default = { };
             type = submodule {
               freeformType = jsonType;
@@ -150,47 +149,43 @@ in {
                 storeBackup = mkOption {
                   default = false;
                   type = bool;
-                  description = lib.mdDoc "Enable backups.";
+                  description = "Enable backups.";
                 };
                 storeCron = mkOption {
                   default = "0 0 * * *";
                   type = str;
-                  description =
-                    lib.mdDoc "Cron expression to schedule the job.";
+                  description = "Cron expression to schedule the job.";
                 };
                 storeKeep = mkOption {
                   default = 7;
                   type = int;
-                  description =
-                    lib.mdDoc "Max number of files to keep as backups.";
+                  description = "Max number of files to keep as backups.";
                 };
                 nvmBackup = mkOption {
                   default = false;
                   type = bool;
-                  description = lib.mdDoc "Enable NVM backups.";
+                  description = "Enable NVM backups.";
                 };
                 nvmBackupOnEvent = mkOption {
                   default = false;
                   type = bool;
-                  description = lib.mdDoc "Enable backup on event.";
+                  description = "Enable backup on event.";
                 };
                 nvmCron = mkOption {
                   default = "0 0 * * *";
                   type = str;
-                  description =
-                    lib.mdDoc "Cron expression to schedule backup job";
+                  description = "Cron expression to schedule backup job";
                 };
                 nvmKeep = mkOption {
                   default = 7;
                   type = int;
-                  description =
-                    lib.mdDoc "Max number of files to keep nvm backups.";
+                  description = "Max number of files to keep nvm backups.";
                 };
               };
             };
           };
           ui = mkOption {
-            description = lib.mdDoc "UI settings";
+            description = "UI settings";
             default = { };
             type = submodule {
               freeformType = jsonType;
@@ -198,17 +193,17 @@ in {
                 darkMode = mkOption {
                   default = false;
                   type = bool;
-                  description = lib.mdDoc "Enable dark mode.";
+                  description = "Enable dark mode.";
                 };
                 navTabs = mkOption {
                   default = false;
                   type = bool;
-                  description = lib.mdDoc "Enable navigation tabs.";
+                  description = "Enable navigation tabs.";
                 };
                 compactMode = mkOption {
                   default = false;
                   type = bool;
-                  description = lib.mdDoc "Enable compact mode.";
+                  description = "Enable compact mode.";
                 };
               };
             };

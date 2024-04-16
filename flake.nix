@@ -5,7 +5,7 @@
     agenix = { url = "github:ryantm/agenix"; };
     nixpkgs = { url = "github:nixos/nixpkgs/nixpkgs-unstable"; };
     nix-darwin = {
-      url = "github:lnl7/nix-darwin";
+      url = "github:wegank/nix-darwin/mddoc-remove";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
