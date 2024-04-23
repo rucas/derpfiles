@@ -78,6 +78,11 @@ telescope.setup({
 				"{.git,.idea,.direnv,.pytest_cache,__pycache__}",
 				"--strip-cwd-prefix",
 			},
+			path_display = function(opts, path)
+				local tail = telescope_utils.path_smart(path)
+				return string.format("%s", tail:gsub("%../", ""))
+			end,
+			sort_mru = true,
 		},
 		commands = {
 			preview = false,
@@ -96,6 +101,12 @@ telescope.setup({
 		},
 		lsp_definitions = {
 			timeout = 1000,
+		},
+		lsp_references = {
+			path_display = function(opts, path)
+				local tail = telescope_utils.path_smart(path)
+				return string.format("%s", tail:gsub("%../", ""))
+			end,
 		},
 		oldfiles = {
 			only_cwd = true,
