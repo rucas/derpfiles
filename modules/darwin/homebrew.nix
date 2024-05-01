@@ -15,13 +15,15 @@
       "dynobase"
       "espanso"
       "maccy"
+      "mqttx"
+      "mqtt-explorer"
       "obs"
       "shortcat"
       "sketch"
       "slack"
       "vlc"
     ];
-    brews = [ "blueutil" "chrome-cli" "pyenv" "sharewifi" "tor" "openssh" ];
+    brews = [ "blueutil" "chrome-cli" "openssh" "pyenv" "sharewifi" "tor" ];
   };
 
   environment.variables = { HOMEBREW_NO_ANALYTICS = "1"; };
