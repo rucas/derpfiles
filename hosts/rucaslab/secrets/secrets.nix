@@ -14,4 +14,5 @@ in {
   "zigbee2mqtt.age".publicKeys = [ users.personal-5c-nano system ];
   "mosquitto.age".publicKeys = [ users.personal-5c-nano system ];
   "zwave_js_ui.age".publicKeys = [ users.personal-5c-nano system ];
+  "nix.age".publicKeys = [ users.personal-5c-nano system ];
 }

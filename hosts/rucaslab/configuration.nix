@@ -44,6 +44,7 @@
     };
     mosquitto = { file = ./secrets/mosquitto.age; };
     zwave-js-ui = { file = ./secrets/zwave_js_ui.age; };
+    nix = { file = ./secrets/nix.age; };
   };
 
   # Bootloader.
@@ -119,6 +120,7 @@
       randomizedDelaySec = "14m";
       options = "--delete-older-than 10d";
     };
+    extraOptions = "!include ${config.age.secrets.nix.path}";
   };
 
   environment.systemPackages = with pkgs; [ git vim ];
