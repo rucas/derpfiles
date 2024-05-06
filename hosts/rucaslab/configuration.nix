@@ -120,7 +120,10 @@
       randomizedDelaySec = "14m";
       options = "--delete-older-than 10d";
     };
-    extraOptions = "!include ${config.age.secrets.nix.path}";
+    extraOptions = ''
+      # NOTE: need to run sudo nix flake update to use gh token
+      include ${config.age.secrets.nix.path}
+    '';
   };
 
   environment.systemPackages = with pkgs; [ git vim ];

@@ -5,14 +5,14 @@
     agenix = { url = "github:ryantm/agenix"; };
     nixpkgs = { url = "github:nixos/nixpkgs/nixpkgs-unstable"; };
     nix-darwin = {
-      url = "github:wegank/nix-darwin/mddoc-remove";
+      url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    utils = { url = "github:gytis-ivaskevicius/flake-utils-plus"; };
+    utils = { url = "github:fl42v/flake-utils-plus"; };
     alacritty-theme = { url = "github:alexghr/alacritty-theme.nix"; };
     auto-save-nvim = {
       url = "github:Pocco81/auto-save.nvim/dev";
