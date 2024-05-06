@@ -18,6 +18,8 @@
     ../../nixos/zwave-js-ui
     ../../nixos/zigbee2mqtt
     ../../nixos/mosquitto
+    ../../nixos/esphome
+    ../../nixos/radarr
   ];
 
   age.secrets = {

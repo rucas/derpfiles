@@ -17,11 +17,15 @@
         };
         "home.rucaslab.com" = {
           extraConfig = ''
-            reverse_proxy :8123
             encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
             }
+            handle_path /local* {
+              root * /run/hass/
+              file_server
+            }
+            reverse_proxy :8123
           '';
         };
         "zigbee.rucaslab.com" = {
@@ -45,6 +49,24 @@
         "mqtt.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :1883
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
+        "esphome.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :6052
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
+        "radarr.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :7878
             encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}

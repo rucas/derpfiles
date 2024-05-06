@@ -26,6 +26,14 @@
               domain = "mqtt.rucaslab.com";
               answer = "192.168.1.136";
             }
+            {
+              domain = "esphome.rucaslab.com";
+              answer = "192.168.1.136";
+            }
+            {
+              domain = "radarr.rucaslab.com";
+              answer = "192.168.1.136";
+            }
           ];
           bootstrap_dns =
             [ "9.9.9.10" "149.112.112.10" "2620:fe::10" "2620:fe::fe:10" ];
