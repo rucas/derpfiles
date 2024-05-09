@@ -1,0 +1,14 @@
+diff --git a/custom_components/ui_lovelace_minimalist/manifest.json b/custom_components/ui_lovelace_minimalist/manifest.json
+index 3a6b34c6..9a83bff0 100644
+--- a/custom_components/ui_lovelace_minimalist/manifest.json
++++ b/custom_components/ui_lovelace_minimalist/manifest.json
+@@ -14,7 +14,7 @@
+   "iot_class": "calculated",
+   "issue_tracker": "https://github.com/UI-Lovelace-Minimalist/UI/issues",
+   "requirements": [
+-    "aiofiles==0.8.0",
++    "aiofiles>=23.2.1",
+     "aiogithubapi>=22.2.4"
+   ],
+   "version": "0.0.1"
+

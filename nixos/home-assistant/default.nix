@@ -1,4 +1,11 @@
-{ CONF, config, pkgs, ... }: {
+{ CONF, config, pkgs, ... }:
+let
+  bubble = pkgs.callPackage ../../pkgs/bubble-card { };
+  button-card = pkgs.callPackage ../../pkgs/button-card { };
+  card-mod = pkgs.callPackage ../../pkgs/lovelace-card-mod { };
+  my-cards = pkgs.callPackage ../../pkgs/my-cards { };
+  auto-entities = pkgs.callPackage ../../pkgs/lovelace-auto-entities { };
+in {
   networking.firewall = {
     allowedTCPPortRanges = [{
       from = 1400;
@@ -10,7 +17,17 @@
       enable = true;
       extraComponents = [ "esphome" "lutron_caseta" "met" "radio_browser" ];
       extraPackages = ps: with ps; [ psycopg2 ];
-      customComponents = [ (pkgs.callPackage ../../pkgs/alarmo { }) ];
+      customComponents = [
+        (pkgs.callPackage ../../pkgs/alarmo { })
+        (pkgs.callPackage ../../pkgs/hass-browser_mod { })
+        (pkgs.callPackage ../../pkgs/ui { })
+      ];
+      customLovelaceModules =
+        with pkgs.home-assistant-custom-lovelace-modules; [
+          light-entity-card
+          mini-graph-card
+          mini-media-player
+        ];
       config = {
         default_config = { };
         recorder.db_url = "postgresql://@/hass";
@@ -27,8 +44,15 @@
           certfile = "/etc/lutron/client.crt";
           ca_certs = "/etc/lutron/ca.crt";
         };
+        lovelace = {
+          resources = [{
+            url = "/local/bubble-card.js";
+            type = "module";
+          }];
+        };
         zwave_js = { };
         alarmo = { };
+        esphome = { };
         "scene manual" = [
           {
             name = "TV";
@@ -59,6 +83,15 @@
       };
     };
   };
+
+  systemd.tmpfiles.rules = [
+    "d /run/hass 0700 caddy caddy"
+    "L+ /run/hass/bubble-card.js - - - - ${bubble}/bubble-card.js"
+    "L+ /run/hass/button-card.js - - - - ${button-card}/button-card.js"
+    "L+ /run/hass/card-mod.js - - - - ${card-mod}/card-mod.js"
+    "L+ /run/hass/my-cards.js - - - - ${my-cards}/my-cards.js"
+    "L+ /run/hass/auto-entities.js - - - - ${auto-entities}/auto-entities.js"
+  ];
 
   # NOTE: postgres for performance+historical
   services.postgresql = {
