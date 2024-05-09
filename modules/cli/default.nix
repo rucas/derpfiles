@@ -18,7 +18,7 @@
     age
     age-plugin-yubikey
     ast-grep
-    awscli
+    # awscli
 
     bandwhich
 
