@@ -20,6 +20,7 @@
     ../../nixos/mosquitto
     ../../nixos/esphome
     ../../nixos/radarr
+    ../../nixos/uptime-kuma
   ];
 
   age.secrets = {
