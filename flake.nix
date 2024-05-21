@@ -15,7 +15,7 @@
     utils = { url = "github:fl42v/flake-utils-plus"; };
     alacritty-theme = { url = "github:alexghr/alacritty-theme.nix"; };
     auto-save-nvim = {
-      url = "github:Pocco81/auto-save.nvim/dev";
+      url = "github:okuuva/auto-save.nvim";
       flake = false;
     };
     auto-session = {

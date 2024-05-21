@@ -1,7 +1,6 @@
 require("neorg").setup({
 	load = {
 		["core.defaults"] = {},
-		["core.manoeuvre"] = {},
 		["core.keybinds"] = {
 			config = {
 				neorg_leader = "<Leader>",
