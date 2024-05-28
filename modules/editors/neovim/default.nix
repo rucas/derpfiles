@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }: {
   programs.neovim = {
     enable = true;
+    package = pkgs.neovim;
     defaultEditor = true;
     extraLuaConfig = ''
       require("init");
