@@ -257,7 +257,7 @@
       sharedOverlays = with self.overlay; [
         alacritty-theme.overlays.default
         golink.overlay
-        neovim-nightly.overlays.default
+        # TODO: neovim-nightly.overlays.default
         neorg-overlay.overlays.default
         spacebar.overlay
         vimPlugins
