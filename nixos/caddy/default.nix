@@ -82,6 +82,15 @@
             }
           '';
         };
+        "grafana.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :2342
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
       };
     };
   };
