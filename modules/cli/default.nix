@@ -37,6 +37,7 @@
     gitmux
     gnumake
     gnused
+    graphviz
     grex
 
     haskellPackages.patat
