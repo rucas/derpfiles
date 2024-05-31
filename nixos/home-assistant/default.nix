@@ -6,16 +6,30 @@ let
   my-cards = pkgs.callPackage ../../pkgs/my-cards { };
   auto-entities = pkgs.callPackage ../../pkgs/lovelace-auto-entities { };
 in {
+
   networking.firewall = {
+    # NOTE: sonos discovery
     allowedTCPPortRanges = [{
       from = 1400;
       to = 1500;
     }];
+    # NOTE: homekit discovery
+    allowedUDPPorts = [ 5353 ];
   };
   services = {
     home-assistant = {
       enable = true;
-      extraComponents = [ "esphome" "lutron_caseta" "met" "radio_browser" ];
+      extraComponents = [
+        "airthings"
+        "apple_tv"
+        "esphome"
+        "homekit_controller"
+        "lutron_caseta"
+        "met"
+        "radio_browser"
+        "unifiprotect"
+        "zwave_js"
+      ];
       extraPackages = ps: with ps; [ psycopg2 ];
       customComponents = [
         (pkgs.callPackage ../../pkgs/alarmo { })
@@ -50,9 +64,7 @@ in {
             type = "module";
           }];
         };
-        zwave_js = { };
         alarmo = { };
-        esphome = { };
         "scene manual" = [
           {
             name = "TV";
@@ -69,8 +81,6 @@ in {
         ];
         mqtt = { };
         sonos = { media_player = { hosts = [ "192.168.1.141" ]; }; };
-        apple_tv = { };
-        unifiprotect = { };
         notify = [{
           name = "all_mobile";
           unique_id = "all_mobile";
