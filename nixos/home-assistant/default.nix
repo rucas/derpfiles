@@ -30,7 +30,7 @@ in {
       ];
       extraPackages = ps: with ps; [ psycopg2 ];
       customComponents = [
-        (pkgs.callPackage ../../pkgs/alarmo { })
+        pkgs.home-assistant-custom-components.alarmo
         (pkgs.callPackage ../../pkgs/hass-browser_mod { })
         (pkgs.callPackage ../../pkgs/ui { })
       ];

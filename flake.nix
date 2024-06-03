@@ -266,6 +266,7 @@
         zwave-js-ui
         home-assistant-custom-lovelace-modules
         home-assistant-themes
+        home-assistant-custom-components
       ];
 
       hosts.blkmrkt = mkHost {
