@@ -1,10 +1,8 @@
 { CONF, config, pkgs, ... }:
 let
-  bubble = pkgs.callPackage ../../pkgs/bubble-card { };
-  button-card = pkgs.callPackage ../../pkgs/button-card { };
-  card-mod = pkgs.callPackage ../../pkgs/lovelace-card-mod { };
   my-cards = pkgs.callPackage ../../pkgs/my-cards { };
   auto-entities = pkgs.callPackage ../../pkgs/lovelace-auto-entities { };
+  theme = pkgs.home-assistant-themes.graphite;
 in {
 
   networking.firewall = {
@@ -38,16 +36,16 @@ in {
       ];
       customLovelaceModules =
         with pkgs.home-assistant-custom-lovelace-modules; [
+          button-card
           light-entity-card
           mini-graph-card
           mini-media-player
         ];
       config = {
         default_config = { };
+        frontend.themes = "!include ${theme}/${theme.pname}.yaml";
         recorder.db_url = "postgresql://@/hass";
         homeassistant = { allowlist_external_dirs = [ "/etc" ]; };
-        # Includes dependencies for a basic setup
-        # https://www.home-assistant.io/integrations/default_config/
         http = {
           trusted_proxies = [ "127.0.0.1" ];
           use_x_forwarded_for = true;
@@ -76,7 +74,7 @@ in {
           }
           {
             name = "Leave";
-            entities = { "light.master_bedroom_main_lights" = "off"; };
+            entities = { };
           }
         ];
         mqtt = { };
@@ -85,10 +83,23 @@ in {
           name = "all_mobile";
           unique_id = "all_mobile";
           platform = "group";
-          services = [{ service = "mobile_app_lucas_iphone"; }];
+          services = [
+            { service = "mobile_app_lucas_iphone"; }
+            { service = "mobile_app_kelsey_iphone"; }
+          ];
         }];
         "automation ui" = "!include automations.yaml";
-        #"automation manual" = [{ alias = "Nightly Backup"; }];
+        "automation manual" = [{
+          alias = "Nightly Backup at 3am";
+          trigger = {
+            platform = "time";
+            at = "03:00:00";
+          };
+          action = {
+            alias = "Create backup now";
+            service = "backup.create";
+          };
+        }];
         backup = { };
       };
     };
@@ -96,11 +107,14 @@ in {
 
   systemd.tmpfiles.rules = [
     "d /run/hass 0700 caddy caddy"
-    "L+ /run/hass/bubble-card.js - - - - ${bubble}/bubble-card.js"
-    "L+ /run/hass/button-card.js - - - - ${button-card}/button-card.js"
-    "L+ /run/hass/card-mod.js - - - - ${card-mod}/card-mod.js"
     "L+ /run/hass/my-cards.js - - - - ${my-cards}/my-cards.js"
     "L+ /run/hass/auto-entities.js - - - - ${auto-entities}/auto-entities.js"
+
+    "L+ /run/hass/button-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.button-card}/button-card.js"
+    "L+ /run/hass/light-entity-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.light-entity-card}/light-entity-card.js"
+    "L+ /run/hass/layout-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.lovelace-layout-card}/layout-card.js"
+    "L+ /run/hass/bubble-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.bubble-card}/bubble-card.js"
+    "L+ /run/hass/card-mod.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.card-mod}/card-mod.js"
   ];
 
   # NOTE: postgres for performance+historical
