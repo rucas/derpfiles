@@ -65,4 +65,17 @@
   });
   zwave-js-ui =
     (final: prev: { zwave-js-ui = prev.callPackage ../pkgs/zwave-js-ui { }; });
+  home-assistant-custom-lovelace-modules = (final: prev: {
+    home-assistant-custom-lovelace-modules =
+      prev.home-assistant-custom-lovelace-modules // {
+        lovelace-layout-card =
+          prev.callPackage ../pkgs/lovelace-layout-card { };
+        bubble-card = prev.callPackage ../pkgs/bubble-card { };
+      };
+  });
+  home-assistant-themes = (final: prev: {
+    home-assistant-themes = {
+      graphite = prev.callPackage ../pkgs/graphite { };
+    };
+  });
 }
