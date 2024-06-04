@@ -40,6 +40,7 @@ in {
           light-entity-card
           mini-graph-card
           mini-media-player
+          mushroom
         ];
       config = {
         default_config = { };
@@ -115,6 +116,7 @@ in {
     "L+ /run/hass/layout-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.lovelace-layout-card}/layout-card.js"
     "L+ /run/hass/bubble-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.bubble-card}/bubble-card.js"
     "L+ /run/hass/card-mod.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.card-mod}/card-mod.js"
+    "L+ /run/hass/mushroom.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.mushroom}/mushroom.js"
   ];
 
   # NOTE: postgres for performance+historical
