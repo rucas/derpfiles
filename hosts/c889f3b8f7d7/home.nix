@@ -25,7 +25,8 @@
 
   fonts.fontconfig.enable = true;
 
-  home.packages = [ (import ../../pkgs/dnd pkgs) ];
+  home.packages =
+    [ (import ../../pkgs/dnd pkgs) (import ../../pkgs/shortuuid pkgs) ];
 
   home.sessionPath = [ "$HOME/.toolbox/bin" ];
 
