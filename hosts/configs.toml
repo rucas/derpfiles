@@ -3,6 +3,8 @@
 [hosts.lutron]
 internal_ip = "192.168.1.54"
 
+[hosts.sonos]
+sonos_move_ip = "192.168.1.141"
 
 [hosts.rucaslab]
 trusted = [

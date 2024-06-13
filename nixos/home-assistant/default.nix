@@ -1,19 +1,21 @@
-{ CONF, config, pkgs, ... }:
+{ pkgs, ... }:
 let
   my-cards = pkgs.callPackage ../../pkgs/my-cards { };
   auto-entities = pkgs.callPackage ../../pkgs/lovelace-auto-entities { };
   theme = pkgs.home-assistant-themes.graphite;
 in {
 
-  networking.firewall = {
-    # NOTE: sonos discovery
-    allowedTCPPortRanges = [{
-      from = 1400;
-      to = 1500;
-    }];
-    # NOTE: homekit discovery
-    allowedUDPPorts = [ 5353 ];
-  };
+  imports = [
+    ./automations
+    ./lutron_caseta.nix
+    ./networking.nix
+    ./notify.nix
+    ./scenes.nix
+    ./sonos.nix
+    ./zigbee2mqtt.nix
+    ./zwave.nix
+  ];
+
   services = {
     home-assistant = {
       enable = true;
@@ -51,12 +53,6 @@ in {
           trusted_proxies = [ "127.0.0.1" ];
           use_x_forwarded_for = true;
         };
-        lutron_caseta = {
-          host = CONF.hosts.lutron.internal_ip;
-          keyfile = config.age.secrets.lutron.path;
-          certfile = "/etc/lutron/client.crt";
-          ca_certs = "/etc/lutron/ca.crt";
-        };
         lovelace = {
           resources = [{
             url = "/local/bubble-card.js";
@@ -64,44 +60,7 @@ in {
           }];
         };
         alarmo = { };
-        "scene manual" = [
-          {
-            name = "TV";
-            entities = { };
-          }
-          {
-            name = "Arrive";
-            entities = { };
-          }
-          {
-            name = "Leave";
-            entities = { };
-          }
-        ];
         mqtt = { };
-        sonos = { media_player = { hosts = [ "192.168.1.141" ]; }; };
-        notify = [{
-          name = "all_mobile";
-          unique_id = "all_mobile";
-          platform = "group";
-          services = [
-            { service = "mobile_app_lucas_iphone"; }
-            { service = "mobile_app_kelsey_iphone"; }
-          ];
-        }];
-        "automation ui" = "!include automations.yaml";
-        "automation manual" = [{
-          alias = "Nightly Backup at 3am";
-          trigger = {
-            platform = "time";
-            at = "03:00:00";
-          };
-          action = {
-            alias = "Create backup now";
-            service = "backup.create";
-          };
-        }];
-        backup = { };
       };
     };
   };
@@ -127,19 +86,6 @@ in {
       name = "hass";
       ensureDBOwnership = true;
     }];
-  };
-
-  services.zwave-js-ui = {
-    enable = true;
-    behindProxy = true;
-    settings = {
-      zwave = { port = CONF.hosts.rucaslab.zwave.device; };
-      ui = {
-        darkMode = true;
-        navTabs = true;
-      };
-    };
-    networkKeyFile = config.age.secrets.zwave-js-ui.path;
   };
 
   # NOTE: lutron certs in /etc

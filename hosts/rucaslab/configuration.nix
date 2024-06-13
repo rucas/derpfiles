@@ -16,7 +16,6 @@
     ../../nixos/golink
     ../../nixos/dynamicdns
     ../../nixos/zwave-js-ui
-    ../../nixos/zigbee2mqtt
     ../../nixos/mosquitto
     ../../nixos/esphome
     ../../nixos/radarr
