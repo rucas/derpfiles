@@ -173,10 +173,10 @@
       nodePackages.bash-language-server
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.prettier
-      nodePackages.pyright
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
       prettierd
+      pyright
       python310Packages.flake8
       shellcheck
       shfmt
