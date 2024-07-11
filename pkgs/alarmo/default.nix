@@ -4,12 +4,12 @@ buildHomeAssistantComponent rec {
 
   owner = "nielsfaber";
   domain = "alarmo";
-  version = "1.10.3";
+  version = "1.10.4";
 
   src = fetchFromGitHub {
     owner = owner;
     repo = "alarmo";
     rev = "refs/tags/v${version}";
-    hash = "sha256-mHmBwL1REh2UV1rT1QxZ3BpKKnPqpIPu5d5dnrWCT88=";
+    hash = "sha256-/hNzGPckLHUX0mrBF3ugAXstrOc1mWdati+nRJCwldc=";
   };
 }
