@@ -3,13 +3,24 @@
     enable = true;
     provision = {
       enable = true;
-      datasources.settings.datasources = [{
-        name = "Prometheus";
-        type = "prometheus";
-        access = "proxy";
-        url = "http://localhost:${toString config.services.prometheus.port}";
-        isDefault = true;
-      }];
+      datasources.settings.datasources = [
+        {
+          name = "Prometheus";
+          type = "prometheus";
+          access = "proxy";
+          url = "http://localhost:${toString config.services.prometheus.port}";
+          isDefault = true;
+        }
+        {
+          name = "Loki";
+          type = "loki";
+          access = "proxy";
+          url = "http://127.0.0.1:${
+              toString
+              config.services.loki.configuration.server.http_listen_port
+            }";
+        }
+      ];
       dashboards.settings.providers = [{
         name = "Node";
         type = "file";

@@ -22,6 +22,8 @@
     ../../nixos/uptime-kuma
     ../../nixos/grafana
     ../../nixos/prometheus
+    ../../nixos/loki
+    ../../nixos/promtail
   ];
 
   age.secrets = {
