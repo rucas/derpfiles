@@ -1,73 +1,50 @@
 local which_key = require("which-key")
 
-which_key.register({
-	["<leader>b"] = {
-		name = "buffers",
-		d = { "Soft Delete (keep window arrangment)" },
-		D = { "Hard Delete" },
-	},
-	["<leader>f"] = {
-		name = "file",
-		b = { "File Buffers" },
-		f = { "Find File" },
-		g = { "Git Files" },
-		o = { "Recent Files" },
-		t = { "File Tree" },
-	},
-	["<leader>l"] = {
-		name = "lsp",
-		D = { "Declaration" },
-		c = { "Code Action" },
-		d = { "Definition" },
-		i = { "Implementations" },
-		r = { "References" },
-		n = { "Rename" },
-		t = { "Type Definitions" },
-		s = { "Symbols" },
-		w = { "Workspace Symbols" },
-		x = { "Dynamic Workspace Symbols" },
-	},
-	["<leader>n"] = {
-		name = "neogen/neorg",
-		c = "Class comment",
-		f = "Function comment",
-		F = "File comment",
-		t = "Type comment",
-		n = "New note",
-	},
-	["<leader>p"] = {
-		name = "project",
-		s = { "Search Project Sessions" },
-		w = { "Save Project Session" },
-	},
-	["<leader>r"] = {
-		name = "repl",
-		t = { "Toggle repl" },
-		r = { "Restart repl" },
-		f = { "Send file to repl" },
-		F = { "Focus repl" },
-		h = { "Hide repl" },
-		m = { "Send mark to repl" },
-	},
-	["<leader>/"] = { name = "search" },
-	["<leader>t"] = {
-		name = "terminal",
-		g = { "Gitui" },
-		p = { "Procs" },
-	},
-	["<leader>F"] = {
+which_key.add({
+	-- Buffers
+	{ "<leader>b", group = "buffer" },
+	{ "<leader>bd", desc = "Soft Delete (keep window arrangment)" },
+	{ "<leader>bD", desc = "Hard Delete" },
+	-- Files
+	{ "<leader>f", group = "file" },
+	{ "<leader>fb", desc = "File Buffers" },
+	{ "<leader>ff", desc = "Find Files" },
+	{ "<leader>fg", desc = "Git Files" },
+	{ "<leader>fo", desc = "Recent Files" },
+	{ "<leader>ft", desc = "File Tree" },
+	-- Lsp
+	{ "<leader>l", group = "lsp" },
+	{ "<leader>lD", desc = "Declaration" },
+	{ "<leader>lc", desc = "Code Action" },
+	{ "<leader>ld", desc = "Definition" },
+	{ "<leader>li", desc = "Implementations" },
+	{ "<leader>lr", desc = "References" },
+	{ "<leader>ln", desc = "Rename" },
+	{ "<leader>lt", desc = "Type Definitions" },
+	{ "<leader>ls", desc = "Symbols" },
+	{ "<leader>lw", desc = "Workspace Symbols" },
+	{ "<leader>lx", desc = "Dynamic Workspace Symbols" },
+	-- Search
+	{ "<leader>/", desc = "search" },
+	-- Terminal
+	{ "<leader>t", group = "terminal" },
+	{ "<leader>tg", desc = "Gitui" },
+	{ "<leader>tp", desc = "Procs" },
+	{
+		"<leader>F",
 		function()
 			vim.cmd("Format")
 		end,
-		"Format",
+		desc = "Format",
 	},
-	["<leader>W"] = {
+	{
+		"<leader>W",
 		function()
 			vim.cmd("update!")
 		end,
-		"Save",
+		desc = "Save",
 	},
-	["<leader>Z"] = { "<cmd>ZenMode<cr>", "Zen Mode" },
+	{ "<leader>Z", "<cmd>ZenMode<cr>", desc = "Zen Mode" },
 })
 
 which_key.setup({
@@ -76,11 +53,11 @@ which_key.setup({
 		separator = "→", -- symbol used between a key and it's label
 		group = "+", -- symbol prepended to a group
 	},
-	window = {
-		border = "none",
-		margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
-		padding = { 1, 15, 1, 15 },
-	},
+	--win = {
+	--	border = "none",
+	--	margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
+	--	-- padding = { 1, 15, 1, 15 },
+	--},
 	layout = {
 		align = "left",
 		height = { min = 4, max = 25 }, -- min and max height of the columns

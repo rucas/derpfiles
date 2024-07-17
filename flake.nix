@@ -94,8 +94,7 @@
     neorg-overlay = { url = "github:nvim-neorg/nixpkgs-neorg-overlay"; };
     neovim-nightly = { url = "github:nix-community/neovim-nightly-overlay"; };
     nvim-autopairs = {
-      url =
-        "github:windwp/nvim-autopairs?ref=00def0123a1a728c313a7dd448727eac71392c57";
+      url = "github:windwp/nvim-autopairs";
       flake = false;
     };
     nvim-colorizer-lua = {
@@ -221,10 +220,7 @@
             nixos = nixpkgs.lib.nixosSystem;
           }.${env};
           system = arch;
-          specialArgs = {
-            # TODO: change to some other name to close to config nix namespace
-            CONF = fromTOML (readFile ./hosts/configs.toml);
-          };
+          specialArgs = { CONF = fromTOML (readFile ./hosts/configs.toml); };
           modules = [{
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
