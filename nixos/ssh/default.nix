@@ -14,6 +14,15 @@
       overalljails = true;
     };
     ignoreIP = [ "192.168.1.0/24" ];
+
+    daemonSettings = {
+      Definition = {
+        logtarget = "SYSLOG";
+        socket = "/var/run/fail2ban/fail2ban.sock";
+        pidfile = "/var/run/fail2ban/fail2ban.pid";
+        dbfile = "/var/lib/fail2ban/fail2ban.sqlite3";
+      };
+    };
   };
 
   networking.firewall = { allowedTCPPorts = [ 22 ]; };
