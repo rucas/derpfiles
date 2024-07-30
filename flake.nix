@@ -12,7 +12,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    utils = { url = "github:fl42v/flake-utils-plus"; };
+    utils = { url = "github:gytis-ivaskevicius/flake-utils-plus"; };
     alacritty-theme = { url = "github:alexghr/alacritty-theme.nix"; };
     auto-save-nvim = {
       url = "github:okuuva/auto-save.nvim";
