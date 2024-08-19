@@ -174,7 +174,7 @@
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.prettier
       nodePackages.typescript-language-server
-      nodePackages.vscode-langservers-extracted
+      # nodePackages.vscode-langservers-extracted
       prettierd
       pyright
       python310Packages.flake8
