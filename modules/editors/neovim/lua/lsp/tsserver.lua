@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(on_attach, capabilities, handlers)
-	require("lspconfig").tsserver.setup({
+	require("lspconfig").ts_ls.setup({
 		on_attach = on_attach,
 		capabilities = capabilities,
 		handlers = handlers,
