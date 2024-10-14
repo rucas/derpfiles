@@ -1,6 +1,6 @@
 { ... }: {
   programs.kitty = {
-    enable = true;
+    enable = false;
     settings = {
       cursor_shape = "beam";
       font_size = 12;
@@ -12,6 +12,5 @@
       hide_window_decorations = "yes";
       macos_thicken_font = "0.6";
     };
-    theme = "Gruvbox Material Dark Medium";
   };
 }
