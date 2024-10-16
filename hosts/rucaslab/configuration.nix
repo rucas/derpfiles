@@ -24,6 +24,7 @@
     ../../nixos/prometheus
     ../../nixos/loki
     ../../nixos/promtail
+    ../../nixos/paperless-ngx
   ];
 
   age.secrets = {
@@ -49,6 +50,7 @@
     mosquitto = { file = ./secrets/mosquitto.age; };
     zwave-js-ui = { file = ./secrets/zwave_js_ui.age; };
     nix = { file = ./secrets/nix.age; };
+    paperless-ngx = { file = ./secrets/paperless-ngx.age; };
   };
 
   # Bootloader.
