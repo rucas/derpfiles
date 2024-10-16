@@ -25,6 +25,7 @@
     ../../nixos/loki
     ../../nixos/promtail
     ../../nixos/paperless-ngx
+    ../../nixos/obsidian
   ];
 
   age.secrets = {
@@ -51,6 +52,11 @@
     zwave-js-ui = { file = ./secrets/zwave_js_ui.age; };
     nix = { file = ./secrets/nix.age; };
     paperless-ngx = { file = ./secrets/paperless-ngx.age; };
+    obsidian = {
+      file = ./secrets/obsidian.age;
+      owner = config.services.couchdb.user;
+      group = config.services.couchdb.group;
+    };
   };
 
   # Bootloader.
