@@ -8,6 +8,7 @@
     ../../modules/desktop/term
     ../../modules/editors/neovim
     ../../modules/shell/zsh
+    ../../modules/security
   ];
 
   nixpkgs = {
@@ -29,7 +30,5 @@
     [ (import ../../pkgs/dnd pkgs) (import ../../pkgs/shortuuid pkgs) ];
 
   home.sessionPath = [ "$HOME/.toolbox/bin" ];
-
-  home.sessionVariables = { SSH_AUTH_SOCK = "/Users/awslucas/.ssh/agent"; };
 
 }
