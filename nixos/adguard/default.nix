@@ -106,7 +106,7 @@
             id = 8;
           }
         ];
-        user_rules = [ "@@||app2.cision.com^" ];
+        user_rules = [ "@@||app2.cision.com^" "@@||api.my-ip.io^" ];
       };
     };
   };
