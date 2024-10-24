@@ -202,10 +202,19 @@
       url = "github:zdharma-continuum/fast-syntax-highlighting";
       flake = false;
     };
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    arkenfox = {
+      url = "github:dwarfmaster/arkenfox-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, golink, home-manager
-    , utils, spacebar, neovim-nightly, neorg-overlay, alacritty-theme, ... }:
+    , utils, spacebar, neovim-nightly, neorg-overlay, alacritty-theme, arkenfox
+    , ... }:
     let
       inherit (utils.lib) mkFlake;
       inherit (nixpkgs) lib;
