@@ -8,7 +8,6 @@ local nvim_tree = require("nvim-tree")
 local function on_attach(bufnr)
 	local api = require("nvim-tree.api")
 	local lib = require("nvim-tree.lib")
-	local view = require("nvim-tree.view")
 
 	local function telescope_live_grep()
 		local node = lib.get_node_at_cursor()
@@ -20,38 +19,32 @@ local function on_attach(bufnr)
 	end
 
 	local function edit_or_open()
-		-- open as vsplit on current node
-		local action = "edit"
-		local node = lib.get_node_at_cursor()
+		local node = api.tree.get_node_under_cursor()
 
-		-- Just copy what's done normally with vsplit
-		if node.link_to and not node.nodes then
-			require("nvim-tree.actions.node.open-file").fn(action, node.link_to)
-			view.close() -- Close the tree if file was opened
-		elseif node.nodes ~= nil then
-			lib.expand_or_collapse(node)
+		if node.nodes ~= nil then
+			-- expand or collapse folder
+			api.node.open.edit()
 		else
-			require("nvim-tree.actions.node.open-file").fn(action, node.absolute_path)
-			view.close() -- Close the tree if file was opened
+			-- open file
+			api.node.open.edit()
+			-- Close the tree if file was opened
+			api.tree.close()
 		end
 	end
 
 	local function vsplit_preview()
-		-- open as vsplit on current node
-		local action = "vsplit"
-		local node = lib.get_node_at_cursor()
+		local node = api.tree.get_node_under_cursor()
 
-		-- Just copy what's done normally with vsplit
-		if node.link_to and not node.nodes then
-			require("nvim-tree.actions.node.open-file").fn(action, node.link_to)
-		elseif node.nodes ~= nil then
-			lib.expand_or_collapse(node)
+		if node.nodes ~= nil then
+			-- expand or collapse folder
+			api.node.open.edit()
 		else
-			require("nvim-tree.actions.node.open-file").fn(action, node.absolute_path)
+			-- open file as vsplit
+			api.node.open.vertical()
 		end
 
 		-- Finally refocus on tree if it was lost
-		view.focus()
+		api.tree.focus()
 	end
 
 	local function opts(desc)
