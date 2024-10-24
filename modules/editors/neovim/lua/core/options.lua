@@ -72,6 +72,8 @@ vim.opt.swapfile = false
 -- no undo
 vim.opt.undofile = false
 
+vim.opt.shada = ""
+
 -- Don't redraw while executing macros (good performance config)
 -- vim.opt.lazyredraw = true
 
