@@ -13,6 +13,7 @@
     profiles.work = {
       extensions = with inputs.firefox-addons.packages.${pkgs.stdenv.system}; [
         gruvbox-dark-theme
+        onepassword-password-manager
         react-devtools
         ublock-origin
       ];
@@ -38,6 +39,17 @@
         "2800".enable = true;
         "4000".enable = true;
         "4500".enable = true;
+        "5000" = {
+          enable = true;
+          "5003"."signon.rememberSignons".value = false;
+        };
+      };
+
+      settings = {
+        # Disable "save password" prompt
+        "signon.rememberSignons" = false;
+        # Dont warn on CMD+Q
+        "browser.warnOnQuit" = false;
       };
 
       bookmarks = [
