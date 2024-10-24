@@ -15,6 +15,7 @@
       window_gap = 6;
     };
     extraConfig = ''
+      yabai -m rule --add app=".*" sub-layer=normal
       yabai -m rule --add app='System Preferences' manage=off
       yabai -m rule --add app='Cisco AnyConnect Secure Mobility Client' manage=off
     '';
