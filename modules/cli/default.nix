@@ -13,7 +13,7 @@
     ./tmux.nix
   ];
   home.packages = with pkgs; [
-    _1password
+    _1password-cli
 
     age
     age-plugin-yubikey
@@ -69,6 +69,7 @@
 
     # moreutils
     parallel
+    # (lib.mkIf pkgs.stdenv.isDarwin pinentry_mac)
     procs
 
     ripgrep
