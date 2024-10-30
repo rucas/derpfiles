@@ -56,11 +56,11 @@
         config = builtins.readFile (./lua/plugins/gitsigns/init.lua);
       }
       headlines-nvim
-      {
-        plugin = indent-blankline-nvim;
-        type = "lua";
-        config = builtins.readFile (./lua/plugins/indent-blankline/init.lua);
-      }
+      #{
+      #  plugin = indent-blankline-nvim;
+      #  type = "lua";
+      #  config = builtins.readFile (./lua/plugins/indent-blankline/init.lua);
+      #}
       gruvbox-nvim
       lspkind-nvim
       luasnip
