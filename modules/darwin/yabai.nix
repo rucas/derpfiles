@@ -16,6 +16,7 @@
     };
     extraConfig = ''
       yabai -m rule --add app=".*" sub-layer=normal
+      yabai -m signal --add event=application_front_switched action="yabai -m window --sub-layer normal"
       yabai -m rule --add app='System Preferences' manage=off
       yabai -m rule --add app='Cisco AnyConnect Secure Mobility Client' manage=off
     '';
