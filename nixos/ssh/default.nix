@@ -1,8 +1,13 @@
-{ ... }: {
+{ pkgs, config, ... }: {
   services.openssh = {
     enable = true;
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
+    settings = {
+      KbdInteractiveAuthentication = false;
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+      # Automatically remove stale sockets
+      StreamLocalBindUnlink = "yes";
+    };
   };
 
   services.fail2ban = {
@@ -32,4 +37,24 @@
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKCLdEAArRtMhdvIdXKbBE19qhS3R2pL4Ws79d0U3czlAAAAEHNzaDpydWNhc2xhYi5jb20= lucas@rucaslab.com"
     ];
   };
+
+  # allow users to login via ssh
+  #security.pam.enableSSHAgentAuth = true;
+
+  #security.pam.services.sudo = {
+  #  rules.auth.rssh = {
+  #    enable = true;
+  #    order = config.rules.auth.ssh_agent_auth.order - 1;
+  #    control = "sufficient";
+  #    modulePath = "${pkgs.pam_rssh}/lib/libpam_rssh.so";
+  #    settings.authorized_keys_command =
+  #      pkgs.writeShellScript "get-authorized-keys" ''
+  #        cat "/etc/ssh/authorized_keys.d/$1"
+  #      '';
+  #  };
+  #};
+  ## Keep SSH_AUTH_SOCK when sudo'ing
+  #security.sudo.extraConfig = ''
+  #  Defaults env_keep+=SSH_AUTH_SOCK
+  #'';
 }
