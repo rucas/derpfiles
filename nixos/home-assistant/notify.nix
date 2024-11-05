@@ -6,7 +6,7 @@
       platform = "group";
       services = [
         { service = "mobile_app_lucas_iphone"; }
-        { service = "mobile_app_kelsey_iphone"; }
+        { service = "mobile_app_kelsey_s_iphone"; }
       ];
     }];
   };
