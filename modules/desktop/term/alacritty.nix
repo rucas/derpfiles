@@ -1,8 +1,8 @@
 { pkgs, ... }: {
   programs.alacritty = {
     enable = true;
+    settings.general.import = [ pkgs.alacritty-theme.gruvbox_material_medium_dark ];
     settings = {
-      import = [ pkgs.alacritty-theme.gruvbox_material_medium_dark ];
       cursor = {
         style = {
           shape = "Underline";
@@ -64,7 +64,7 @@
           chars = "\\\\x1bc";
         }
       ];
-      shell = {
+      terminal.shell = {
         program = "zsh";
         args = [ "--login" ];
       };

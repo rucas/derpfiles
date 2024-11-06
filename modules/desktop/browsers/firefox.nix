@@ -11,7 +11,7 @@
     package = null;
     arkenfox = { enable = true; };
     profiles.work = {
-      extensions = with inputs.firefox-addons.packages.${pkgs.stdenv.system}; [
+      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
         gruvbox-dark-theme
         onepassword-password-manager
         react-devtools

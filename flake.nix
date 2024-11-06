@@ -206,6 +206,7 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur = { url = "github:nix-community/nur"; };
     arkenfox = {
       url = "github:dwarfmaster/arkenfox-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -214,7 +215,7 @@
 
   outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, golink, home-manager
     , utils, spacebar, neovim-nightly, neorg-overlay, alacritty-theme, arkenfox
-    , ... }:
+    , nur, ... }:
     let
       inherit (utils.lib) mkFlake;
       inherit (nixpkgs) lib;
@@ -272,6 +273,7 @@
         home-assistant-custom-lovelace-modules
         home-assistant-themes
         home-assistant-custom-components
+        nur.overlay
       ];
 
       hosts.blkmrkt = mkHost {

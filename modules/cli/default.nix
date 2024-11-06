@@ -77,7 +77,7 @@
     sd
     sqlite
 
-    tailspin
+    # tailspin
     timer
     tree
     tokei
