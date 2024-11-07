@@ -34,7 +34,7 @@ in {
       customComponents = [
         pkgs.home-assistant-custom-components.alarmo
         (pkgs.callPackage ../../pkgs/hass-browser_mod { })
-        (pkgs.callPackage ../../pkgs/ui { })
+        #(pkgs.callPackage ../../pkgs/ui { })
       ];
       customLovelaceModules =
         with pkgs.home-assistant-custom-lovelace-modules; [
