@@ -72,6 +72,11 @@
   boot.initrd.luks.devices."luks-2da48510-45d3-40c0-ac58-1a10c28c424f".keyFile =
     "/crypto_keyfile.bin";
 
+  # zfs settings...
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "e0f98e67";
+
   networking.hostName = "rucaslab";
   networking.networkmanager.enable = true;
 
