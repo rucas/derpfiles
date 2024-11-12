@@ -83,6 +83,7 @@ local servers = {
 	"nil_ls",
 	"pyright",
 	"tsserver",
+	"yamlls",
 }
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()

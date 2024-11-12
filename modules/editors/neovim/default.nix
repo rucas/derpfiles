@@ -174,7 +174,6 @@
       nodePackages.dockerfile-language-server-nodejs
       nodePackages.prettier
       nodePackages.typescript-language-server
-      # nodePackages.vscode-langservers-extracted
       prettierd
       pyright
       python310Packages.flake8
@@ -183,6 +182,8 @@
       statix
       stylua
       taplo
+      vscode-langservers-extracted
+      yaml-language-server
     ];
     extraLuaPackages = ps: [ ps.nvim-nio ps.xml2lua ps.lua-curl ps.mimetypes ];
     viAlias = true;
