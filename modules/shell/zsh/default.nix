@@ -1,4 +1,4 @@
-{ ... }: {
+{ config, ... }: {
   imports = [ ./autopairs.nix ./fsh.nix ./starship.nix ./zsh-vi-mode.nix ];
   programs.zsh = {
     enable = true;
@@ -90,13 +90,8 @@
 
   };
 
-  # TODO:
-  # Fix this to not use mkOutOfStoreSymlink?
-  # Error Log: Existing file...will be skipped since they are the same
-  # SEE: https://github.com/nix-community/home-manager/issues/4692
-  #home.file.".zfuncs" = {
-  #  source = config.lib.file.mkOutOfStoreSymlink
-  #    "${config.home.homeDirectory}/Code/derpfiles/modules/shell/zsh/zfuncs/";
-  #  recursive = true;
-  #};
+  home.file.".zfuncs" = {
+    source = ./zfuncs;
+    recursive = true;
+  };
 }
