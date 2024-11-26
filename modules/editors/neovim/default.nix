@@ -165,6 +165,7 @@
     ];
     extraPackages = with pkgs; [
       black
+      djlint
       isort
       lua-language-server
       marksman
@@ -184,6 +185,7 @@
       taplo
       vscode-langservers-extracted
       yaml-language-server
+      yamlfmt
     ];
     extraLuaPackages = ps: [ ps.nvim-nio ps.xml2lua ps.lua-curl ps.mimetypes ];
     viAlias = true;

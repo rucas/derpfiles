@@ -2,6 +2,9 @@ require("conform").setup({
 	formatters_by_ft = {
 		javascript = { "prettierd", "prettier" },
 		json = { "jq" },
+		html = { "djlint" },
+		htmlangular = { "prettierd" },
+		htmldjango = { "djlint" },
 		lua = { "stylua" },
 		nix = { "nixfmt" },
 		python = { "isort", "black" },
@@ -9,6 +12,7 @@ require("conform").setup({
 		toml = { "taplo" },
 		typescript = { "prettierd", "prettier" },
 		typescriptreact = { "prettierd", "prettier" },
+		yaml = { "yamlfmt" },
 		["*"] = { "trim_whitespace" },
 	},
 	-- log_level = vim.log.levels.TRACE,
