@@ -65,7 +65,9 @@
 
     onefetch
 
-    (nerdfonts.override { fonts = [ "Hack" "FiraCode" "JetBrainsMono" ]; })
+    nerd-fonts.hack
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
 
     # moreutils
     parallel
