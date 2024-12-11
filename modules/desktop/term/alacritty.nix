@@ -1,7 +1,8 @@
 { pkgs, ... }: {
   programs.alacritty = {
     enable = true;
-    settings.general.import = [ pkgs.alacritty-theme.gruvbox_material_medium_dark ];
+    settings.general.import =
+      [ pkgs.alacritty-theme.gruvbox_material_medium_dark ];
     settings = {
       cursor = {
         style = {
@@ -16,6 +17,7 @@
       };
       window.dynamic_title = true;
       window.decorations = "None";
+      window.option_as_alt = "OnlyLeft";
       font = {
         normal = {
           family = "Hack Nerd Font";

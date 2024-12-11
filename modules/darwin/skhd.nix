@@ -3,10 +3,10 @@
   services.skhd.package = pkgs.skhd;
   services.skhd.skhdConfig = ''
     # focus window
-    alt - h : yabai -m window --focus west
-    alt - j : yabai -m window --focus south
-    alt - k : yabai -m window --focus north
-    alt - l : yabai -m window --focus east
+    # alt - h : yabai -m window --focus west
+    # alt - j : yabai -m window --focus south
+    # alt - k : yabai -m window --focus north
+    # alt - l : yabai -m window --focus east
 
     # swap managed window
     shift + alt - h : yabai -m window --swap west
