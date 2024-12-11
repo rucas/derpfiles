@@ -76,6 +76,7 @@ local handlers = {
 
 local servers = {
 	"bashls",
+	"cssls",
 	"dockerls",
 	"jsonls",
 	"lua_ls",
