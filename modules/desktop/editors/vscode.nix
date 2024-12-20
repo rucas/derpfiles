@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   programs.vscode = {
-    enable = true;
+    enable = false;
     extensions = with pkgs.vscode-extensions;
       [ bbenoist.nix vscodevim.vim brettm12345.nixfmt-vscode ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [{

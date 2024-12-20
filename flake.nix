@@ -273,7 +273,7 @@
         home-assistant-custom-lovelace-modules
         home-assistant-themes
         home-assistant-custom-components
-        nur.overlay
+        nur.overlays.default
       ];
 
       hosts.blkmrkt = mkHost {
