@@ -264,7 +264,7 @@
         alacritty-theme.overlays.default
         golink.overlay
         neovim-nightly.overlays.default
-        neorg-overlay.overlays.default
+        # neorg-overlay.overlays.default
         spacebar.overlay
         vimPlugins
         tmuxPlugins
