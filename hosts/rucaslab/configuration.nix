@@ -26,6 +26,8 @@
     ../../nixos/promtail
     ../../nixos/paperless-ngx
     ../../nixos/obsidian
+    ../../nixos/changedetection-io
+    ../../nixos/ntfy-sh
   ];
 
   age.secrets = {

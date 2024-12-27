@@ -111,6 +111,26 @@
           '';
         };
 
+        "changedetection.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :5000
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
+
+        "ntfy.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :1234
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
+
       };
     };
   };
