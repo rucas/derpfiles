@@ -28,6 +28,7 @@
     ../../nixos/obsidian
     ../../nixos/changedetection-io
     ../../nixos/ntfy-sh
+    ../../nixos/glance
   ];
 
   age.secrets = {
