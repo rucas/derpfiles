@@ -56,7 +56,7 @@
 
     (lib.mkIf pkgs.stdenv.isDarwin m-cli)
 
-    ledger
+    # ledger
     lsof
 
     netcat

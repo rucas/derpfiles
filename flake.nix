@@ -14,179 +14,11 @@
     };
     utils = { url = "github:gytis-ivaskevicius/flake-utils-plus"; };
     alacritty-theme = { url = "github:alexghr/alacritty-theme.nix"; };
-    auto-save-nvim = {
-      url = "github:okuuva/auto-save.nvim";
-      flake = false;
-    };
-    auto-session = {
-      url = "github:rmagatti/auto-session";
-      flake = false;
-    };
-    SchemaStore-nvim = {
-      url = "github:b0o/SchemaStore.nvim";
-      flake = false;
-    };
-    better-escape-nvim = {
-      url = "github:max397574/better-escape.nvim";
-      flake = false;
-    };
-    cmp-buffer = {
-      url = "github:hrsh7th/cmp-buffer";
-      flake = false;
-    };
-    cmp-cmdline = {
-      url = "github:hrsh7th/cmp-cmdline";
-      flake = false;
-    };
-    cmp-nvim-lsp = {
-      url = "github:hrsh7th/cmp-nvim-lsp";
-      flake = false;
-    };
-    cmp-path = {
-      url = "github:hrsh7th/cmp-path";
-      flake = false;
-    };
-    conform-nvim = {
-      url = "github:stevearc/conform.nvim";
-      flake = false;
-    };
-    fidget-nvim = {
-      url = "github:j-hui/fidget.nvim";
-      flake = false;
-    };
-    flatten-nvim = {
-      url = "github:willothy/flatten.nvim";
-      flake = false;
-    };
-    gitsigns-nvim = {
-      url = "github:lewis6991/gitsigns.nvim";
-      flake = false;
-    };
     golink = { url = "github:tailscale/golink"; };
-    gruvbox-nvim = {
-      url = "github:ellisonleao/gruvbox.nvim";
-      flake = false;
-    };
-    headlines-nvim = {
-      url = "github:lukas-reineke/headlines.nvim";
-      flake = false;
-    };
-    indent-blankline-nvim = {
-      url = "github:lukas-reineke/indent-blankline.nvim";
-      flake = false;
-    };
-    lspkind-nvim = {
-      url = "github:onsails/lspkind.nvim";
-      flake = false;
-    };
-    neodev-nvim = {
-      url = "github:folke/neodev.nvim";
-      flake = false;
-    };
-    neogen = {
-      url = "github:danymat/neogen";
-      flake = false;
-    };
-    luasnip = {
-      url = "github:L3MON4D3/LuaSnip";
-      flake = false;
-    };
     neorg-overlay = { url = "github:nvim-neorg/nixpkgs-neorg-overlay"; };
     neovim-nightly = { url = "github:nix-community/neovim-nightly-overlay"; };
-    nvim-autopairs = {
-      url = "github:windwp/nvim-autopairs";
-      flake = false;
-    };
-    nvim-colorizer-lua = {
-      url = "github:norcalli/nvim-colorizer.lua";
-      flake = false;
-    };
-    nvim-lualine = {
-      url = "github:nvim-lualine/lualine.nvim";
-      flake = false;
-    };
-    nvim-lspconfig = {
-      url = "github:neovim/nvim-lspconfig";
-      flake = false;
-    };
-    nvim-markdown = {
-      url = "github:ixru/nvim-markdown";
-      flake = false;
-    };
-    nvim-tree-lua = {
-      url = "github:nvim-tree/nvim-tree.lua";
-      flake = false;
-    };
-    nvim-treesitter = {
-      url = "github:nvim-treesitter/nvim-treesitter";
-      flake = false;
-    };
-    nvim-web-devicons = {
-      url = "github:nvim-tree/nvim-web-devicons";
-      flake = false;
-    };
-    nvim-cmp = {
-      url = "github:hrsh7th/nvim-cmp";
-      flake = false;
-    };
-    nvim-window-picker = {
-      url = "github:s1n7ax/nvim-window-picker";
-      flake = false;
-    };
-    plenary-nvim = {
-      url = "github:nvim-lua/plenary.nvim";
-      flake = false;
-    };
-    rainbow-delimiters = {
-      url = "git+https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git";
-      flake = false;
-    };
-    rest-nvim = {
-      url = "github:rest-nvim/rest.nvim";
-      flake = false;
-    };
-    telescope-fzf-native-nvim = {
-      url = "github:nvim-telescope/telescope-fzf-native.nvim";
-      flake = false;
-    };
-    telescope-nvim = {
-      url = "github:nvim-telescope/telescope.nvim";
-      flake = false;
-    };
-    telescope-symbols-nvim = {
-      url = "github:nvim-telescope/telescope-symbols.nvim";
-      flake = false;
-    };
     tmux-1password = {
       url = "github:yardnsm/tmux-1password";
-      flake = false;
-    };
-    todo-comments-nvim = {
-      url = "github:folke/todo-comments.nvim";
-      flake = false;
-    };
-    toggleterm-nvim = {
-      url = "github:akinsho/toggleterm.nvim";
-      flake = false;
-    };
-    twilight-nvim = {
-      url = "github:folke/twilight.nvim";
-      flake = false;
-    };
-    vim-illuminate = {
-      url = "github:RRethy/vim-illuminate";
-      flake = false;
-    };
-    vim-nix = {
-      url = "github:LnL7/vim-nix";
-      flake = false;
-    };
-    which-key-nvim = {
-      url = "github:folke/which-key.nvim";
-      flake = false;
-    };
-    zen-mode-nvim = {
-      url = "github:folke/zen-mode.nvim";
       flake = false;
     };
     spacebar = { url = "github:cmacrae/spacebar"; };
@@ -266,7 +98,7 @@
         neovim-nightly.overlays.default
         # neorg-overlay.overlays.default
         spacebar.overlay
-        vimPlugins
+        # vimPlugins
         tmuxPlugins
         yabai
         zwave-js-ui

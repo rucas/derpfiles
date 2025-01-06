@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, ... }: {
   programs.neovim = {
     enable = true;
     package = pkgs.neovim;
@@ -8,10 +8,7 @@
     '';
     plugins = with pkgs.vimPlugins; [
       {
-        plugin = (nvim-treesitter.withAllGrammars).overrideAttrs (_: {
-          version = "2023-02-15";
-          src = inputs.nvim-treesitter;
-        });
+        plugin = nvim-treesitter.withAllGrammars;
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-treesitter/init.lua);
       }
@@ -91,7 +88,7 @@
         config = builtins.readFile (./lua/plugins/nvim-colorizer/init.lua);
       }
       {
-        plugin = nvim-lualine;
+        plugin = lualine-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-lualine/init.lua);
       }
@@ -100,7 +97,6 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-lspconfig/init.lua);
       }
-      nvim-markdown
       {
         plugin = nvim-window-picker;
         type = "lua";
@@ -115,7 +111,7 @@
       playground
       plenary-nvim
       {
-        plugin = rainbow-delimiters;
+        plugin = rainbow-delimiters-nvim;
         type = "lua";
         config = builtins.readFile (./lua/plugins/rainbow-delimiters/init.lua);
       }

@@ -2,8 +2,14 @@
   services = {
     caddy = {
       enable = true;
-      package = pkgs.callPackage ../../pkgs/zaddy {
-        plugins = [ "github.com/caddy-dns/cloudflare" ];
+      #package = pkgs.callPackage ../../pkgs/zaddy {
+      #  plugins = [ "github.com/caddy-dns/cloudflare" ];
+      #};
+      package = pkgs.caddy.withPlugins {
+        plugins = [
+          "github.com/caddy-dns/cloudflare@v0.0.0-20240703190432-89f16b99c18e"
+        ];
+        hash = "sha256-JoujVXRXjKUam1Ej3/zKVvF0nX97dUizmISjy3M3Kr8=";
       };
       virtualHosts = {
         "adguard.rucaslab.com" = {
@@ -124,6 +130,16 @@
         "ntfy.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :1234
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
+
+        "front.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :4321
             encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
