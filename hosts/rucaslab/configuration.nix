@@ -12,6 +12,7 @@
     ../../nixos/tailscale
     ../../nixos/unlockr
     ../../nixos/caddy
+    ../../nixos/postgresql
     ../../nixos/home-assistant
     ../../nixos/golink
     ../../nixos/dynamicdns

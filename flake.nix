@@ -98,7 +98,6 @@
         neovim-nightly.overlays.default
         # neorg-overlay.overlays.default
         spacebar.overlay
-        # vimPlugins
         tmuxPlugins
         yabai
         zwave-js-ui

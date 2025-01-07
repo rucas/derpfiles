@@ -78,16 +78,6 @@ in {
     "L+ /run/hass/mushroom.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.mushroom}/mushroom.js"
   ];
 
-  # NOTE: postgres for performance+historical
-  services.postgresql = {
-    enable = true;
-    ensureDatabases = [ "hass" ];
-    ensureUsers = [{
-      name = "hass";
-      ensureDBOwnership = true;
-    }];
-  };
-
   # NOTE: lutron certs in /etc
   environment.etc = { lutron.source = ./lutron; };
 }
