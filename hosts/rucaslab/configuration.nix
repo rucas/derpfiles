@@ -30,6 +30,7 @@
     ../../nixos/changedetection-io
     ../../nixos/ntfy-sh
     ../../nixos/glance
+    ../../nixos/lldap
   ];
 
   age.secrets = {
@@ -60,6 +61,21 @@
       file = ./secrets/obsidian.age;
       owner = config.services.couchdb.user;
       group = config.services.couchdb.group;
+    };
+    lldap_key_seed = {
+      file = ./secrets/lldap_key_seed.age;
+      owner = "lldap";
+      group = "lldap";
+    };
+    lldap_jwt_secret = {
+      file = ./secrets/lldap_jwt_secret.age;
+      owner = "lldap";
+      group = "lldap";
+    };
+    lldap_ldap_user_pass = {
+      file = ./secrets/lldap_ldap_user_pass.age;
+      owner = "lldap";
+      group = "lldap";
     };
   };
 

@@ -1,10 +1,16 @@
 { ... }: {
   services.postgresql = {
     enable = true;
-    ensureDatabases = [ "hass" ];
-    ensureUsers = [{
-      name = "hass";
-      ensureDBOwnership = true;
-    }];
+    ensureDatabases = [ "hass" "lldap" ];
+    ensureUsers = [
+      {
+        name = "hass";
+        ensureDBOwnership = true;
+      }
+      {
+        name = "lldap";
+        ensureDBOwnership = true;
+      }
+    ];
   };
 }

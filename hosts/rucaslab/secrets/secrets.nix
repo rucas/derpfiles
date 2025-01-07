@@ -17,4 +17,7 @@ in {
   "nix.age".publicKeys = [ users.personal-5c-nano system ];
   "paperless-ngx.age".publicKeys = [ users.personal-5c-nano system ];
   "obsidian.age".publicKeys = [ users.personal-5c-nano system ];
+  "lldap_key_seed.age".publicKeys = [ users.personal-5c-nano system ];
+  "lldap_jwt_secret.age".publicKeys = [ users.personal-5c-nano system ];
+  "lldap_ldap_user_pass.age".publicKeys = [users.personal-5c-nano system];
 }
