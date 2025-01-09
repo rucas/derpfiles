@@ -19,5 +19,13 @@ in {
   "obsidian.age".publicKeys = [ users.personal-5c-nano system ];
   "lldap_key_seed.age".publicKeys = [ users.personal-5c-nano system ];
   "lldap_jwt_secret.age".publicKeys = [ users.personal-5c-nano system ];
-  "lldap_ldap_user_pass.age".publicKeys = [users.personal-5c-nano system];
+  "lldap_ldap_user_pass.age".publicKeys = [ users.personal-5c-nano system ];
+  "authelia_jwt_secret.age".publicKeys = [ users.personal-5c-nano system ];
+  "authelia_storage_encryption_key.age".publicKeys =
+    [ users.personal-5c-nano system ];
+  "authelia_authentication_backend_ldap_password.age".publicKeys =
+    [ users.personal-5c-nano system ];
+  "authelia_session_secret.age".publicKeys = [ users.personal-5c-nano system ];
+  "authelia_notifier_smtp_password.age".publicKeys =
+    [ users.personal-5c-nano system ];
 }

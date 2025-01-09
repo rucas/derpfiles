@@ -103,7 +103,6 @@
             }
           '';
         };
-
         "couchdb.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :5984
@@ -113,7 +112,6 @@
             }
           '';
         };
-
         "changedetection.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :5000
@@ -123,7 +121,6 @@
             }
           '';
         };
-
         "ntfy.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :1234
@@ -133,7 +130,6 @@
             }
           '';
         };
-
         "front.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :4321
@@ -143,7 +139,24 @@
             }
           '';
         };
-
+        "lldap.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :17170
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
+        "auth.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy :9091
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+          '';
+        };
       };
     };
   };

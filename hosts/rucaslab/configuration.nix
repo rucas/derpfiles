@@ -31,6 +31,7 @@
     ../../nixos/ntfy-sh
     ../../nixos/glance
     ../../nixos/lldap
+    ../../nixos/authelia
   ];
 
   age.secrets = {
@@ -76,6 +77,31 @@
       file = ./secrets/lldap_ldap_user_pass.age;
       owner = "lldap";
       group = "lldap";
+    };
+    authelia_jwt_secret = {
+      file = ./secrets/authelia_jwt_secret.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      group = config.services.authelia.instances.rucaslab.group;
+    };
+    authelia_storage_encryption_key = {
+      file = ./secrets/authelia_storage_encryption_key.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      group = config.services.authelia.instances.rucaslab.group;
+    };
+    authelia_authentication_backend_ldap_password = {
+      file = ./secrets/authelia_authentication_backend_ldap_password.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      group = config.services.authelia.instances.rucaslab.group;
+    };
+    authelia_session_secret = {
+      file = ./secrets/authelia_session_secret.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      group = config.services.authelia.instances.rucaslab.group;
+    };
+    authelia_notifier_smtp_password = {
+      file = ./secrets/authelia_notifier_smtp_password.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      group = config.services.authelia.instances.rucaslab.group;
     };
   };
 

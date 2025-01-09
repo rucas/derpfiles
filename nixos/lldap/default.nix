@@ -5,7 +5,6 @@
       ldap_base_dn = "dc=rucaslab,dc=com";
       ldap_user_email = "admin@rucaslab.com";
       database_url = "postgresql://lldap@localhost/lldap?host=/run/postgresql";
-
     };
     environment = {
       LLDAP_JWT_SECRET_FILE = config.age.secrets.lldap_jwt_secret.path;
