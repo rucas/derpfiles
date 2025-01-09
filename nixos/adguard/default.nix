@@ -6,6 +6,11 @@
     };
   };
   services = {
+    caddy = {
+      virtualHosts = {
+        "adguard.rucaslab.com" = { extraConfig = "import https-proxy :3000"; };
+      };
+    };
     adguardhome = {
       enable = true;
       mutableSettings = false;

@@ -20,7 +20,9 @@
       virtualHosts = {
         "lldap.rucaslab.com" = {
           extraConfig = ''
-            import https-proxy :17170
+            import https-proxy :${
+              toString config.services.lldap.settings.http_port
+            }
           '';
         };
       };
