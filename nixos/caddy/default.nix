@@ -8,6 +8,15 @@
         ];
         hash = "sha256-JoujVXRXjKUam1Ej3/zKVvF0nX97dUizmISjy3M3Kr8=";
       };
+      extraConfig = ''
+        (https-proxy) {
+          reverse_proxy {args[:]}
+          encode zstd gzip
+          tls {
+            dns cloudflare {$CLOUDFLARE_API_TOKEN}
+          }
+        }
+      '';
       virtualHosts = {
         "adguard.rucaslab.com" = {
           extraConfig = ''
@@ -133,24 +142,6 @@
         "front.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :4321
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
-        "lldap.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :17170
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
-        "auth.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :9091
             encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
