@@ -1021,9 +1021,7 @@
         "nur": "nur",
         "spacebar": "spacebar",
         "tmux-1password": "tmux-1password",
-        "utils": "utils",
-        "zsh-autopair": "zsh-autopair",
-        "zsh-vi-mode": "zsh-vi-mode"
+        "utils": "utils"
       }
     },
     "spacebar": {
@@ -1193,38 +1191,6 @@
       "original": {
         "owner": "gytis-ivaskevicius",
         "repo": "flake-utils-plus",
-        "type": "github"
-      }
-    },
-    "zsh-autopair": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1720984677,
-        "narHash": "sha256-3zvOgIi+q7+sTXrT+r/4v98qjeiEL4Wh64rxBYnwJvQ=",
-        "owner": "hlissner",
-        "repo": "zsh-autopair",
-        "rev": "449a7c3d095bc8f3d78cf37b9549f8bb4c383f3d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hlissner",
-        "repo": "zsh-autopair",
-        "type": "github"
-      }
-    },
-    "zsh-vi-mode": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1719915553,
-        "narHash": "sha256-UQo9shimLaLp68U3EcsjcxokJHOTGhOjDw4XDx6ggF4=",
-        "owner": "jeffreytse",
-        "repo": "zsh-vi-mode",
-        "rev": "cd730cd347dcc0d8ce1697f67714a90f07da26ed",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jeffreytse",
-        "repo": "zsh-vi-mode",
         "type": "github"
       }
     }

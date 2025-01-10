@@ -22,14 +22,7 @@
       flake = false;
     };
     spacebar = { url = "github:cmacrae/spacebar"; };
-    zsh-vi-mode = {
-      url = "github:jeffreytse/zsh-vi-mode";
-      flake = false;
-    };
-    zsh-autopair = {
-      url = "github:hlissner/zsh-autopair";
-      flake = false;
-    };
+
     fast-syntax-highlighting = {
       url = "github:zdharma-continuum/fast-syntax-highlighting";
       flake = false;

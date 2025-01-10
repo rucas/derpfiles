@@ -1,9 +1,9 @@
-{ inputs, ... }: {
+{ pkgs, ... }: {
   programs.zsh = {
     plugins = [{
       name = "zsh-autopairs";
-      file = "autopair.zsh";
-      src = inputs.zsh-autopair;
+      file = "share/zsh/zsh-autopair/autopair.zsh";
+      src = pkgs.zsh-autopair;
     }];
   };
 }
