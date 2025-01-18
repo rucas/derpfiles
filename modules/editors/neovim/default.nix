@@ -179,6 +179,7 @@
       statix
       stylua
       taplo
+      terraform-ls
       vscode-langservers-extracted
       yaml-language-server
       yamlfmt

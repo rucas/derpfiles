@@ -83,6 +83,7 @@ local servers = {
 	"marksman",
 	"nil_ls",
 	"pyright",
+	"terraform-ls",
 	"tsserver",
 	"yamlls",
 }
