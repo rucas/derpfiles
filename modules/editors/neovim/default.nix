@@ -158,11 +158,16 @@
         type = "lua";
         config = builtins.readFile (./lua/plugins/zen-mode/init.lua);
       }
+      {
+        plugin = nvim-jdtls;
+        type = "lua";
+      }
     ];
     extraPackages = with pkgs; [
       black
       djlint
       isort
+      jdt-language-server
       lua-language-server
       marksman
       nil
