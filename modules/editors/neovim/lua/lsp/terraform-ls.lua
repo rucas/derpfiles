@@ -5,6 +5,9 @@ M.setup = function(on_attach, capabilities, handlers)
 		on_attach = on_attach,
 		capabilities = capabilities,
 		handlers = handlers,
+		init_options = {
+			experimentalFeatures = { prefillRequiredFields = true },
+		},
 	})
 end
 
