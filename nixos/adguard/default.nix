@@ -18,10 +18,13 @@
         dns = {
           all_servers = true;
           bind_hosts = [ "0.0.0.0" ];
-          bootstrap_dns =
-            [ "9.9.9.10" "149.112.112.10" "2620:fe::10" "2620:fe::fe:10" ];
-          upstream_dns =
-            [ "https://0ms.dev/dns-query" "https://dns10.quad9.net/dns-query" ];
+          bootstrap_dns = [
+            "1.1.1.2"
+            "1.0.0.2"
+            "2606:4700:4700::1112"
+            "2606:4700:4700::1002"
+          ];
+          upstream_dns = [ "https://security.cloudflare-dns.com/dns-query" ];
           ratelimit = 0;
           enable_dnssec = true;
           # 50 MBs
