@@ -36,6 +36,10 @@
       url = "github:dwarfmaster/arkenfox-nixos";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tree-sitter-tera = {
+      url = "github:uncenter/tree-sitter-tera";
+      flake = false;
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, golink, home-manager

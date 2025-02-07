@@ -1,4 +1,11 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }:
+let
+  tree-sitter-tera = pkgs.tree-sitter.buildGrammar {
+    language = "tera";
+    version = "0.1.0";
+    src = inputs.tree-sitter-tera;
+  };
+in {
   programs.neovim = {
     enable = true;
     package = pkgs.neovim;
@@ -8,7 +15,8 @@
     '';
     plugins = with pkgs.vimPlugins; [
       {
-        plugin = nvim-treesitter.withAllGrammars;
+        plugin = nvim-treesitter.withPlugins
+          (_: nvim-treesitter.allGrammars ++ [ tree-sitter-tera ]);
         type = "lua";
         config = builtins.readFile (./lua/plugins/nvim-treesitter/init.lua);
       }
