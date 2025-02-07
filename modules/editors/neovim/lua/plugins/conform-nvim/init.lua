@@ -2,6 +2,7 @@ require("conform").setup({
 	formatters_by_ft = {
 		javascript = { "prettierd", "prettier" },
 		json = { "jq" },
+		just = { "just" },
 		html = { "djlint" },
 		htmlangular = { "prettierd" },
 		htmldjango = { "djlint" },

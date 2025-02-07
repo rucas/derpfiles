@@ -168,6 +168,7 @@
       djlint
       isort
       jdt-language-server
+      just
       lua-language-server
       marksman
       nil
