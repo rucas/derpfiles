@@ -31,34 +31,6 @@
           cache_size = 1024 * 1024 * 50;
           cache_optimistic = true;
         };
-        filtering = {
-          rewrites = [
-            {
-              domain = "adguard.rucaslab.com";
-              answer = "192.168.1.136";
-            }
-            {
-              domain = "home.rucaslab.com";
-              answer = "192.168.1.136";
-            }
-            {
-              domain = "mqtt.rucaslab.com";
-              answer = "192.168.1.136";
-            }
-            {
-              domain = "esphome.rucaslab.com";
-              answer = "192.168.1.136";
-            }
-            {
-              domain = "radarr.rucaslab.com";
-              answer = "192.168.1.136";
-            }
-            {
-              domain = "status.rucaslab.com";
-              answer = "192.168.1.136";
-            }
-          ];
-        };
         filters = [
           {
             enabled = true;
