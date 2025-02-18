@@ -11,7 +11,7 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-bin;
+    package = if pkgs.stdenv.isDarwin then pkgs.firefox-bin else null;
     betterfox.enable = true;
     profiles.default = {
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
