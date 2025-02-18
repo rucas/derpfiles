@@ -1,4 +1,4 @@
-{ ... }: {
+{ pkgs, ... }: {
   imports = [ ./autopairs.nix ./fsh.nix ./starship.nix ./zsh-vi-mode.nix ];
   programs.zsh = {
     enable = true;
@@ -11,12 +11,6 @@
     autocd = true;
     autosuggestion = { enable = true; };
     shellAliases = {
-      b = "brazil";
-      bb = "brazil-build";
-      bre = "brazil-build && brazil-runtime-exec";
-      bbt = ''
-        fd test test/ | fzf | xargs -I {} sh -c "brazil-build && brazil-build test --addopts '{} --no-cov'" '';
-      bbp = "brazil-build && brazil-runtime-exec python ";
       cat = "bat -n --paging=never";
       g = "git";
       j = "jobs";
@@ -35,7 +29,11 @@
       R = "| rg";
       W = "| wc -l";
     };
-    initExtraFirst = "";
+    initExtraFirst = if pkgs.stdenv.isDarwin then ''
+      export PATH="/opt/homebrew/bin:$PATH"
+      export PATH="/opt/homebrew/sbin:$PATH"
+    '' else
+      "";
     initExtra = ''
       setopt EXTENDED_GLOB
 
