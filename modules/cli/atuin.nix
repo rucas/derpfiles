@@ -7,7 +7,6 @@
       style = "compact";
       enter_accept = false;
       history_filter = [
-        "^cr-pull"
         "^darwin-rebuild"
         "^nix build"
         "^tmux"
@@ -18,7 +17,6 @@
         "^vi"
         "^ls"
         "^g "
-        "^mwinit"
         "^nvim"
         "^nix flake update"
       ];
