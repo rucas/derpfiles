@@ -14,10 +14,12 @@
 
 ### OS X System
 
-install nix multi-user mode
+Install nix via [DeterminateSystems/nix-installer](https://github.com/DeterminateSystems/nix-installer).
+This has flakes enabled by default.
 
 ```sh
-$ sh <(curl -L https://nixos.org/nix/install) --daemon
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix
+| sh -s -- install
 ```
 
 install homebrew
@@ -33,7 +35,6 @@ mkdirs in `~`
 ```sh
 $ mkdir ~/Code
 $ mkdir ~/Work
-$ mkdir -p ~/Documents/notes/gtd ~/Documents/notes/home ~/Documents/notes/work
 ```
 
 clone repo
@@ -42,29 +43,11 @@ clone repo
 $ git clone https://github.com/rucas/derpfiles.git
 ```
 
-enable flakes
-
-```sh
-mkdir -p ~/.config/nix
-    cat >> ~/.config/nix/nix.conf <<EOL
-experimental-features = nix-command flakes
-EOL
-```
-
 optionally, add a github token to bypass 429 rate limits from Github
 
 ```sh
 vi ~/.config/nix/nix.conf
 access-tokens = github.com=******
-```
-
-reload the nix-daemon
-
-```
-$ launchctl remove org.nixos.nix-daemon
-$ launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
-
-# may get warning about using bootstrap instead...
 ```
 
 start nix build
@@ -108,7 +91,7 @@ $ nix flake lock --update-input nixpkgs
 
 ### How do I open the current terminal line in my editor in Normal mode (zsh-vi-mode)?
 
-In Normal mode you can type `vv` to edit current command line in an editor 
+In Normal mode you can type `vv` to edit current command line in an editor
 
 ## Contribute
 
