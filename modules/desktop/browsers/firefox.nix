@@ -1,6 +1,9 @@
 { pkgs, inputs, ... }: {
-  imports = [ inputs.arkenfox.hmModules.default ];
+  imports = [ inputs.betterfox-nix.homeManagerModules.betterfox ];
 
+  # NOTE:
+  # might need to run
+  # MOZ_LEGACY_PROFILES=1 ~/Applications/Home\ Manager\ Apps/Firefox.app/Contents/MacOS/firefox
   home.sessionVariables = {
     MOZ_LEGACY_PROFILES = 1;
     MOZ_ALLOW_DOWNGRADE = 1;
@@ -8,9 +11,9 @@
 
   programs.firefox = {
     enable = true;
-    package = null;
-    arkenfox = { enable = true; };
-    profiles.work = {
+    package = pkgs.firefox-bin;
+    betterfox.enable = true;
+    profiles.default = {
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
         gruvbox-dark-theme
         onepassword-password-manager
@@ -18,30 +21,44 @@
         ublock-origin
       ];
 
-      arkenfox = {
+      betterfox = {
         enable = true;
-        "0000".enable = true;
-        "0100" = {
-          enable = true;
-          "0102"."browser.startup.page".value = 1;
-          "0103"."browser.startup.homepage".value = "about:home";
-        };
-        "0200".enable = true;
-        "0300".enable = true;
-        "0400".enable = true;
-        "0600".enable = true;
-        "0800".enable = true;
-        "0900".enable = true;
-        "1200".enable = true;
-        "1600".enable = true;
-        "2600".enable = true;
-        "2700".enable = true;
-        "2800".enable = true;
-        "4000".enable = true;
-        "4500".enable = true;
-        "5000" = {
-          enable = true;
-          "5003"."signon.rememberSignons".value = false;
+        enableAllSections = true;
+        fastfox.enable = true;
+        peskyfox.enable = true;
+        securefox.enable = true;
+      };
+
+      search = {
+        force = true;
+        engines = {
+          "Nix Packages" = {
+            urls = [{
+              template = "https://search.nixos.org/packages";
+              params = [
+                {
+                  name = "type";
+                  value = "packages";
+                }
+                {
+                  name = "query";
+                  value = "{searchTerms}";
+                }
+              ];
+            }];
+            icon =
+              "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = [ "@np" ];
+          };
+          "NixOS Wiki" = {
+            urls = [{
+              template = "https://nixos.wiki/index.php?search={searchTerms}";
+            }];
+            iconUpdateURL = "https://nixos.wiki/favicon.png";
+            updateInterval = 24 * 60 * 60 * 1000; # every day
+            definedAliases = [ "@nw" ];
+          };
+          "Google".metaData.alias = "@g";
         };
       };
 

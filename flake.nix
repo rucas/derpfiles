@@ -22,7 +22,6 @@
       flake = false;
     };
     spacebar = { url = "github:cmacrae/spacebar"; };
-
     fast-syntax-highlighting = {
       url = "github:zdharma-continuum/fast-syntax-highlighting";
       flake = false;
@@ -32,19 +31,22 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur = { url = "github:nix-community/nur"; };
-    arkenfox = {
-      url = "github:dwarfmaster/arkenfox-nixos";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     tree-sitter-tera = {
       url = "github:uncenter/tree-sitter-tera";
       flake = false;
     };
+    nixpkgs-firefox-darwin = {
+      url = "github:bandithedoge/nixpkgs-firefox-darwin";
+    };
+    betterfox-nix = {
+      url = "github:HeitorAugustoLN/betterfox-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, golink, home-manager
-    , utils, spacebar, neovim-nightly, neorg-overlay, alacritty-theme, arkenfox
-    , nur, ... }:
+    , utils, spacebar, neovim-nightly, neorg-overlay, alacritty-theme, nur
+    , nixpkgs-firefox-darwin, ... }:
     let
       inherit (utils.lib) mkFlake;
       inherit (nixpkgs) lib;
@@ -102,12 +104,13 @@
         home-assistant-themes
         home-assistant-custom-components
         nur.overlays.default
+        nixpkgs-firefox-darwin.overlay
       ];
 
       hosts.blkmrkt = mkHost {
         host = "blkmrkt";
         username = "lucas";
-        arch = "x86_64-darwin";
+        arch = "aarch64-darwin";
         env = "darwin";
       };
 
