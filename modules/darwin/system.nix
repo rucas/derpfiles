@@ -38,5 +38,8 @@
     defaults write com.apple.dock wvous-tr-corner -int 0
     defaults write com.apple.dock wvous-bl-corner -int 0
     defaults write com.apple.dock wvous-br-corner -int 0
+
+    # disable .DS_Store
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores true
   '';
 }
