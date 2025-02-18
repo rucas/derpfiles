@@ -23,7 +23,7 @@
       "slack"
       "vlc"
     ];
-    brews = [ "blueutil" "chrome-cli" "openssh" "pyenv" "sharewifi" "tor" ];
+    brews = [ "blueutil" "chrome-cli" "openssh" "pyenv" "tor" ];
   };
 
   environment.variables = { HOMEBREW_NO_ANALYTICS = "1"; };
