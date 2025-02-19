@@ -21,6 +21,7 @@
       "shortcat"
       "sketch"
       "slack"
+      "tailscale"
       "vlc"
     ];
     brews = [ "blueutil" "chrome-cli" "openssh" "pyenv" "tor" ];
