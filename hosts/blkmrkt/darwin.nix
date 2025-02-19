@@ -24,5 +24,6 @@
   system.stateVersion = 4;
 
   # TouchID sudo
+  # NOTE: https://github.com/LnL7/nix-darwin/pull/1020
   security.pam.enableSudoTouchIdAuth = true;
 }
