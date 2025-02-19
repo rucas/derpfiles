@@ -16,7 +16,7 @@
         y = 45;
       };
       window.dynamic_title = true;
-      window.decorations = "None";
+      window.decorations = "Buttonless";
       window.option_as_alt = "OnlyLeft";
       font = {
         normal = {
