@@ -23,4 +23,6 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
 
+  # TouchID sudo
+  security.pam.enableSudoTouchIdAuth = true;
 }
