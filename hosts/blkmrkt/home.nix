@@ -8,6 +8,7 @@
     ../../modules/desktop/term
     ../../modules/editors/neovim
     ../../modules/shell/zsh
+    ../../modules/security
   ];
 
   programs.home-manager.enable = true;
