@@ -67,6 +67,18 @@
         "signon.rememberSignons" = false;
         # Dont warn on CMD+Q
         "browser.warnOnQuit" = false;
+
+        # NOTE: https://github.com/yokoffing/Betterfox/wiki/Optional-Hardening#sanitize-on-close
+        "privacy.sanitize.sanitizeOnShutdown" = true;
+        "privacy.clearOnShutdown_v2.cache" = true; # DEFAULT
+        "privacy.clearOnShutdown_v2.cookiesAndStorage" = true; # DEFAULT
+        "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" =
+          true; # DEFAULT
+        "privacy.clearOnShutdown_v2.siteSettings" = true;
+
+        # PREF: after crashes or restarts, do not save extra session data
+        # such as form content, scrollbar positions, and POST data
+        "browser.sessionstore.privacy_level" = 2;
       };
 
       bookmarks = [
