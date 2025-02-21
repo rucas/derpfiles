@@ -18,6 +18,7 @@
       "mqttx"
       "mqtt-explorer"
       "obs"
+      "obsidian"
       "shortcat"
       "sketch"
       "slack"
