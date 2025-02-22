@@ -93,6 +93,10 @@
           url = "https://www.kernel.org";
         }
         {
+          name = "bugmenot.com";
+          url = "https://bugmenot.com/";
+        }
+        {
           name = "Nix sites";
           bookmarks = [
             {
