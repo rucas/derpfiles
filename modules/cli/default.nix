@@ -89,7 +89,7 @@
 
     wget
 
-    xsv
+    xan
     xz
 
     yq
