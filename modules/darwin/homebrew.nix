@@ -14,6 +14,7 @@
       "dropbox"
       "dynobase"
       "espanso"
+      "google-chrome"
       "maccy"
       "mqttx"
       "mqtt-explorer"
