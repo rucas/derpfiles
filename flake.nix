@@ -93,9 +93,9 @@
       overlay = import ./overlays { inherit self inputs; };
       sharedOverlays = with self.overlay; [
         alacritty-theme.overlays.default
-        golink.overlay
+        golink.overlays.default
         neovim-nightly.overlays.default
-        # neorg-overlay.overlays.default
+        neorg-overlay.overlays.default
         spacebar.overlay
         tmuxPlugins
         yabai

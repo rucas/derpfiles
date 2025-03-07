@@ -14,7 +14,7 @@
     package = if pkgs.stdenv.isDarwin then pkgs.firefox-bin else null;
     betterfox.enable = true;
     profiles.default = {
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         gruvbox-dark-theme
         onepassword-password-manager
         react-devtools

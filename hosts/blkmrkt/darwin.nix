@@ -2,14 +2,14 @@
 
   imports = [ ../../modules/darwin ];
 
-  nix.extraOptions = ''
-    auto-optimise-store = true
-    experimental-features = nix-command flakes
-  '';
+  nix.enable = false;
 
+  # nix.extraOptions = ''
+  #   auto-optimise-store = true
+  #   experimental-features = nix-command flakes
+  # '';
+  #
   nix.settings.trusted-users = [ "@admin" ];
-
-  services.nix-daemon.enable = true;
 
   # TODO: better way to do users.users?
   users.users.lucas = { home = "/Users/lucas"; };
@@ -26,5 +26,6 @@
   # TouchID sudo
   # NOTE: does not work with tmux
   # https://github.com/LnL7/nix-darwin/pull/1020
-  security.pam.enableSudoTouchIdAuth = true;
+  # security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 }
