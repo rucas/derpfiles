@@ -34,6 +34,7 @@
 
     fd
 
+    gcal
     gitmux
     gnumake
     gnused
