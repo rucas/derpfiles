@@ -15,7 +15,7 @@
     settings = { "webgl.disabled" = false; };
     profiles.default = {
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
-        cleanurls
+        # cleanurls
         darkreader
         gruvbox-dark-theme
         onepassword-password-manager
@@ -41,7 +41,7 @@
                 }
               ];
             }];
-            iconUpdateURL = "https://nixos.wiki/favicon.png";
+            icon = "https://nixos.wiki/favicon.png";
             updateInterval = 24 * 60 * 60 * 1000; # every day
             definedAliases = [ "@np" ];
           };
@@ -49,7 +49,7 @@
             urls = [{
               template = "https://nixos.wiki/index.php?search={searchTerms}";
             }];
-            iconUpdateURL = "https://nixos.wiki/favicon.png";
+            icon = "https://nixos.wiki/favicon.png";
             updateInterval = 24 * 60 * 60 * 1000; # every day
             definedAliases = [ "@nw" ];
           };
