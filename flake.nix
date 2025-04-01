@@ -42,6 +42,10 @@
       url = "github:HeitorAugustoLN/betterfox-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    english-words = {
+      url = "github:dwyl/english-words";
+      flake = false;
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, golink, home-manager

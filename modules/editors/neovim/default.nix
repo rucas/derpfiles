@@ -212,4 +212,6 @@ in {
       recursive = true;
     };
   };
+
+  xdg.dataFile."dict/words".source = inputs.english-words + "/words_alpha.txt";
 }
