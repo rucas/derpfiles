@@ -1,8 +1,9 @@
 { lib, pkgs, ... }:
 let
   yamlFormat = pkgs.formats.yaml { };
-  inherit (lib) mkMerge optionalAttrs;
+  inherit (lib) mkMerge;
   inherit (pkgs.stdenv) isLinux isDarwin;
+  # NOTE: https://github.com/Lissy93/espanso-config
   settings = {
     matches = [
       {
@@ -81,6 +82,10 @@ let
       {
         trigger = ":req";
         replace = "requirements";
+      }
+      {
+        trigger = ":av";
+        replace = "availability";
       }
     ];
   };
