@@ -78,6 +78,10 @@ let
         regex = ":(?P<CR_ID>CR-.*?)\\.";
         replace = "[{{CR_ID}}](https://code.amazon.com/reviews/{{CR_ID}})";
       }
+      {
+        trigger = ":req";
+        replace = "requirements";
+      }
     ];
   };
 in mkMerge [
