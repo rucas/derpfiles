@@ -51,6 +51,7 @@
 
     inputs.agenix.packages."${system}".default
     inetutils
+    inter
 
     jwt-cli
     jq
