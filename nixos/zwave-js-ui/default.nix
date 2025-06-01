@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.services.zwave-js-ui;
+  cfg = config.services.zwave-js-ui-rucas;
 
   jsonType = (pkgs.formats.json { }).type;
 
@@ -15,7 +15,7 @@ let
 in {
   # NOTE:
   # https://zwave-js.github.io/zwave-js-ui/#/guide/env-vars
-  options.services.zwave-js-ui = with types; {
+  options.services.zwave-js-ui-rucas = with types; {
     enable = mkEnableOption "Enable zwave-js-ui service";
 
     package = mkOption {

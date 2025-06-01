@@ -34,7 +34,7 @@
       export PATH="/opt/homebrew/sbin:$PATH"
     '' else
       "";
-    initExtra = ''
+    initContent = ''
       setopt EXTENDED_GLOB
 
       # Prohibit overwrite by redirection(> & >>) (Use >! and >>! to bypass.)

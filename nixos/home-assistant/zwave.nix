@@ -1,6 +1,7 @@
 { CONF, config, ... }: {
-  services.zwave-js-ui = {
+  services.zwave-js-ui-rucas = {
     enable = true;
+    # serialPort = CONF.hosts.rucaslab.zwave.device;
     behindProxy = true;
     settings = {
       zwave = { port = CONF.hosts.rucaslab.zwave.device; };

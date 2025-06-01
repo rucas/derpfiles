@@ -3,10 +3,8 @@
     caddy = {
       enable = true;
       package = pkgs.caddy.withPlugins {
-        plugins = [
-          "github.com/caddy-dns/cloudflare@v0.0.0-20240703190432-89f16b99c18e"
-        ];
-        hash = "sha256-JoujVXRXjKUam1Ej3/zKVvF0nX97dUizmISjy3M3Kr8=";
+        plugins = [ "github.com/caddy-dns/cloudflare@v0.2.1" ];
+        hash = "sha256-Gsuo+ripJSgKSYOM9/yl6Kt/6BFCA6BuTDvPdteinAI=";
       };
       extraConfig = ''
         (https-proxy) {
