@@ -11,8 +11,6 @@
       };
     };
   });
-  zwave-js-ui =
-    (final: prev: { zwave-js-ui = prev.callPackage ../pkgs/zwave-js-ui { }; });
   home-assistant-custom-components = (final: prev: {
     home-assistant-custom-components = prev.home-assistant-custom-components
       // {

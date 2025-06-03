@@ -103,7 +103,6 @@
         spacebar.overlay
         tmuxPlugins
         yabai
-        zwave-js-ui
         home-assistant-custom-lovelace-modules
         home-assistant-themes
         home-assistant-custom-components
