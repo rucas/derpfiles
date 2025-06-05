@@ -105,7 +105,6 @@
         yabai
         home-assistant-custom-lovelace-modules
         home-assistant-themes
-        home-assistant-custom-components
         nur.overlays.default
         nixpkgs-firefox-darwin.overlay
       ];

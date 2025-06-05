@@ -11,12 +11,6 @@
       };
     };
   });
-  home-assistant-custom-components = (final: prev: {
-    home-assistant-custom-components = prev.home-assistant-custom-components
-      // {
-        alarmo = prev.callPackage ../pkgs/alarmo { };
-      };
-  });
   home-assistant-custom-lovelace-modules = (final: prev: {
     home-assistant-custom-lovelace-modules =
       prev.home-assistant-custom-lovelace-modules // {
