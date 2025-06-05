@@ -14,7 +14,7 @@
     ../../nixos/caddy
     ../../nixos/postgresql
     ../../nixos/home-assistant
-    ../../nixos/golink
+    # ../../nixos/golink
     ../../nixos/dynamicdns
     ../../nixos/zwave-js-ui
     ../../nixos/mosquitto
@@ -29,7 +29,6 @@
     ../../nixos/obsidian
     ../../nixos/changedetection-io
     ../../nixos/ntfy-sh
-    ../../nixos/glance
     ../../nixos/lldap
     ../../nixos/authelia
   ];
