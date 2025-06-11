@@ -24,7 +24,10 @@
             "2606:4700:4700::1112"
             "2606:4700:4700::1002"
           ];
-          upstream_dns = [ "https://security.cloudflare-dns.com/dns-query" ];
+          upstream_dns = [
+            "https://security.cloudflare-dns.com/dns-query"
+            "https://dns.quad9.net/dns-query"
+          ];
           ratelimit = 0;
           enable_dnssec = true;
           # 50 MBs

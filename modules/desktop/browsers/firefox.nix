@@ -81,36 +81,40 @@
         "browser.sessionstore.privacy_level" = 2;
       };
 
-      bookmarks = [
-        {
-          name = "wikipedia";
-          tags = [ "wiki" ];
-          keyword = "wiki";
-          url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
-        }
-        {
-          name = "kernel.org";
-          url = "https://www.kernel.org";
-        }
-        {
-          name = "bugmenot.com";
-          url = "https://bugmenot.com/";
-        }
-        {
-          name = "Nix sites";
-          bookmarks = [
-            {
-              name = "homepage";
-              url = "https://nixos.org/";
-            }
-            {
-              name = "wiki";
-              tags = [ "wiki" "nix" ];
-              url = "https://wiki.nixos.org/";
-            }
-          ];
-        }
-      ];
+      bookmarks = {
+        force = true;
+        settings = [
+          {
+            name = "wikipedia";
+            tags = [ "wiki" ];
+            keyword = "wiki";
+            url =
+              "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
+          }
+          {
+            name = "kernel.org";
+            url = "https://www.kernel.org";
+          }
+          {
+            name = "bugmenot.com";
+            url = "https://bugmenot.com/";
+          }
+          {
+            name = "Nix sites";
+            bookmarks = [
+              {
+                name = "homepage";
+                url = "https://nixos.org/";
+              }
+              {
+                name = "wiki";
+                tags = [ "wiki" "nix" ];
+                url = "https://wiki.nixos.org/";
+              }
+            ];
+          }
+        ];
+      };
     };
   };
 }

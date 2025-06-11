@@ -28,4 +28,6 @@
   # https://github.com/LnL7/nix-darwin/pull/1020
   # security.pam.enableSudoTouchIdAuth = true;
   security.pam.services.sudo_local.touchIdAuth = true;
+
+  system.primaryUser = "lucas";
 }
