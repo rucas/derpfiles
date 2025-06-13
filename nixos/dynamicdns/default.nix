@@ -1,7 +1,7 @@
 { config, ... }: {
-  services.cfdyndns = {
+  services.cloudflare-dyndns = {
     enable = true;
     apiTokenFile = config.age.secrets.cloudflare_dynamicdns.path;
-    records = [ "portal.rucaslab.com" ];
+    domains = [ "portal.rucaslab.com" ];
   };
 }
