@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   imports = [ ./autopairs.nix ./fsh.nix ./starship.nix ./zsh-vi-mode.nix ];
   programs.zsh = {
     enable = true;
@@ -29,12 +29,11 @@
       R = "| rg";
       W = "| wc -l";
     };
-    initExtraFirst = if pkgs.stdenv.isDarwin then ''
-      export PATH="/opt/homebrew/bin:$PATH"
-      export PATH="/opt/homebrew/sbin:$PATH"
-    '' else
-      "";
     initContent = ''
+      ${lib.optionalString pkgs.stdenv.isDarwin ''
+        export PATH="/opt/homebrew/bin:$PATH"
+        export PATH="/opt/homebrew/sbin:$PATH"
+      ''}
       setopt EXTENDED_GLOB
 
       # Prohibit overwrite by redirection(> & >>) (Use >! and >>! to bypass.)
