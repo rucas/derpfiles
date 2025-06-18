@@ -24,4 +24,11 @@
   system.stateVersion = 4;
 
   system.primaryUser = "lucas.rondenet";
+
+  security.pam.services.sudo_local = {
+    enable = true;
+    reattach = true;
+    touchIdAuth = true;
+    watchIdAuth = true;
+  };
 }
