@@ -11,12 +11,12 @@
     # ../../modules/security
   ];
 
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = (_: true);
-    };
-  };
+  #nixpkgs = {
+  #  config = {
+  #    allowUnfree = true;
+  #    allowUnfreePredicate = (_: true);
+  #  };
+  #};
 
   programs.home-manager.enable = true;
 
