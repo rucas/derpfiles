@@ -123,6 +123,13 @@
         env = "darwin";
       };
 
+      hosts."lronden-m-vy79p" = mkHost {
+        host = "lronden-m-vy79p";
+        username = "lucas.rondenet";
+        arch = "aarch64-darwin";
+        env = "darwin";
+      };
+
       hosts.rucaslab = mkHost {
         host = "rucaslab";
         username = "lucas";
