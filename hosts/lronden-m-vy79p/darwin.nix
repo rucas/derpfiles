@@ -23,4 +23,5 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
 
+  system.primaryUser = "lucas.rondenet";
 }
