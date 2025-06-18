@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  programs.vscode = {
+  programs.vscode.profiles.default = {
     enable = false;
     extensions = with pkgs.vscode-extensions;
       [ bbenoist.nix vscodevim.vim brettm12345.nixfmt-vscode ]
