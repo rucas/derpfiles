@@ -35,6 +35,7 @@
     fd
 
     gcal
+    git-crypt
     gitmux
     gnumake
     gnused
