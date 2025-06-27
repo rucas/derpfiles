@@ -27,7 +27,7 @@
   system.defaults.NSGlobalDomain._HIHideMenuBar = true;
 
   # dont respond to ping or icmp requests
-  system.defaults.alf.stealthenabled = 1;
+  networking.applicationFirewall.enableStealthMode = true;
 
   system.activationScripts.postActivation.text = ''
     # Disable Dock icons bouncing

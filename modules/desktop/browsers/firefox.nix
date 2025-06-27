@@ -11,13 +11,16 @@
 
   programs.firefox = {
     enable = true;
-    package = if pkgs.stdenv.isDarwin then pkgs.firefox-bin else null;
+    package = if pkgs.stdenv.isDarwin then pkgs.firefox else null;
     betterfox.enable = true;
     profiles.default = {
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
+        darkreader
         gruvbox-dark-theme
         onepassword-password-manager
         react-devtools
+        sponsorblock
+        unpaywall
         ublock-origin
       ];
 
@@ -58,7 +61,7 @@
             updateInterval = 24 * 60 * 60 * 1000; # every day
             definedAliases = [ "@nw" ];
           };
-          "Google".metaData.alias = "@g";
+          "google".metaData.alias = "@g";
         };
       };
 

@@ -35,9 +35,6 @@
       url = "github:uncenter/tree-sitter-tera";
       flake = false;
     };
-    nixpkgs-firefox-darwin = {
-      url = "github:bandithedoge/nixpkgs-firefox-darwin";
-    };
     betterfox-nix = {
       url = "github:HeitorAugustoLN/betterfox-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,8 +46,8 @@
   };
 
   outputs = inputs@{ self, nixpkgs, agenix, nix-darwin, golink, home-manager
-    , utils, spacebar, neovim-nightly, neorg-overlay, alacritty-theme, nur
-    , nixpkgs-firefox-darwin, ... }:
+    , utils, spacebar, neovim-nightly, neorg-overlay, alacritty-theme, nur, ...
+    }:
     let
       inherit (utils.lib) mkFlake;
       inherit (nixpkgs) lib;
@@ -106,7 +103,6 @@
         home-assistant-custom-lovelace-modules
         home-assistant-themes
         nur.overlays.default
-        nixpkgs-firefox-darwin.overlay
       ];
 
       hosts.blkmrkt = mkHost {
