@@ -1,7 +1,7 @@
 { config, ... }:
 let
   hostSpecificCasks = {
-    "lronden-m-vy79p" = [ "slack" ];
+    "lronden-m-vy79p" = [ "slack" "granola" ];
     "blkmrkt" = [ "balenaetcher" "mqttx" "mqtt-explorer" "tailscale" "vlc" ];
   };
 
@@ -23,10 +23,10 @@ in {
   homebrew = {
     enable = true;
     onActivation = { cleanup = "zap"; };
-    taps = [ "bradyjoslin/sharewifi" "espanso/espanso" ];
+    taps = [ "bradyjoslin/sharewifi" "espanso/espanso" "sdkman/tap" ];
     casks = commonCasks
       ++ (hostSpecificCasks.${config.networking.hostName} or [ ]);
-    brews = [ "blueutil" "chrome-cli" "openssh" "pyenv" "tor" ];
+    brews = [ "blueutil" "chrome-cli" "openssh" "pyenv" "sdkman-cli" "tor" ];
   };
 
   environment.variables = { HOMEBREW_NO_ANALYTICS = "1"; };

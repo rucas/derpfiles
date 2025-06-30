@@ -1,5 +1,11 @@
 { pkgs, lib, ... }: {
-  imports = [ ./autopairs.nix ./fsh.nix ./starship.nix ./zsh-vi-mode.nix ];
+  imports = [
+    ./autopairs.nix
+    ./fsh.nix
+    ./starship.nix
+    ./zsh-lazyload.nix
+    ./zsh-vi-mode.nix
+  ];
   programs.zsh = {
     enable = true;
     history = {
