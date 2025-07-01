@@ -1,4 +1,14 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+let
+  yamlToAttrs = yamlFile:
+    let
+      jsonFile =
+        pkgs.runCommand "yaml-to-json" { buildInputs = [ pkgs.yq ]; } ''
+          yq . ${yamlFile} > $out
+        '';
+    in builtins.fromJSON (builtins.readFile jsonFile);
+  importedBookmarks = yamlToAttrs ../../../secrets/firefox-bookmarks-a.yaml;
+in {
   imports = [ inputs.betterfox-nix.homeManagerModules.betterfox ];
 
   # NOTE:
@@ -13,6 +23,15 @@
     enable = true;
     package = if pkgs.stdenv.isDarwin then pkgs.firefox else null;
     betterfox.enable = true;
+    policies = {
+      FirefoxHome = {
+        Search = true;
+        Pocket = false;
+        Snippets = false;
+        TopSites = false;
+        Highlights = false;
+      };
+    };
     profiles.default = {
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         darkreader
@@ -116,7 +135,7 @@
               }
             ];
           }
-        ];
+        ] ++ importedBookmarks;
       };
     };
   };
