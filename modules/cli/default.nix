@@ -57,11 +57,13 @@
     jwt-cli
     jq
 
-    (lib.mkIf pkgs.stdenv.isDarwin m-cli)
+    kubectl
 
     # ledger
     lsof
 
+    (lib.mkIf pkgs.stdenv.isDarwin m-cli)
+    
     netcat
     neofetch
     nmap
