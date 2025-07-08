@@ -1,6 +1,7 @@
 { config, ... }:
 let
   hostSpecificCasks = {
+    "salus" = [ "granola" "slack" ];
     "lronden-m-vy79p" = [ "intellij-idea" "granola" "slack" ];
     "blkmrkt" = [ "balenaetcher" "mqttx" "mqtt-explorer" "tailscale" "vlc" ];
   };

@@ -132,5 +132,12 @@
         arch = "x86_64-linux";
         env = "nixos";
       };
+
+      hosts.salus = mkHost {
+        host = "salus";
+        username = "lucas";
+        arch = "aarch64-darwin";
+        env = "darwin";
+      };
     };
 }
