@@ -18,10 +18,6 @@
         path = "~/.config/git/work.gitconfig";
         condition = "gitdir:~/Work/";
       }
-      {
-        path = "~/.config/git/work.gitconfig";
-        condition = "gitdir:~/workplace/";
-      }
       { path = "~/.config/git/gitalias"; }
     ];
     aliases = { conflicts = "diff --name-only --diff-filter=U"; };
@@ -30,8 +26,12 @@
 
   home.file.".config/git/work.gitconfig".text = ''
     [user]
-        email = awslucas@amazon.com
-        name = Lucas Rondenet
+        email = lucas.rondenet@gmail.com
+        name = rucas
+
+    [core]
+        untrackedcache = true
+        manyFiles = true
   '';
   home.file.".config/git/public.gitconfig".text = ''
     [user]
