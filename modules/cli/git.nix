@@ -30,6 +30,7 @@
         name = rucas
 
     [core]
+        fsmonitor = true
         untrackedcache = true
         manyFiles = true
   '';
