@@ -7,6 +7,7 @@ let
 in {
   programs.ssh = {
     enable = true;
+    includes = [ (lib.mkIf isWorkMachine "config.d/*") ];
     matchBlocks = lib.mkMerge [
       # (lib.mkIf isWorkMachine {
       #   "work-*" = {
