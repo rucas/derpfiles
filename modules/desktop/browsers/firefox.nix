@@ -1,5 +1,6 @@
-{ pkgs, inputs, ... }:
+{ pkgs, osConfig, inputs, ... }:
 let
+  hostSpecificBookmarks = { "lronden-m-vy79p" = "firefox-bookmarks-a.yaml"; };
   yamlToAttrs = yamlFile:
     let
       jsonFile =
@@ -7,7 +8,12 @@ let
           yq . ${yamlFile} > $out
         '';
     in builtins.fromJSON (builtins.readFile jsonFile);
-  importedBookmarks = yamlToAttrs ../../../secrets/firefox-bookmarks-a.yaml;
+  currentHostBookmarks =
+    if builtins.hasAttr osConfig.networking.hostName hostSpecificBookmarks then
+      yamlToAttrs (../../../secrets
+        + "/${hostSpecificBookmarks.${osConfig.networking.hostName}}")
+    else
+      [ ];
 in {
   imports = [ inputs.betterfox-nix.homeManagerModules.betterfox ];
 
@@ -135,7 +141,7 @@ in {
               }
             ];
           }
-        ] ++ importedBookmarks;
+        ] ++ currentHostBookmarks;
       };
     };
   };
