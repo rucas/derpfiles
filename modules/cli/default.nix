@@ -23,6 +23,7 @@
     bandwhich
 
     calc
+    claude-code
     coreutils
     curl
 
@@ -63,7 +64,7 @@
     lsof
 
     (lib.mkIf pkgs.stdenv.isDarwin m-cli)
-    
+
     netcat
     neofetch
     nmap
