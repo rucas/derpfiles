@@ -1,6 +1,9 @@
 { pkgs, osConfig, inputs, ... }:
 let
-  hostSpecificBookmarks = { "lronden-m-vy79p" = "firefox-bookmarks-a.yaml"; };
+  hostSpecificBookmarks = {
+    "lronden-m-vy79p" = "firefox-bookmarks-a.yaml";
+    "salus" = "firefox-bookmarks-b.yaml";
+  };
   yamlToAttrs = yamlFile:
     let
       jsonFile =
