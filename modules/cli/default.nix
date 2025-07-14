@@ -79,6 +79,7 @@
     parallel
     pandoc
     # (lib.mkIf pkgs.stdenv.isDarwin pinentry_mac)
+    pre-commit
     procs
 
     ripgrep
