@@ -8,7 +8,7 @@
         line-numbers = true;
       };
     };
-    ignores = [ ".DS_Store" ];
+    ignores = [ ".DS_Store" ".direnv" ];
     includes = [
       {
         path = "~/.config/git/public.gitconfig";
