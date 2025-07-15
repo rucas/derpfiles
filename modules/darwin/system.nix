@@ -29,6 +29,8 @@
   # dont respond to ping or icmp requests
   networking.applicationFirewall.enableStealthMode = true;
 
+  system.defaults.controlcenter.Bluetooth = true;
+
   system.activationScripts.postActivation.text = ''
     # Disable Dock icons bouncing
     defaults write com.apple.dock no-bouncing -bool true
