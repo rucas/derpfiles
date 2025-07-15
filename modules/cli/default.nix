@@ -34,6 +34,7 @@
     eva
 
     fd
+    fnm
 
     gcal
     git-crypt

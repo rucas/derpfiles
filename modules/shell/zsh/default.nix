@@ -89,6 +89,9 @@
 
       # reverse tab completion with shift-tab
       bindkey '^[[Z' reverse-menu-complete
+
+      # fnm
+      eval "$(fnm env --use-on-cd --shell zsh)"
     '';
 
   };
