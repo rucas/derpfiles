@@ -27,7 +27,16 @@ in {
     taps = [ "bradyjoslin/sharewifi" "espanso/espanso" "sdkman/tap" ];
     casks = commonCasks
       ++ (hostSpecificCasks.${config.networking.hostName} or [ ]);
-    brews = [ "blueutil" "chrome-cli" "openssh" "pyenv" "sdkman-cli" "tor" ];
+    brews = [
+      "blueutil"
+      "chrome-cli"
+      "openssh"
+      "pyenv"
+      "pyenv-virtualenv"
+      "sdkman-cli"
+      "tor"
+      "zlib" # needed for pyenv shit
+    ];
   };
 
   environment.variables = { HOMEBREW_NO_ANALYTICS = "1"; };
