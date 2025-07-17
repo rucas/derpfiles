@@ -17,6 +17,11 @@
     autocd = true;
     autosuggestion = { enable = true; };
     shellAliases = {
+      awp = ''
+        export AWS_PROFILE=$(aws configure list-profiles | fzf --prompt 'Choose active AWS profile:')
+        regions=$(curl -s https://raw.githubusercontent.com/boto/botocore/develop/botocore/data/endpoints.json | grep -B1 desc | grep "{" | cut -d \" -f2)
+        export AWS_REGION=$(echo $regions | fzf --prompt 'Choose active AWS region:')
+      '';
       cat = "bat -n --paging=never";
       g = "git";
       j = "jobs";
