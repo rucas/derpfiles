@@ -41,6 +41,8 @@
     gitmux
     gnumake
     gnused
+    (google-cloud-sdk.withExtraComponents
+      (with google-cloud-sdk.components; [ gke-gcloud-auth-plugin ]))
     graphviz
     grex
 
@@ -88,7 +90,7 @@
     sd
     sqlite
 
-    # tailspin
+    tailspin
     timer
     tree
     tokei
