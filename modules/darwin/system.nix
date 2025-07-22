@@ -29,6 +29,7 @@
   # dont respond to ping or icmp requests
   networking.applicationFirewall.enableStealthMode = true;
 
+  # Bluetooth control on the top bar
   system.defaults.controlcenter.Bluetooth = true;
 
   system.activationScripts.postActivation.text = ''
