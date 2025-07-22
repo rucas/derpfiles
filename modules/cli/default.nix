@@ -62,6 +62,7 @@
     jq
 
     kubectl
+    kubectx
 
     # ledger
     lsof
