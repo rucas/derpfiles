@@ -22,6 +22,7 @@
         regions=$(curl -s https://raw.githubusercontent.com/boto/botocore/develop/botocore/data/endpoints.json | grep -B1 desc | grep "{" | cut -d \" -f2)
         export AWS_REGION=$(echo $regions | fzf --prompt 'Choose active AWS region:')
       '';
+      aws_kill = "unset AWS_PROFILE; unset AWS_REGION;";
       cat = "bat -n --paging=never";
       g = "git";
       j = "jobs";
