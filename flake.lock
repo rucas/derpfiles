@@ -379,6 +379,22 @@
         "type": "github"
       }
     },
+    "git-alias": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1752772333,
+        "narHash": "sha256-dJSAsdKaeCXZT0w4JVfYiVj0V1QNv5m01ajM3TbFvUY=",
+        "owner": "GitAlias",
+        "repo": "gitalias",
+        "rev": "b6980478e27e53baced06154ef86843bbf08b137",
+        "type": "github"
+      },
+      "original": {
+        "owner": "GitAlias",
+        "repo": "gitalias",
+        "type": "github"
+      }
+    },
     "git-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_4",
@@ -863,6 +879,7 @@
         "english-words": "english-words",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
         "firefox-addons": "firefox-addons",
+        "git-alias": "git-alias",
         "golink": "golink",
         "home-manager": "home-manager_2",
         "neorg-overlay": "neorg-overlay",
