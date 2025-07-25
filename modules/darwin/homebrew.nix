@@ -16,6 +16,7 @@ let
     "dynobase"
     "espanso"
     "google-chrome"
+    "insta360-link-controller"
     "maccy"
     "obs"
     "shortcat"
