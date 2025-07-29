@@ -1,4 +1,16 @@
-{ pkgs, theme, ... }: {
+{
+  osConfig,
+  pkgs,
+  theme,
+  ...
+}:
+let
+  host1PVaults = {
+    "lronden-m-vy79p" = "Hermes";
+    "salus" = "Salus";
+  };
+in
+{
   programs.tmux = {
     aggressiveResize = true;
     disableConfirmationPrompt = true;
@@ -33,7 +45,17 @@
           set -g @thumbs-command 'echo -n {} | pbcopy'
         '';
       }
-      { plugin = tmuxPlugins.tmux-1password; }
+      {
+        plugin = tmuxPlugins.tmux-1password;
+        extraConfig = ''
+          ${
+            let
+              hostname = osConfig.networking.hostName;
+            in
+            if host1PVaults ? ${hostname} then "set -g @1password-vault '${host1PVaults.${hostname}}'" else ""
+          }
+        '';
+      }
     ];
     extraConfig = ''
       set -g default-terminal "tmux-256color"
