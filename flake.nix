@@ -65,6 +65,10 @@
       url = "github:GitAlias/gitalias";
       flake = false;
     };
+    kube-aliases = {
+      url = "github:Dbz/kube-aliases";
+      flake = false;
+    };
   };
 
   outputs =
@@ -109,28 +113,27 @@
           specialArgs = {
             CONF = fromTOML (readFile ./hosts/configs.toml);
           };
-          modules =
-            [
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.extraSpecialArgs = {
-                  inherit inputs;
-                  theme = fromTOML (readFile ./modules/themes/gruvbox.toml);
-                };
-                home-manager.users.${username} = import ./hosts/${host}/home.nix;
-              }
-            ]
-            ++ lib.optionals isDarwin [
-              ./hosts/${host}/darwin.nix
-              home-manager.darwinModules.home-manager
-            ]
-            ++ lib.optionals isNixOs [
-              golink.nixosModules.default
-              ./hosts/${host}/configuration.nix
-              home-manager.nixosModules.home-manager
-              agenix.nixosModules.default
-            ];
+          modules = [
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                theme = fromTOML (readFile ./modules/themes/gruvbox.toml);
+              };
+              home-manager.users.${username} = import ./hosts/${host}/home.nix;
+            }
+          ]
+          ++ lib.optionals isDarwin [
+            ./hosts/${host}/darwin.nix
+            home-manager.darwinModules.home-manager
+          ]
+          ++ lib.optionals isNixOs [
+            golink.nixosModules.default
+            ./hosts/${host}/configuration.nix
+            home-manager.nixosModules.home-manager
+            agenix.nixosModules.default
+          ];
         }
         // lib.optionalAttrs isDarwin { output = "darwinConfigurations"; };
     in

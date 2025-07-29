@@ -522,6 +522,22 @@
         "type": "github"
       }
     },
+    "kube-aliases": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1676856087,
+        "narHash": "sha256-+PCDWYgl/s+KbQ2pxbhlUv+WQB6njrJYFHhtxxzQgPM=",
+        "owner": "Dbz",
+        "repo": "kube-aliases",
+        "rev": "bfba5b625d613522947b1f526728cfba9430af63",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Dbz",
+        "repo": "kube-aliases",
+        "type": "github"
+      }
+    },
     "neorg": {
       "flake": false,
       "locked": {
@@ -882,6 +898,7 @@
         "git-alias": "git-alias",
         "golink": "golink",
         "home-manager": "home-manager_2",
+        "kube-aliases": "kube-aliases",
         "neorg-overlay": "neorg-overlay",
         "neovim-nightly": "neovim-nightly",
         "nix-darwin": "nix-darwin",

@@ -2,6 +2,7 @@
   imports = [
     ./autopairs.nix
     ./fsh.nix
+    ./kube-aliases.nix
     ./starship.nix
     ./zsh-lazyload.nix
     ./zsh-vi-mode.nix
