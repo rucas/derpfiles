@@ -23,6 +23,7 @@
         condition = "gitdir:~/Work/";
       }
       { path = "~/.config/git/gitalias"; }
+      { path = "~/.config/git/gitalias.custom"; }
     ];
     aliases = {
       conflicts = "diff --name-only --diff-filter=U";
@@ -51,4 +52,13 @@
   '';
 
   home.file.".config/git/gitalias".text = builtins.readFile "${inputs.git-alias}/gitalias.txt";
+  home.file.".config/git/gitalias.custom".text = ''
+    [alias]
+      co = "!git branch -a | grep -v HEAD | \
+        sed 's|remotes/origin/||g' | \
+        sed 's/^[* ] //' | \
+        sort -u | \
+        fzf --height=10 --layout=reverse-list --no-info --border=none --prompt='Branch: ' | \
+        xargs git checkout"
+  '';
 }
