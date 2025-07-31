@@ -54,11 +54,17 @@
   home.file.".config/git/gitalias".text = builtins.readFile "${inputs.git-alias}/gitalias.txt";
   home.file.".config/git/gitalias.custom".text = ''
     [alias]
-      co = "!git branch -a | grep -v HEAD | \
-        sed 's|remotes/origin/||g' | \
-        sed 's/^[* ] //' | \
-        sort -u | \
-        fzf --height=10 --layout=reverse-list --no-info --border=none --prompt='Branch: ' | \
-        xargs git checkout"
+      co = "!f() { \
+        if [ $# -eq 0 ]; then \
+          git branch -a | grep -v HEAD | \
+            sed 's|remotes/origin/||g' | \
+            sed 's/^[* ] //' | \
+            sort -u | \
+            fzf --height=10 --layout=reverse-list --no-info --border=none --prompt='Branch: ' | \
+            xargs git checkout; \
+        else \
+          git checkout \"$@\"; \
+        fi; \
+      }; f"
   '';
 }
