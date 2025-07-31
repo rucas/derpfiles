@@ -34,7 +34,7 @@
 
   system.activationScripts.postActivation.text = ''
     # Disable Dock icons bouncing
-    defaults write com.apple.dock no-bouncing -bool true
+    defaults write com.apple.dock no-bouncing -bool "true"
 
     # Disable all the hot corners
     defaults write com.apple.dock wvous-tl-corner -int 0
@@ -43,6 +43,11 @@
     defaults write com.apple.dock wvous-br-corner -int 0
 
     # disable .DS_Store
-    defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool "true"
+
+    # dont try and rebuild window state and relaunch apps after reboot
+    defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool "false"
+    defaults write com.apple.loginwindow TALLogoutSavesState -bool "false"
+    defaults write com.apple.loginwindow LoginwindowLaunchesRelaunchApps -bool "false"
   '';
 }
