@@ -1,4 +1,10 @@
-{ lib, pkgs, inputs, ... }: {
+{
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
+{
   imports = [
     ./atuin.nix
     ./bat.nix
@@ -41,8 +47,9 @@
     gitmux
     gnumake
     gnused
-    (google-cloud-sdk.withExtraComponents
-      (with google-cloud-sdk.components; [ gke-gcloud-auth-plugin ]))
+    (google-cloud-sdk.withExtraComponents (
+      with google-cloud-sdk.components; [ gke-gcloud-auth-plugin ]
+    ))
     graphviz
     grex
 
@@ -86,6 +93,7 @@
     pre-commit
     procs
 
+    rainfrog
     ripgrep
 
     sd
