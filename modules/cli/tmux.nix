@@ -11,6 +11,16 @@ let
   };
 in
 {
+  programs.zsh.shellAliases = {
+    tm = "tmux";
+    tma = "tmux attach-session";
+    tmat = "tmux attach-session -t";
+    tmks = "tmux kill-session -a";
+    tml = "tmux list-sessions";
+    tmn = "tmux new-session";
+    tmns = "tmux new -s";
+    tms = "tmux new-session -s";
+  };
   programs.tmux = {
     aggressiveResize = true;
     disableConfirmationPrompt = true;
