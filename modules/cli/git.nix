@@ -14,6 +14,11 @@
       ".direnv"
       ".claude"
       ".env**"
+      "*.log"
+      "*.min.js"
+      "dist/"
+      "build/"
+      "target/"
     ];
     includes = [
       {
