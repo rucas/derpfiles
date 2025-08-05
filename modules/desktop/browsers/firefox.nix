@@ -1,23 +1,29 @@
-{ pkgs, osConfig, inputs, ... }:
+{
+  pkgs,
+  osConfig,
+  inputs,
+  ...
+}:
 let
   hostSpecificBookmarks = {
     "lronden-m-vy79p" = "firefox-bookmarks-a.yaml";
     "salus" = "firefox-bookmarks-b.yaml";
   };
-  yamlToAttrs = yamlFile:
+  yamlToAttrs =
+    yamlFile:
     let
-      jsonFile =
-        pkgs.runCommand "yaml-to-json" { buildInputs = [ pkgs.yq ]; } ''
-          yq . ${yamlFile} > $out
-        '';
-    in builtins.fromJSON (builtins.readFile jsonFile);
+      jsonFile = pkgs.runCommand "yaml-to-json" { buildInputs = [ pkgs.yq ]; } ''
+        yq . ${yamlFile} > $out
+      '';
+    in
+    builtins.fromJSON (builtins.readFile jsonFile);
   currentHostBookmarks =
     if builtins.hasAttr osConfig.networking.hostName hostSpecificBookmarks then
-      yamlToAttrs (../../../secrets
-        + "/${hostSpecificBookmarks.${osConfig.networking.hostName}}")
+      yamlToAttrs (../../../secrets + "/${hostSpecificBookmarks.${osConfig.networking.hostName}}")
     else
       [ ];
-in {
+in
+{
   imports = [ inputs.betterfox-nix.homeManagerModules.betterfox ];
 
   # NOTE:
@@ -50,6 +56,15 @@ in {
         sponsorblock
         unpaywall
         ublock-origin
+
+        (buildFirefoxXpiAddon rec {
+          pname = "Fake Filler";
+          version = "4.1.0";
+          addonId = "{7efbd09d-90ad-47fa-b91a-08c472bdf566}";
+          url = "https://addons.mozilla.org/firefox/downloads/file/4330661/fake_filler-${version}.xpi";
+          sha256 = "sha256-6VgGZFUeQnGd9bvJYuIB36DW2wO8QUyxyJphuVl6Djo=";
+          meta = { };
+        })
       ];
 
       betterfox = {
@@ -64,27 +79,30 @@ in {
         force = true;
         engines = {
           "Nix Packages" = {
-            urls = [{
-              template = "https://search.nixos.org/packages";
-              params = [
-                {
-                  name = "type";
-                  value = "packages";
-                }
-                {
-                  name = "query";
-                  value = "{searchTerms}";
-                }
-              ];
-            }];
-            icon =
-              "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            urls = [
+              {
+                template = "https://search.nixos.org/packages";
+                params = [
+                  {
+                    name = "type";
+                    value = "packages";
+                  }
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
             definedAliases = [ "@np" ];
           };
           "NixOS Wiki" = {
-            urls = [{
-              template = "https://nixos.wiki/index.php?search={searchTerms}";
-            }];
+            urls = [
+              {
+                template = "https://nixos.wiki/index.php?search={searchTerms}";
+              }
+            ];
             icon = "https://nixos.wiki/favicon.png";
             updateInterval = 24 * 60 * 60 * 1000; # every day
             definedAliases = [ "@nw" ];
@@ -103,8 +121,7 @@ in {
         "privacy.sanitize.sanitizeOnShutdown" = true;
         "privacy.clearOnShutdown_v2.cache" = true; # DEFAULT
         "privacy.clearOnShutdown_v2.cookiesAndStorage" = true; # DEFAULT
-        "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" =
-          true; # DEFAULT
+        "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = true; # DEFAULT
         "privacy.clearOnShutdown_v2.siteSettings" = true;
 
         # PREF: after crashes or restarts, do not save extra session data
@@ -119,8 +136,7 @@ in {
             name = "wikipedia";
             tags = [ "wiki" ];
             keyword = "wiki";
-            url =
-              "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
+            url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
           }
           {
             name = "kernel.org";
@@ -139,12 +155,16 @@ in {
               }
               {
                 name = "wiki";
-                tags = [ "wiki" "nix" ];
+                tags = [
+                  "wiki"
+                  "nix"
+                ];
                 url = "https://wiki.nixos.org/";
               }
             ];
           }
-        ] ++ currentHostBookmarks;
+        ]
+        ++ currentHostBookmarks;
       };
     };
   };
