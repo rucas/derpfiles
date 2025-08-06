@@ -65,6 +65,7 @@
     inetutils
     inter
 
+    jira-cli-go
     jwt-cli
     jq
 
