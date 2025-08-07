@@ -120,6 +120,10 @@ in
         # PREF: after crashes or restarts, do not save extra session data
         # such as form content, scrollbar positions, and POST data
         "browser.sessionstore.privacy_level" = 2;
+
+        "browser.download.useDownloadDir" = false;
+        "browser.screenshots.folderList" = 2;
+        "browser.screenshots.dir" = "/tmp";
       };
 
       bookmarks = {
