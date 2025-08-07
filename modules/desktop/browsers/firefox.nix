@@ -50,21 +50,14 @@ in
     profiles.default = {
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         darkreader
+        # NOTE: need to manage permissions on per domain basis
+        fake-filler
         gruvbox-dark-theme
         onepassword-password-manager
         react-devtools
         sponsorblock
-        unpaywall
         ublock-origin
-
-        (buildFirefoxXpiAddon rec {
-          pname = "Fake Filler";
-          version = "4.1.0";
-          addonId = "{7efbd09d-90ad-47fa-b91a-08c472bdf566}";
-          url = "https://addons.mozilla.org/firefox/downloads/file/4330661/fake_filler-${version}.xpi";
-          sha256 = "sha256-6VgGZFUeQnGd9bvJYuIB36DW2wO8QUyxyJphuVl6Djo=";
-          meta = { };
-        })
+        unpaywall
       ];
 
       betterfox = {
