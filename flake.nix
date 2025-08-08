@@ -16,8 +16,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    utils = {
-      url = "github:gytis-ivaskevicius/flake-utils-plus";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
     };
     alacritty-theme = {
       url = "github:alexghr/alacritty-theme.nix";
@@ -79,7 +79,7 @@
       nix-darwin,
       golink,
       home-manager,
-      utils,
+      flake-parts,
       spacebar,
       neovim-nightly,
       neorg-overlay,
@@ -87,113 +87,115 @@
       nur,
       ...
     }:
-    let
-      inherit (utils.lib) mkFlake;
-      inherit (nixpkgs) lib;
-      inherit (builtins) fromTOML readFile;
-      mkHost =
-        {
-          host,
-          username,
-          arch,
-          env ? "darwin",
-        }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "aarch64-darwin"
+        "x86_64-linux"
+      ];
+
+      flake =
         let
-          isDarwin = if env == "darwin" then true else false;
-          isNixOs = !isDarwin;
-        in
-        {
-          builder =
+          inherit (nixpkgs) lib;
+          inherit (builtins) fromTOML readFile;
+          mkHost =
+            {
+              host,
+              username,
+              arch,
+              env ? "darwin",
+            }:
+            let
+              isDarwin = if env == "darwin" then true else false;
+              isNixOs = !isDarwin;
+            in
             {
               darwin = nix-darwin.lib.darwinSystem;
               nixos = nixpkgs.lib.nixosSystem;
             }
-            .${env};
-          system = arch;
-          specialArgs = {
-            CONF = fromTOML (readFile ./hosts/configs.toml);
-          };
-          modules = [
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                theme = fromTOML (readFile ./modules/themes/gruvbox.toml);
+            .${env}
+              {
+                system = arch;
+                specialArgs = {
+                  CONF = fromTOML (readFile ./hosts/configs.toml);
+                  inherit inputs;
+                };
+                modules = [
+                  {
+                    nixpkgs.config = {
+                      allowUnfree = true;
+                      permittedInsecurePackages = [ "openssl-1.1.1w" ];
+                    };
+                    nixpkgs.overlays = [
+                      self.overlays.default
+                      alacritty-theme.overlays.default
+                      golink.overlays.default
+                      neovim-nightly.overlays.default
+                      neorg-overlay.overlays.default
+                      spacebar.overlay
+                      nur.overlays.default
+                    ];
+                    home-manager.useGlobalPkgs = true;
+                    home-manager.useUserPackages = true;
+                    home-manager.extraSpecialArgs = {
+                      inherit inputs;
+                      theme = fromTOML (readFile ./modules/themes/gruvbox.toml);
+                    };
+                    home-manager.users.${username} = import ./hosts/${host}/home.nix;
+                  }
+                ]
+                ++ lib.optionals isDarwin [
+                  ./hosts/${host}/darwin.nix
+                  home-manager.darwinModules.home-manager
+                ]
+                ++ lib.optionals isNixOs [
+                  golink.nixosModules.default
+                  ./hosts/${host}/configuration.nix
+                  home-manager.nixosModules.home-manager
+                  agenix.nixosModules.default
+                ];
               };
-              home-manager.users.${username} = import ./hosts/${host}/home.nix;
-            }
-          ]
-          ++ lib.optionals isDarwin [
-            ./hosts/${host}/darwin.nix
-            home-manager.darwinModules.home-manager
-          ]
-          ++ lib.optionals isNixOs [
-            golink.nixosModules.default
-            ./hosts/${host}/configuration.nix
-            home-manager.nixosModules.home-manager
-            agenix.nixosModules.default
-          ];
-        }
-        // lib.optionalAttrs isDarwin { output = "darwinConfigurations"; };
-    in
-    mkFlake {
-      inherit self inputs;
+        in
+        {
+          overlays.default = import ./overlays/default.nix { inherit self inputs; };
 
-      channels.nixpkgs = {
-        config = {
-          allowUnfree = true;
-          permittedInsecurePackages = [ "openssl-1.1.1w" ];
+          darwinConfigurations = {
+            blkmrkt = mkHost {
+              host = "blkmrkt";
+              username = "lucas";
+              arch = "aarch64-darwin";
+              env = "darwin";
+            };
+
+            c889f3b8f7d7 = mkHost {
+              host = "c889f3b8f7d7";
+              username = "awslucas";
+              arch = "aarch64-darwin";
+              env = "darwin";
+            };
+
+            "lronden-m-vy79p" = mkHost {
+              host = "lronden-m-vy79p";
+              username = "lucas.rondenet";
+              arch = "aarch64-darwin";
+              env = "darwin";
+            };
+
+            salus = mkHost {
+              host = "salus";
+              username = "lucas";
+              arch = "aarch64-darwin";
+              env = "darwin";
+            };
+          };
+
+          nixosConfigurations = {
+            rucaslab = mkHost {
+              host = "rucaslab";
+              username = "lucas";
+              arch = "x86_64-linux";
+              env = "nixos";
+            };
+          };
         };
-      };
-
-      overlay = import ./overlays { inherit self inputs; };
-      sharedOverlays = with self.overlay; [
-        alacritty-theme.overlays.default
-        golink.overlays.default
-        neovim-nightly.overlays.default
-        neorg-overlay.overlays.default
-        spacebar.overlay
-        tmuxPlugins
-        yabai
-        home-assistant-custom-lovelace-modules
-        home-assistant-themes
-        nur.overlays.default
-      ];
-
-      hosts.blkmrkt = mkHost {
-        host = "blkmrkt";
-        username = "lucas";
-        arch = "aarch64-darwin";
-        env = "darwin";
-      };
-
-      hosts.c889f3b8f7d7 = mkHost {
-        host = "c889f3b8f7d7";
-        username = "awslucas";
-        arch = "aarch64-darwin";
-        env = "darwin";
-      };
-
-      hosts."lronden-m-vy79p" = mkHost {
-        host = "lronden-m-vy79p";
-        username = "lucas.rondenet";
-        arch = "aarch64-darwin";
-        env = "darwin";
-      };
-
-      hosts.rucaslab = mkHost {
-        host = "rucaslab";
-        username = "lucas";
-        arch = "x86_64-linux";
-        env = "nixos";
-      };
-
-      hosts.salus = mkHost {
-        host = "salus";
-        username = "lucas";
-        arch = "aarch64-darwin";
-        env = "darwin";
-      };
     };
 }

@@ -2,6 +2,8 @@
 
   imports = [ ../../modules/darwin ];
 
+  networking.hostName = "salus";
+
   nix.enable = false;
 
   nix.settings.trusted-users = [ "@admin" ];

@@ -2,6 +2,8 @@
 
   imports = [ ../../modules/darwin ];
 
+  networking.hostName = "c889f3b8f7d7";
+
   nix.extraOptions = ''
     # NOTE: https://github.com/NixOS/nix/issues/7273
     # auto-optimise-store = true

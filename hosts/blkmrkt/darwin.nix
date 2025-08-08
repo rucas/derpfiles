@@ -2,6 +2,8 @@
 
   imports = [ ../../modules/darwin ];
 
+  networking.hostName = "blkmrkt";
+
   nix.enable = false;
 
   # nix.extraOptions = ''

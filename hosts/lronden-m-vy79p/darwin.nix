@@ -2,6 +2,8 @@
 
   imports = [ ../../modules/darwin ];
 
+  networking.hostName = "lronden-m-vy79p";
+
   nix.enable = false;
 
   nix.settings.trusted-users = [ "@admin" ];
