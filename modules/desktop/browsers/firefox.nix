@@ -24,7 +24,10 @@ let
       [ ];
 in
 {
-  imports = [ inputs.betterfox-nix.homeManagerModules.betterfox ];
+  imports = [
+    inputs.betterfox-nix.homeModules.betterfox
+    # inputs.betterfox-nix.modules.homeManager.betterfox
+  ];
 
   # NOTE:
   # might need to run
@@ -37,7 +40,6 @@ in
   programs.firefox = {
     enable = true;
     package = if pkgs.stdenv.isDarwin then pkgs.firefox else null;
-    betterfox.enable = true;
     policies = {
       FirefoxHome = {
         Search = true;
@@ -47,6 +49,19 @@ in
         Highlights = false;
       };
     };
+
+    betterfox = {
+      enable = true;
+      profiles.default = {
+        enableAllSections = true;
+        settings = {
+          fastfox.enable = true;
+          peskyfox.enable = true;
+          securefox.enable = true;
+        };
+      };
+    };
+
     profiles.default = {
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         darkreader
@@ -59,14 +74,6 @@ in
         ublock-origin
         unpaywall
       ];
-
-      betterfox = {
-        enable = true;
-        enableAllSections = true;
-        fastfox.enable = true;
-        peskyfox.enable = true;
-        securefox.enable = true;
-      };
 
       search = {
         force = true;
