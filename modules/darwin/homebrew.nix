@@ -3,6 +3,7 @@ let
   hostSpecific = {
     brews = {
       "lronden-m-vy79p" = [
+        "gnu-getopt"
         "libffi" # needed for pyenv shit
         "pyenv"
         "pyenv-virtualenv"
@@ -16,8 +17,10 @@ let
         "slack"
       ];
       "lronden-m-vy79p" = [
-        "intellij-idea"
         "granola"
+        "intellij-idea"
+        "jetbrains-gateway"
+        "postman"
         "slack"
       ];
       "blkmrkt" = [
