@@ -1,12 +1,17 @@
 { osConfig, lib, ... }:
 let
-  isWorkMachine =
-    builtins.elem osConfig.networking.hostName [ "lronden-m-vy79p" ];
-  isHomeMachine =
-    builtins.elem osConfig.networking.hostName [ "rucaslab" "blkmrkt" ];
-in {
+  isWorkMachine = builtins.elem osConfig.networking.hostName [ "lronden-m-vy79p" ];
+  isHomeMachine = builtins.elem osConfig.networking.hostName [
+    "rucaslab"
+    "blkmrkt"
+  ];
+in
+{
   programs.ssh = {
     enable = true;
+    # NOTE:
+    # https://github.com/nix-community/home-manager/blob/master/modules/programs/ssh.nix#L555
+    enableDefaultConfig = false;
     includes = [ (lib.mkIf isWorkMachine "config.d/*") ];
     matchBlocks = lib.mkMerge [
       # (lib.mkIf isWorkMachine {
