@@ -8,6 +8,7 @@
   imports = [
     ./atuin.nix
     ./bat.nix
+    ./claude-code.nix
     ./direnv.nix
     ./eza.nix
     ./fzf.nix
@@ -29,7 +30,6 @@
     bandwhich
 
     calc
-    claude-code
     coreutils
     curl
 

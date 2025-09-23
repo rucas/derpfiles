@@ -69,6 +69,10 @@
       url = "github:Dbz/kube-aliases";
       flake = false;
     };
+    mcp-servers-nix = {
+      url = "github:natsukium/mcp-servers-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -85,6 +89,7 @@
       neorg-overlay,
       alacritty-theme,
       nur,
+      mcp-servers-nix,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -133,6 +138,7 @@
                       neorg-overlay.overlays.default
                       spacebar.overlay
                       nur.overlays.default
+                      mcp-servers-nix.overlays.default
                     ];
                     home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
