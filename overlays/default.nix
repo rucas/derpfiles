@@ -1,5 +1,6 @@
 # NOTE: https://www.fbrs.io/nix-overlays/
 { inputs, ... }: final: prev: {
+  claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
   tmuxPlugins = prev.tmuxPlugins // {
     tmux-1password = prev.tmuxPlugins.mkTmuxPlugin {
