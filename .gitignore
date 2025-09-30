@@ -31,6 +31,5 @@ Temporary Items
 node_modules
 
 result
-flake.lock
 .scratch
 secret-key
