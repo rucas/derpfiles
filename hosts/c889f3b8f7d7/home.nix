@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
 
   imports = [
     ../../modules/cli
@@ -6,7 +6,6 @@
     ../../modules/desktop/editors
     ../../modules/desktop/productivity
     ../../modules/desktop/term
-    ../../modules/editors/neovim
     ../../modules/shell/zsh
     # ../../modules/security
   ];
@@ -26,8 +25,13 @@
 
   fonts.fontconfig.enable = true;
 
-  home.packages =
-    [ (import ../../pkgs/dnd pkgs) (import ../../pkgs/shortuuid pkgs) ];
+  home.packages = [
+    (import ../../pkgs/dnd pkgs)
+    (import ../../pkgs/shortuuid pkgs)
+    inputs.nxvm.packages.${pkgs.system}.default
+  ];
+
+  xdg.dataFile."dict/words".source = inputs.english-words + "/words_alpha.txt";
 
   home.sessionPath = [ "$HOME/.toolbox/bin" ];
 

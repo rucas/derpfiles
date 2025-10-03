@@ -25,12 +25,6 @@
     golink = {
       url = "github:tailscale/golink";
     };
-    neorg-overlay = {
-      url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-    };
-    neovim-nightly = {
-      url = "github:nix-community/neovim-nightly-overlay";
-    };
     tmux-1password = {
       url = "github:yardnsm/tmux-1password";
       flake = false;
@@ -48,10 +42,6 @@
     };
     nur = {
       url = "github:nix-community/nur";
-    };
-    tree-sitter-tera = {
-      url = "github:uncenter/tree-sitter-tera";
-      flake = false;
     };
     betterfox-nix = {
       url = "github:HeitorAugustoLN/betterfox-nix";
@@ -73,6 +63,10 @@
       url = "github:natsukium/mcp-servers-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nxvm = {
+      url = "github:rucas/nxvm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -85,11 +79,10 @@
       home-manager,
       flake-parts,
       spacebar,
-      neovim-nightly,
-      neorg-overlay,
       alacritty-theme,
       nur,
       mcp-servers-nix,
+      nxvm,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -134,8 +127,6 @@
                       self.overlays.default
                       alacritty-theme.overlays.default
                       golink.overlays.default
-                      neovim-nightly.overlays.default
-                      neorg-overlay.overlays.default
                       spacebar.overlay
                       nur.overlays.default
                       mcp-servers-nix.overlays.default
