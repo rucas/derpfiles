@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   src = fetchzip {
     url = "https://github.com/koekeishiya/yabai/releases/download/${version}/${pname}-${version}.tar.gz";
-    hash = "sha256-mWN59BfexCmaahADzUP+B1xGQK8TNyrKOBKKJ00D7tg=";
+    hash = "sha256-QDGt/v5t7g6+y6ijpLRF7YkqF8bISfxk684m7uUg4eM=";
   };
 
   installPhase = ''
