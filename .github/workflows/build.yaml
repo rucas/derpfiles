@@ -10,7 +10,22 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        include:
+          - host: blkmrkt
+            os: macos-latest
+            config_type: darwinConfigurations
+          - host: c889f3b8f7d7
+            os: macos-latest
+            config_type: darwinConfigurations
+          - host: lronden-m-vy79p
+            os: macos-latest
+            config_type: darwinConfigurations
+          - host: salus
+            os: macos-latest
+            config_type: darwinConfigurations
+          - host: rucaslab
+            os: ubuntu-latest
+            config_type: nixosConfigurations
     runs-on: ${{ matrix.os }}
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
@@ -27,5 +42,5 @@ jobs:
         with:
           name: nxvm
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-      - name: Build
-        run: nix build .
+      - name: Build ${{ matrix.host }}
+        run: nix build .#${{ matrix.config_type }}.${{ matrix.host }}.system
