@@ -9,20 +9,28 @@ let
       {
         trigger = ":date";
         replace = "{{date}}";
-        vars = [{
-          name = "date";
-          type = "date";
-          params = { format = "%m/%d/%Y"; };
-        }];
+        vars = [
+          {
+            name = "date";
+            type = "date";
+            params = {
+              format = "%m/%d/%Y";
+            };
+          }
+        ];
       }
       {
         trigger = ":ip";
         replace = "{{output}}";
-        vars = [{
-          name = "output";
-          type = "shell";
-          params = { cmd = "curl 'https://api.ipify.org'"; };
-        }];
+        vars = [
+          {
+            name = "output";
+            type = "shell";
+            params = {
+              cmd = "curl 'https://api.ipify.org'";
+            };
+          }
+        ];
       }
       {
         trigger = ":md-break";
@@ -38,10 +46,12 @@ let
       {
         trigger = ":md-link";
         replace = "[$|$]({{clipboard}})";
-        vars = [{
-          name = "clipboard";
-          type = "clipboard";
-        }];
+        vars = [
+          {
+            name = "clipboard";
+            type = "clipboard";
+          }
+        ];
       }
       {
         trigger = ":((";
@@ -72,14 +82,6 @@ let
         replace = "`$|$`";
       }
       {
-        regex = ":(?P<TT_ID>APN-.*?)\\.";
-        replace = "[{{TT_ID}}](https://taskei.amazon.dev/tasks/{{TT_ID}})";
-      }
-      {
-        regex = ":(?P<CR_ID>CR-.*?)\\.";
-        replace = "[{{CR_ID}}](https://code.amazon.com/reviews/{{CR_ID}})";
-      }
-      {
         trigger = ":req";
         replace = "requirements";
       }
@@ -89,7 +91,8 @@ let
       }
     ];
   };
-in mkMerge [
+in
+mkMerge [
   (lib.mkIf isLinux {
     services.espanso = {
       enable = true;
@@ -98,7 +101,6 @@ in mkMerge [
   })
 
   (lib.mkIf isDarwin {
-    xdg.configFile."espanso/match/base.yml".source =
-      yamlFormat.generate "default.yml" settings;
+    xdg.configFile."espanso/match/base.yml".source = yamlFormat.generate "default.yml" settings;
   })
 ]
