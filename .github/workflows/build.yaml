@@ -40,7 +40,7 @@ jobs:
           logger: pretty
       - uses: cachix/cachix-action@v15
         with:
-          name: nxvm
+          name: derpfiles
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - name: Build ${{ matrix.host }}
         run: nix build .#${{ matrix.config_type }}.${{ matrix.host }}.config.system.build.toplevel
