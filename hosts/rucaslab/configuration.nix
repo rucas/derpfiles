@@ -182,7 +182,7 @@
       randomizedDelaySec = "14m";
       options = "--delete-older-than 10d";
     };
-    extraOptions = ''
+    extraOptions = pkgs.lib.optionalString (builtins.pathExists config.age.secrets.nix.path) ''
       # NOTE: need to run sudo nix flake update to use gh token
       include ${config.age.secrets.nix.path}
     '';
