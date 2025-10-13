@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: nix build
+on:
+  workflow_run:
+    workflows:
+      - "nix flake check"
+    types:
+      - completed
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ACTIONS_TOKEN }}
+          fetch-depth: 1
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          logger: pretty
+      - uses: cachix/cachix-action@v15
+        with:
+          name: nxvm
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Build
+        run: nix build .
