@@ -50,6 +50,12 @@ jobs:
           echo "${{ secrets.GIT_CRYPT_KEY }}" | base64 -d > /tmp/git-crypt-key
           git-crypt unlock /tmp/git-crypt-key
           rm /tmp/git-crypt-key
+      - name: Setup agenix key
+        if: matrix.config_type == 'nixosConfigurations'
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AGENIX_KEY }}" > ~/.ssh/agenix
+          chmod 600 ~/.ssh/agenix
       - uses: cachix/cachix-action@v15
         with:
           name: derpfiles
