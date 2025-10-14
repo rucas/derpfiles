@@ -24,6 +24,7 @@
 
     age
     age-plugin-yubikey
+    amp-cli
     ast-grep
     awscli2
 
