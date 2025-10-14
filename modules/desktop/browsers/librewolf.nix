@@ -1,18 +1,11 @@
-{ pkgs, inputs, ... }: {
-  imports = [ inputs.betterfox-nix.homeManagerModules.betterfox ];
+{ pkgs, inputs, ... }:
+{
 
   programs.librewolf = {
     enable = true;
-    betterfox = {
-      enable = true;
-      settings = {
-        enableAllSections = true;
-        fastfox.enable = true;
-        peskyfox.enable = true;
-        securefox.enable = true;
-      };
+    settings = {
+      "webgl.disabled" = false;
     };
-    settings = { "webgl.disabled" = false; };
     profiles.default = {
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         # cleanurls
@@ -28,27 +21,31 @@
         force = true;
         engines = {
           "Nix Packages" = {
-            urls = [{
-              template = "https://search.nixos.org/packages";
-              params = [
-                {
-                  name = "type";
-                  value = "packages";
-                }
-                {
-                  name = "query";
-                  value = "{searchTerms}";
-                }
-              ];
-            }];
+            urls = [
+              {
+                template = "https://search.nixos.org/packages";
+                params = [
+                  {
+                    name = "type";
+                    value = "packages";
+                  }
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
             icon = "https://nixos.wiki/favicon.png";
             updateInterval = 24 * 60 * 60 * 1000; # every day
             definedAliases = [ "@np" ];
           };
           "NixOS Wiki" = {
-            urls = [{
-              template = "https://nixos.wiki/index.php?search={searchTerms}";
-            }];
+            urls = [
+              {
+                template = "https://nixos.wiki/index.php?search={searchTerms}";
+              }
+            ];
             icon = "https://nixos.wiki/favicon.png";
             updateInterval = 24 * 60 * 60 * 1000; # every day
             definedAliases = [ "@nw" ];
@@ -63,8 +60,7 @@
             name = "wikipedia";
             tags = [ "wiki" ];
             keyword = "wiki";
-            url =
-              "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
+            url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
           }
           {
             name = "kernel.org";
@@ -83,7 +79,10 @@
               }
               {
                 name = "wiki";
-                tags = [ "wiki" "nix" ];
+                tags = [
+                  "wiki"
+                  "nix"
+                ];
                 url = "https://wiki.nixos.org/";
               }
             ];

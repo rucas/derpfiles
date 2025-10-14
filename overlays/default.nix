@@ -4,18 +4,21 @@ final: prev: {
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
 
-  # Fix GTK build failing with LLVM 21 sincos issue
+  # Fix GTK3 sincos detection with clang (backport from GTK MR 5531)
+  # See: https://github.com/NixOS/nixpkgs/pull/449689
   gtk3 = prev.gtk3.overrideAttrs (old: {
-    postPatch = (old.postPatch or "") + ''
-      # Fix sincos compilation error with LLVM 21
-      substituteInPlace tests/gtkgears.c \
-        --replace-fail 'sincos(' '__sincos('
-    '';
-    mesonFlags = (old.mesonFlags or [ ]) ++ [
-      "-Ddemos=false"
-      "-Dintrospection=false"
+    patches = (old.patches or [ ]) ++ [
+      (prev.fetchpatch {
+        name = "gtk3-fix-sincos-detection-clang.patch";
+        url = "https://raw.githubusercontent.com/NixOS/nixpkgs/refs/pull/449689/head/pkgs/development/libraries/gtk/patches/3.0-mr5531-backport.patch";
+        hash = "sha256-vP0xmeKQazr93bTV+2kIwsNA+rZPmNd9iaUfpYOpD0M=";
+      })
     ];
   });
+
+  # Fix Firefox crash on macOS by using GTK2 for libcanberra
+  # See: https://github.com/NixOS/nixpkgs/issues/451884#issuecomment-3401152877
+  libcanberra = prev.libcanberra.override { gtkSupport = "gtk2"; };
 
   gitui = prev.rustPlatform.buildRustPackage rec {
     pname = "gitui";

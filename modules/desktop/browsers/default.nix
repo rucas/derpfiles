@@ -1,1 +1,8 @@
-{ ... }: { imports = [ ./chrome.nix ./firefox.nix ]; }
+{ ... }:
+{
+  imports = [
+    ./chrome.nix
+    ./firefox.nix
+    ./librewolf.nix
+  ];
+}
