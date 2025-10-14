@@ -29,6 +29,7 @@
 
     bandwhich
 
+    cachix
     calc
     coreutils
     curl
