@@ -99,10 +99,13 @@
             config.allowUnfree = true;
             overlays = [ self.overlays.default ];
           };
+          isDarwin = pkgs.stdenv.isDarwin;
         in
         {
           packages = {
             claude-code = pkgs.claude-code;
+          }
+          // pkgs.lib.optionalAttrs isDarwin {
             yabai = pkgs.yabai;
           };
         };
