@@ -91,6 +91,22 @@
         "x86_64-linux"
       ];
 
+      perSystem =
+        { system, ... }:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+            overlays = [ self.overlays.default ];
+          };
+        in
+        {
+          packages = {
+            claude-code = pkgs.claude-code;
+            yabai = pkgs.yabai;
+          };
+        };
+
       flake =
         let
           inherit (nixpkgs) lib;
