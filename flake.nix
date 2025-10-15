@@ -67,6 +67,10 @@
       url = "github:rucas/nxvm";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tmux-pomodoro-plus = {
+      url = "github:olimorris/tmux-pomodoro-plus";
+      flake = false;
+    };
   };
 
   outputs =
@@ -104,6 +108,7 @@
         {
           packages = {
             claude-code = pkgs.claude-code;
+            inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus;
           }
           // pkgs.lib.optionalAttrs isDarwin {
             yabai = pkgs.yabai;

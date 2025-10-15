@@ -71,6 +71,12 @@ final: prev: {
       src = inputs.tmux-1password;
       rtpFilePath = "plugin.tmux";
     };
+    tmux-pomodoro-plus = prev.tmuxPlugins.mkTmuxPlugin {
+      pluginName = "tmux-pomodoro-plus";
+      version = "unstable-2025-10-15";
+      src = inputs.tmux-pomodoro-plus;
+      rtpFilePath = "pomodoro.tmux";
+    };
   };
   home-assistant-custom-lovelace-modules = prev.home-assistant-custom-lovelace-modules // {
     lovelace-layout-card = prev.callPackage ../pkgs/lovelace-layout-card { };
