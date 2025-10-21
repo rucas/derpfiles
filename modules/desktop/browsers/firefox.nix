@@ -26,7 +26,6 @@ in
 {
   imports = [
     inputs.betterfox-nix.homeModules.betterfox
-    # inputs.betterfox-nix.modules.homeManager.betterfox
   ];
 
   # NOTE:

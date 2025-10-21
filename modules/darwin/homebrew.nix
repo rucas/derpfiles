@@ -27,7 +27,7 @@ let
         "balenaetcher"
         "mqttx"
         "mqtt-explorer"
-        "tailscale"
+        "tailscale-app"
         "vlc"
       ];
     };
@@ -45,7 +45,7 @@ let
       "appcleaner"
       "blackhole-16ch"
       "dash"
-      "docker"
+      "docker-desktop"
       "dynobase"
       "espanso"
       "google-chrome"

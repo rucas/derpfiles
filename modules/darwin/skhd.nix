@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services.skhd.enable = true;
   services.skhd.package = pkgs.skhd;
   services.skhd.skhdConfig = ''
@@ -27,7 +28,7 @@
     # reload skhd and yabai
     ctrl + cmd - r: pkill yabai && ${pkgs.skhd}/bin/skhd -r
     ctrl + cmd - t: open -a ~/Applications/Home\ Manager\ Apps/Alacritty.app
-    ctrl + cmd - c: open -a /Applications/Google\ Chrome.app
+    ctrl + cmd - b: /usr/bin/env MOZ_LEGACY_PROFILES=1 MOZ_ALLOW_DOWNGRADE=1 open -a ~/Applications/Home\ Manager\ Apps/Firefox.app
     ctrl + cmd - s: open -a /Applications/Slack.app; yabai -m window --toggle zoom-fullscreen;
 
     # i3 madness
