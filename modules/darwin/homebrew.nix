@@ -51,6 +51,7 @@ let
       "google-chrome"
       "insta360-link-controller"
       "maccy"
+      "monodraw"
       "obs"
       "shortcat"
       "spotify"
