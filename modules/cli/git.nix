@@ -1,14 +1,15 @@
 { inputs, ... }:
 {
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      syntax-theme = "gruvbox-dark";
+      line-numbers = true;
+    };
+  };
   programs.git = {
     enable = true;
-    delta = {
-      enable = true;
-      options = {
-        syntax-theme = "gruvbox-dark";
-        line-numbers = true;
-      };
-    };
     ignores = [
       ".DS_Store"
       ".direnv"
@@ -32,54 +33,56 @@
       { path = "~/.config/git/gitalias"; }
       { path = "~/.config/git/gitalias.custom"; }
     ];
-    aliases = {
-      conflicts = "diff --name-only --diff-filter=U";
-    };
-    # NOTE: https://blog.gitbutler.com/how-git-core-devs-configure-git
-    extraConfig = {
-      branch = {
-        sort = "-committerdate";
+    settings = {
+      aliases = {
+        conflicts = "diff --name-only --diff-filter=U";
       };
-      core = {
-        editor = "nvim";
-      };
-      column = {
-        ui = "auto";
-      };
-      commit = {
-        verbose = true;
-      };
-      fetch = {
-        prune = true;
-        pruneTags = true;
-        all = true;
-      };
-      help = {
-        autocorrect = "prompt";
-      };
-      merge = {
-        conflictstyle = "zdiff3";
-      };
-      rebase = {
-        autoSquash = true;
-        autoStash = true;
-        updateRefs = true;
-      };
-      pull = {
-        rebase = true;
-        autostash = true;
-      };
-      push = {
-        default = "simple";
-        autoSetupRemote = true;
-        followTags = true;
-      };
-      rerere = {
-        enabled = true;
-        autoupdate = true;
-      };
-      tag = {
-        sort = "version:refname";
+      # NOTE: https://blog.gitbutler.com/how-git-core-devs-configure-git
+      extraConfig = {
+        branch = {
+          sort = "-committerdate";
+        };
+        core = {
+          editor = "nvim";
+        };
+        column = {
+          ui = "auto";
+        };
+        commit = {
+          verbose = true;
+        };
+        fetch = {
+          prune = true;
+          pruneTags = true;
+          all = true;
+        };
+        help = {
+          autocorrect = "prompt";
+        };
+        merge = {
+          conflictstyle = "zdiff3";
+        };
+        rebase = {
+          autoSquash = true;
+          autoStash = true;
+          updateRefs = true;
+        };
+        pull = {
+          rebase = true;
+          autostash = true;
+        };
+        push = {
+          default = "simple";
+          autoSetupRemote = true;
+          followTags = true;
+        };
+        rerere = {
+          enabled = true;
+          autoupdate = true;
+        };
+        tag = {
+          sort = "version:refname";
+        };
       };
     };
   };
