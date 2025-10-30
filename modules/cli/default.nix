@@ -37,7 +37,7 @@
 
     dateutils
     dogdns
-    du-dust
+    dust
 
     eva
 

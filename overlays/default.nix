@@ -8,8 +8,8 @@ final: prev: {
 
   # Override Firefox and LibreWolf to use DMG binaries to avoid GTK3 build issues
   # See: https://github.com/NixOS/nixpkgs/issues/451884
-  firefox = final.firefox-bin;
-  librewolf = final.librewolf-bin;
+  #firefox = final.firefox-bin;
+  #librewolf = final.librewolf-bin;
 
   gitui = prev.rustPlatform.buildRustPackage rec {
     pname = "gitui";

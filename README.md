@@ -93,6 +93,17 @@ $ nix flake lock --update-input nixpkgs
 
 In Normal mode you can type `vv` to edit current command line in an editor
 
+### Why is yabai, skhd, jankyboarders not running on startup?
+
+There's weird error somewhere in nix-darwin that doesn't load the launch the plists
+
+```sh
+$ launchctl unload ~/Library/LaunchAgents/org.nixos.jankyborders.plist
+$ launchctl load ~/Library/LaunchAgents/org.nixos.jankyborders.plist
+$ launchctl unload ~/Library/LaunchAgents/org.nixos.skhd.plist
+...
+```
+
 ## Contribute
 
 PRs accepted. Checkout [CONTRIBUTING.md](CONTRIBUTING.md)
