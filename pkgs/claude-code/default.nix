@@ -8,11 +8,11 @@
 
 stdenv.mkDerivation rec {
   pname = "claude-code";
-  version = "2.0.28";
+  version = "2.0.52";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-    hash = "sha256-VyqSWl73wW+/83et6JXBpp2uTUW9JLnZpYmn4cn/dQw=";
+    hash = "sha256-+bjcVd2/G3mQgFkfqqgCAQ8VYNjUx9vONo7hrliT4lk=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
