@@ -1,27 +1,38 @@
-{ pkgs, inputs, ... }:
-# let
-#   #mcpConfig = inputs.mcp-servers-nix.lib.mkConfig pkgs {
-#   #  programs = {
-#   #    fetch.enable = true;
-#   #    git.enable = true;
-#   #  };
-#   #};
-# in
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+let
+  mcpConfig = inputs.mcp-servers-nix.lib.mkConfig pkgs {
+    programs = {
+      fetch.enable = true;
+      git.enable = true;
+      github = {
+        enable = true;
+      };
+    };
+  };
+in
 {
   # NOTE:
-  # to add mcp servers:
-  # $ claude mcp add fetch $(which SERVER_NAME)
-  home.packages = with pkgs; [
-    claude-code
-    # mcp-server-fetch
-    mcp-server-git
-    github-mcp-server
-  ];
+  # this creates a ~/.claude/.mcp.json to use this:
+  # claude --mcp-config ~/.claude/.mcp.json
+  home.packages =  (
+    with pkgs;
+    [
+      claude-code
+      mcp-server-fetch
+      mcp-server-git
+      github-mcp-server
+    ]
+  );
 
-  #xdg.configFile."../.claude/.mcp.json" = {
-  #  text = builtins.readFile "${mcpConfig}";
-  #  force = true;
-  #};
+  xdg.configFile."../.claude/.mcp.json" = {
+    text = builtins.readFile "${mcpConfig}";
+    force = true;
+  };
 
   xdg.configFile."../.claude/CLAUDE.md" = {
     text = ''

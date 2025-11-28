@@ -71,6 +71,10 @@
       url = "github:olimorris/tmux-pomodoro-plus";
       flake = false;
     };
+    opnix = {
+      url = "github:brizzbuzz/opnix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -87,6 +91,7 @@
       nur,
       mcp-servers-nix,
       nxvm,
+      opnix,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -167,6 +172,7 @@
                 ++ lib.optionals isDarwin [
                   ./hosts/${host}/darwin.nix
                   home-manager.darwinModules.home-manager
+                  opnix.darwinModules.default
                 ]
                 ++ lib.optionals isNixOs [
                   golink.nixosModules.default
