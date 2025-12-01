@@ -3,8 +3,8 @@
 final: prev: {
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
-  firefox-bin = prev.callPackage ../pkgs/firefox-bin { };
-  librewolf-bin = prev.callPackage ../pkgs/librewolf-bin { };
+  # firefox-bin = prev.callPackage ../pkgs/firefox-bin { };
+  # librewolf-bin = prev.callPackage ../pkgs/librewolf-bin { };
 
   # Override Firefox and LibreWolf to use DMG binaries to avoid GTK3 build issues
   # See: https://github.com/NixOS/nixpkgs/issues/451884
