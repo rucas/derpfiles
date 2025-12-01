@@ -22,6 +22,7 @@
     (import ../../pkgs/dnd pkgs)
     (import ../../pkgs/shortuuid pkgs)
     inputs.nxvm.packages.${pkgs.system}.default
+    inputs.opnix.packages.${pkgs.system}.default
   ];
 
   xdg.dataFile."dict/words".source = inputs.english-words + "/words_alpha.txt";

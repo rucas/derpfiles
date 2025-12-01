@@ -171,8 +171,8 @@
                 ]
                 ++ lib.optionals isDarwin [
                   ./hosts/${host}/darwin.nix
-                  home-manager.darwinModules.home-manager
                   opnix.darwinModules.default
+                  home-manager.darwinModules.home-manager
                 ]
                 ++ lib.optionals isNixOs [
                   golink.nixosModules.default

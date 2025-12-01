@@ -1,6 +1,6 @@
 {
+  osConfig,
   pkgs,
-  lib,
   inputs,
   ...
 }:
@@ -11,7 +11,11 @@ let
       git.enable = true;
       github = {
         enable = true;
+        env = {
+          GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_MCP_TOKEN}";
+        };
       };
+      time.enable = true;
     };
   };
 in
@@ -19,7 +23,7 @@ in
   # NOTE:
   # this creates a ~/.claude/.mcp.json to use this:
   # claude --mcp-config ~/.claude/.mcp.json
-  home.packages =  (
+  home.packages = (
     with pkgs;
     [
       claude-code
@@ -28,6 +32,10 @@ in
       github-mcp-server
     ]
   );
+
+  home.sessionVariables = {
+    GITHUB_MCP_TOKEN = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.githubMCPToken})";
+  };
 
   xdg.configFile."../.claude/.mcp.json" = {
     text = builtins.readFile "${mcpConfig}";
