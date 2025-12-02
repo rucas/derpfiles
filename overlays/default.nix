@@ -6,6 +6,8 @@ final: prev: {
   mcp-server-fetch = prev.callPackage ../pkgs/mcp-server-fetch { };
   mcp-server-git = prev.callPackage ../pkgs/mcp-server-git { };
   mcp-server-time = prev.callPackage ../pkgs/mcp-server-time { };
+  rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
+  mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
   # firefox-bin = prev.callPackage ../pkgs/firefox-bin { };
   # librewolf-bin = prev.callPackage ../pkgs/librewolf-bin { };
 

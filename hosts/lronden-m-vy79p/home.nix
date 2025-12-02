@@ -48,11 +48,42 @@
       time = {
         command = "${pkgs.mcp-server-time}/bin/mcp-server-time";
       };
+      rollbar = {
+        command = "${pkgs.rollbar-mcp-server}/bin/rollbar-mcp-server";
+        env = {
+          ROLLBAR_ACCESS_TOKEN = "\${ROLLBAR_MCP_TOKEN}";
+        };
+      };
+      jira = {
+        command = "${pkgs.mcp-atlassian}/bin/mcp-atlassian";
+        env = {
+          JIRA_URL = "\${JIRA_MCP_URL}";
+          JIRA_USERNAME = "\${JIRA_MCP_USERNAME}";
+          JIRA_API_TOKEN = "\${JIRA_MCP_TOKEN}";
+        };
+      };
+      chronosphere = {
+        type = "http";
+        url = "https://\${CHRONOSPHERE_ORG_NAME}.chronosphere.io/api/mcp/mcp";
+        headers = {
+          Authorization = "\${CHRONOSPHERE_MCP_TOKEN}";
+        };
+        env = {
+          CHRONOSPHERE_ORG_NAME = "\${CHRONOSPHERE_ORG_NAME}";
+          CHRONOSPHERE_MCP_TOKEN = "\${CHRONOSPHERE_MCP_TOKEN}";
+        };
+      };
     };
   };
 
   home.sessionVariables = {
     GITHUB_MCP_TOKEN = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.githubMCPToken})";
+    ROLLBAR_MCP_TOKEN = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.rollbarMCPToken})";
+    JIRA_MCP_TOKEN = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.jiraMCPToken})";
+    JIRA_MCP_URL = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.jiraMCPUrl})";
+    JIRA_MCP_USERNAME = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.jiraMCPUsername})";
+    CHRONOSPHERE_ORG_NAME = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.chronosphereMcpOrgName})";
+    CHRONOSPHERE_MCP_TOKEN = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.chronosphereMcpToken})";
   };
 
   home.username = "lucas.rondenet";
