@@ -5,7 +5,6 @@
     ./homebrew.nix
     ./jankyborders.nix
     ./launchd.nix
-    ./secrets.nix
     ./skhd.nix
     ./spacebar.nix
     ./system.nix

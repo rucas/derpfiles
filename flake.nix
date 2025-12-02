@@ -59,10 +59,6 @@
       url = "github:Dbz/kube-aliases";
       flake = false;
     };
-    mcp-servers-nix = {
-      url = "github:natsukium/mcp-servers-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nxvm = {
       url = "github:rucas/nxvm";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -89,7 +85,6 @@
       spacebar,
       alacritty-theme,
       nur,
-      mcp-servers-nix,
       nxvm,
       opnix,
       ...
@@ -158,7 +153,6 @@
                       golink.overlays.default
                       spacebar.overlay
                       nur.overlays.default
-                      mcp-servers-nix.overlays.default
                     ];
                     home-manager.useGlobalPkgs = true;
                     home-manager.useUserPackages = true;
@@ -172,6 +166,7 @@
                 ++ lib.optionals isDarwin [
                   ./hosts/${host}/darwin.nix
                   opnix.darwinModules.default
+                  ./hosts/${host}/secrets.nix
                   home-manager.darwinModules.home-manager
                 ]
                 ++ lib.optionals isNixOs [

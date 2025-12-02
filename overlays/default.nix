@@ -3,6 +3,9 @@
 final: prev: {
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
+  mcp-server-fetch = prev.callPackage ../pkgs/mcp-server-fetch { };
+  mcp-server-git = prev.callPackage ../pkgs/mcp-server-git { };
+  mcp-server-time = prev.callPackage ../pkgs/mcp-server-time { };
   # firefox-bin = prev.callPackage ../pkgs/firefox-bin { };
   # librewolf-bin = prev.callPackage ../pkgs/librewolf-bin { };
 
