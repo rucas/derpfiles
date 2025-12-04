@@ -1,48 +1,39 @@
 {
   lib,
-  stdenv,
-  fetchurl,
-  nodejs_20,
-  makeWrapper,
+  buildNpmPackage,
+  fetchzip,
 }:
-
-stdenv.mkDerivation rec {
+buildNpmPackage (finalAttrs: {
   pname = "claude-code";
-  version = "2.0.55";
+  version = "2.0.58";
 
-  src = fetchurl {
-    url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-    hash = "sha256-XK+B3oGrcnAi19a7Ttgv2Zpx0+M/nDQenhHQWESumZE=";
+  src = fetchzip {
+    url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
+    hash = "sha256-6BLpBNqNR2qrKBcXINqvfl2dgaQA6NmxsEsk1ILqeT8=";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
+  npmDepsHash = "sha256-XOIuOQUJ0HB86pwuUnrv0B121lO9em9XG1DAK0/L4js=";
 
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/lib/node_modules/@anthropic-ai/claude-code
-    cp -r . $out/lib/node_modules/@anthropic-ai/claude-code/
-
-    mkdir -p $out/bin
-    makeWrapper ${nodejs_20}/bin/node $out/bin/claude \
-      --add-flags "$out/lib/node_modules/@anthropic-ai/claude-code/cli.js" \
-      --set CLAUDE_DISABLE_AUTO_UPDATE 1 \
-      --unset CLAUDE_DEV
-
-    runHook postInstall
+  postPatch = ''
+    cp ${./package-lock.json} package-lock.json
   '';
 
-  meta = with lib; {
-    description = "An agentic coding tool that lives in your terminal";
-    longDescription = ''
-      Claude Code understands your codebase and helps you code faster by executing
-      routine tasks, explaining complex code, and handling git workflows - all through
-      natural language commands.
-    '';
+  dontNpmBuild = true;
+
+  env.AUTHORIZED = "1";
+
+  postInstall = ''
+    wrapProgram $out/bin/claude \
+      --set DISABLE_AUTOUPDATER 1 \
+      --unset DEV
+  '';
+
+  meta = {
+    description = "Agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster";
     homepage = "https://github.com/anthropics/claude-code";
-    license = licenses.unfree;
+    downloadPage = "https://www.npmjs.com/package/@anthropic-ai/claude-code";
+    license = lib.licenses.unfree;
     maintainers = [ ];
-    platforms = platforms.all;
     mainProgram = "claude";
   };
-}
+})

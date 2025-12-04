@@ -8,13 +8,6 @@ final: prev: {
   mcp-server-time = prev.callPackage ../pkgs/mcp-server-time { };
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
-  # firefox-bin = prev.callPackage ../pkgs/firefox-bin { };
-  # librewolf-bin = prev.callPackage ../pkgs/librewolf-bin { };
-
-  # Override Firefox and LibreWolf to use DMG binaries to avoid GTK3 build issues
-  # See: https://github.com/NixOS/nixpkgs/issues/451884
-  #firefox = final.firefox-bin;
-  #librewolf = final.librewolf-bin;
 
   gitui = prev.rustPlatform.buildRustPackage rec {
     pname = "gitui";

@@ -13,6 +13,7 @@
     lucas = {
       name = "lucas";
       home = "/Users/lucas";
+      uid = 501;
     };
   };
 

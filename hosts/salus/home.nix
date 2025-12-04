@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  osConfig,
+  ...
+}:
 {
 
   imports = [
@@ -26,12 +31,28 @@
       };
       git = {
         command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
-        args = [ "--repository" "." ];
+        args = [
+          "--repository"
+          "."
+        ];
+      };
+      github = {
+        command = "${pkgs.github-mcp-server}/bin/github-mcp-server";
+        args = [
+          "stdio"
+        ];
+        env = {
+          GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_MCP_TOKEN}";
+        };
       };
       time = {
         command = "${pkgs.mcp-server-time}/bin/mcp-server-time";
       };
     };
+  };
+
+  home.sessionVariables = {
+    GITHUB_MCP_TOKEN = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.githubMCPToken})";
   };
 
   home.username = "lucas";
@@ -44,6 +65,7 @@
     (import ../../pkgs/dnd pkgs)
     (import ../../pkgs/shortuuid pkgs)
     inputs.nxvm.packages.${pkgs.system}.default
+    inputs.opnix.packages.${pkgs.system}.default
   ];
 
   # NOTE: used for nvim
