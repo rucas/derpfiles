@@ -1,13 +1,21 @@
-{ config, lib, pkgs, osConfig ? null, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  osConfig ? null,
+  ...
+}:
 
 let
   cfg = config.programs.claude-code-custom;
 
   # Helper to safely access osConfig secrets
-  getSecretPath = name:
-    if osConfig != null && osConfig ? services.onepassword-secrets.secretPaths.${name}
-    then osConfig.services.onepassword-secrets.secretPaths.${name}
-    else null;
+  getSecretPath =
+    name:
+    if osConfig != null && osConfig ? services.onepassword-secrets.secretPaths.${name} then
+      osConfig.services.onepassword-secrets.secretPaths.${name}
+    else
+      null;
 in
 {
   options.programs.claude-code-custom = {
@@ -15,9 +23,15 @@ in
 
     # MCP server toggles
     mcpServers = {
-      fetch.enable = lib.mkEnableOption "fetch MCP" // { default = true; };
-      git.enable = lib.mkEnableOption "git MCP" // { default = true; };
-      time.enable = lib.mkEnableOption "time MCP" // { default = true; };
+      fetch.enable = lib.mkEnableOption "fetch MCP" // {
+        default = true;
+      };
+      git.enable = lib.mkEnableOption "git MCP" // {
+        default = true;
+      };
+      time.enable = lib.mkEnableOption "time MCP" // {
+        default = true;
+      };
       github.enable = lib.mkEnableOption "github MCP";
       rollbar.enable = lib.mkEnableOption "rollbar MCP";
       jira.enable = lib.mkEnableOption "jira MCP";
@@ -43,6 +57,10 @@ in
         permissions.allow = [
           "Bash(git status)"
           "Bash(git diff:*)"
+          "Bash(nix flake check:*)"
+          "Bash(nix flake show:*)"
+          "Bash(nix flake metadata:*)"
+          "Bash(rg:*)"
         ];
       };
       memory.text = cfg.memory;
@@ -54,7 +72,10 @@ in
 
         git = lib.mkIf cfg.mcpServers.git.enable {
           command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
-          args = ["--repository" "."];
+          args = [
+            "--repository"
+            "."
+          ];
         };
 
         time = lib.mkIf cfg.mcpServers.time.enable {
@@ -63,7 +84,7 @@ in
 
         github = lib.mkIf cfg.mcpServers.github.enable {
           command = "${pkgs.github-mcp-server}/bin/github-mcp-server";
-          args = ["stdio"];
+          args = [ "stdio" ];
           env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_MCP_TOKEN}";
         };
 
@@ -102,18 +123,21 @@ in
         ROLLBAR_MCP_TOKEN = "$(cat ${getSecretPath "rollbarMCPToken"})";
       })
       (lib.mkIf (cfg.mcpServers.jira.enable) {
-        JIRA_MCP_TOKEN = lib.mkIf (getSecretPath "jiraMCPToken" != null)
-          "$(cat ${getSecretPath "jiraMCPToken"})";
-        JIRA_MCP_URL = lib.mkIf (getSecretPath "jiraMCPUrl" != null)
-          "$(cat ${getSecretPath "jiraMCPUrl"})";
-        JIRA_MCP_USERNAME = lib.mkIf (getSecretPath "jiraMCPUsername" != null)
-          "$(cat ${getSecretPath "jiraMCPUsername"})";
+        JIRA_MCP_TOKEN = lib.mkIf (
+          getSecretPath "jiraMCPToken" != null
+        ) "$(cat ${getSecretPath "jiraMCPToken"})";
+        JIRA_MCP_URL = lib.mkIf (getSecretPath "jiraMCPUrl" != null) "$(cat ${getSecretPath "jiraMCPUrl"})";
+        JIRA_MCP_USERNAME = lib.mkIf (
+          getSecretPath "jiraMCPUsername" != null
+        ) "$(cat ${getSecretPath "jiraMCPUsername"})";
       })
       (lib.mkIf (cfg.mcpServers.chronosphere.enable) {
-        CHRONOSPHERE_ORG_NAME = lib.mkIf (getSecretPath "chronosphereMcpOrgName" != null)
-          "$(cat ${getSecretPath "chronosphereMcpOrgName"})";
-        CHRONOSPHERE_MCP_TOKEN = lib.mkIf (getSecretPath "chronosphereMcpToken" != null)
-          "$(cat ${getSecretPath "chronosphereMcpToken"})";
+        CHRONOSPHERE_ORG_NAME = lib.mkIf (
+          getSecretPath "chronosphereMcpOrgName" != null
+        ) "$(cat ${getSecretPath "chronosphereMcpOrgName"})";
+        CHRONOSPHERE_MCP_TOKEN = lib.mkIf (
+          getSecretPath "chronosphereMcpToken" != null
+        ) "$(cat ${getSecretPath "chronosphereMcpToken"})";
       })
     ];
   };
