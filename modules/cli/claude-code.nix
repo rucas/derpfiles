@@ -57,6 +57,7 @@ in
         permissions.allow = [
           "Bash(git status)"
           "Bash(git diff:*)"
+          "Bash(git log:*)"
           "Bash(nix flake check:*)"
           "Bash(nix flake show:*)"
           "Bash(nix flake metadata:*)"

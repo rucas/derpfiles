@@ -8,6 +8,7 @@ final: prev: {
   mcp-server-time = prev.callPackage ../pkgs/mcp-server-time { };
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
+  # snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
 
   gitui = prev.rustPlatform.buildRustPackage rec {
     pname = "gitui";
