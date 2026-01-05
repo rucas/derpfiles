@@ -36,7 +36,7 @@
     curl
 
     dateutils
-    dogdns
+    doggo
     dust
 
     eva
