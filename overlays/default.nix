@@ -10,6 +10,14 @@ final: prev: {
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
   # snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
 
+  pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+    (python-final: python-prev: {
+      mcp = python-prev.mcp.overridePythonAttrs (old: {
+        postPatch = "";
+      });
+    })
+  ];
+
   gitui = prev.rustPlatform.buildRustPackage rec {
     pname = "gitui";
     version = "unstable-2025-10-13";
