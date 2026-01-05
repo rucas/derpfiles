@@ -62,6 +62,7 @@ in
           "Bash(nix flake show:*)"
           "Bash(nix flake metadata:*)"
           "Bash(rg:*)"
+          "Bash(fd:*)"
         ];
       };
       memory.text = cfg.memory;
