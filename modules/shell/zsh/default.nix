@@ -31,6 +31,7 @@
       v = "nvim";
     };
     sessionVariables = {
+      EDITOR = "nvim";
       MANPAGER = "sh -c 'col -bx | bat --theme=base16-256 -l man -p'";
       MANROFFOPT = "-c";
     };
