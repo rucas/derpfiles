@@ -1,4 +1,5 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+{
 
   imports = [
     ../../modules/cli
@@ -25,7 +26,10 @@
       };
       git = {
         command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
-        args = [ "--repository" "." ];
+        args = [
+          "--repository"
+          "."
+        ];
       };
       time = {
         command = "${pkgs.mcp-server-time}/bin/mcp-server-time";
