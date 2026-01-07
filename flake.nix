@@ -71,6 +71,10 @@
       url = "github:brizzbuzz/opnix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gitui = {
+      url = "github:extrawurst/gitui";
+      flake = false;
+    };
   };
 
   outputs =
@@ -108,6 +112,7 @@
         {
           packages = {
             claude-code = pkgs.claude-code;
+            gitui = pkgs.gitui;
             inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus;
           }
           // pkgs.lib.optionalAttrs isDarwin {

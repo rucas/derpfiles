@@ -18,30 +18,23 @@ final: prev: {
     })
   ];
 
-  gitui = prev.rustPlatform.buildRustPackage rec {
+  gitui = prev.rustPlatform.buildRustPackage {
     pname = "gitui";
-    version = "unstable-2025-10-13";
+    version = "unstable";
 
-    src = prev.fetchFromGitHub {
-      owner = "extrawurst";
-      repo = "gitui";
-      rev = "180368621e09256b15cef9552e952abc6c934b88";
-      hash = "sha256-S1Dv/hf+SAqbfSsLx2g7s2kT25qBikNd6CDGXikFyFk=";
-    };
+    src = inputs.gitui;
 
     cargoLock = {
-      lockFile = "${src}/Cargo.lock";
+      lockFile = "${inputs.gitui}/Cargo.lock";
     };
 
-    BUILD_GIT_COMMIT_ID = "1803686";
-
-    # Use system OpenSSL instead of building from source
     OPENSSL_NO_VENDOR = "1";
 
     nativeBuildInputs = with prev; [
       pkg-config
       cmake
       perl
+      git
     ];
 
     buildInputs =
@@ -54,10 +47,6 @@ final: prev: {
         libiconv
       ];
 
-    # Disable unnecessary features that might pull in GTK
-    buildNoDefaultFeatures = false;
-
-    # Skip tests - one test fails in Nix sandbox due to read-only filesystem
     doCheck = false;
 
     meta = prev.gitui.meta;
