@@ -1,11 +1,10 @@
-{ pkgs, config, ... }:
-{
+{ pkgs, config, ... }: {
   services = {
     caddy = {
       enable = true;
       package = pkgs.caddy.withPlugins {
         plugins = [ "github.com/caddy-dns/cloudflare@v0.2.1" ];
-        hash = "sha256-XwZ0Hkeh2FpQL/fInaSq+/3rCLmQRVvwBM0Y1G1FZNU=";
+        hash = "sha256-Zls+5kWd/JSQsmZC4SRQ/WS+pUcRolNaaI7UQoPzJA0=";
       };
       extraConfig = ''
         (https-proxy) {
