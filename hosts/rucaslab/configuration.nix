@@ -14,23 +14,22 @@
     ../../nixos/caddy
     ../../nixos/postgresql
     ../../nixos/home-assistant
-    # ../../nixos/golink
     ../../nixos/dynamicdns
     ../../nixos/zwave-js-ui
     ../../nixos/mosquitto
     ../../nixos/esphome
-    ../../nixos/radarr
     ../../nixos/uptime-kuma
     ../../nixos/grafana
     ../../nixos/prometheus
     ../../nixos/loki
     ../../nixos/promtail
-    ../../nixos/paperless-ngx
     ../../nixos/obsidian
     ../../nixos/changedetection-io
     ../../nixos/ntfy-sh
     ../../nixos/lldap
     ../../nixos/authelia
+    ../../nixos/actual
+    # ../../nixos/golink
   ];
 
   age.secrets = {

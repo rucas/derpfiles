@@ -82,6 +82,9 @@
             remember_me = "1y";
           }];
         };
+        # Necessary for Caddy integration
+        # See https://www.authelia.com/integration/proxies/caddy/#implementation
+        server.endpoints.authz.forward-auth.implementation = "ForwardAuth";
       };
     };
 
@@ -93,6 +96,16 @@
           '';
         };
       };
+      # A Caddy snippet that can be imported to enable Authelia in front of a service
+      # Taken from https://www.authelia.com/integration/proxies/caddy/#subdomain
+      extraConfig = ''
+        (auth) {
+            forward_auth :9091 {
+                uri /api/authz/forward-auth
+                copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+            }
+        }
+      '';
     };
   };
 
