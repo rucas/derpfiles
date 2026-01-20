@@ -1,7 +1,10 @@
 # The start of something...good?
-{ pkgs, inputs, ... }: {
-  imports =
-    [ ../../modules/cli ../../modules/shell/zsh ];
+{ pkgs, inputs, ... }:
+{
+  imports = [
+    ../../modules/cli
+    ../../modules/shell/zsh
+  ];
 
   programs.home-manager.enable = true;
 
