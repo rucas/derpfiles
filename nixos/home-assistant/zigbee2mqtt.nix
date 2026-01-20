@@ -1,4 +1,5 @@
-{ CONF, ... }: {
+{ CONF, ... }:
+{
   services.zigbee2mqtt = {
     enable = true;
     settings = {
@@ -6,7 +7,10 @@
         user = "!secret.yaml user";
         password = "!secret.yaml password";
       };
-      serial = { port = CONF.hosts.rucaslab.zigbee.device; };
+      serial = {
+        port = CONF.hosts.rucaslab.zigbee.device;
+        adapter = "zstack";
+      };
       frontend = true;
       advanced = {
         channel = 25;
@@ -15,4 +19,6 @@
       };
     };
   };
+
+  users.users.zigbee2mqtt.extraGroups = [ "dialout" ];
 }
