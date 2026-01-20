@@ -10,6 +10,26 @@ final: prev: {
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
   # snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
 
+  gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
+    version = "4.2.0";
+
+    src = prev.fetchurl {
+      url = "https://www.alteholz.dev/gnu/gcal-${version}.tar.xz";
+      hash = "sha256-2L0tdBHnglHWcGSqDxymClI7+FbuPm2J0H2FoSM0eNw=";
+    };
+
+    patches = [];
+
+    nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ prev.pkg-config ];
+    buildInputs = (oldAttrs.buildInputs or []) ++ [ prev.check ];
+
+    postPatch = ''
+      sed -i '/^SUBDIRS/,/^$/{ /tests/d; }' Makefile.in
+    '';
+
+    doCheck = false;
+  });
+
   pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
     (python-final: python-prev: {
       mcp = python-prev.mcp.overridePythonAttrs (old: {
