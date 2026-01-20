@@ -70,6 +70,7 @@
         program = "zsh";
         args = [ "--login" ];
       };
+      terminal.osc52 = "CopyPaste";
       #hints = {
       #  enabled = [{
       #    regex =
