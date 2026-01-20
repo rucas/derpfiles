@@ -1,28 +1,33 @@
 {
   lib,
-  stdenv,
-  makeWrapper,
-  uv,
+  python3Packages,
+  fetchPypi,
 }:
 
-stdenv.mkDerivation {
+python3Packages.buildPythonApplication rec {
   pname = "mcp-server-git";
-  version = "0.1.0";
+  version = "2026.1.14";
+  format = "wheel";
 
-  dontUnpack = true;
+  src = fetchPypi {
+    pname = "mcp_server_git";
+    inherit version;
+    format = "wheel";
+    dist = "py3";
+    python = "py3";
+    hash = "sha256-WXLi9WmANf1qS07oltmDQJ1djR/iPiZsfTTe4+iPEdE=";
+  };
 
-  nativeBuildInputs = [ makeWrapper ];
+  propagatedBuildInputs = with python3Packages; [
+    mcp
+    gitpython
+  ];
 
-  buildInputs = [ uv ];
-
-  installPhase = ''
-    mkdir -p $out/bin
-    makeWrapper ${uv}/bin/uvx $out/bin/mcp-server-git \
-      --add-flags "mcp-server-git"
-  '';
+  dontCheckRuntimeDeps = true;
+  doCheck = false;
 
   meta = with lib; {
-    description = "MCP server for Git operations (via uvx)";
+    description = "MCP server for Git operations";
     homepage = "https://github.com/modelcontextprotocol/servers";
     license = licenses.mit;
     maintainers = [ ];

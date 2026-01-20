@@ -1,28 +1,33 @@
 {
   lib,
-  stdenv,
-  makeWrapper,
-  uv,
+  python3Packages,
+  fetchPypi,
 }:
 
-stdenv.mkDerivation {
+python3Packages.buildPythonApplication rec {
   pname = "mcp-server-time";
-  version = "0.1.0";
+  version = "2025.9.25";
+  format = "wheel";
 
-  dontUnpack = true;
+  src = fetchPypi {
+    pname = "mcp_server_time";
+    inherit version;
+    format = "wheel";
+    dist = "py3";
+    python = "py3";
+    hash = "sha256-XMVZcJiH2zO/d1RsLvsKk1LBOHDMK/rv+rGmvWOQQZs=";
+  };
 
-  nativeBuildInputs = [ makeWrapper ];
+  propagatedBuildInputs = with python3Packages; [
+    mcp
+    tzlocal
+  ];
 
-  buildInputs = [ uv ];
-
-  installPhase = ''
-    mkdir -p $out/bin
-    makeWrapper ${uv}/bin/uvx $out/bin/mcp-server-time \
-      --add-flags "mcp-server-time"
-  '';
+  dontCheckRuntimeDeps = true;
+  doCheck = false;
 
   meta = with lib; {
-    description = "MCP server for time operations (via uvx)";
+    description = "MCP server for time operations";
     homepage = "https://github.com/modelcontextprotocol/servers";
     license = licenses.mit;
     maintainers = [ ];
