@@ -56,14 +56,15 @@ in
         theme = "dark";
         permissions.allow = [
           "Bash(git status)"
-          "Bash(git diff:*)"
-          "Bash(git log:*)"
-          "Bash(nix search:*)"
-          "Bash(nix flake check:*)"
-          "Bash(nix flake show:*)"
-          "Bash(nix flake metadata:*)"
-          "Bash(rg:*)"
-          "Bash(fd:*)"
+          "Bash(git diff *)"
+          "Bash(git log *)"
+          "Bash(nix log *)"
+          "Bash(nix search *)"
+          "Bash(nix flake check *)"
+          "Bash(nix flake show *)"
+          "Bash(nix flake metadata *)"
+          "Bash(rg *)"
+          "Bash(fd *)"
         ];
       };
       memory.text = cfg.memory;
