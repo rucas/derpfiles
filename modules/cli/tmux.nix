@@ -79,6 +79,10 @@ in
       set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
       set -sg terminal-features ",alacritty:usstyle"
 
+      # Enable OSC 52 clipboard passthrough
+      set -g set-clipboard on
+      set -ag terminal-overrides ",alacritty:Ms=\\E]52;c;%p2%s\\7"
+
       # set update frequencey (default 15 seconds)
       set -g status-interval 5
 
