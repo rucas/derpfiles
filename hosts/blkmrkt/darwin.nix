@@ -1,8 +1,11 @@
-{ ... }: {
+{ lib, ... }: {
 
   imports = [ ../../modules/darwin ];
 
   networking.hostName = "blkmrkt";
+
+  # Disable GPG agent for blkmrkt - use native macOS SSH agent for FIDO2 support
+  programs.gnupg.agent.enable = lib.mkForce false;
 
   nix.enable = false;
 

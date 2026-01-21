@@ -31,6 +31,7 @@ in
           identityFile = "~/.ssh/id_ed25519_sk";
           forwardAgent = true;
           addKeysToAgent = "yes";
+          useKeychain = true;
         };
       })
     ];
