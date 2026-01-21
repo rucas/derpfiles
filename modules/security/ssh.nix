@@ -29,6 +29,7 @@ in
           serverAliveCountMax = 3;
           identitiesOnly = true;
           identityFile = "~/.ssh/id_ed25519_sk";
+          forwardAgent = true;
         };
       })
     ];
