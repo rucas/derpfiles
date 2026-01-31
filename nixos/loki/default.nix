@@ -39,14 +39,14 @@
 
       storage_config = {
         boltdb_shipper = {
-          active_index_directory = "/var/lib/loki/boltdb-shipper-active";
-          cache_location = "/var/lib/loki/boltdb-shipper-cache";
+          active_index_directory = "/data/loki/boltdb-shipper-active";
+          cache_location = "/data/loki/boltdb-shipper-cache";
           # NOTE: Can be increased for faster performance over longer query
           # periods, uses more disk space
           cache_ttl = "24h";
         };
 
-        filesystem = { directory = "/var/lib/loki/chunks"; };
+        filesystem = { directory = "/data/loki/chunks"; };
       };
 
       limits_config = {
@@ -60,7 +60,7 @@
         retention_period = "2160h";
       };
 
-      compactor.working_directory = "/var/lib/loki/boltdb-shipper-compactor";
+      compactor.working_directory = "/data/loki/boltdb-shipper-compactor";
 
     };
   };

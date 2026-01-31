@@ -35,6 +35,15 @@ in
       enable = true;
       mutableSettings = false;
       settings = {
+        querylog = {
+          enabled = true;
+          interval = "2160h"; # 90 days (3 months)
+          size_memory = 1000;
+        };
+        statistics = {
+          enabled = true;
+          interval = "2160h"; # 90 days (3 months)
+        };
         dns = {
           all_servers = true;
           bind_hosts = [ "0.0.0.0" ];
@@ -107,6 +116,8 @@ in
         user_rules = secretRules ++ [
           "@@||app2.cision.com^"
           "@@||api.my-ip.io^"
+          "@@||ipv4.icanhazip.com^$client='192.168.1.1'"
+          "@@||api.ipify.org^$client='192.168.1.1'"
         ];
       };
     };

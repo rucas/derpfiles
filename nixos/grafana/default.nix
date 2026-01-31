@@ -41,6 +41,9 @@
         domain = "grafana.rucaslab.com";
       };
       security.secret_key = "$__file{${config.age.secrets.grafana.path}}";
+      paths = {
+        data = "/data/grafana";
+      };
     };
   };
 }

@@ -142,6 +142,45 @@
   boot.zfs.forceImportRoot = false;
   networking.hostId = "e0f98e67";
 
+  services.zfs = {
+    autoScrub = {
+      enable = true;
+      interval = "weekly";
+    };
+    autoSnapshot = {
+      enable = true;
+      frequent = 4;
+      hourly = 24;
+      daily = 7;
+      weekly = 4;
+      monthly = 12;
+    };
+  };
+
+  # NOTE: services.zfs.autoSnapshot creates the timers/services that run snapshots,
+  # but they only snapshot datasets with com.sun:auto-snapshot=true property set.
+  # This service ensures the property is set on datapool at boot.
+  systemd.services.zfs-set-auto-snapshot = {
+    description = "Enable ZFS auto-snapshot on datapool";
+    after = [ "zfs-import.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      ${pkgs.zfs}/bin/zfs set com.sun:auto-snapshot=true datapool || true
+    '';
+  };
+
+  # Bind mounts for services without native dataDir options
+  fileSystems."/var/lib/hass" = {
+    device = "/data/hass";
+    options = [ "bind" ];
+  };
+
+  fileSystems."/var/lib/prometheus2" = {
+    device = "/data/prometheus2";
+    options = [ "bind" ];
+  };
+
   networking.hostName = "rucaslab";
   networking.networkmanager.enable = true;
 
@@ -194,6 +233,9 @@
   # NOTE:
   # https://discourse.nixos.org/t/nixos-rebuild-switch-upgrade-networkmanager-wait-online-service-failure/30746/2
   systemd.services.NetworkManager-wait-online.enable = pkgs.lib.mkForce false;
+
+  # Remove StateDirectory for Prometheus (uses bind mount)
+  systemd.services.prometheus.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
 
   nix = {
     settings = {
