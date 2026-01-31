@@ -56,8 +56,8 @@
       };
 
       table_manager = {
-        retention_deletes_enabled = false;
-        retention_period = "0s";
+        retention_deletes_enabled = true;
+        retention_period = "2160h";
       };
 
       compactor.working_directory = "/var/lib/loki/boltdb-shipper-compactor";

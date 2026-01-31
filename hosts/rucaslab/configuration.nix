@@ -198,10 +198,7 @@
   nix = {
     settings = {
       sandbox = false;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
+      experimental-features = [ "nix-command" "flakes" ];
       max-jobs = "auto";
       cores = 0;
       substituters = [
@@ -246,5 +243,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
-
 }
