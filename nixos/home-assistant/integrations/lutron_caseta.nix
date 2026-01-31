@@ -1,4 +1,5 @@
-{ CONF, config, ... }: {
+{ CONF, config, ... }:
+{
   services.home-assistant.config = {
     lutron_caseta = {
       host = CONF.hosts.lutron.internal_ip;

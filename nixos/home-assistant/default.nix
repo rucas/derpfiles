@@ -3,17 +3,19 @@ let
   my-cards = pkgs.callPackage ../../pkgs/my-cards { };
   auto-entities = pkgs.callPackage ../../pkgs/lovelace-auto-entities { };
   theme = pkgs.home-assistant-themes.graphite;
-in {
+in
+{
 
   imports = [
     ./automations
-    ./lutron_caseta.nix
+    ./blueprints.nix
+    ./integrations/lutron_caseta.nix
+    ./integrations/notify.nix
+    ./integrations/sonos.nix
+    ./integrations/zigbee2mqtt.nix
+    ./integrations/zwave.nix
     ./networking.nix
-    ./notify.nix
-    ./scenes.nix
-    ./sonos.nix
-    ./zigbee2mqtt.nix
-    ./zwave.nix
+    ./scenes
   ];
 
   services = {
@@ -35,28 +37,31 @@ in {
         pkgs.home-assistant-custom-components.alarmo
         (pkgs.callPackage ../../pkgs/hass-browser_mod { })
       ];
-      customLovelaceModules =
-        with pkgs.home-assistant-custom-lovelace-modules; [
-          button-card
-          light-entity-card
-          mini-graph-card
-          mini-media-player
-          mushroom
-        ];
+      customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+        button-card
+        light-entity-card
+        mini-graph-card
+        mini-media-player
+        mushroom
+      ];
       config = {
         default_config = { };
         frontend.themes = "!include ${theme}/${theme.pname}.yaml";
         recorder.db_url = "postgresql://@/hass";
-        homeassistant = { allowlist_external_dirs = [ "/etc" ]; };
+        homeassistant = {
+          allowlist_external_dirs = [ "/etc" ];
+        };
         http = {
           trusted_proxies = [ "127.0.0.1" ];
           use_x_forwarded_for = true;
         };
         lovelace = {
-          resources = [{
-            url = "/local/bubble-card.js";
-            type = "module";
-          }];
+          resources = [
+            {
+              url = "/local/bubble-card.js";
+              type = "module";
+            }
+          ];
         };
         alarmo = { };
         mqtt = { };
@@ -78,5 +83,7 @@ in {
   ];
 
   # NOTE: lutron certs in /etc
-  environment.etc = { lutron.source = ./lutron; };
+  environment.etc = {
+    lutron.source = ./lutron;
+  };
 }
