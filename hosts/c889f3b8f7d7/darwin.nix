@@ -5,12 +5,15 @@
   networking.hostName = "c889f3b8f7d7";
 
   nix.extraOptions = ''
-    # NOTE: https://github.com/NixOS/nix/issues/7273
-    # auto-optimise-store = true
     experimental-features = nix-command flakes
   '';
 
-  nix.settings.trusted-users = [ "@admin" ];
+  nix.settings = {
+    # NOTE: auto-optimise-store disabled for CI (https://github.com/NixOS/nix/issues/7273)
+    trusted-users = [ "@admin" ];
+    max-jobs = "auto";
+    cores = 0;
+  };
 
   services.nix-daemon.enable = true;
 

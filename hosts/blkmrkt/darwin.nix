@@ -9,12 +9,12 @@
 
   nix.enable = false;
 
-  # nix.extraOptions = ''
-  #   auto-optimise-store = true
-  #   experimental-features = nix-command flakes
-  # '';
-  #
-  nix.settings.trusted-users = [ "@admin" ];
+  nix.settings = {
+    auto-optimise-store = true;
+    trusted-users = [ "@admin" ];
+    max-jobs = "auto";
+    cores = 0;
+  };
 
   # TODO: better way to do users.users?
   users.users.lucas = { home = "/Users/lucas"; };

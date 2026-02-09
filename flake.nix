@@ -81,19 +81,14 @@
     inputs@{
       self,
       nixpkgs,
-      agenix,
-      nix-darwin,
-      golink,
-      home-manager,
       flake-parts,
-      spacebar,
-      alacritty-theme,
-      nur,
-      nxvm,
-      opnix,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        ./flake-modules/hosts.nix
+      ];
+
       systems = [
         "aarch64-darwin"
         "x86_64-linux"
@@ -120,110 +115,37 @@
           };
         };
 
-      flake =
-        let
-          inherit (nixpkgs) lib;
-          inherit (builtins) fromTOML readFile;
-          mkHost =
-            {
-              host,
-              username,
-              arch,
-              env ? "darwin",
-            }:
-            let
-              isDarwin = if env == "darwin" then true else false;
-              isNixOs = !isDarwin;
-            in
-            {
-              darwin = nix-darwin.lib.darwinSystem;
-              nixos = nixpkgs.lib.nixosSystem;
-            }
-            .${env}
-              {
-                system = arch;
-                specialArgs = {
-                  CONF = fromTOML (readFile ./hosts/configs.toml);
-                  inherit inputs;
-                };
-                modules = [
-                  {
-                    nixpkgs.config = {
-                      allowUnfree = true;
-                      permittedInsecurePackages = [ "openssl-1.1.1w" ];
-                    };
-                    nixpkgs.overlays = [
-                      self.overlays.default
-                      alacritty-theme.overlays.default
-                      golink.overlays.default
-                      spacebar.overlay
-                      nur.overlays.default
-                    ];
-                    home-manager.useGlobalPkgs = true;
-                    home-manager.useUserPackages = true;
-                    home-manager.extraSpecialArgs = {
-                      inherit inputs;
-                      theme = fromTOML (readFile ./modules/themes/gruvbox.toml);
-                    };
-                    home-manager.users.${username} = import ./hosts/${host}/home.nix;
-                  }
-                ]
-                ++ lib.optionals isDarwin [
-                  ./hosts/${host}/darwin.nix
-                  opnix.darwinModules.default
-                  ./hosts/${host}/secrets.nix
-                  home-manager.darwinModules.home-manager
-                ]
-                ++ lib.optionals isNixOs [
-                  golink.nixosModules.default
-                  ./hosts/${host}/configuration.nix
-                  home-manager.nixosModules.home-manager
-                  agenix.nixosModules.default
-                  opnix.nixosModules.default
-                ];
-              };
-        in
-        {
-          overlays.default = import ./overlays/default.nix { inherit self inputs; };
-
-          darwinConfigurations = {
-            blkmrkt = mkHost {
-              host = "blkmrkt";
-              username = "lucas";
-              arch = "aarch64-darwin";
-              env = "darwin";
-            };
-
-            c889f3b8f7d7 = mkHost {
-              host = "c889f3b8f7d7";
-              username = "awslucas";
-              arch = "aarch64-darwin";
-              env = "darwin";
-            };
-
-            "lronden-m-vy79p" = mkHost {
-              host = "lronden-m-vy79p";
-              username = "lucas.rondenet";
-              arch = "aarch64-darwin";
-              env = "darwin";
-            };
-
-            salus = mkHost {
-              host = "salus";
-              username = "lucas";
-              arch = "aarch64-darwin";
-              env = "darwin";
-            };
-          };
-
-          nixosConfigurations = {
-            rucaslab = mkHost {
-              host = "rucaslab";
-              username = "lucas";
-              arch = "x86_64-linux";
-              env = "nixos";
-            };
-          };
+      # Declarative host configurations
+      hosts = {
+        blkmrkt = {
+          username = "lucas";
+          arch = "aarch64-darwin";
+          env = "darwin";
         };
+        c889f3b8f7d7 = {
+          username = "awslucas";
+          arch = "aarch64-darwin";
+          env = "darwin";
+        };
+        lronden-m-vy79p = {
+          username = "lucas.rondenet";
+          arch = "aarch64-darwin";
+          env = "darwin";
+        };
+        salus = {
+          username = "lucas";
+          arch = "aarch64-darwin";
+          env = "darwin";
+        };
+        rucaslab = {
+          username = "lucas";
+          arch = "x86_64-linux";
+          env = "nixos";
+        };
+      };
+
+      flake = {
+        overlays.default = import ./overlays/default.nix { inherit self inputs; };
+      };
     };
 }
