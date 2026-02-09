@@ -118,5 +118,9 @@
           git checkout \"$@\"; \
         fi; \
       }; f"
+
+      # Pull from origin with optional branch (defaults to current branch)
+      # Automatically uses rebase+autostash from global config
+      po = "!f() { git pull origin \"''${1:-$(git current-branch)}\"; }; f"
   '';
 }
