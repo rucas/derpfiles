@@ -8,6 +8,9 @@ on:
       - completed
 jobs:
   build:
+    permissions:
+      id-token: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -73,6 +76,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AGENIX_KEY }}" > ~/.ssh/agenix
           chmod 600 ~/.ssh/agenix
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v8
       - uses: cachix/cachix-action@v15
         with:
           name: derpfiles

@@ -1,11 +1,32 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  osConfig,
+  ...
+}:
 let
   yamlFormat = pkgs.formats.yaml { };
   inherit (lib) mkMerge;
   inherit (pkgs.stdenv) isLinux isDarwin;
+
+  helpers = import ../../../lib { inherit pkgs; };
+  inherit (helpers) yamlToAttrs;
+
+  secretMatches =
+    let
+      secretPath = ../../../secrets + "/triggers-${osConfig.networking.hostName}.yaml";
+    in
+    if builtins.pathExists secretPath then
+      let
+        parsed = yamlToAttrs secretPath;
+      in
+      parsed.matches or [ ]
+    else
+      [ ];
+
   # NOTE: https://github.com/Lissy93/espanso-config
   settings = {
-    matches = [
+    matches = secretMatches ++ [
       {
         trigger = ":date";
         replace = "{{date}}";

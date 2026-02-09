@@ -5,18 +5,13 @@
   ...
 }:
 let
+  helpers = import ../../../lib { inherit pkgs; };
+  inherit (helpers) yamlToAttrs;
+
   hostSpecificBookmarks = {
     "lronden-m-vy79p" = "firefox-bookmarks-a.yaml";
     "salus" = "firefox-bookmarks-b.yaml";
   };
-  yamlToAttrs =
-    yamlFile:
-    let
-      jsonFile = pkgs.runCommand "yaml-to-json" { buildInputs = [ pkgs.yq ]; } ''
-        yq . ${yamlFile} > $out
-      '';
-    in
-    builtins.fromJSON (builtins.readFile jsonFile);
   currentHostBookmarks =
     if builtins.hasAttr osConfig.networking.hostName hostSpecificBookmarks then
       yamlToAttrs (../../../secrets + "/${hostSpecificBookmarks.${osConfig.networking.hostName}}")
