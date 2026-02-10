@@ -42,9 +42,15 @@ in
     memory = lib.mkOption {
       type = lib.types.lines;
       default = ''
-        - **Language:** English only - all code, comments, docs, examples, commits, configs, errors, tests
-        - **Tools**: Use rg not grep, fd not find, tree is installed
+        - **Language:** English only
         - **Style**: Prefer self-documenting code over comments
+
+        # Tool Usage Guidelines
+        *   **File Navigation:** When you need to find files or navigate the file system, use `fd`. Example: `fd "filename" .`
+        *   **Text Search:** When you need to search for plain text or strings within files, use `rg` (ripgrep). Example: `rg "pattern" --files-with-matches`
+        *   **Code Structural Search:** For any search that requires understanding code syntax or structure, you must default to `ast-grep`. Adjust the language flag (`--lang`) as needed. Avoid using `rg` or `grep` for this purpose.
+          *   *Example for TypeScript:* `ast-grep --lang ts -p '<pattern>'`
+          *   *Example for Rust:* `ast-grep --lang rust -p '<pattern>'`
       '';
     };
   };
@@ -55,14 +61,18 @@ in
       settings = {
         theme = "dark";
         permissions.allow = [
-          "Bash(git status)"
-          "Bash(git diff *)"
-          "Bash(git log *)"
-          "Bash(nix log *)"
-          "Bash(nix search *)"
+          # Nix package manager commands
+          "Bash(nix build *)"
+          "Bash(nix develop *)"
+          "Bash(nix eval *)"
           "Bash(nix flake check *)"
-          "Bash(nix flake show *)"
           "Bash(nix flake metadata *)"
+          "Bash(nix flake show *)"
+          "Bash(nix log *)"
+          "Bash(nix run *)"
+          "Bash(nix search *)"
+
+          # Search and file tools
           "Bash(rg *)"
           "Bash(fd *)"
         ];
