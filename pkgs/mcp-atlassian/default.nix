@@ -1,9 +1,9 @@
 {
   lib,
-  python3Packages,
+  python312Packages,
   fetchPypi,
 }:
-with python3Packages;
+with python312Packages;
 let
   openapi-pydantic = buildPythonPackage rec {
     pname = "openapi-pydantic";
@@ -66,6 +66,15 @@ let
     doCheck = false;
   };
 
+  valkey-no-tests = valkey.overridePythonAttrs (old: {
+    doCheck = false;
+    doInstallCheck = false;
+  });
+
+  fakeredis-no-tests = fakeredis.override {
+    valkey = valkey-no-tests;
+  };
+
   pydocket = buildPythonPackage rec {
     pname = "pydocket";
     version = "0.16.3";
@@ -80,7 +89,7 @@ let
     propagatedBuildInputs = [
       cloudpickle
       exceptiongroup
-      fakeredis
+      fakeredis-no-tests
       lupa
       opentelemetry-api
       opentelemetry-exporter-prometheus
@@ -151,6 +160,41 @@ let
     dontCheckRuntimeDeps = true;
     doCheck = false;
   };
+
+  rapidfuzz-wheel = buildPythonPackage rec {
+    pname = "rapidfuzz";
+    version = "3.14.3";
+    format = "wheel";
+    src = fetchPypi {
+      inherit pname version;
+      format = "wheel";
+      dist = "cp312";
+      python = "cp312";
+      abi = "cp312";
+      platform = "macosx_11_0_arm64";
+      hash = "sha256-+nyPJvAJ+MZz+/tEN5Lwz4z1DE4YEh/x4oW14IqU+9s=";
+    };
+    dontCheckRuntimeDeps = true;
+    doCheck = false;
+  };
+
+  thefuzz-custom = buildPythonPackage rec {
+    pname = "thefuzz";
+    version = "0.22.1";
+    format = "wheel";
+    src = fetchPypi {
+      inherit pname version;
+      format = "wheel";
+      dist = "py3";
+      python = "py3";
+      hash = "sha256-WXKbM1VoULkOEJPEz55hivby5MmF3xk/3zxbXPAspIE=";
+    };
+    propagatedBuildInputs = [
+      rapidfuzz-wheel
+    ];
+    dontCheckRuntimeDeps = true;
+    doCheck = false;
+  };
 in
 buildPythonApplication rec {
   pname = "mcp-atlassian";
@@ -182,7 +226,7 @@ buildPythonApplication rec {
     click
     uvicorn
     starlette
-    thefuzz
+    thefuzz-custom
     python-dateutil
     keyring
     cachetools
