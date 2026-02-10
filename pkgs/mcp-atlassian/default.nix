@@ -1,9 +1,9 @@
 {
   lib,
-  python312Packages,
+  python3Packages,
   fetchPypi,
 }:
-with python312Packages;
+with python3Packages;
 let
   openapi-pydantic = buildPythonPackage rec {
     pname = "openapi-pydantic";
@@ -168,11 +168,11 @@ let
     src = fetchPypi {
       inherit pname version;
       format = "wheel";
-      dist = "cp312";
-      python = "cp312";
-      abi = "cp312";
+      dist = "cp313";
+      python = "cp313";
+      abi = "cp313";
       platform = "macosx_11_0_arm64";
-      hash = "sha256-+nyPJvAJ+MZz+/tEN5Lwz4z1DE4YEh/x4oW14IqU+9s=";
+      hash = "sha256-FwT8cNIUKU5VSiQhtHN3m83u9xWIHF6SfcDxHhaSoP8=";
     };
     dontCheckRuntimeDeps = true;
     doCheck = false;

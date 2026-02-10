@@ -7,9 +7,7 @@ final: prev: {
   mcp-server-git = prev.callPackage ../pkgs/mcp-server-git { };
   mcp-server-time = prev.callPackage ../pkgs/mcp-server-time { };
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
-  mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian {
-    python312Packages = prev.python312Packages;
-  };
+  mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
   # snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
 
   gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
