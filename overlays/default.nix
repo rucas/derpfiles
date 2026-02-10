@@ -18,10 +18,10 @@ final: prev: {
       hash = "sha256-2L0tdBHnglHWcGSqDxymClI7+FbuPm2J0H2FoSM0eNw=";
     };
 
-    patches = [];
+    patches = [ ];
 
-    nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ prev.pkg-config ];
-    buildInputs = (oldAttrs.buildInputs or []) ++ [ prev.check ];
+    nativeBuildInputs = (oldAttrs.nativeBuildInputs or [ ]) ++ [ prev.pkg-config ];
+    buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ prev.check ];
 
     postPatch = ''
       sed -i '/^SUBDIRS/,/^$/{ /tests/d; }' Makefile.in
