@@ -33,56 +33,54 @@
       { path = "~/.config/git/gitalias"; }
       { path = "~/.config/git/gitalias.custom"; }
     ];
+    # NOTE: https://blog.gitbutler.com/how-git-core-devs-configure-git
     settings = {
-      aliases = {
+      alias = {
         conflicts = "diff --name-only --diff-filter=U";
       };
-      # NOTE: https://blog.gitbutler.com/how-git-core-devs-configure-git
-      extraConfig = {
-        branch = {
-          sort = "-committerdate";
-        };
-        core = {
-          editor = "nvim";
-        };
-        column = {
-          ui = "auto";
-        };
-        commit = {
-          verbose = true;
-        };
-        fetch = {
-          prune = true;
-          pruneTags = true;
-          all = true;
-        };
-        help = {
-          autocorrect = "prompt";
-        };
-        merge = {
-          conflictstyle = "zdiff3";
-        };
-        rebase = {
-          autoSquash = true;
-          autoStash = true;
-          updateRefs = true;
-        };
-        pull = {
-          rebase = true;
-          autostash = true;
-        };
-        push = {
-          default = "simple";
-          autoSetupRemote = true;
-          followTags = true;
-        };
-        rerere = {
-          enabled = true;
-          autoupdate = true;
-        };
-        tag = {
-          sort = "version:refname";
-        };
+      branch = {
+        sort = "-committerdate";
+      };
+      core = {
+        editor = "nvim";
+      };
+      column = {
+        ui = "auto";
+      };
+      commit = {
+        verbose = true;
+      };
+      fetch = {
+        prune = true;
+        pruneTags = true;
+        all = true;
+      };
+      help = {
+        autocorrect = "prompt";
+      };
+      merge = {
+        conflictstyle = "zdiff3";
+      };
+      rebase = {
+        autoSquash = true;
+        autoStash = true;
+        updateRefs = true;
+      };
+      pull = {
+        rebase = true;
+        autostash = true;
+      };
+      push = {
+        default = "simple";
+        autoSetupRemote = true;
+        followTags = true;
+      };
+      rerere = {
+        enabled = true;
+        autoupdate = true;
+      };
+      tag = {
+        sort = "version:refname";
       };
     };
   };
