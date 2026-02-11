@@ -73,6 +73,9 @@ in
           "Bash(nix search *)"
 
           # Search and file tools
+          "Read(*)"
+          "Glob(*)"
+          "Grep(*)"
           "Bash(rg *)"
           "Bash(fd *)"
         ];
