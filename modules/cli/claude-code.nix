@@ -46,11 +46,26 @@ in
         - **Style**: Prefer self-documenting code over comments
 
         # Tool Usage Guidelines
-        *   **File Navigation:** When you need to find files or navigate the file system, use `fd`. Example: `fd "filename" .`
-        *   **Text Search:** When you need to search for plain text or strings within files, use `rg` (ripgrep). Example: `rg "pattern" --files-with-matches`
-        *   **Code Structural Search:** For any search that requires understanding code syntax or structure, you must default to `ast-grep`. Adjust the language flag (`--lang`) as needed. Avoid using `rg` or `grep` for this purpose.
-          *   *Example for TypeScript:* `ast-grep --lang ts -p '<pattern>'`
-          *   *Example for Rust:* `ast-grep --lang rust -p '<pattern>'`
+        * **File Navigation:** When you need to find files or navigate the file system, use `fd`.
+
+          Example: `fd "filename" .`
+
+        * **Text Search:** When you need to search for plain text or strings within files, use `rg` (ripgrep).
+
+          Example: `rg "pattern" --files-with-matches`
+
+        * **Code Structural Search:** For any search that requires understanding code syntax or structure,
+        use `ast-grep`. Adjust the language flag (`--lang`) as needed. Avoid using `rg` or `grep` for
+        this purpose.
+
+          *Example for TypeScript:* `ast-grep --lang ts -p '<pattern>'`
+          *Example for Rust:* `ast-grep --lang rust -p '<pattern>'`
+
+        * **File Display & Piping:** When you need to display file contents or pipe output in plain format,
+        use `bat -p` instead of `cat` (which is aliased to `bat`). The `-p` flag disables line numbers for
+        proper piping.
+
+          Example: `bat -p file.txt | grep "pattern"`
       '';
     };
   };
@@ -78,6 +93,9 @@ in
           "Grep(*)"
           "Bash(rg *)"
           "Bash(fd *)"
+
+          "Base(gh pr view *)"
+          "Base(gh pr diff *)"
         ];
       };
       memory.text = cfg.memory;
