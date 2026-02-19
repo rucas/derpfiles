@@ -33,22 +33,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Maximize build space
+      - name: Maximize Nix disk space
         if: matrix.host == 'rucaslab'
-        uses: easimon/maximize-build-space@master
-        with:
-          root-reserve-mb: 4096
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-      - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /usr/local/share/boost
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          df -h
+        uses: wimpysworld/nothing-but-nix@main
       - name: Checkout
         uses: actions/checkout@v4
         with:
