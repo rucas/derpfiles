@@ -9,18 +9,12 @@ let
   inherit (lib) mkMerge;
   inherit (pkgs.stdenv) isLinux isDarwin;
 
-  helpers = import ../../../lib { inherit pkgs; };
-  inherit (helpers) yamlToAttrs;
-
   secretMatches =
     let
-      secretPath = ../../../secrets + "/triggers-${osConfig.networking.hostName}.yaml";
+      secretPath = ../../../secrets + "/triggers-${osConfig.networking.hostName}.toml";
     in
     if builtins.pathExists secretPath then
-      let
-        parsed = yamlToAttrs secretPath;
-      in
-      parsed.matches or [ ]
+      (builtins.fromTOML (builtins.readFile secretPath)).matches or [ ]
     else
       [ ];
 

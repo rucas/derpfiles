@@ -4,18 +4,12 @@
   ...
 }:
 let
-  helpers = import ../../lib { inherit pkgs; };
-  inherit (helpers) yamlToAttrs;
-
   secretRules =
     let
-      secretPath = ../../secrets + "/adguard-rules-${config.networking.hostName}.yaml";
+      secretPath = ../../secrets + "/adguard-rules-${config.networking.hostName}.toml";
     in
     if builtins.pathExists secretPath then
-      let
-        parsed = yamlToAttrs secretPath;
-      in
-      parsed.user_rules or [ ]
+      (builtins.fromTOML (builtins.readFile secretPath)).user_rules or [ ]
     else
       [ ];
 in

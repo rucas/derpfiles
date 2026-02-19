@@ -5,16 +5,15 @@
   ...
 }:
 let
-  helpers = import ../../../lib { inherit pkgs; };
-  inherit (helpers) yamlToAttrs;
-
   hostSpecificBookmarks = {
-    "lronden-m-vy79p" = "firefox-bookmarks-a.yaml";
-    "salus" = "firefox-bookmarks-b.yaml";
+    "lronden-m-vy79p" = "firefox-bookmarks-a.toml";
+    "salus" = "firefox-bookmarks-b.toml";
   };
   currentHostBookmarks =
     if builtins.hasAttr osConfig.networking.hostName hostSpecificBookmarks then
-      yamlToAttrs (../../../secrets + "/${hostSpecificBookmarks.${osConfig.networking.hostName}}")
+      (builtins.fromTOML (
+        builtins.readFile (../../../secrets + "/${hostSpecificBookmarks.${osConfig.networking.hostName}}")
+      )).bookmarks
     else
       [ ];
 in
