@@ -35,4 +35,9 @@
   security.pam.services.sudo_local.touchIdAuth = true;
 
   system.primaryUser = "lucas";
+
+  services.ledger-sync = {
+    enable = true;
+    user = "lucas";
+  };
 }

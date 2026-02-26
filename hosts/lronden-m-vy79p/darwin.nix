@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
 
   imports = [ ../../modules/darwin ];
 
@@ -37,5 +38,10 @@
     reattach = true;
     touchIdAuth = true;
     watchIdAuth = true;
+  };
+
+  services.ledger-sync = {
+    enable = true;
+    user = "lucas.rondenet";
   };
 }
