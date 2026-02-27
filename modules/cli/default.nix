@@ -47,6 +47,7 @@
     gcal
     git-crypt
     gitmux
+    glow
     gnumake
     gnused
     (google-cloud-sdk.withExtraComponents (
