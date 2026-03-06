@@ -124,6 +124,8 @@ in
         "browser.download.useDownloadDir" = false;
         "browser.screenshots.folderList" = 2;
         "browser.screenshots.dir" = "/tmp";
+
+        "devtools.defaultColorUnit" = "hex";
       };
 
       bookmarks = {
