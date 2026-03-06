@@ -24,6 +24,7 @@
       git.enable = true;
       time.enable = true;
       github.enable = true;
+      figma.enable = true;
     };
   };
 
