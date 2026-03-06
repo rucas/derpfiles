@@ -90,7 +90,15 @@ in
 
           # Search and file tools
           "Read(*)"
+          "Read(~/Work/*)"
+          "Read(~/Code/*)"
+          "Edit(~/Work/*)"
+          "Edit(~/Code/*)"
+          "Write(~/Work/*)"
+          "Write(~/Code/*)"
           "Glob(*)"
+          "Glob(~/Work/*)"
+          "Glob(~/Code/*)"
           "Grep(*)"
           "Bash(rg *)"
           "Bash(fd *)"

@@ -991,11 +991,11 @@
         "tree-sitter-tera": "tree-sitter-tera"
       },
       "locked": {
-        "lastModified": 1772323736,
-        "narHash": "sha256-jDeXt4snDZt/QNKNiNLkNSXVvqjykcZ7jpD7sM8KkD8=",
+        "lastModified": 1772824516,
+        "narHash": "sha256-YcMaABhIkVCgfIS1VhljSd9qk5t5X5hcYUuICj66MN4=",
         "owner": "rucas",
         "repo": "nxvm",
-        "rev": "0a3a6939193da26e44cc95e16cf15e476ed22514",
+        "rev": "02568f335528d47975e2ee2152878c940d846332",
         "type": "github"
       },
       "original": {

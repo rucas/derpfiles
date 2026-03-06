@@ -186,6 +186,8 @@ in
                           | sed -E 's/\s-.*$//' \
                           | xargs -r tmux switch-client -t"
 
+      # Quick journal access - Prefix + Shift+j
+      bind-key J run-shell "~/Code/ledger/scripts/journal-session"
 
       bind-key R source-file ~/.config/tmux/tmux.conf \; display-message " 󰑓 tmux reloaded"
     '';
