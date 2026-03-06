@@ -36,6 +36,7 @@ in
       rollbar.enable = lib.mkEnableOption "rollbar MCP";
       jira.enable = lib.mkEnableOption "jira MCP";
       chronosphere.enable = lib.mkEnableOption "chronosphere MCP";
+      figma.enable = lib.mkEnableOption "figma MCP";
     };
 
     # Optional: Override defaults
@@ -94,8 +95,68 @@ in
           "Bash(rg *)"
           "Bash(fd *)"
 
-          "Base(gh pr view *)"
-          "Base(gh pr diff *)"
+          # Git read operations
+          "Bash(git status *)"
+          "Bash(git log *)"
+          "Bash(git diff *)"
+          "Bash(git show *)"
+          "Bash(git branch *)"
+          "Bash(git remote *)"
+          "Bash(git ls-files *)"
+          "Bash(git ls-tree *)"
+          "Bash(git rev-parse *)"
+
+          # GitHub CLI read operations
+          "Bash(gh pr view *)"
+          "Bash(gh pr diff *)"
+          "Bash(gh pr list *)"
+          "Bash(gh issue view *)"
+          "Bash(gh issue list *)"
+          "Bash(gh repo view *)"
+          "Bash(gh api *)"
+          "Bash(gh status *)"
+
+          # File viewing
+          "Bash(bat *)"
+          "Bash(cat *)"
+          "Bash(head *)"
+          "Bash(tail *)"
+          "Bash(less *)"
+          "Bash(more *)"
+
+          # Directory listing
+          "Bash(ls *)"
+          "Bash(tree *)"
+          "Bash(exa *)"
+
+          # File information
+          "Bash(file *)"
+          "Bash(stat *)"
+          "Bash(wc *)"
+          "Bash(du *)"
+          "Bash(df *)"
+
+          # Text processing
+          "Bash(grep *)"
+          "Bash(awk *)"
+          "Bash(sed *)"
+          "Bash(sort *)"
+          "Bash(uniq *)"
+          "Bash(cut *)"
+          "Bash(diff *)"
+
+          # Data format tools
+          "Bash(jq *)"
+          "Bash(yq *)"
+          "Bash(ast-grep *)"
+
+          # System information
+          "Bash(which *)"
+          "Bash(whereis *)"
+          "Bash(env)"
+          "Bash(printenv *)"
+          "Bash(pwd)"
+          "Bash(whoami)"
         ];
       };
       memory.text = cfg.memory;
@@ -145,6 +206,11 @@ in
             CHRONOSPHERE_ORG_NAME = "\${CHRONOSPHERE_ORG_NAME}";
             CHRONOSPHERE_MCP_TOKEN = "\${CHRONOSPHERE_MCP_TOKEN}";
           };
+        };
+
+        figma = lib.mkIf cfg.mcpServers.figma.enable {
+          type = "http";
+          url = "https://mcp.figma.com/mcp";
         };
       };
     };
