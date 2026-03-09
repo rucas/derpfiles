@@ -39,6 +39,12 @@ in
       figma.enable = lib.mkEnableOption "figma MCP";
     };
 
+    model = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Default model for Claude Code (e.g. \"claude-sonnet-4-6\"). Null uses Claude's built-in default.";
+    };
+
     # Optional: Override defaults
     memory = lib.mkOption {
       type = lib.types.lines;
@@ -76,6 +82,7 @@ in
       enable = true;
       settings = {
         theme = "dark";
+        model = lib.mkIf (cfg.model != null) cfg.model;
         permissions.allow = [
           # Nix package manager commands
           "Bash(nix build *)"
