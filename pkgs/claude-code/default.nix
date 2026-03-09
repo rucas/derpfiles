@@ -1,32 +1,60 @@
 {
   lib,
+  stdenv,
   buildNpmPackage,
   fetchzip,
+  versionCheckHook,
+  writableTmpDirAsHomeHook,
+  bubblewrap,
+  procps,
+  socat,
 }:
 buildNpmPackage (finalAttrs: {
   pname = "claude-code";
-  version = "2.1.61";
+  version = "2.1.71";
 
   src = fetchzip {
     url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
-    hash = "sha256-Nc+BeHYKixeCCUg0rkxSqqU/A/f+HsISdRQPQ1iiIKM=";
+    hash = "sha256-UAzKro3PgcZcAP3/3yXGU7DE+A4E8URtV+InMfyJrd4=";
   };
 
-  npmDepsHash = "sha256-VyxzJ9hbQ2baEio21XGkW94dYvrisJ5CmV+1IH44oZY=";
+  npmDepsHash = "sha256-iPvrieF2CIIJ8Xyez3TOaA8gZr4m6i0osUbnIf7Lbdc=";
 
   postPatch = ''
     cp ${./package-lock.json} package-lock.json
+
+    # https://github.com/anthropics/claude-code/issues/15195
+    substituteInPlace cli.js \
+      --replace-fail '#!/bin/sh' '#!/usr/bin/env sh'
   '';
 
   dontNpmBuild = true;
+  strictDeps = true;
 
   env.AUTHORIZED = "1";
 
   postInstall = ''
     wrapProgram $out/bin/claude \
       --set DISABLE_AUTOUPDATER 1 \
-      --unset DEV
+      --set DISABLE_INSTALLATION_CHECKS 1 \
+      --unset DEV \
+      --prefix PATH : ${
+        lib.makeBinPath (
+          [ procps ]
+          ++ lib.optionals stdenv.hostPlatform.isLinux [
+            bubblewrap
+            socat
+          ]
+        )
+      }
   '';
+
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [
+    writableTmpDirAsHomeHook
+    versionCheckHook
+  ];
+  versionCheckKeepEnvironment = [ "HOME" ];
 
   meta = {
     description = "Agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster";
