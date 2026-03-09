@@ -41,6 +41,7 @@
 
     eva
 
+    fastfetch
     fd
     fnm
 
@@ -81,7 +82,6 @@
     (lib.mkIf pkgs.stdenv.isDarwin m-cli)
 
     netcat
-    neofetch
     nmap
 
     onefetch
