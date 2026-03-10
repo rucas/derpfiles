@@ -39,6 +39,21 @@ in
       figma.enable = lib.mkEnableOption "figma MCP";
     };
 
+    lsp = {
+      enable = lib.mkEnableOption "LSP tool integration for Claude Code";
+      servers = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [
+          "pyright"
+          "typescript"
+          "gopls"
+          "kotlin"
+          "html-css"
+        ];
+        description = "List of LSP plugin names to enable (e.g. [\"pyright\" \"typescript\" \"gopls\"])";
+      };
+    };
+
     model = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
@@ -83,6 +98,17 @@ in
       settings = {
         theme = "dark";
         model = lib.mkIf (cfg.model != null) cfg.model;
+        env = lib.mkIf cfg.lsp.enable {
+          ENABLE_LSP_TOOL = "1";
+        };
+        enabledPlugins = lib.mkIf cfg.lsp.enable (
+          builtins.listToAttrs (
+            map (name: {
+              name = "${name}-lsp@claude-plugins-official";
+              value = true;
+            }) cfg.lsp.servers
+          )
+        );
         permissions.allow = [
           # Nix package manager commands
           "Bash(nix build *)"

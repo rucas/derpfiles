@@ -19,6 +19,14 @@
 
   programs.claude-code-custom = {
     enable = true;
+    lsp = {
+      enable = true;
+      servers = [
+        "gopls"
+        "html-css"
+        "typescript"
+      ];
+    };
     model = "claude-opus-4-6";
     mcpServers = {
       fetch.enable = true;
