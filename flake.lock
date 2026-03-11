@@ -96,6 +96,22 @@
         "type": "github"
       }
     },
+    "claude-code-safety-net": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769997563,
+        "narHash": "sha256-HN034kA5TkUMeEpTrP5sTrGu5pOCkJXZCajuXDw8ARk=",
+        "owner": "kenryu42",
+        "repo": "claude-code-safety-net",
+        "rev": "82f676be5a6991e1a3d4824ef6ac00607ed6e408",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kenryu42",
+        "repo": "claude-code-safety-net",
+        "type": "github"
+      }
+    },
     "claudecode": {
       "flake": false,
       "locked": {
@@ -1069,6 +1085,7 @@
         "agenix": "agenix",
         "alacritty-theme": "alacritty-theme",
         "betterfox-nix": "betterfox-nix",
+        "claude-code-safety-net": "claude-code-safety-net",
         "english-words": "english-words",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
         "firefox-addons": "firefox-addons",

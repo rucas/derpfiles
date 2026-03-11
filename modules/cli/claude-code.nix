@@ -54,6 +54,10 @@ in
       };
     };
 
+    safetyNet.enable = lib.mkEnableOption "cc-safety-net plugin" // {
+      default = true;
+    };
+
     model = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
@@ -109,96 +113,39 @@ in
             }) cfg.lsp.servers
           )
         );
-        permissions.allow = [
-          # Nix package manager commands
-          "Bash(nix build *)"
-          "Bash(nix develop *)"
-          "Bash(nix eval *)"
-          "Bash(nix flake check *)"
-          "Bash(nix flake metadata *)"
-          "Bash(nix flake show *)"
-          "Bash(nix log *)"
-          "Bash(nix run *)"
-          "Bash(nix search *)"
-
-          # Search and file tools
-          "Read(*)"
-          "Read(~/Work/*)"
-          "Read(~/Code/*)"
-          "Edit(~/Work/*)"
-          "Edit(~/Code/*)"
-          "Write(~/Work/*)"
-          "Write(~/Code/*)"
-          "Glob(*)"
-          "Glob(~/Work/*)"
-          "Glob(~/Code/*)"
-          "Grep(*)"
-          "Bash(rg *)"
-          "Bash(fd *)"
-
-          # Git read operations
-          "Bash(git status *)"
-          "Bash(git log *)"
-          "Bash(git diff *)"
-          "Bash(git show *)"
-          "Bash(git branch *)"
-          "Bash(git remote *)"
-          "Bash(git ls-files *)"
-          "Bash(git ls-tree *)"
-          "Bash(git rev-parse *)"
-
-          # GitHub CLI read operations
-          "Bash(gh pr view *)"
-          "Bash(gh pr diff *)"
-          "Bash(gh pr list *)"
-          "Bash(gh issue view *)"
-          "Bash(gh issue list *)"
-          "Bash(gh repo view *)"
-          "Bash(gh api *)"
-          "Bash(gh status *)"
-
-          # File viewing
-          "Bash(bat *)"
-          "Bash(cat *)"
-          "Bash(head *)"
-          "Bash(tail *)"
-          "Bash(less *)"
-          "Bash(more *)"
-
-          # Directory listing
-          "Bash(ls *)"
-          "Bash(tree *)"
-          "Bash(exa *)"
-
-          # File information
-          "Bash(file *)"
-          "Bash(stat *)"
-          "Bash(wc *)"
-          "Bash(du *)"
-          "Bash(df *)"
-
-          # Text processing
-          "Bash(grep *)"
-          "Bash(awk *)"
-          "Bash(sed *)"
-          "Bash(sort *)"
-          "Bash(uniq *)"
-          "Bash(cut *)"
-          "Bash(diff *)"
-
-          # Data format tools
-          "Bash(jq *)"
-          "Bash(yq *)"
-          "Bash(ast-grep *)"
-
-          # System information
-          "Bash(which *)"
-          "Bash(whereis *)"
-          "Bash(env)"
-          "Bash(printenv *)"
-          "Bash(pwd)"
-          "Bash(whoami)"
-        ];
+        hooks = lib.mkIf cfg.safetyNet.enable {
+          PreToolUse = [
+            {
+              matcher = "Bash";
+              hooks = [
+                {
+                  type = "command";
+                  command = "${pkgs.cc-safety-net}/bin/cc-safety-net --claude-code";
+                }
+              ];
+            }
+          ];
+        };
+        permissions = {
+          allow = [
+            "Bash(*)"
+            "Read(*)"
+            "Edit(*)"
+            "Write(*)"
+            "Glob(*)"
+            "Grep(*)"
+            "WebFetch(*)"
+            "WebSearch(*)"
+            "mcp__*(*)"
+          ];
+          deny = [
+            "Bash(rm -rf *)"
+            "Bash(git push --force*)"
+            "Bash(git reset --hard*)"
+            "Bash(git checkout -- *)"
+            "Bash(git clean -f*)"
+          ];
+        };
       };
       memory.text = cfg.memory;
 

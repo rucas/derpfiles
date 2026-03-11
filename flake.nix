@@ -75,6 +75,10 @@
       url = "github:extrawurst/gitui";
       flake = false;
     };
+    claude-code-safety-net = {
+      url = "github:kenryu42/claude-code-safety-net";
+      flake = false;
+    };
   };
 
   outputs =
@@ -107,6 +111,7 @@
         {
           packages = {
             claude-code = pkgs.claude-code;
+            cc-safety-net = pkgs.cc-safety-net;
             gitui = pkgs.gitui;
             inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus;
           }

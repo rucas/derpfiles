@@ -71,6 +71,22 @@ final: prev: {
 
     meta = prev.gitui.meta;
   };
+  cc-safety-net = prev.stdenv.mkDerivation {
+    pname = "cc-safety-net";
+    version = "unstable";
+    src = inputs.claude-code-safety-net;
+    nativeBuildInputs = [ prev.makeWrapper ];
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out/lib/cc-safety-net
+      cp -r dist $out/lib/cc-safety-net/
+      mkdir -p $out/bin
+      makeWrapper ${prev.nodejs}/bin/node $out/bin/cc-safety-net \
+        --add-flags "$out/lib/cc-safety-net/dist/bin/cc-safety-net.js"
+      runHook postInstall
+    '';
+    meta.mainProgram = "cc-safety-net";
+  };
   tmuxPlugins = prev.tmuxPlugins // {
     tmux-1password = prev.tmuxPlugins.mkTmuxPlugin {
       pluginName = "tmux-1password";
