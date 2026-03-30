@@ -79,6 +79,10 @@
       url = "github:kenryu42/claude-code-safety-net";
       flake = false;
     };
+    playwright-mcp = {
+      url = "github:microsoft/playwright-mcp";
+      flake = false;
+    };
   };
 
   outputs =
@@ -112,6 +116,7 @@
           packages = {
             claude-code = pkgs.claude-code;
             cc-safety-net = pkgs.cc-safety-net;
+            playwright-mcp = pkgs.playwright-mcp;
             gitui = pkgs.gitui;
             inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus;
           }

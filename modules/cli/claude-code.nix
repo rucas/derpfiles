@@ -37,6 +37,7 @@ in
       jira.enable = lib.mkEnableOption "jira MCP";
       chronosphere.enable = lib.mkEnableOption "chronosphere MCP";
       figma.enable = lib.mkEnableOption "figma MCP";
+      playwright.enable = lib.mkEnableOption "playwright MCP";
     };
 
     lsp = {
@@ -199,6 +200,11 @@ in
         figma = lib.mkIf cfg.mcpServers.figma.enable {
           type = "http";
           url = "https://mcp.figma.com/mcp";
+        };
+
+        playwright = lib.mkIf cfg.mcpServers.playwright.enable {
+          command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
+          env.PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
         };
       };
     };

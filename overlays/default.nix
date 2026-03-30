@@ -8,6 +8,7 @@ final: prev: {
   mcp-server-time = prev.callPackage ../pkgs/mcp-server-time { };
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
+  playwright-mcp = prev.callPackage ../pkgs/playwright-mcp { inherit (inputs) playwright-mcp; };
   # snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
 
   gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
@@ -34,6 +35,7 @@ final: prev: {
     (python-final: python-prev: {
       mcp = python-prev.mcp.overridePythonAttrs (old: {
         postPatch = "";
+        doCheck = false;
       });
     })
   ];

@@ -1041,6 +1041,22 @@
         "type": "github"
       }
     },
+    "playwright-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774625196,
+        "narHash": "sha256-g4Q0sGe25BiU4dpUVi7N7uVoTO82ksJSh6+zFtXCWN0=",
+        "owner": "microsoft",
+        "repo": "playwright-mcp",
+        "rev": "9521308275b8947db7a04188085ead015235806d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "microsoft",
+        "repo": "playwright-mcp",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_3",
@@ -1100,6 +1116,7 @@
         "nur": "nur",
         "nxvm": "nxvm",
         "opnix": "opnix",
+        "playwright-mcp": "playwright-mcp",
         "spacebar": "spacebar",
         "tmux-1password": "tmux-1password",
         "tmux-pomodoro-plus": "tmux-pomodoro-plus"

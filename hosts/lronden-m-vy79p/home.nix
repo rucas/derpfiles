@@ -28,6 +28,7 @@
       rollbar.enable = true;
       jira.enable = true;
       chronosphere.enable = true;
+      playwright.enable = true;
     };
   };
 
