@@ -19,6 +19,7 @@
   home.stateVersion = "23.05";
 
   home.packages = [
+    (import ../../pkgs/git-wt pkgs)
     (import ../../pkgs/shortuuid pkgs)
     inputs.nxvm.packages.${pkgs.system}.default
   ];

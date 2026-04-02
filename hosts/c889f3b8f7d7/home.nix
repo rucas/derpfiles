@@ -48,6 +48,7 @@
 
   home.packages = [
     (import ../../pkgs/dnd pkgs)
+    (import ../../pkgs/git-wt pkgs)
     (import ../../pkgs/shortuuid pkgs)
     inputs.nxvm.packages.${pkgs.system}.default
   ];
