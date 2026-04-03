@@ -181,6 +181,26 @@
     options = [ "bind" ];
   };
 
+  # Create bind mount to a non-private location
+  fileSystems."/var/lib/AdGuardHome" = {
+    device = "/data/AdGuardHome";
+    options = [ "bind" ];
+  };
+
+  systemd.services.adguardhome.serviceConfig = {
+    DynamicUser = pkgs.lib.mkForce false;
+    User = "adguardhome";
+    Group = "adguardhome";
+  };
+
+  users.users.adguardhome = {
+    isSystemUser = true;
+    group = "adguardhome";
+    uid = 62939;
+  };
+
+  users.groups.adguardhome.gid = 62939;
+
   networking.hostName = "rucaslab";
   networking.networkmanager.enable = true;
 
