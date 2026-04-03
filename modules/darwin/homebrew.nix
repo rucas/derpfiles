@@ -25,8 +25,6 @@ let
       ];
       "blkmrkt" = [
         "balenaetcher"
-        "mqttx"
-        "mqtt-explorer"
         "tailscale-app"
         "vlc"
       ];

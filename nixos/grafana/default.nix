@@ -40,6 +40,7 @@
         http_port = 2342;
         domain = "grafana.rucaslab.com";
       };
+      security.secret_key = "$__file{${config.age.secrets.grafana.path}}";
     };
   };
 }

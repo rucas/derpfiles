@@ -33,13 +33,19 @@
   ];
 
   age.secrets = {
-    tailscale = { file = ./secrets/tailscale.age; };
+    tailscale = {
+      file = ./secrets/tailscale.age;
+    };
     tailscale_golink = {
       file = ./secrets/tailscale_golink.age;
       owner = config.services.golink.user;
     };
-    cloudflare = { file = ./secrets/cloudflare.age; };
-    cloudflare_dynamicdns = { file = ./secrets/cloudflare_dynamicdns.age; };
+    cloudflare = {
+      file = ./secrets/cloudflare.age;
+    };
+    cloudflare_dynamicdns = {
+      file = ./secrets/cloudflare_dynamicdns.age;
+    };
     lutron = {
       file = ./secrets/lutron.age;
       path = "/var/lib/hass/lutron.key";
@@ -52,10 +58,18 @@
       owner = "zigbee2mqtt";
       group = "zigbee2mqtt";
     };
-    mosquitto = { file = ./secrets/mosquitto.age; };
-    zwave-js-ui = { file = ./secrets/zwave_js_ui.age; };
-    nix = { file = ./secrets/nix.age; };
-    paperless-ngx = { file = ./secrets/paperless-ngx.age; };
+    mosquitto = {
+      file = ./secrets/mosquitto.age;
+    };
+    zwave-js-ui = {
+      file = ./secrets/zwave_js_ui.age;
+    };
+    nix = {
+      file = ./secrets/nix.age;
+    };
+    paperless-ngx = {
+      file = ./secrets/paperless-ngx.age;
+    };
     obsidian = {
       file = ./secrets/obsidian.age;
       owner = config.services.couchdb.user;
@@ -101,6 +115,11 @@
       owner = config.services.authelia.instances.rucaslab.user;
       group = config.services.authelia.instances.rucaslab.group;
     };
+    grafana = {
+      file = ./secrets/grafana.age;
+      owner = "grafana";
+      group = "grafana";
+    };
   };
 
   # Bootloader.
@@ -108,7 +127,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Setup keyfile
-  boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
 
   # Enable swap on luks
   boot.initrd.luks.devices."luks-2da48510-45d3-40c0-ac58-1a10c28c424f".device =
@@ -157,7 +178,10 @@
   users.users.lucas = {
     isNormalUser = true;
     description = "Lucas";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
   };
 
   # needed for NixOs to set shell to zsh.
@@ -174,7 +198,10 @@
   nix = {
     settings = {
       sandbox = false;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       max-jobs = "auto";
       cores = 0;
       substituters = [
@@ -197,7 +224,10 @@
     '';
   };
 
-  environment.systemPackages = with pkgs; [ git vim ];
+  environment.systemPackages = with pkgs; [
+    git
+    vim
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

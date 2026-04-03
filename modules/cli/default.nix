@@ -76,7 +76,6 @@
     kubectl
     kubectx
 
-    # ledger
     lsof
 
     (lib.mkIf pkgs.stdenv.isDarwin m-cli)
@@ -90,10 +89,8 @@
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
 
-    # moreutils
     parallel
     pandoc
-    # (lib.mkIf pkgs.stdenv.isDarwin pinentry_mac)
     pre-commit
     procs
 
@@ -117,6 +114,7 @@
     xz
 
     yq
+    yubikey-agent
     yubikey-manager
   ];
 }
