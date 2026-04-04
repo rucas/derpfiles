@@ -54,7 +54,7 @@ in
             "2606:4700:4700::1002"
           ];
           upstream_dns = [
-            "https://security.cloudflare-dns.com/dns-query"
+            "https://cloudflare-dns.com/dns-query"
             "https://dns.quad9.net/dns-query"
           ];
           ratelimit = 0;
@@ -116,8 +116,10 @@ in
         user_rules = secretRules ++ [
           "@@||app2.cision.com^"
           "@@||api.my-ip.io^"
-          "@@||ipv4.icanhazip.com^$client='192.168.1.1'"
-          "@@||api.ipify.org^$client='192.168.1.1'"
+          "@@||ipv4.icanhazip.com^"
+          "@@||api.ipify.org^"
+          "@@||checkip.amazonaws.com^"
+          "@@||dynamicdns.park-your-domain.com^"
         ];
       };
     };

@@ -10,8 +10,13 @@
 
   programs.claude-code-custom = {
     enable = true;
-    # fetch, git, and time are enabled by default
-    # memory uses the same default configuration
+    model = "claude-opus-4-6";
+    mcpServers = {
+      fetch.enable = true;
+      git.enable = true;
+      time.enable = true;
+      github.enable = true;
+    };
   };
 
   home.username = "lucas";
