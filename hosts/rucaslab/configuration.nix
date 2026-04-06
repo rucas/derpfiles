@@ -247,6 +247,7 @@
   # NOTE: https://nixos.wiki/wiki/Command_Shell
   programs.zsh.enable = true;
   users.users.lucas.shell = pkgs.zsh;
+  security.sudo.wheelNeedsPassword = false;
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
 
