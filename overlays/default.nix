@@ -8,6 +8,11 @@ final: prev: {
   mcp-server-time = prev.callPackage ../pkgs/mcp-server-time { };
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
+  ledger-sync = prev.callPackage ../pkgs/ledger-sync { };
+  ledger-watch = prev.callPackage ../pkgs/ledger-watch {
+    fswatch = if prev.stdenv.isDarwin then prev.fswatch else null;
+    inotify-tools = if prev.stdenv.isLinux then prev.inotify-tools else null;
+  };
   playwright-mcp = prev.callPackage ../pkgs/playwright-mcp { inherit (inputs) playwright-mcp; };
   # snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
 
