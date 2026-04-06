@@ -21,23 +21,7 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/f06b7276-50cb-4887-9349-8f1980216d72";
-    fsType = "ext4";
-  };
-
-  # /data is now managed by ZFS (datapool)
-
-  boot.initrd.luks.devices."luks-9a689bcd-65b3-4228-bb15-19bb42bf117a".device =
-    "/dev/disk/by-uuid/9a689bcd-65b3-4228-bb15-19bb42bf117a";
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/2DCD-7A19";
-    fsType = "vfat";
-  };
-
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/74769d03-9d8c-4e2c-9f88-e39d409ffa8d"; }];
+  # Disk layout (filesystems, LUKS, swap) managed by disko — see disko.nix
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

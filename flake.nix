@@ -5,6 +5,10 @@
     agenix = {
       url = "github:ryantm/agenix";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixpkgs-unstable";
     };

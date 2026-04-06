@@ -7,6 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./disko.nix
     ../../nixos/adguard
     ../../nixos/ssh
     ../../nixos/tailscale
@@ -126,16 +127,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Setup keyfile
+  # Keyfile for swap LUKS auto-unlock (embedded in initrd)
   boot.initrd.secrets = {
     "/crypto_keyfile.bin" = null;
   };
-
-  # Enable swap on luks
-  boot.initrd.luks.devices."luks-2da48510-45d3-40c0-ac58-1a10c28c424f".device =
-    "/dev/disk/by-uuid/2da48510-45d3-40c0-ac58-1a10c28c424f";
-  boot.initrd.luks.devices."luks-2da48510-45d3-40c0-ac58-1a10c28c424f".keyFile =
-    "/crypto_keyfile.bin";
 
   # zfs settings...
   boot.supportedFilesystems = [ "zfs" ];
@@ -157,35 +152,6 @@
     };
   };
 
-  # NOTE: services.zfs.autoSnapshot creates the timers/services that run snapshots,
-  # but they only snapshot datasets with com.sun:auto-snapshot=true property set.
-  # This service ensures the property is set on datapool at boot.
-  systemd.services.zfs-set-auto-snapshot = {
-    description = "Enable ZFS auto-snapshot on datapool";
-    after = [ "zfs-import.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig.Type = "oneshot";
-    script = ''
-      ${pkgs.zfs}/bin/zfs set com.sun:auto-snapshot=true datapool || true
-    '';
-  };
-
-  # Bind mounts for services without native dataDir options
-  fileSystems."/var/lib/hass" = {
-    device = "/data/hass";
-    options = [ "bind" ];
-  };
-
-  fileSystems."/var/lib/prometheus2" = {
-    device = "/data/prometheus2";
-    options = [ "bind" ];
-  };
-
-  # Create bind mount to a non-private location
-  fileSystems."/var/lib/AdGuardHome" = {
-    device = "/data/AdGuardHome";
-    options = [ "bind" ];
-  };
 
   systemd.services.adguardhome.serviceConfig = {
     DynamicUser = pkgs.lib.mkForce false;

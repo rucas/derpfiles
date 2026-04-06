@@ -99,6 +99,7 @@ in
         host: cfg:
         mkSystemConfig inputs.nixpkgs.lib.nixosSystem host cfg [
           inputs.golink.nixosModules.default
+          inputs.disko.nixosModules.disko
           ../hosts/${host}/configuration.nix
           inputs.home-manager.nixosModules.home-manager
           inputs.agenix.nixosModules.default

@@ -150,6 +150,26 @@
         "type": "github"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773889306,
+        "narHash": "sha256-PAqwnsBSI9SVC2QugvQ3xeYCB0otOwCacB1ueQj2tgw=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "5ad85c82cc52264f4beddc934ba57f3789f28347",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "english-words": {
       "flake": false,
       "locked": {
@@ -1102,6 +1122,7 @@
         "alacritty-theme": "alacritty-theme",
         "betterfox-nix": "betterfox-nix",
         "claude-code-safety-net": "claude-code-safety-net",
+        "disko": "disko",
         "english-words": "english-words",
         "fast-syntax-highlighting": "fast-syntax-highlighting",
         "firefox-addons": "firefox-addons",
