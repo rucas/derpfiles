@@ -2,7 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -132,6 +137,14 @@
     "/crypto_keyfile.bin" = null;
   };
 
+  # disko generates /dev/disk/by-partlabel/disk-nvme-* paths, but the disk was
+  # partitioned manually so those labels don't exist. Override with stable UUIDs.
+  boot.initrd.luks.devices."cryptroot".device =
+    lib.mkForce "/dev/disk/by-uuid/9a689bcd-65b3-4228-bb15-19bb42bf117a";
+  boot.initrd.luks.devices."cryptswap".device =
+    lib.mkForce "/dev/disk/by-uuid/2da48510-45d3-40c0-ac58-1a10c28c424f";
+  fileSystems."/boot".device = lib.mkForce "/dev/disk/by-uuid/2DCD-7A19";
+
   # zfs settings...
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
@@ -151,7 +164,6 @@
       monthly = 12;
     };
   };
-
 
   systemd.services.adguardhome.serviceConfig = {
     DynamicUser = pkgs.lib.mkForce false;
@@ -227,7 +239,10 @@
   nix = {
     settings = {
       sandbox = false;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       max-jobs = "auto";
       cores = 0;
       substituters = [
