@@ -15,8 +15,6 @@
     cores = 0;
   };
 
-  services.nix-daemon.enable = true;
-
   # TODO: better way to do users.users?
   users.users.awslucas = {
     name = "awslucas";
@@ -32,8 +30,5 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
 
-  services.ledger-sync = {
-    enable = true;
-    user = "awslucas";
-  };
+  system.primaryUser = "awslucas";
 }

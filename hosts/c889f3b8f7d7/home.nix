@@ -8,6 +8,7 @@
     ../../modules/desktop/term
     ../../modules/shell/zsh
     # ../../modules/security
+    ../../modules/services/ledger-sync.nix
   ];
 
   nixpkgs = {
@@ -57,4 +58,5 @@
 
   home.sessionPath = [ "$HOME/.toolbox/bin" ];
 
+  services.ledger-sync.enable = true;
 }
