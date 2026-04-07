@@ -15,8 +15,6 @@
     cores = 0;
   };
 
-  services.nix-daemon.enable = true;
-
   # TODO: better way to do users.users?
   users.users.awslucas = {
     name = "awslucas";
@@ -31,4 +29,6 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
+
+  system.primaryUser = "awslucas";
 }
