@@ -112,11 +112,67 @@ sudo systemctl start lldap
 sudo rm -rf /var/lib/lldap.bak
 ```
 
+## Post-deploy verification
+
+Run these after `nixos-rebuild switch` to confirm everything is working.
+
+### ZFS datasets and snapshots
+
+```bash
+# All 14 datasets should be listed and mounted
+zfs list -r datapool
+
+# Sanoid should have created at least one snapshot per dataset
+zfs list -t snapshot -r datapool | head -20
+
+# Sanoid timer is active
+systemctl status sanoid.timer
+```
+
+### Restic backups
+
+```bash
+# Timer is scheduled
+systemctl status restic-backups-s3-glacier.timer
+
+# Test a manual backup run (will also initialize the repo on first run)
+sudo systemctl start restic-backups-s3-glacier.service
+journalctl -u restic-backups-s3-glacier.service -e --no-pager
+
+# Verify snapshots exist in the remote repo
+sudo restic -r s3:s3.amazonaws.com/rucaslab-backup/restic snapshots \
+  --password-file /run/agenix/restic-password
+```
+
+### PostgreSQL dumps
+
+```bash
+# Trigger a dump and check output
+sudo systemctl start postgresqlBackup-authelia-rucaslab.service
+ls -lh /var/backup/postgresql/
+```
+
+### Services health
+
+```bash
+# Quick check that all services came up after deploy
+for svc in home-assistant esphome zigbee2mqtt zwave-js-ui mosquitto \
+           adguardhome uptime-kuma changedetection-io ntfy-sh lldap \
+           authelia caddy postgresql grafana prometheus loki; do
+  systemctl is-active --quiet "$svc" && echo "OK  $svc" || echo "FAIL $svc"
+done
+```
+
+### Tailscale and networking
+
+```bash
+tailscale status
+curl -s -o /dev/null -w '%{http_code}' https://localhost:443 || true
+```
+
 ## Post-deploy cleanup
 
-we got rid of actual, paperless, etc...
-
-- [ ] Remove leftover not used data directories if they exist on the live host:
+- [ ] Remove leftover data directories from removed services:
   ```bash
   sudo rm -rf /var/lib/actual /var/lib/paperless /var/lib/radarr /var/lib/couchdb
   ```
