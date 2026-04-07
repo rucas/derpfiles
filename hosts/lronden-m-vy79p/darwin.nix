@@ -39,9 +39,4 @@
     touchIdAuth = true;
     watchIdAuth = true;
   };
-
-  services.ledger-sync = {
-    enable = true;
-    user = "lucas.rondenet";
-  };
 }

@@ -13,6 +13,7 @@
     ../../modules/desktop/term
     ../../modules/shell/zsh
     ../../modules/security
+    ../../modules/services/ledger-sync.nix
   ];
 
   programs.home-manager.enable = true;
@@ -53,4 +54,6 @@
 
   # NOTE: used for nvim
   xdg.dataFile."dict/words".source = inputs.english-words + "/words_alpha.txt";
+
+  services.ledger-sync.enable = true;
 }

@@ -12,7 +12,7 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 
-  homeDir = config.users.users.${cfg.user}.home;
+  homeDir = config.home.homeDirectory;
 
   logDir =
     if isDarwin then "${homeDir}/Library/Logs" else "${homeDir}/.local/state/ledger-sync";
@@ -27,12 +27,6 @@ in
 {
   options.services.ledger-sync = {
     enable = mkEnableOption "Automatic ledger sync service with file watching";
-
-    user = mkOption {
-      type = types.str;
-      description = "User to run the ledger sync service as";
-      example = "lucas";
-    };
 
     ledgerPath = mkOption {
       type = types.str;
@@ -49,8 +43,9 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     (mkIf isDarwin {
-      launchd.user.agents.ledger-sync-watcher = {
-        serviceConfig = {
+      launchd.agents.ledger-sync-watcher = {
+        enable = true;
+        config = {
           Label = "com.rucas.ledger-sync.watcher";
           ProgramArguments = [ "${pkgs.ledger-watch}/bin/ledger-watch" ];
           RunAtLoad = true;
@@ -64,15 +59,19 @@ in
 
     (mkIf isLinux {
       systemd.user.services.ledger-sync-watcher = {
-        description = "Ledger file watcher and sync service";
-        wantedBy = [ "default.target" ];
-        after = [ "network-online.target" ];
-        serviceConfig = {
+        Unit = {
+          Description = "Ledger file watcher and sync service";
+          After = [ "network-online.target" ];
+        };
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+        Service = {
           ExecStart = "${pkgs.ledger-watch}/bin/ledger-watch";
           Restart = "on-failure";
           RestartSec = 10;
+          Environment = mapAttrsToList (k: v: "${k}=${v}") envVars;
         };
-        environment = envVars;
       };
     })
   ]);

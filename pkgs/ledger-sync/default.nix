@@ -18,7 +18,6 @@ writeShellApplication {
   text = ''
     LEDGER_PATH="''${LEDGER_PATH:-$HOME/Code/ledger}"
     LOG_FILE="''${LOG_FILE:-$HOME/.local/state/ledger-sync/sync.log}"
-    LOG_RETENTION_DAYS=7
 
     mkdir -p "$(dirname "$LOG_FILE")"
 
@@ -117,7 +116,8 @@ writeShellApplication {
             return 0
         fi
 
-        local commit_msg="~ $(date '+%m/%d/%Y') ~"
+        local commit_msg
+        commit_msg="~ $(date '+%m/%d/%Y') ~"
         log_info "Creating commit: $commit_msg"
 
         if ! git commit -m "$commit_msg" 2>&1 | tee -a "$LOG_FILE"; then
