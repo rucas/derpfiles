@@ -36,6 +36,7 @@
     ../../nixos/authelia
     ../../nixos/actual
     ../../nixos/sanoid
+    ../../nixos/restic
     # ../../nixos/golink
   ];
 
@@ -126,6 +127,12 @@
       file = ./secrets/grafana.age;
       owner = "grafana";
       group = "grafana";
+    };
+    restic-aws-env = {
+      file = ./secrets/restic-aws-env.age;
+    };
+    restic-password = {
+      file = ./secrets/restic-password.age;
     };
   };
 

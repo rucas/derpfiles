@@ -106,4 +106,14 @@ in
     users.github-actions
     system
   ];
+  "restic-aws-env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "restic-password.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
 }
