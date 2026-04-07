@@ -127,11 +127,6 @@
             type = "zfs_fs";
             mountpoint = "/var/lib/AdGuardHome";
           };
-          caddy = {
-            # TLS certificates
-            type = "zfs_fs";
-            mountpoint = "/var/lib/caddy";
-          };
           mosquitto = {
             type = "zfs_fs";
             mountpoint = "/var/lib/mosquitto";

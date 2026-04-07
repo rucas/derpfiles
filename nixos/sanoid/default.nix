@@ -66,7 +66,6 @@
 
       # Standard
       "datapool/adguardhome"        = { useTemplate = [ "standard" ]; };
-      "datapool/caddy"              = { useTemplate = [ "standard" ]; };
       "datapool/mosquitto"          = { useTemplate = [ "standard" ]; };
       "datapool/uptime-kuma"        = { useTemplate = [ "standard" ]; };
       "datapool/changedetection-io" = { useTemplate = [ "standard" ]; };

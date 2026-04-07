@@ -85,7 +85,6 @@
 
       # Standard — painful to recreate
       "/var/lib/AdGuardHome"
-      "/var/lib/caddy"
       "/var/lib/mosquitto"
       "/var/lib/uptime-kuma"
       "/var/lib/changedetection-io"
