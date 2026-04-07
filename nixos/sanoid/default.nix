@@ -3,16 +3,7 @@
 # Sanoid manages local ZFS snapshot retention for all datapool datasets.
 # Offsite backups are handled by restic → AWS S3 Glacier (nixos/restic).
 #
-# On first deploy, create any missing ZFS datasets on the running system:
-#   sudo zfs create -o mountpoint=/var/lib/esphome             datapool/esphome
-#   sudo zfs create -o mountpoint=/var/lib/zigbee2mqtt         datapool/zigbee2mqtt
-#   sudo zfs create -o mountpoint=/var/lib/zwave-js-ui         datapool/zwave-js-ui
-#   sudo zfs create -o mountpoint=/var/lib/caddy               datapool/caddy
-#   sudo zfs create -o mountpoint=/var/lib/mosquitto           datapool/mosquitto
-#   sudo zfs create -o mountpoint=/var/lib/uptime-kuma         datapool/uptime-kuma
-#   sudo zfs create -o mountpoint=/var/lib/changedetection-io  datapool/changedetection-io
-#   sudo zfs create -o mountpoint=/var/lib/ntfy-sh             datapool/ntfy-sh
-#   sudo zfs create -o mountpoint=/var/lib/lldap               datapool/lldap
+# For ZFS dataset migration steps on a live system, see hosts/rucaslab/TODO.md
 {
   services.sanoid = {
     enable = true;
