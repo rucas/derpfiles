@@ -19,8 +19,11 @@ This document covers the full rebuild of rucaslab from scratch after catastrophi
 
 These cannot be recovered from the backups themselves. Store them in 1Password or on an encrypted USB.
 
-1. **Age private key** (`~/.config/sops/age/keys.txt` or wherever your key lives)
-   — needed to decrypt every agenix secret. Without this, you cannot deploy.
+1. **YubiKey** — the personal agenix identity is YubiKey-derived (`age1yubikey1q...`).
+   Keep your YubiKey safe; it is the key material, not a file on disk.
+   After a rebuild the SSH host key changes — update `hosts/rucaslab/secrets/secrets.nix`
+   with the new host public key and re-encrypt all secrets with `agenix -e <file>.age`
+   before running `nixos-rebuild`.
 
 2. **LUKS header backup** — run this once and store the file:
    ```bash
