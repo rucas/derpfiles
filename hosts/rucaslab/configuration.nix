@@ -35,6 +35,7 @@
     ../../nixos/lldap
     ../../nixos/authelia
     ../../nixos/actual
+    ../../nixos/sanoid
     # ../../nixos/golink
   ];
 
@@ -155,14 +156,10 @@
       enable = true;
       interval = "weekly";
     };
-    autoSnapshot = {
-      enable = true;
-      frequent = 4;
-      hourly = 24;
-      daily = 7;
-      weekly = 4;
-      monthly = 12;
-    };
+    # Snapshots are managed by Sanoid (nixos/sanoid/default.nix)
+    # which provides per-dataset retention policies and drives Syncoid
+    # for offsite replication.
+    autoSnapshot.enable = false;
   };
 
   systemd.services.adguardhome.serviceConfig = {
