@@ -130,14 +130,34 @@ nixos-install --flake /tmp/derpfiles#rucaslab --no-root-password
 
 ---
 
-### Step 6 — Copy your age private key onto the new system
+### Step 6 — Re-enroll the new SSH host key in agenix
 
-Before rebooting, plant your age key so agenix can decrypt secrets on first boot:
+agenix decrypts secrets at boot using the host's SSH private key. A fresh NixOS install
+generates a new host keypair, so the old encrypted secrets won't decrypt until you re-enroll.
+
+Boot the new system (services may fail — that's expected until secrets are re-enrolled).
+Then, **from a machine with your YubiKey plugged in**:
 
 ```bash
-mkdir -p /mnt/root/.config/sops/age
-cp /path/to/age-key.txt /mnt/root/.config/sops/age/keys.txt
-chmod 600 /mnt/root/.config/sops/age/keys.txt
+# 1. Get the new host public key from the fresh install
+ssh lucas@rucaslab cat /etc/ssh/ssh_host_ed25519_key.pub
+
+# 2. Update the system identity in secrets.nix
+#    Replace the old ssh-ed25519 line under `system =` with the new key
+vim hosts/rucaslab/secrets/secrets.nix
+
+# 3. Re-encrypt every secret with the new host key (YubiKey touch may be required)
+cd hosts/rucaslab/secrets
+for f in *.age; do agenix -e "$f"; done
+
+# 4. Commit and push
+cd ../../..
+git add hosts/rucaslab/secrets/
+git commit -m "chore: re-enroll rucaslab host key after rebuild"
+git push
+
+# 5. On rucaslab, rebuild now that secrets are readable
+sudo nixos-rebuild switch --flake github:rucas/derpfiles#rucaslab
 ```
 
 ---
@@ -232,8 +252,11 @@ restic restore latest --target / --include /var/lib/esphome
 # List ZFS snapshots for a dataset
 zfs list -t snapshot datapool/hass
 
-# Roll back a dataset to last snapshot (DESTRUCTIVE — stops service first)
+# Roll back a dataset to a recent Sanoid snapshot (DESTRUCTIVE — stops service first)
+# First, list available snapshots to get the exact name:
+zfs list -t snapshot -o name,creation -s creation datapool/hass | tail -10
+# Then roll back to the chosen snapshot:
 systemctl stop home-assistant
-zfs rollback datapool/hass@autosnap_$(date +%Y-%m-%d)_00:00:00_daily
+zfs rollback datapool/hass@<snapshot-name-from-above>
 systemctl start home-assistant
 ```

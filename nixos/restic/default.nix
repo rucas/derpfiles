@@ -25,20 +25,21 @@
 #    Generate an access key for this user.
 #
 # 3. Encrypt and add the two secrets (fill in your values then run agenix):
-#      # restic-aws-env.age — environment variables for AWS + restic repo
+#      # restic-aws-env.age — AWS credentials as shell env vars
 #      AWS_ACCESS_KEY_ID=AKIAxxxxxxxxxxxxxxxxxx
 #      AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #      AWS_DEFAULT_REGION=us-east-1
-#      RESTIC_REPOSITORY=s3:s3.amazonaws.com/rucaslab-backup/restic
 #
-#      # restic-password.age — single line, the restic encryption password
+#      # restic-password.age — single line, the restic encryption passphrase
 #      a-long-random-passphrase-store-in-1password
 #
 #    cd hosts/rucaslab/secrets
 #    agenix -e restic-aws-env.age
 #    agenix -e restic-password.age
 #
-# 4. On first run, restic will initialise the repository automatically
+# 4. Set your S3 bucket name in the `repository` field below.
+#
+# 5. On first run, restic will initialise the repository automatically
 #    (initialize = true below).
 #
 # Restore: see BACKUP.md
@@ -61,10 +62,11 @@
   services.restic.backups.s3-glacier = {
     initialize = true;
 
-    # Repository URL is in the environment file as RESTIC_REPOSITORY
-    # (keeps the bucket name out of the nix store — it's not sensitive but
-    #  consistent with how the creds are handled)
-    repositoryFile = config.age.secrets.restic-aws-env.path;
+    # Bucket name is not sensitive — set it here directly.
+    # Format: s3:s3.amazonaws.com/BUCKET/PREFIX
+    repository = "s3:s3.amazonaws.com/rucaslab-backup/restic";
+
+    # AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
     environmentFile = config.age.secrets.restic-aws-env.path;
     passwordFile = config.age.secrets.restic-password.path;
 
