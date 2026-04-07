@@ -29,12 +29,10 @@
     ../../nixos/prometheus
     ../../nixos/loki
     ../../nixos/promtail
-    ../../nixos/obsidian
     ../../nixos/changedetection-io
     ../../nixos/ntfy-sh
     ../../nixos/lldap
     ../../nixos/authelia
-    ../../nixos/actual
     ../../nixos/sanoid
     ../../nixos/restic
     # ../../nixos/golink
@@ -74,14 +72,6 @@
     };
     nix = {
       file = ./secrets/nix.age;
-    };
-    paperless-ngx = {
-      file = ./secrets/paperless-ngx.age;
-    };
-    obsidian = {
-      file = ./secrets/obsidian.age;
-      owner = config.services.couchdb.user;
-      group = config.services.couchdb.group;
     };
     lldap_key_seed = {
       file = ./secrets/lldap_key_seed.age;

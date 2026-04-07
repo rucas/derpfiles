@@ -56,36 +56,9 @@
             }
           '';
         };
-        "radarr.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :7878
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
         "grafana.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :2342
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
-        "paperless.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :28981
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
-        "couchdb.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :5984
             encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}

@@ -96,19 +96,6 @@
               logbias = "throughput";
             };
           };
-          actual = {
-            type = "zfs_fs";
-            mountpoint = "/var/lib/actual";
-          };
-          paperless = {
-            type = "zfs_fs";
-            mountpoint = "/var/lib/paperless";
-          };
-          couchdb = {
-            # Obsidian Sync backend
-            type = "zfs_fs";
-            mountpoint = "/var/lib/couchdb";
-          };
           esphome = {
             type = "zfs_fs";
             mountpoint = "/var/lib/esphome";
@@ -142,10 +129,6 @@
           ntfy-sh = {
             type = "zfs_fs";
             mountpoint = "/var/lib/ntfy-sh";
-          };
-          radarr = {
-            type = "zfs_fs";
-            mountpoint = "/var/lib/radarr";
           };
           lldap = {
             type = "zfs_fs";

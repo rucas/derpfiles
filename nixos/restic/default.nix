@@ -76,9 +76,6 @@
 
       # Critical — irreplaceable
       "/var/lib/hass"
-      "/var/lib/actual"
-      "/var/lib/paperless"
-      "/var/lib/couchdb"
       "/var/lib/esphome"
       "/var/lib/zigbee2mqtt"
       "/var/lib/zwave-js-ui"
@@ -89,7 +86,6 @@
       "/var/lib/uptime-kuma"
       "/var/lib/changedetection-io"
       "/var/lib/ntfy-sh"
-      "/var/lib/radarr"
       "/var/lib/lldap"
     ];
 

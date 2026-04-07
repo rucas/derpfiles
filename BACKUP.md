@@ -200,8 +200,8 @@ restic snapshots --last
 restic check
 
 # Test a restore of a single file
-restic restore latest --target /tmp/restic-test --include /var/lib/actual
-ls /tmp/restic-test/var/lib/actual
+restic restore latest --target /tmp/restic-test --include /var/lib/esphome
+ls /tmp/restic-test/var/lib/esphome
 rm -rf /tmp/restic-test
 
 # Check Sanoid snapshots are accumulating
@@ -220,9 +220,6 @@ journalctl -u restic-backups-s3-glacier.service --since "24 hours ago"
 |---|---|---|
 | Home Assistant | `/var/lib/hass` | Sanoid + restic |
 | PostgreSQL (hass, lldap, authelia) | `/data/postgresql/14` | Sanoid + pg_dump → restic |
-| Actual Budget | `/var/lib/actual` | Sanoid + restic |
-| Paperless-NGX | `/var/lib/paperless` | Sanoid + restic |
-| CouchDB (Obsidian) | `/var/lib/couchdb` | Sanoid + restic |
 | ESPHome | `/var/lib/esphome` | Sanoid + restic |
 | Zigbee2MQTT | `/var/lib/zigbee2mqtt` | Sanoid + restic |
 | Z-Wave JS UI | `/var/lib/zwave-js-ui` | Sanoid + restic |
@@ -231,7 +228,6 @@ journalctl -u restic-backups-s3-glacier.service --since "24 hours ago"
 | Uptime Kuma | `/var/lib/uptime-kuma` | Sanoid + restic |
 | Changedetection | `/var/lib/changedetection-io` | Sanoid + restic |
 | ntfy | `/var/lib/ntfy-sh` | Sanoid + restic |
-| Radarr | `/var/lib/radarr` | Sanoid + restic |
 | LLDAP | `/var/lib/lldap` | Sanoid + restic (data in PG) |
 | Grafana | `/data/grafana` | Sanoid (observability, not in restic) |
 | Prometheus | `/var/lib/prometheus2` | Sanoid (observability, not in restic) |

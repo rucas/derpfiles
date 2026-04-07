@@ -4,9 +4,6 @@
 # Offsite backups are handled by restic → AWS S3 Glacier (nixos/restic).
 #
 # On first deploy, create any missing ZFS datasets on the running system:
-#   sudo zfs create -o mountpoint=/var/lib/actual              datapool/actual
-#   sudo zfs create -o mountpoint=/var/lib/paperless           datapool/paperless
-#   sudo zfs create -o mountpoint=/var/lib/couchdb             datapool/couchdb
 #   sudo zfs create -o mountpoint=/var/lib/esphome             datapool/esphome
 #   sudo zfs create -o mountpoint=/var/lib/zigbee2mqtt         datapool/zigbee2mqtt
 #   sudo zfs create -o mountpoint=/var/lib/zwave-js-ui         datapool/zwave-js-ui
@@ -15,7 +12,6 @@
 #   sudo zfs create -o mountpoint=/var/lib/uptime-kuma         datapool/uptime-kuma
 #   sudo zfs create -o mountpoint=/var/lib/changedetection-io  datapool/changedetection-io
 #   sudo zfs create -o mountpoint=/var/lib/ntfy-sh             datapool/ntfy-sh
-#   sudo zfs create -o mountpoint=/var/lib/radarr              datapool/radarr
 #   sudo zfs create -o mountpoint=/var/lib/lldap               datapool/lldap
 {
   services.sanoid = {
@@ -57,9 +53,6 @@
       # Critical
       "datapool/postgresql"         = { useTemplate = [ "critical" ]; };
       "datapool/hass"               = { useTemplate = [ "critical" ]; };
-      "datapool/actual"             = { useTemplate = [ "critical" ]; };
-      "datapool/paperless"          = { useTemplate = [ "critical" ]; };
-      "datapool/couchdb"            = { useTemplate = [ "critical" ]; };
       "datapool/esphome"            = { useTemplate = [ "critical" ]; };
       "datapool/zigbee2mqtt"        = { useTemplate = [ "critical" ]; };
       "datapool/zwave-js-ui"        = { useTemplate = [ "critical" ]; };
@@ -70,7 +63,6 @@
       "datapool/uptime-kuma"        = { useTemplate = [ "standard" ]; };
       "datapool/changedetection-io" = { useTemplate = [ "standard" ]; };
       "datapool/ntfy-sh"            = { useTemplate = [ "standard" ]; };
-      "datapool/radarr"             = { useTemplate = [ "standard" ]; };
       "datapool/lldap"              = { useTemplate = [ "standard" ]; };
 
       # Observability
