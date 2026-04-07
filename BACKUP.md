@@ -227,7 +227,6 @@ journalctl -u restic-backups-s3-glacier.service --since "24 hours ago"
 | Zigbee2MQTT | `/var/lib/zigbee2mqtt` | Sanoid + restic |
 | Z-Wave JS UI | `/var/lib/zwave-js-ui` | Sanoid + restic |
 | AdGuard Home | `/var/lib/AdGuardHome` | Sanoid + restic |
-| Caddy (TLS certs) | `/var/lib/caddy` | Sanoid + restic |
 | Mosquitto | `/var/lib/mosquitto` | Sanoid + restic |
 | Uptime Kuma | `/var/lib/uptime-kuma` | Sanoid + restic |
 | Changedetection | `/var/lib/changedetection-io` | Sanoid + restic |
