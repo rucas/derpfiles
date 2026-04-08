@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   services = {
     caddy = {
       enable = true;
@@ -56,15 +57,6 @@
             }
           '';
         };
-        "radarr.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :7878
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
         "grafana.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :2342
@@ -74,36 +66,9 @@
             }
           '';
         };
-        "paperless.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :28981
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
-        "couchdb.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :5984
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
         "changedetection.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :5000
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
-        "front.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :4321
             encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}

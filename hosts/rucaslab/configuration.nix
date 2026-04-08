@@ -29,12 +29,12 @@
     ../../nixos/prometheus
     ../../nixos/loki
     ../../nixos/promtail
-    ../../nixos/obsidian
     ../../nixos/changedetection-io
     ../../nixos/ntfy-sh
     ../../nixos/lldap
     ../../nixos/authelia
-    ../../nixos/actual
+    ../../nixos/sanoid
+    ../../nixos/restic
     # ../../nixos/golink
   ];
 
@@ -72,14 +72,6 @@
     };
     nix = {
       file = ./secrets/nix.age;
-    };
-    paperless-ngx = {
-      file = ./secrets/paperless-ngx.age;
-    };
-    obsidian = {
-      file = ./secrets/obsidian.age;
-      owner = config.services.couchdb.user;
-      group = config.services.couchdb.group;
     };
     lldap_key_seed = {
       file = ./secrets/lldap_key_seed.age;
@@ -126,6 +118,12 @@
       owner = "grafana";
       group = "grafana";
     };
+    restic-aws-env = {
+      file = ./secrets/restic-aws-env.age;
+    };
+    restic-password = {
+      file = ./secrets/restic-password.age;
+    };
   };
 
   # Bootloader.
@@ -155,14 +153,10 @@
       enable = true;
       interval = "weekly";
     };
-    autoSnapshot = {
-      enable = true;
-      frequent = 4;
-      hourly = 24;
-      daily = 7;
-      weekly = 4;
-      monthly = 12;
-    };
+    # Snapshots are managed by Sanoid (nixos/sanoid/default.nix)
+    # which provides per-dataset retention policies and drives Syncoid
+    # for offsite replication.
+    autoSnapshot.enable = false;
   };
 
   systemd.services.adguardhome.serviceConfig = {
@@ -233,8 +227,20 @@
   # https://discourse.nixos.org/t/nixos-rebuild-switch-upgrade-networkmanager-wait-online-service-failure/30746/2
   systemd.services.NetworkManager-wait-online.enable = pkgs.lib.mkForce false;
 
-  # Remove StateDirectory for Prometheus (uses bind mount)
+  # Remove StateDirectory for services using ZFS datasets
   systemd.services.prometheus.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+  systemd.services.esphome.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+  systemd.services.uptime-kuma.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+  systemd.services.uptime-kuma.serviceConfig.DynamicUser = pkgs.lib.mkForce false;
+  systemd.services.uptime-kuma.serviceConfig.ProtectSystem = pkgs.lib.mkForce false;
+  systemd.services.uptime-kuma.serviceConfig.User = "nobody";
+  systemd.services.uptime-kuma.serviceConfig.Group = "nogroup";
+  systemd.services.ntfy-sh.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+  systemd.services.ntfy-sh.serviceConfig.DynamicUser = pkgs.lib.mkForce false;
+  systemd.services.ntfy-sh.serviceConfig.ProtectSystem = pkgs.lib.mkForce false;
+  systemd.services.ntfy-sh.serviceConfig.User = pkgs.lib.mkForce "ntfy-sh";
+  systemd.services.ntfy-sh.serviceConfig.Group = pkgs.lib.mkForce "ntfy-sh";
+  systemd.services.lldap.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
 
   nix = {
     settings = {

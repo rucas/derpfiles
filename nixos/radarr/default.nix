@@ -1,1 +1,0 @@
-{ ... }: { services = { radarr = { enable = true; }; }; }

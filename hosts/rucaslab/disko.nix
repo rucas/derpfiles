@@ -82,40 +82,71 @@
         };
 
         datasets = {
+          # --- Critical: irreplaceable data ---
           hass = {
             type = "zfs_fs";
             mountpoint = "/var/lib/hass";
-            options."com.sun:auto-snapshot" = "true";
-          };
-          prometheus2 = {
-            type = "zfs_fs";
-            mountpoint = "/var/lib/prometheus2";
-            options."com.sun:auto-snapshot" = "true";
-          };
-          adguardhome = {
-            type = "zfs_fs";
-            mountpoint = "/var/lib/AdGuardHome";
-            options."com.sun:auto-snapshot" = "true";
           };
           postgresql = {
             type = "zfs_fs";
             mountpoint = "/data/postgresql/14";
             options = {
-              "com.sun:auto-snapshot" = "true";
               recordsize = "8K";
               primarycache = "metadata";
               logbias = "throughput";
             };
           };
+          esphome = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/esphome";
+          };
+          zigbee2mqtt = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/zigbee2mqtt";
+          };
+          zwave-js-ui = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/zwave-js-ui";
+          };
+
+          # --- Standard: config-heavy services ---
+          adguardhome = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/AdGuardHome";
+          };
+          mosquitto = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/mosquitto";
+          };
+          uptime-kuma = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/uptime-kuma";
+          };
+          changedetection-io = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/changedetection-io";
+          };
+          ntfy-sh = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/ntfy-sh";
+          };
+          lldap = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/lldap";
+          };
+
+          # --- Observability: regenerable data ---
           grafana = {
             type = "zfs_fs";
             mountpoint = "/data/grafana";
-            options."com.sun:auto-snapshot" = "true";
+          };
+          prometheus2 = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/prometheus2";
           };
           loki = {
             type = "zfs_fs";
             mountpoint = "/data/loki";
-            options."com.sun:auto-snapshot" = "true";
           };
         };
       };

@@ -51,16 +51,6 @@ in
     users.github-actions
     system
   ];
-  "paperless-ngx.age".publicKeys = [
-    users.personal-5c-nano
-    users.github-actions
-    system
-  ];
-  "obsidian.age".publicKeys = [
-    users.personal-5c-nano
-    users.github-actions
-    system
-  ];
   "lldap_key_seed.age".publicKeys = [
     users.personal-5c-nano
     users.github-actions
@@ -102,6 +92,16 @@ in
     system
   ];
   "grafana.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "restic-aws-env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "restic-password.age".publicKeys = [
     users.personal-5c-nano
     users.github-actions
     system
