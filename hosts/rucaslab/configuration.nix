@@ -28,7 +28,7 @@
     ../../nixos/grafana
     ../../nixos/prometheus
     ../../nixos/loki
-    ../../nixos/promtail
+    ../../nixos/alloy
     ../../nixos/changedetection-io
     ../../nixos/ntfy-sh
     ../../nixos/lldap
