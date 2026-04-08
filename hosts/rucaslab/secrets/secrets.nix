@@ -26,11 +26,7 @@ in
     users.github-actions
     system
   ];
-  "tailscale_golink.age".publicKeys = [
-    users.personal-5c-nano
-    users.github-actions
-    system
-  ];
+
   "zigbee2mqtt.age".publicKeys = [
     users.personal-5c-nano
     users.github-actions

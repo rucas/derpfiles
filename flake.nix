@@ -26,9 +26,7 @@
     alacritty-theme = {
       url = "github:alexghr/alacritty-theme.nix";
     };
-    golink = {
-      url = "github:tailscale/golink";
-    };
+
     tmux-1password = {
       url = "github:yardnsm/tmux-1password";
       flake = false;

@@ -50,7 +50,7 @@ in
         nixpkgs.overlays = [
           self.overlays.default
           inputs.alacritty-theme.overlays.default
-          inputs.golink.overlays.default
+
           inputs.spacebar.overlay
           inputs.nur.overlays.default
         ];
@@ -98,7 +98,7 @@ in
       flake.nixosConfigurations = lib.mapAttrs (
         host: cfg:
         mkSystemConfig inputs.nixpkgs.lib.nixosSystem host cfg [
-          inputs.golink.nixosModules.default
+
           inputs.disko.nixosModules.disko
           ../hosts/${host}/configuration.nix
           inputs.home-manager.nixosModules.home-manager

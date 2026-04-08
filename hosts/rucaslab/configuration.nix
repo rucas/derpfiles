@@ -35,17 +35,14 @@
     ../../nixos/authelia
     ../../nixos/sanoid
     ../../nixos/restic
-    # ../../nixos/golink
+
   ];
 
   age.secrets = {
     tailscale = {
       file = ./secrets/tailscale.age;
     };
-    tailscale_golink = {
-      file = ./secrets/tailscale_golink.age;
-      owner = config.services.golink.user;
-    };
+
     cloudflare = {
       file = ./secrets/cloudflare.age;
     };
