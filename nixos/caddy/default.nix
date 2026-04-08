@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   services = {
     caddy = {
       enable = true;
@@ -68,15 +69,6 @@
         "changedetection.rucaslab.com" = {
           extraConfig = ''
             reverse_proxy :5000
-            encode zstd gzip
-            tls {
-              dns cloudflare {$CLOUDFLARE_API_TOKEN}
-            }
-          '';
-        };
-        "front.rucaslab.com" = {
-          extraConfig = ''
-            reverse_proxy :4321
             encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
