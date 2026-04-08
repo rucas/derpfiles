@@ -35,6 +35,8 @@ sudo systemctl start esphome
 sudo rm -rf /var/lib/esphome.bak
 ```
 
+DONE
+
 #### zigbee2mqtt
 
 ```bash
@@ -45,6 +47,8 @@ sudo cp -a /var/lib/zigbee2mqtt.bak/. /var/lib/zigbee2mqtt/
 sudo systemctl start zigbee2mqtt
 sudo rm -rf /var/lib/zigbee2mqtt.bak
 ```
+
+DONE
 
 #### zwave-js-ui
 
@@ -57,6 +61,8 @@ sudo systemctl start zwave-js-ui
 sudo rm -rf /var/lib/zwave-js-ui.bak
 ```
 
+DONE
+
 #### mosquitto
 
 ```bash
@@ -68,6 +74,8 @@ sudo systemctl start mosquitto
 sudo rm -rf /var/lib/mosquitto.bak
 ```
 
+DONE
+
 #### uptime-kuma
 
 ```bash
@@ -78,6 +86,7 @@ sudo cp -a /var/lib/uptime-kuma.bak/. /var/lib/uptime-kuma/
 sudo systemctl start uptime-kuma
 sudo rm -rf /var/lib/uptime-kuma.bak
 ```
+DONE
 
 #### changedetection-io
 
@@ -90,6 +99,8 @@ sudo systemctl start changedetection-io
 sudo rm -rf /var/lib/changedetection-io.bak
 ```
 
+DONE
+
 #### ntfy-sh
 
 ```bash
@@ -101,6 +112,8 @@ sudo systemctl start ntfy-sh
 sudo rm -rf /var/lib/ntfy-sh.bak
 ```
 
+DONE
+
 #### lldap
 
 ```bash
@@ -111,6 +124,8 @@ sudo cp -a /var/lib/lldap.bak/. /var/lib/lldap/
 sudo systemctl start lldap
 sudo rm -rf /var/lib/lldap.bak
 ```
+
+DONE
 
 ## Post-deploy verification
 
