@@ -55,6 +55,7 @@
       "datapool/changedetection-io" = { useTemplate = [ "standard" ]; };
       "datapool/ntfy-sh"            = { useTemplate = [ "standard" ]; };
       "datapool/lldap"              = { useTemplate = [ "standard" ]; };
+      "datapool/papra"              = { useTemplate = [ "standard" ]; };
 
       # Observability
       "datapool/grafana"            = { useTemplate = [ "observability" ]; };

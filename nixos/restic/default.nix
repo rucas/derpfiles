@@ -87,6 +87,7 @@
       "/var/lib/changedetection-io"
       "/var/lib/ntfy-sh"
       "/var/lib/lldap"
+      "/var/lib/papra"
     ];
 
     exclude = [

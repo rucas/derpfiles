@@ -1,19 +1,21 @@
-{ config, lib, ... }: {
+{ config, lib, ... }:
+{
   services = {
     redis.servers.authelia.enable = true;
     authelia.instances.rucaslab = {
       enable = true;
       secrets = {
         jwtSecretFile = config.age.secrets.authelia_jwt_secret.path;
-        storageEncryptionKeyFile =
-          config.age.secrets.authelia_storage_encryption_key.path;
+        storageEncryptionKeyFile = config.age.secrets.authelia_storage_encryption_key.path;
         sessionSecretFile = config.age.secrets.authelia_session_secret.path;
+        oidcHmacSecretFile = config.age.secrets.authelia_oidc_hmac_secret.path;
+        oidcIssuerPrivateKeyFile = config.age.secrets.authelia_oidc_jwks_key.path;
       };
       environmentVariables = {
         AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE =
           config.age.secrets.authelia_authentication_backend_ldap_password.path;
-        AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE =
-          config.age.secrets.authelia_notifier_smtp_password.path;
+        AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE = config.age.secrets.authelia_notifier_smtp_password.path;
+        X_AUTHELIA_CONFIG_FILTERS = "template";
       };
       settings = {
         theme = "auto";
@@ -30,8 +32,7 @@
             timeout = "5s";
             start_tls = false;
             base_dn = "dc=rucaslab,dc=com";
-            users_filter =
-              "(&({username_attribute}={input})(objectClass=person))";
+            users_filter = "(&({username_attribute}={input})(objectClass=person))";
             additional_groups_dn = "ou=groups";
             groups_filter = "(member={dn})";
             user = "uid=authelia,ou=people,dc=rucaslab,dc=com";
@@ -57,10 +58,12 @@
         access_control = {
           default_policy = "deny";
           # We want this rule to be low priority so it doesn't override the others
-          rules = lib.mkAfter [{
-            domain = "*.rucaslab.com";
-            policy = "one_factor";
-          }];
+          rules = lib.mkAfter [
+            {
+              domain = "*.rucaslab.com";
+              policy = "one_factor";
+            }
+          ];
         };
         storage.postgres = {
           address = "unix:///run/postgresql";
@@ -69,22 +72,50 @@
           password = "authelia-rucaslab";
         };
         session = {
-          redis = { host = "/var/run/redis-authelia/redis.sock"; };
-          cookies = [{
-            domain = "rucaslab.com";
-            authelia_url = "https://auth.rucaslab.com";
-            # The period of time the user can be inactive for before the session is destroyed
-            inactivity = "1M";
-            # The period of time before the cookie expires and the session is destroyed
-            expiration = "3M";
-            # The period of time before the cookie expires and the session is destroyed
-            # when the remember me box is checked
-            remember_me = "1y";
-          }];
+          redis = {
+            host = "/var/run/redis-authelia/redis.sock";
+          };
+          cookies = [
+            {
+              domain = "rucaslab.com";
+              authelia_url = "https://auth.rucaslab.com";
+              # The period of time the user can be inactive for before the session is destroyed
+              inactivity = "1M";
+              # The period of time before the cookie expires and the session is destroyed
+              expiration = "3M";
+              # The period of time before the cookie expires and the session is destroyed
+              # when the remember me box is checked
+              remember_me = "1y";
+            }
+          ];
         };
         # Necessary for Caddy integration
         # See https://www.authelia.com/integration/proxies/caddy/#implementation
         server.endpoints.authz.forward-auth.implementation = "ForwardAuth";
+
+        identity_providers.oidc = {
+          clients = [
+            {
+              client_id = "papra";
+              client_name = "Papra";
+              client_secret = "{{ secret \"${config.age.secrets.authelia_oidc_papra_client_secret.path}\" }}";
+              redirect_uris = [ "https://docs.rucaslab.com/api/auth/oauth2/callback/authelia" ];
+              scopes = [
+                "openid"
+                "profile"
+                "email"
+                "offline_access"
+              ];
+              grant_types = [
+                "authorization_code"
+                "refresh_token"
+              ];
+              response_types = [ "code" ];
+              token_endpoint_auth_method = "client_secret_post";
+              authorization_policy = "one_factor";
+            }
+          ];
+        };
       };
     };
 
@@ -112,13 +143,18 @@
   # NOTE: Give access to redis sock
   users.users.authelia-rucaslab.extraGroups = [ "redis-authelia" ];
 
-  systemd.services.authelia-rucaslab = let
-    dependencies =
-      [ "lldap.service" "postgresql.service" "redis-authelia.service" ];
+  systemd.services.authelia-rucaslab =
+    let
+      dependencies = [
+        "lldap.service"
+        "postgresql.service"
+        "redis-authelia.service"
+      ];
 
-  in {
-    # Authelia requires LLDAP, PostgreSQL, and Redis to be running
-    after = dependencies;
-    requires = dependencies;
-  };
+    in
+    {
+      # Authelia requires LLDAP, PostgreSQL, and Redis to be running
+      after = dependencies;
+      requires = dependencies;
+    };
 }

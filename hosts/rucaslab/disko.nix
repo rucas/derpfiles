@@ -134,6 +134,10 @@
             type = "zfs_fs";
             mountpoint = "/var/lib/lldap";
           };
+          papra = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/papra";
+          };
 
           # --- Observability: regenerable data ---
           grafana = {

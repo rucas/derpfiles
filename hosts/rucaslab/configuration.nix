@@ -31,6 +31,7 @@
     ../../nixos/alloy
     ../../nixos/changedetection-io
     ../../nixos/ntfy-sh
+    ../../nixos/papra
     ../../nixos/lldap
     ../../nixos/authelia
     ../../nixos/sanoid
@@ -120,6 +121,26 @@
     };
     restic-password = {
       file = ./secrets/restic-password.age;
+    };
+    papra_env = {
+      file = ./secrets/papra_env.age;
+      owner = "papra";
+      group = "papra";
+    };
+    authelia_oidc_hmac_secret = {
+      file = ./secrets/authelia_oidc_hmac_secret.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      group = config.services.authelia.instances.rucaslab.group;
+    };
+    authelia_oidc_jwks_key = {
+      file = ./secrets/authelia_oidc_jwks_key.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      group = config.services.authelia.instances.rucaslab.group;
+    };
+    authelia_oidc_papra_client_secret = {
+      file = ./secrets/authelia_oidc_papra_client_secret.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      group = config.services.authelia.instances.rucaslab.group;
     };
   };
 
@@ -238,6 +259,7 @@
   systemd.services.ntfy-sh.serviceConfig.User = pkgs.lib.mkForce "ntfy-sh";
   systemd.services.ntfy-sh.serviceConfig.Group = pkgs.lib.mkForce "ntfy-sh";
   systemd.services.lldap.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+  systemd.services.papra.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
 
   nix = {
     settings = {

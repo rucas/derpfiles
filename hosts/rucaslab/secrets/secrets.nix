@@ -102,4 +102,24 @@ in
     users.github-actions
     system
   ];
+  "papra_env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "authelia_oidc_hmac_secret.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "authelia_oidc_jwks_key.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "authelia_oidc_papra_client_secret.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
 }
