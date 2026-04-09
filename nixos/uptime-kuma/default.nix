@@ -7,7 +7,10 @@
     caddy = {
       virtualHosts = {
         "status.rucaslab.com" = {
-          extraConfig = "import https-proxy :${config.services.uptime-kuma.settings.PORT}";
+          extraConfig = ''
+            import auth
+            import https-proxy :${config.services.uptime-kuma.settings.PORT}
+          '';
         };
       };
     };
