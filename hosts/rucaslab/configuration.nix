@@ -34,6 +34,7 @@
     ../../nixos/papra
     ../../nixos/lldap
     ../../nixos/authelia
+    ../../nixos/cloudflared
     ../../nixos/sanoid
     ../../nixos/restic
 
@@ -126,6 +127,9 @@
       file = ./secrets/papra_env.age;
       owner = "papra";
       group = "papra";
+    };
+    cloudflared_tunnel_credentials = {
+      file = ./secrets/cloudflared_tunnel_credentials.age;
     };
     authelia_oidc_hmac_secret = {
       file = ./secrets/authelia_oidc_hmac_secret.age;

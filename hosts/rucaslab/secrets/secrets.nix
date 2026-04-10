@@ -122,4 +122,9 @@ in
     users.github-actions
     system
   ];
+  "cloudflared_tunnel_credentials.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
 }
