@@ -1,8 +1,20 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   systemd.tmpfiles.rules = [
     "d /var/lib/papra 0750 papra papra -"
+    "d /var/lib/papra/ingestion 0755 root scanner -"
+    "d /var/lib/papra/ingestion/org_ztdr3a6ccsh5jzv4m1gbp047 0775 scanner scanner -"
   ];
+
+  users.users.scanner = {
+    isSystemUser = true;
+    group = "scanner";
+    home = "/var/lib/papra/ingestion";
+    shell = "${pkgs.shadow}/bin/nologin";
+    hashedPasswordFile = config.age.secrets.scanner_password.path;
+  };
+
+  users.groups.scanner.members = [ "papra" ];
 
   services.papra = {
     enable = true;
@@ -14,6 +26,10 @@
       INTAKE_EMAILS_IS_ENABLED = true;
       INTAKE_EMAILS_DRIVER = "catch-all";
       INTAKE_EMAILS_CATCH_ALL_DOMAIN = "docs.rucaslab.com";
+      INGESTION_FOLDER_IS_ENABLED = true;
+      INGESTION_FOLDER_WATCHER_USE_POLLING = true;
+      INGESTION_FOLDER_WATCHER_POLLING_INTERVAL_MS = 2000;
+      INGESTION_FOLDER_POST_PROCESSING_STRATEGY = "move";
     };
   };
 

@@ -128,6 +128,9 @@
       owner = "papra";
       group = "papra";
     };
+    scanner_password = {
+      file = ./secrets/scanner_password.age;
+    };
     cloudflared_tunnel_credentials = {
       file = ./secrets/cloudflared_tunnel_credentials.age;
     };

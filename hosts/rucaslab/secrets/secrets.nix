@@ -127,4 +127,9 @@ in
     users.github-actions
     system
   ];
+  "scanner_password.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
 }

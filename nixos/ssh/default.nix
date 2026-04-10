@@ -14,6 +14,14 @@
       # Automatically remove stale sockets
       StreamLocalBindUnlink = "yes";
     };
+    extraConfig = ''
+      Match User scanner
+        ForceCommand internal-sftp
+        ChrootDirectory /var/lib/papra/ingestion
+        PasswordAuthentication yes
+        AllowTcpForwarding no
+        X11Forwarding no
+    '';
   };
 
   services.fail2ban = {
