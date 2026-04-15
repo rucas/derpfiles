@@ -4,4 +4,6 @@
     apiTokenFile = config.age.secrets.cloudflare_dynamicdns.path;
     domains = [ "portal.rucaslab.com" ];
   };
+
+  systemd.services.cloudflare-dyndns.restartIfChanged = false;
 }

@@ -2,19 +2,22 @@
 {
   systemd.tmpfiles.rules = [
     "d /var/lib/papra 0750 papra papra -"
-    "d /var/lib/papra/ingestion 0755 root scanner -"
-    "d /var/lib/papra/ingestion/org_ztdr3a6ccsh5jzv4m1gbp047 0775 scanner scanner -"
+    "d /var/lib/scanner 0755 root scanner -"
+    "d /var/lib/scanner/org_ztdr3a6ccsh5jzv4m1gbp047 0775 scanner scanner -"
+    "L /var/lib/papra/ingestion - - - - /var/lib/scanner"
   ];
 
   users.users.scanner = {
     isSystemUser = true;
     group = "scanner";
-    home = "/var/lib/papra/ingestion";
-    shell = "${pkgs.shadow}/bin/nologin";
+    home = "/var/lib/scanner";
+    shell = "/bin/sh";
     hashedPasswordFile = config.age.secrets.scanner_password.path;
   };
 
   users.groups.scanner.members = [ "papra" ];
+
+  systemd.services.papra.serviceConfig.WorkingDirectory = "/var/lib/papra";
 
   services.papra = {
     enable = true;

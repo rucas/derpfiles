@@ -5,6 +5,8 @@
   ...
 }:
 {
+  imports = [ ./scanner-sshd.nix ];
+
   services.openssh = {
     enable = true;
     settings = {
@@ -13,15 +15,12 @@
       PermitRootLogin = "no";
       # Automatically remove stale sockets
       StreamLocalBindUnlink = "yes";
+      Macs = [
+        "hmac-sha2-512-etm@openssh.com"
+        "hmac-sha2-256-etm@openssh.com"
+        "umac-128-etm@openssh.com"
+      ];
     };
-    extraConfig = ''
-      Match User scanner
-        ForceCommand internal-sftp
-        ChrootDirectory /var/lib/papra/ingestion
-        PasswordAuthentication yes
-        AllowTcpForwarding no
-        X11Forwarding no
-    '';
   };
 
   services.fail2ban = {
@@ -57,6 +56,16 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO06wFEJR3Y9YFfo45RqirpDzJ+Qy8dj0GWvZhbbEIwu sudo-auth-key"
     ];
   };
+
+  # Both sshd instances (main and scanner) share the PAM service name "sshd"
+  # because OpenSSH hardcodes this — there is no config option to change it.
+  # This is safe because:
+  #   - Main sshd: PasswordAuthentication=no + KbdInteractiveAuthentication=no
+  #     rejects password auth at the SSH protocol level before PAM is consulted.
+  #     pam_unix.so is loaded but never invoked for authentication.
+  #   - Scanner sshd: PasswordAuthentication=yes, so PAM is consulted and
+  #     pam_unix.so validates the scanner user's hashed password.
+  security.pam.services.sshd.unixAuth = lib.mkForce true;
 
   # Configure SSH agent auth for sudo
   security.pam.enableSSHAgentAuth = true;
