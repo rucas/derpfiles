@@ -60,6 +60,30 @@
         group = "staff";
         mode = "0600";
       };
+
+      snowflakeMcpAccount = {
+        reference = "op://Hermes/Snowflake MCP/account";
+        path = "/usr/local/var/opnix/secrets/snowflake/account";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
+
+      snowflakeMcpUser = {
+        reference = "op://Hermes/Snowflake MCP/username";
+        path = "/usr/local/var/opnix/secrets/snowflake/username";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
+
+      snowflakeMcpPassword = {
+        reference = "op://Hermes/Snowflake MCP/credential";
+        path = "/usr/local/var/opnix/secrets/snowflake/password";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
     };
   };
 }

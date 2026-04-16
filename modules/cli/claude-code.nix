@@ -38,6 +38,7 @@ in
       chronosphere.enable = lib.mkEnableOption "chronosphere MCP";
       figma.enable = lib.mkEnableOption "figma MCP";
       playwright.enable = lib.mkEnableOption "playwright MCP";
+      snowflake.enable = lib.mkEnableOption "snowflake MCP";
     };
 
     lsp = {
@@ -208,6 +209,19 @@ in
           command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
           env.PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
         };
+
+        snowflake = lib.mkIf cfg.mcpServers.snowflake.enable {
+          command = "${pkgs.snowflake-labs-mcp}/bin/snowflake-labs-mcp";
+          args = [
+            "--service-config-file"
+            "${./snowflake-mcp-config.yaml}"
+          ];
+          env = {
+            SNOWFLAKE_ACCOUNT = "\${SNOWFLAKE_MCP_ACCOUNT}";
+            SNOWFLAKE_USER = "\${SNOWFLAKE_MCP_USER}";
+            SNOWFLAKE_PASSWORD = "\${SNOWFLAKE_MCP_PASSWORD}";
+          };
+        };
       };
     };
 
@@ -235,6 +249,17 @@ in
         CHRONOSPHERE_MCP_TOKEN = lib.mkIf (
           getSecretPath "chronosphereMcpToken" != null
         ) "$(cat ${getSecretPath "chronosphereMcpToken"})";
+      })
+      (lib.mkIf (cfg.mcpServers.snowflake.enable) {
+        SNOWFLAKE_MCP_ACCOUNT = lib.mkIf (
+          getSecretPath "snowflakeMcpAccount" != null
+        ) "$(cat ${getSecretPath "snowflakeMcpAccount"})";
+        SNOWFLAKE_MCP_USER = lib.mkIf (
+          getSecretPath "snowflakeMcpUser" != null
+        ) "$(cat ${getSecretPath "snowflakeMcpUser"})";
+        SNOWFLAKE_MCP_PASSWORD = lib.mkIf (
+          getSecretPath "snowflakeMcpPassword" != null
+        ) "$(cat ${getSecretPath "snowflakeMcpPassword"})";
       })
     ];
   };

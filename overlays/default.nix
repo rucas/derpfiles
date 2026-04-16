@@ -14,7 +14,7 @@ final: prev: {
     inotify-tools = if prev.stdenv.isLinux then prev.inotify-tools else null;
   };
   playwright-mcp = prev.callPackage ../pkgs/playwright-mcp { inherit (inputs) playwright-mcp; };
-  # snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
+  snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
 
   gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
     version = "4.2.0";
