@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   services.grafana = {
     enable = true;
     provision = {
@@ -15,24 +16,22 @@
           name = "Loki";
           type = "loki";
           access = "proxy";
-          url = "http://127.0.0.1:${
-              toString
-              config.services.loki.configuration.server.http_listen_port
-            }";
+          url = "http://127.0.0.1:${toString config.services.loki.configuration.server.http_listen_port}";
         }
       ];
-      dashboards.settings.providers = [{
-        name = "Node";
-        type = "file";
-        url =
-          "https://raw.githubusercontent.com/rfmoz/grafana-dashboards/master/prometheus/node-exporter-full.json";
-        options.path = pkgs.fetchFromGitHub {
-          owner = "rfmoz";
-          repo = "grafana-dashboards";
-          rev = "cad8539";
-          hash = "sha256-9BYujV2xXRRDvNI4sjimZEB4Z2TY/0WhwJRh5P122rs=";
-        };
-      }];
+      dashboards.settings.providers = [
+        {
+          name = "Node";
+          type = "file";
+          url = "https://raw.githubusercontent.com/rfmoz/grafana-dashboards/master/prometheus/node-exporter-full.json";
+          options.path = pkgs.fetchFromGitHub {
+            owner = "rfmoz";
+            repo = "grafana-dashboards";
+            rev = "cad8539";
+            hash = "sha256-9BYujV2xXRRDvNI4sjimZEB4Z2TY/0WhwJRh5P122rs=";
+          };
+        }
+      ];
     };
     settings = {
       server = {

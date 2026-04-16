@@ -270,7 +270,7 @@
 
   nix = {
     settings = {
-      sandbox = false;
+      sandbox = true;
       experimental-features = [
         "nix-command"
         "flakes"

@@ -69,6 +69,7 @@
           address = "unix:///run/postgresql";
           database = "authelia-rucaslab";
           username = "authelia-rucaslab";
+          # NOTE: password is required by authelia but unused — postgres uses peer auth via unix socket
           password = "authelia-rucaslab";
         };
         session = {
