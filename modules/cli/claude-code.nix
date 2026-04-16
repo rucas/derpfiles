@@ -137,8 +137,10 @@ in
             "Grep(*)"
             "WebFetch(*)"
             "WebSearch(*)"
-            "mcp__*(*)"
-          ];
+          ]
+          ++ (map (name: "mcp__plugin_claude-code-home-manager_${name}") (
+            builtins.filter (name: cfg.mcpServers.${name}.enable) (builtins.attrNames cfg.mcpServers)
+          ));
           deny = [
             "Bash(rm -rf *)"
             "Bash(git push --force*)"
