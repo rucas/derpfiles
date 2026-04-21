@@ -13,7 +13,7 @@ buildNpmPackage {
 
   src = playwright-mcp;
 
-  npmDepsHash = "sha256-4udDkkGELATnHKA36/90t3104aYhpQoTwXiMbZUdm08=";
+  npmDepsHash = "sha256-m7UsCQ9p0UEqwvCv577gF0mc8+HpVcH3NENVEF04iGA=";
 
   nativeBuildInputs = [ makeWrapper ];
 
