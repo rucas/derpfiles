@@ -151,7 +151,7 @@ in
           ];
         };
       };
-      memory.text = cfg.memory;
+      context = cfg.memory;
 
       mcpServers = lib.filterAttrs (n: v: v != null) {
         fetch = lib.mkIf cfg.mcpServers.fetch.enable {
