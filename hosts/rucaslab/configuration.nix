@@ -155,10 +155,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Keyfile for swap LUKS auto-unlock (embedded in initrd)
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
+  # Keyfile for swap LUKS auto-unlock (automatically embedded by systemd-cryptsetup via disko)
 
   # disko generates /dev/disk/by-partlabel/disk-nvme-* paths, but the disk was
   # partitioned manually so those labels don't exist. Override with stable UUIDs.

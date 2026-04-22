@@ -1,46 +1,69 @@
-{ pkgs, CONF, ... }: {
-  # NOTE: https://nixos.wiki/wiki/Remote_LUKS_Unlocking
+{ pkgs, CONF, ... }:
+let
+  torRc = pkgs.writeText "tor.rc" ''
+    DataDirectory /etc/tor
+    SOCKSPort 127.0.0.1:9050 IsolateDestAddr
+    SOCKSPort 127.0.0.1:9063
+    HiddenServiceDir /etc/tor/onion/bootup
+    HiddenServicePort 22 127.0.0.1:22
+  '';
+in
+{
   boot.initrd.network.enable = true;
   boot.initrd.network.ssh = {
     enable = true;
     port = 22;
-    shell = "/bin/cryptsetup-askpass";
     authorizedKeys = CONF.hosts.rucaslab.trusted;
     hostKeys = [ "/etc/secrets/initrd/ssh_host_ed25519_key" ];
   };
+  boot.initrd.systemd.users.root.shell = "/bin/systemd-tty-ask-password-agent";
   boot.kernelParams = [ "ip=dhcp" ];
-  # copy your onion folder
-  boot.initrd.secrets = { "/etc/tor/onion/bootup" = /home/lucas/tor/onion; };
 
-  # copy tor to you initrd
-  boot.initrd.extraUtilsCommands = ''
-    copy_bin_and_libs ${pkgs.haveged}/bin/haveged
-    copy_bin_and_libs ${pkgs.tor}/bin/tor
-  '';
+  boot.initrd.secrets = { "/etc/tor/onion/bootup" = "/home/lucas/tor/onion"; };
 
-  # start tor during boot process
-  boot.initrd.network.postCommands = let
-    torRc = (pkgs.writeText "tor.rc" ''
-      DataDirectory /etc/tor
-      SOCKSPort 127.0.0.1:9050 IsolateDestAddr
-      SOCKSPort 127.0.0.1:9063
-      HiddenServiceDir /etc/tor/onion/bootup
-      HiddenServicePort 22 127.0.0.1:22
-    '');
-  in ''
-    echo "tor: preparing onion folder"
-    # have to do this otherwise tor does not want to start
-    chmod -R 700 /etc/tor
+  boot.initrd.systemd.storePaths = [
+    "${pkgs.haveged}/bin/haveged"
+    "${pkgs.tor}/bin/tor"
+    "${pkgs.coreutils}/bin/chmod"
+    torRc
+  ];
 
-    echo "make sure localhost is up"
-    ip a a 127.0.0.1/8 dev lo
-    ip link set lo up
+  boot.initrd.systemd.services.initrd-haveged = {
+    description = "Entropy harvesting daemon (initrd)";
+    wantedBy = [ "initrd.target" ];
+    after = [ "systemd-modules-load.service" ];
+    before = [
+      "initrd-tor.service"
+      "cryptsetup.target"
+    ];
+    conflicts = [ "initrd-switch-root.target" ];
+    unitConfig.DefaultDependencies = false;
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.haveged}/bin/haveged -F";
+    };
+  };
 
-    echo "haveged: starting haveged"
-    haveged -F &
-
-    echo "tor: starting tor"
-    tor -f ${torRc} --verify-config
-    tor -f ${torRc} &
-  '';
+  boot.initrd.systemd.services.initrd-tor = {
+    description = "Tor hidden service (initrd)";
+    wantedBy = [ "initrd.target" ];
+    requires = [
+      "network-online.target"
+      "initrd-haveged.service"
+    ];
+    after = [
+      "network-online.target"
+      "initrd-haveged.service"
+    ];
+    before = [ "cryptsetup.target" ];
+    conflicts = [ "initrd-switch-root.target" ];
+    unitConfig.DefaultDependencies = false;
+    serviceConfig = {
+      Type = "simple";
+      ExecStartPre = "${pkgs.coreutils}/bin/chmod -R 700 /etc/tor";
+      ExecStart = "${pkgs.tor}/bin/tor -f ${torRc}";
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+  };
 }
