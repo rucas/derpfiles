@@ -252,6 +252,9 @@
   # Remove StateDirectory for services using ZFS datasets
   systemd.services.prometheus.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
   systemd.services.esphome.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+  systemd.services.esphome.serviceConfig.DynamicUser = pkgs.lib.mkForce false;
+  systemd.services.esphome.serviceConfig.User = "esphome";
+  systemd.services.esphome.serviceConfig.Group = "esphome";
   systemd.services.uptime-kuma.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
   systemd.services.uptime-kuma.serviceConfig.DynamicUser = pkgs.lib.mkForce false;
   systemd.services.uptime-kuma.serviceConfig.ProtectSystem = pkgs.lib.mkForce false;
