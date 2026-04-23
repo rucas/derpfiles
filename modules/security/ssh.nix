@@ -32,6 +32,14 @@ in
           forwardAgent = true;
           addKeysToAgent = "yes";
         };
+        "unlock" = {
+          port = 22;
+          user = "root";
+          # pubkeyAuthentication = "yes";
+          identityFile = "~/.ssh/id_ed25519_sk";
+          # verifyHostKeyDNS = "no";
+          proxyCommand = "ncat --proxy 127.0.0.1:9050 --proxy-type socks5 $(cat /usr/local/var/opnix/secrets/ssh/onion-host) %p";
+        };
       })
     ];
   };

@@ -12,6 +12,13 @@
         group = "staff";
         mode = "0600";
       };
+      sshOnionHost = {
+        reference = "op://Homelab/SSH Onion Host/credential";
+        path = "/usr/local/var/opnix/secrets/ssh/onion-host";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
     };
   };
 }
