@@ -60,16 +60,41 @@ writeShellApplication {
       tmpdir="$(mktemp -d)"
       trap 'rm -rf "$tmpdir"' RETURN
 
+      api_branches=()
       for wt in "''${worktrees[@]}"; do
         read -r _ branch_ref <<< "$wt"
         branch="''${branch_ref#refs/heads/}"
         if echo "$local_merged" | grep -Fxq "$branch"; then
           echo "(merged)" > "$tmpdir/$branch"
         else
-          (gh pr list --head "$branch" --state merged --json url --jq '.[0].url // empty' > "$tmpdir/$branch" 2>/dev/null) &
+          api_branches+=("$branch")
         fi
       done
-      wait
+
+      if [ "''${#api_branches[@]}" -gt 0 ]; then
+        repo_nwo="$(gh repo view --json nameWithOwner --jq '.nameWithOwner')"
+
+        query="{"
+        for i in "''${!api_branches[@]}"; do
+          branch="''${api_branches[$i]}"
+          safe_branch="''${branch//\\/\\\\}"
+          safe_branch="''${safe_branch//\"/\\\"}"
+          query+=" b''${i}: search(query: \"repo:''${repo_nwo} is:pr is:merged head:''${safe_branch}\", type: ISSUE, first: 1) { nodes { ... on PullRequest { url } } }"
+        done
+        query+=" }"
+
+        result="$(gh api graphql -f query="$query" --jq '
+          [.data | to_entries[] | select(.value.nodes | length > 0) |
+           {key: (.key | ltrimstr("b")), value: .value.nodes[0].url}] |
+          .[] | "\(.key)\t\(.value)"
+        ' 2>/dev/null)" || result=""
+
+        while IFS=$'\t' read -r idx url; do
+          [ -z "$idx" ] && continue
+          branch="''${api_branches[$idx]}"
+          echo "$url" > "$tmpdir/$branch"
+        done <<< "$result"
+      fi
 
       entries=()
       for wt in "''${worktrees[@]}"; do
@@ -114,7 +139,7 @@ writeShellApplication {
           if [ "$has_tmux" -eq 1 ]; then
             tmux kill-session -t "$session"
           fi
-          rm -rf "$wt_path"
+          git worktree remove --force "$wt_path" 2>/dev/null || rm -rf "$wt_path"
           if ! git branch -d "$branch" 2>/dev/null; then
             git branch -D "$branch"
           fi
