@@ -5,6 +5,7 @@
       settings = {
         ldap_base_dn = "dc=rucaslab,dc=com";
         ldap_user_email = "admin@rucaslab.com";
+        force_ldap_user_pass_reset = "always";
         database_url =
           "postgresql://lldap@localhost/lldap?host=/run/postgresql";
       };

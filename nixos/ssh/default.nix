@@ -68,7 +68,7 @@
   security.pam.services.sshd.unixAuth = lib.mkForce true;
 
   # Configure SSH agent auth for sudo
-  security.pam.enableSSHAgentAuth = true;
+  security.pam.sshAgentAuth.enable = true;
 
   # Override the ssh_agent_auth file location
   security.pam.services.sudo.rules.auth.ssh_agent_auth.settings.file =

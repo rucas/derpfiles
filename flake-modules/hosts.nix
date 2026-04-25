@@ -76,12 +76,14 @@ in
       # Helper to create system configurations
       mkSystemConfig = systemBuilder: host: cfg: extraModules:
         systemBuilder {
-          system = cfg.arch;
           specialArgs = {
             CONF = fromTOML (readFile ../hosts/configs.toml);
             inherit inputs;
           };
-          modules = [ (mkCommonModule host cfg) ] ++ extraModules;
+          modules = [
+            { nixpkgs.hostPlatform.system = cfg.arch; }
+            (mkCommonModule host cfg)
+          ] ++ extraModules;
         };
     in
     {
