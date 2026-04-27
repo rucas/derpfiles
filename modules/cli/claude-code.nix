@@ -39,6 +39,7 @@ in
       figma.enable = lib.mkEnableOption "figma MCP";
       playwright.enable = lib.mkEnableOption "playwright MCP";
       snowflake.enable = lib.mkEnableOption "snowflake MCP";
+      nixos.enable = lib.mkEnableOption "nixos MCP";
     };
 
     lsp = {
@@ -208,6 +209,10 @@ in
         playwright = lib.mkIf cfg.mcpServers.playwright.enable {
           command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
           env.PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+        };
+
+        nixos = lib.mkIf cfg.mcpServers.nixos.enable {
+          command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
         };
 
         snowflake = lib.mkIf cfg.mcpServers.snowflake.enable {
