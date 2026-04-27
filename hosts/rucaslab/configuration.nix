@@ -37,6 +37,7 @@
     ../../nixos/cloudflared
     ../../nixos/sanoid
     ../../nixos/restic
+    ../../nixos/ollama
 
   ];
 
