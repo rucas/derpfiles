@@ -901,11 +901,11 @@
         "systems": "systems_4"
       },
       "locked": {
-        "lastModified": 1777161489,
-        "narHash": "sha256-368EaWDQFDLa/pyjKp2CuxHUNypPJKDDr8zlGEb1Bsg=",
+        "lastModified": 1777236345,
+        "narHash": "sha256-ALOqlq7bE30lsX4rA76hXeQ2aLLEpb44hS+D1+jWS88=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "e61a31b597ce59e1d4fea3c59b8d89edd915ecd6",
+        "rev": "a67d9cd6ff725a763afe88727aac73208ded3bf4",
         "type": "github"
       },
       "original": {
@@ -993,11 +993,11 @@
         "tree-sitter-tera": "tree-sitter-tera"
       },
       "locked": {
-        "lastModified": 1777162575,
-        "narHash": "sha256-hZh+/uLHQ0PkLc6b+2bmNNMF+IkD4uCQJJuiJ+zVZEI=",
+        "lastModified": 1777313812,
+        "narHash": "sha256-AV3Cz5xElPzyHQKa06gJR/M5VD+EVgAgP+DKTG07n2Q=",
         "owner": "rucas",
         "repo": "nxvm",
-        "rev": "7f8d20e329dd6168284eee4915cdcef9319be53a",
+        "rev": "6691b6dd6b9d562ccdd0c8143d6ec91c4e778dde",
         "type": "github"
       },
       "original": {
