@@ -74,7 +74,8 @@ in
       };
 
       # Helper to create system configurations
-      mkSystemConfig = systemBuilder: host: cfg: extraModules:
+      mkSystemConfig =
+        systemBuilder: host: cfg: extraModules:
         systemBuilder {
           specialArgs = {
             CONF = fromTOML (readFile ../hosts/configs.toml);
@@ -83,18 +84,21 @@ in
           modules = [
             { nixpkgs.hostPlatform.system = cfg.arch; }
             (mkCommonModule host cfg)
-          ] ++ extraModules;
+          ]
+          ++ extraModules;
         };
     in
     {
       flake.darwinConfigurations = lib.mapAttrs (
         host: cfg:
-        mkSystemConfig inputs.nix-darwin.lib.darwinSystem host cfg ([
-          inputs.opnix.darwinModules.default
-          ../hosts/${host}/darwin.nix
-          inputs.home-manager.darwinModules.home-manager
-        ]
-        ++ lib.optional (builtins.pathExists ../hosts/${host}/secrets.nix) ../hosts/${host}/secrets.nix)
+        mkSystemConfig inputs.nix-darwin.lib.darwinSystem host cfg (
+          [
+            inputs.opnix.darwinModules.default
+            ../hosts/${host}/darwin.nix
+            inputs.home-manager.darwinModules.home-manager
+          ]
+          ++ lib.optional (builtins.pathExists ../hosts/${host}/secrets.nix) ../hosts/${host}/secrets.nix
+        )
       ) (lib.filterAttrs (n: v: v.env == "darwin") config.hosts);
 
       flake.nixosConfigurations = lib.mapAttrs (
