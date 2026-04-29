@@ -281,10 +281,12 @@
       substituters = [
         "https://cache.nixos.org/"
         "https://derpfiles.cachix.org"
+        "https://nxvm.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q="
+        "nxvm.cachix.org-1:r4DyiW3QImNfegin8+kxPDOXYt16k+YDzxHhl+tqfRs="
       ];
     };
     gc = {

@@ -58,18 +58,20 @@ in
           substituters = [
             "https://cache.nixos.org/"
             "https://derpfiles.cachix.org"
+            "https://nxvm.cachix.org"
           ];
           trusted-public-keys = [
             "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
             "derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q="
+            "nxvm.cachix.org-1:r4DyiW3QImNfegin8+kxPDOXYt16k+YDzxHhl+tqfRs="
           ];
         };
         # Determinate Nix owns /etc/nix/nix.conf on darwin and ignores nix.settings.
         # It includes nix.custom.conf for user overrides.
         environment.etc."nix/nix.custom.conf" = lib.mkIf (cfg.env == "darwin") {
           text = ''
-            extra-substituters = https://derpfiles.cachix.org
-            extra-trusted-public-keys = derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q=
+            extra-substituters = https://derpfiles.cachix.org https://nxvm.cachix.org
+            extra-trusted-public-keys = derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q= nxvm.cachix.org-1:r4DyiW3QImNfegin8+kxPDOXYt16k+YDzxHhl+tqfRs=
           '';
         };
         home-manager.useGlobalPkgs = true;
