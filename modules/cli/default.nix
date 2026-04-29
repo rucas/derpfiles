@@ -35,7 +35,7 @@
     coreutils
     curl
 
-    dateutils
+    # dateutils
     doggo
     dust
 

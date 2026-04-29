@@ -1,6 +1,8 @@
 # NOTE: https://www.fbrs.io/nix-overlays/
 { inputs, ... }:
 final: prev: {
+  # NOTE: added to stop cache miss for direnv build
+  direnv = prev.direnv.overrideAttrs { doCheck = false; };
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
   mcp-server-fetch = prev.callPackage ../pkgs/mcp-server-fetch { };

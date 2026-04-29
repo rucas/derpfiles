@@ -48,7 +48,7 @@ in
       profiles.default = {
         enableAllSections = true;
         settings = {
-          fastfox.enable = true;
+          smoothfox.instant-scrolling.enable = true;
           peskyfox.enable = true;
           securefox.enable = true;
         };

@@ -43,6 +43,7 @@
     };
     nur = {
       url = "github:nix-community/nur";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     betterfox-nix = {
       url = "github:HeitorAugustoLN/betterfox-nix";

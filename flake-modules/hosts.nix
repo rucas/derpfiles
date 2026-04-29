@@ -64,6 +64,14 @@ in
             "derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q="
           ];
         };
+        # Determinate Nix owns /etc/nix/nix.conf on darwin and ignores nix.settings.
+        # It includes nix.custom.conf for user overrides.
+        environment.etc."nix/nix.custom.conf" = lib.mkIf (cfg.env == "darwin") {
+          text = ''
+            extra-substituters = https://derpfiles.cachix.org
+            extra-trusted-public-keys = derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q=
+          '';
+        };
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
