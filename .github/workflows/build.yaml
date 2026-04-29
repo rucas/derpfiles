@@ -48,6 +48,7 @@ jobs:
       - name: Install git-crypt
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
+            while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do sleep 5; done
             sudo apt-get update && sudo apt-get install -y git-crypt
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew install git-crypt
