@@ -8,22 +8,27 @@
   # Disable GPG agent for blkmrkt - use native macOS SSH agent for FIDO2 support
   programs.gnupg.agent.enable = lib.mkForce false;
 
-  nix.enable = false;
-
-  nix.settings = {
-    auto-optimise-store = true;
-    trusted-users = [ "@admin" ];
-    max-jobs = "auto";
-    cores = 0;
+  nix = {
+    enable = false;
+    settings = {
+      auto-optimise-store = true;
+      trusted-users = [ "@admin" ];
+      max-jobs = "auto";
+      cores = 0;
+    };
   };
 
   # TODO: better way to do users.users?
-  users.users.lucas = {
-    home = "/Users/lucas";
+  users = {
+    users.lucas = {
+      home = "/Users/lucas";
+    };
+    knownGroups = [ "wheel" ];
+    groups.wheel = {
+      gid = 0;
+      members = [ "lucas" ];
+    };
   };
-
-  users.knownGroups = [ "wheel" ];
-  users.groups.wheel = { gid = 0; members = [ "lucas" ]; };
 
   # NOTE: needed or else correct zsh path wont be set
   # correct path is /etc/profiles/per-user/lucas/bin/zsh
