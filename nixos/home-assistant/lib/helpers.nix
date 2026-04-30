@@ -11,7 +11,13 @@ rec {
       inherit cron;
     };
 
-    state = { entity_id, to ? null, from ? null, for_duration ? null }:
+    state =
+      {
+        entity_id,
+        to ? null,
+        from ? null,
+        for_duration ? null,
+      }:
       {
         platform = "state";
         inherit entity_id;
@@ -25,7 +31,11 @@ rec {
       event = "start";
     };
 
-    sun = { event, offset ? null }:
+    sun =
+      {
+        event,
+        offset ? null,
+      }:
       {
         platform = "sun";
         inherit event;
@@ -37,12 +47,23 @@ rec {
       webhook_id = id;
     };
 
-    zone = { entity_id, zone, event }: {
-      platform = "zone";
-      inherit entity_id zone event;
-    };
+    zone =
+      {
+        entity_id,
+        zone,
+        event,
+      }:
+      {
+        platform = "zone";
+        inherit entity_id zone event;
+      };
 
-    numericState = { entity_id, above ? null, below ? null }:
+    numericState =
+      {
+        entity_id,
+        above ? null,
+        below ? null,
+      }:
       {
         platform = "numeric_state";
         inherit entity_id;
@@ -52,12 +73,19 @@ rec {
   };
 
   conditions = {
-    state = { entity_id, state }: {
-      condition = "state";
-      inherit entity_id state;
-    };
+    state =
+      { entity_id, state }:
+      {
+        condition = "state";
+        inherit entity_id state;
+      };
 
-    numericState = { entity_id, above ? null, below ? null }:
+    numericState =
+      {
+        entity_id,
+        above ? null,
+        below ? null,
+      }:
       {
         condition = "numeric_state";
         inherit entity_id;
@@ -65,7 +93,12 @@ rec {
       // lib.optionalAttrs (above != null) { inherit above; }
       // lib.optionalAttrs (below != null) { inherit below; };
 
-    time = { after ? null, before ? null, weekday ? null }:
+    time =
+      {
+        after ? null,
+        before ? null,
+        weekday ? null,
+      }:
       {
         condition = "time";
       }
@@ -73,17 +106,23 @@ rec {
       // lib.optionalAttrs (before != null) { inherit before; }
       // lib.optionalAttrs (weekday != null) { inherit weekday; };
 
-    sun = { after_offset ? null, before_offset ? null }:
+    sun =
+      {
+        after_offset ? null,
+        before_offset ? null,
+      }:
       {
         condition = "sun";
       }
       // lib.optionalAttrs (after_offset != null) { inherit after_offset; }
       // lib.optionalAttrs (before_offset != null) { inherit before_offset; };
 
-    zone = { entity_id, zone }: {
-      condition = "zone";
-      inherit entity_id zone;
-    };
+    zone =
+      { entity_id, zone }:
+      {
+        condition = "zone";
+        inherit entity_id zone;
+      };
 
     template = value_template: {
       condition = "template";
@@ -102,49 +141,79 @@ rec {
   };
 
   actions = {
-    service = { service, entity_id ? null, data ? {} }:
+    service =
+      {
+        service,
+        entity_id ? null,
+        data ? { },
+      }:
       {
         inherit service;
       }
       // lib.optionalAttrs (entity_id != null) { inherit entity_id; }
-      // lib.optionalAttrs (data != {}) { inherit data; };
+      // lib.optionalAttrs (data != { }) { inherit data; };
 
-    notify = { service, message, title ? null, data ? {} }:
+    notify =
+      {
+        service,
+        message,
+        title ? null,
+        data ? { },
+      }:
       {
         service = "notify.${service}";
-        data =
-          { inherit message; }
-          // lib.optionalAttrs (title != null) { inherit title; }
-          // data;
+        data = {
+          inherit message;
+        }
+        // lib.optionalAttrs (title != null) { inherit title; }
+        // data;
       };
 
-    notifyAllMobile = { message, title ? null, data ? {} }:
+    notifyAllMobile =
+      {
+        message,
+        title ? null,
+        data ? { },
+      }:
       actions.notify {
         service = "all_mobile";
         inherit message title data;
       };
 
-    lightTurn = { entity_id, state, brightness ? null, color_temp ? null }:
+    lightTurn =
+      {
+        entity_id,
+        state,
+        brightness ? null,
+        color_temp ? null,
+      }:
       {
         service = if state == "on" then "light.turn_on" else "light.turn_off";
         inherit entity_id;
       }
       // lib.optionalAttrs (brightness != null && state == "on") {
-        data =
-          { inherit brightness; }
-          // lib.optionalAttrs (color_temp != null) { inherit color_temp; };
+        data = {
+          inherit brightness;
+        }
+        // lib.optionalAttrs (color_temp != null) { inherit color_temp; };
       };
 
-    switchTurn = { entity_id, state }: {
-      service = if state == "on" then "switch.turn_on" else "switch.turn_off";
-      inherit entity_id;
-    };
+    switchTurn =
+      { entity_id, state }:
+      {
+        service = if state == "on" then "switch.turn_on" else "switch.turn_off";
+        inherit entity_id;
+      };
 
     delay = seconds: {
       delay = { inherit seconds; };
     };
 
-    waitForTrigger = { trigger, timeout ? null }:
+    waitForTrigger =
+      {
+        trigger,
+        timeout ? null,
+      }:
       {
         wait_for_trigger = trigger;
       }
@@ -166,15 +235,17 @@ rec {
     parallel = actions_list;
   };
 
-  choose = { conditions_list, actions_list, default_actions ? [] }:
+  choose =
     {
-      choose = lib.zipListsWith
-        (cond: act: {
-          conditions = cond;
-          sequence = act;
-        })
-        conditions_list
-        actions_list;
+      conditions_list,
+      actions_list,
+      default_actions ? [ ],
+    }:
+    {
+      choose = lib.zipListsWith (cond: act: {
+        conditions = cond;
+        sequence = act;
+      }) conditions_list actions_list;
     }
-    // lib.optionalAttrs (default_actions != []) { default = default_actions; };
+    // lib.optionalAttrs (default_actions != [ ]) { default = default_actions; };
 }

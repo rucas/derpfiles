@@ -1,4 +1,8 @@
-{ lib, buildNpmPackage, fetchFromGitHub }:
+{
+  lib,
+  buildNpmPackage,
+  fetchFromGitHub,
+}:
 buildNpmPackage rec {
   pname = "lovelace-layout-card";
   version = "v2.4.5";

@@ -81,9 +81,9 @@
       url = "github:kenryu42/claude-code-safety-net";
       flake = false;
     };
-    playwright-mcp = {
-      url = "github:microsoft/playwright-mcp";
-      flake = false;
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -92,6 +92,7 @@
       self,
       nixpkgs,
       flake-parts,
+      pre-commit-hooks,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -105,25 +106,41 @@
       ];
 
       perSystem =
-        { system, ... }:
+        { system, self', ... }:
         let
           pkgs = import nixpkgs {
             localSystem.system = system;
             config.allowUnfree = true;
             overlays = [ self.overlays.default ];
           };
-          isDarwin = pkgs.stdenv.isDarwin;
+          inherit (pkgs.stdenv) isDarwin;
         in
         {
+          checks = {
+            pre-commit-check = pre-commit-hooks.lib.${system}.run {
+              src = builtins.path {
+                path = ./.;
+                name = "source";
+              };
+              hooks = {
+                statix.enable = true;
+                nixfmt.enable = true;
+              };
+            };
+          };
+
+          formatter = pkgs.nixfmt;
+
+          devShells.default = pkgs.mkShell {
+            inherit (self'.checks.pre-commit-check) shellHook;
+          };
+
           packages = {
-            claude-code = pkgs.claude-code;
-            cc-safety-net = pkgs.cc-safety-net;
-            playwright-mcp = pkgs.playwright-mcp;
-            gitui = pkgs.gitui;
+            inherit (pkgs) claude-code cc-safety-net gitui;
             inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus;
           }
           // pkgs.lib.optionalAttrs isDarwin {
-            yabai = pkgs.yabai;
+            inherit (pkgs) yabai;
           };
         };
 

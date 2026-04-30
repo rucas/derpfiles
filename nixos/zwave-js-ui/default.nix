@@ -1,4 +1,9 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 
 with lib;
 
@@ -12,7 +17,8 @@ let
     text = builtins.toJSON cfg.settings;
   };
 
-in {
+in
+{
   # NOTE:
   # https://zwave-js.github.io/zwave-js-ui/#/guide/env-vars
   options.services.zwave-js-ui-rucas = with types; {
@@ -214,50 +220,52 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.services.zwave-js-ui = let stateDir = "zwave-js-ui";
-    in {
-      description = "zwave-js-ui";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ];
+    systemd.services.zwave-js-ui =
+      let
+        stateDir = "zwave-js-ui";
+      in
+      {
+        description = "zwave-js-ui";
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network.target" ];
 
-      environment = {
-        STORE_DIR = "%S/${stateDir}";
-        BACKUPS_DIR = "%S/${stateDir}/backups";
-        ZWAVE_JS_EXTERNAL_CONFIG = "%S/${stateDir}/.config-db";
-        TRUST_PROXY = "${lib.trivial.boolToString cfg.behindProxy}";
-        TZ = cfg.timezone;
+        environment = {
+          STORE_DIR = "%S/${stateDir}";
+          BACKUPS_DIR = "%S/${stateDir}/backups";
+          ZWAVE_JS_EXTERNAL_CONFIG = "%S/${stateDir}/.config-db";
+          TRUST_PROXY = "${lib.trivial.boolToString cfg.behindProxy}";
+          TZ = cfg.timezone;
+        };
+
+        preStart =
+          # NOTE: merge the json
+          ''
+            cp "$STATE_DIRECTORY/settings.json" "$STATE_DIRECTORY/settings.json.bak"
+            rm -f "$STATE_DIRECTORY/settings.json"
+            ${pkgs.jq}/bin/jq -s ".[0] * .[1]" "$STATE_DIRECTORY/settings.json.bak" "${configFile}" > "$STATE_DIRECTORY/settings.json"
+          '';
+
+        serviceConfig = {
+          ExecStart = "${cfg.package}/bin/zwave-js-ui";
+          StateDirectory = "zwave-js-ui";
+          WorkingDirectory = "%S/${stateDir}";
+          User = cfg.user;
+          Group = cfg.group;
+          Restart = "on-failure";
+          EnvironmentFile = cfg.networkKeyFile;
+        };
       };
-
-      preStart =
-        # NOTE: merge the json
-        ''
-          cp "$STATE_DIRECTORY/settings.json" "$STATE_DIRECTORY/settings.json.bak"
-          rm -f "$STATE_DIRECTORY/settings.json"
-          ${pkgs.jq}/bin/jq -s ".[0] * .[1]" "$STATE_DIRECTORY/settings.json.bak" "${configFile}" > "$STATE_DIRECTORY/settings.json"
-        '';
-
-      serviceConfig = {
-        ExecStart = "${cfg.package}/bin/zwave-js-ui";
-        StateDirectory = "zwave-js-ui";
-        WorkingDirectory = "%S/${stateDir}";
-        User = cfg.user;
-        Group = cfg.group;
-        Restart = "on-failure";
-        EnvironmentFile = cfg.networkKeyFile;
-      };
-    };
 
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
     users.users = optionalAttrs (cfg.user == "zwave-js-ui") {
       zwave-js-ui = {
         isSystemUser = true;
-        group = cfg.group;
+        inherit (cfg) group;
         extraGroups = [ "dialout" ];
         home = cfg.dataDir;
       };
     };
 
-    users.groups =
-      optionalAttrs (cfg.group == "zwave-js-ui") { zwave-js-ui = { }; };
+    users.groups = optionalAttrs (cfg.group == "zwave-js-ui") { zwave-js-ui = { }; };
   };
 }

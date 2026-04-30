@@ -1,1 +1,7 @@
-{ ... }: { services = { esphome = { enable = true; }; }; }
+_: {
+  services = {
+    esphome = {
+      enable = true;
+    };
+  };
+}

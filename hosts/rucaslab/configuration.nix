@@ -13,6 +13,7 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+    ./secrets.nix
     ../../nixos/adguard
     ../../nixos/ssh
     ../../nixos/tailscale
@@ -91,27 +92,27 @@
     authelia_jwt_secret = {
       file = ./secrets/authelia_jwt_secret.age;
       owner = config.services.authelia.instances.rucaslab.user;
-      group = config.services.authelia.instances.rucaslab.group;
+      inherit (config.services.authelia.instances.rucaslab) group;
     };
     authelia_storage_encryption_key = {
       file = ./secrets/authelia_storage_encryption_key.age;
       owner = config.services.authelia.instances.rucaslab.user;
-      group = config.services.authelia.instances.rucaslab.group;
+      inherit (config.services.authelia.instances.rucaslab) group;
     };
     authelia_authentication_backend_ldap_password = {
       file = ./secrets/authelia_authentication_backend_ldap_password.age;
       owner = config.services.authelia.instances.rucaslab.user;
-      group = config.services.authelia.instances.rucaslab.group;
+      inherit (config.services.authelia.instances.rucaslab) group;
     };
     authelia_session_secret = {
       file = ./secrets/authelia_session_secret.age;
       owner = config.services.authelia.instances.rucaslab.user;
-      group = config.services.authelia.instances.rucaslab.group;
+      inherit (config.services.authelia.instances.rucaslab) group;
     };
     authelia_notifier_smtp_password = {
       file = ./secrets/authelia_notifier_smtp_password.age;
       owner = config.services.authelia.instances.rucaslab.user;
-      group = config.services.authelia.instances.rucaslab.group;
+      inherit (config.services.authelia.instances.rucaslab) group;
     };
     grafana = {
       file = ./secrets/grafana.age;
@@ -138,38 +139,43 @@
     authelia_oidc_hmac_secret = {
       file = ./secrets/authelia_oidc_hmac_secret.age;
       owner = config.services.authelia.instances.rucaslab.user;
-      group = config.services.authelia.instances.rucaslab.group;
+      inherit (config.services.authelia.instances.rucaslab) group;
     };
     authelia_oidc_jwks_key = {
       file = ./secrets/authelia_oidc_jwks_key.age;
       owner = config.services.authelia.instances.rucaslab.user;
-      group = config.services.authelia.instances.rucaslab.group;
+      inherit (config.services.authelia.instances.rucaslab) group;
     };
     authelia_oidc_papra_client_secret = {
       file = ./secrets/authelia_oidc_papra_client_secret.age;
       owner = config.services.authelia.instances.rucaslab.user;
-      group = config.services.authelia.instances.rucaslab.group;
+      inherit (config.services.authelia.instances.rucaslab) group;
     };
   };
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    # disko generates /dev/disk/by-partlabel/disk-nvme-* paths, but the disk was
+    # partitioned manually so those labels don't exist. Override with stable UUIDs.
+    initrd.luks.devices = {
+      "cryptroot".device = lib.mkForce "/dev/disk/by-uuid/9a689bcd-65b3-4228-bb15-19bb42bf117a";
+      "cryptswap".device = lib.mkForce "/dev/disk/by-uuid/2da48510-45d3-40c0-ac58-1a10c28c424f";
+    };
+    # zfs settings...
+    supportedFilesystems = [ "zfs" ];
+    zfs.forceImportRoot = false;
+  };
   # Keyfile for swap LUKS auto-unlock (automatically embedded by systemd-cryptsetup via disko)
-
-  # disko generates /dev/disk/by-partlabel/disk-nvme-* paths, but the disk was
-  # partitioned manually so those labels don't exist. Override with stable UUIDs.
-  boot.initrd.luks.devices."cryptroot".device =
-    lib.mkForce "/dev/disk/by-uuid/9a689bcd-65b3-4228-bb15-19bb42bf117a";
-  boot.initrd.luks.devices."cryptswap".device =
-    lib.mkForce "/dev/disk/by-uuid/2da48510-45d3-40c0-ac58-1a10c28c424f";
   fileSystems."/boot".device = lib.mkForce "/dev/disk/by-uuid/2DCD-7A19";
-
-  # zfs settings...
-  boot.supportedFilesystems = [ "zfs" ];
-  boot.zfs.forceImportRoot = false;
-  networking.hostId = "e0f98e67";
+  networking = {
+    hostId = "e0f98e67";
+    hostName = "rucaslab";
+    networkmanager.enable = true;
+  };
 
   services.zfs = {
     autoScrub = {
@@ -182,22 +188,61 @@
     autoSnapshot.enable = false;
   };
 
-  systemd.services.adguardhome.serviceConfig = {
-    DynamicUser = pkgs.lib.mkForce false;
-    User = "adguardhome";
-    Group = "adguardhome";
+  systemd.services = {
+    adguardhome.serviceConfig = {
+      DynamicUser = pkgs.lib.mkForce false;
+      User = "adguardhome";
+      Group = "adguardhome";
+    };
+    # NOTE:
+    # https://discourse.nixos.org/t/nixos-rebuild-switch-upgrade-networkmanager-wait-online-service-failure/30746/2
+    NetworkManager-wait-online.enable = pkgs.lib.mkForce false;
+    # Remove StateDirectory for services using ZFS datasets
+    prometheus.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+    esphome.serviceConfig = {
+      StateDirectory = pkgs.lib.mkForce [ ];
+      DynamicUser = pkgs.lib.mkForce false;
+      User = "esphome";
+      Group = "esphome";
+    };
+    uptime-kuma.serviceConfig = {
+      StateDirectory = pkgs.lib.mkForce [ ];
+      DynamicUser = pkgs.lib.mkForce false;
+      ProtectSystem = pkgs.lib.mkForce false;
+      User = "nobody";
+      Group = "nogroup";
+    };
+    ntfy-sh.serviceConfig = {
+      StateDirectory = pkgs.lib.mkForce [ ];
+      DynamicUser = pkgs.lib.mkForce false;
+      ProtectSystem = pkgs.lib.mkForce false;
+      User = pkgs.lib.mkForce "ntfy-sh";
+      Group = pkgs.lib.mkForce "ntfy-sh";
+    };
+    lldap.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+    papra.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
   };
 
-  users.users.adguardhome = {
-    isSystemUser = true;
-    group = "adguardhome";
-    uid = 62939;
+  users = {
+    users = {
+      adguardhome = {
+        isSystemUser = true;
+        group = "adguardhome";
+        uid = 62939;
+      };
+      lucas = {
+        isNormalUser = true;
+        description = "Lucas";
+        extraGroups = [
+          "networkmanager"
+          "wheel"
+        ];
+        shell = pkgs.zsh;
+      };
+    };
+    groups.adguardhome.gid = 62939;
+    defaultUserShell = pkgs.zsh;
   };
-
-  users.groups.adguardhome.gid = 62939;
-
-  networking.hostName = "rucaslab";
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
@@ -228,46 +273,11 @@
 
   console.useXkbConfig = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.lucas = {
-    isNormalUser = true;
-    description = "Lucas";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-  };
-
   # needed for NixOs to set shell to zsh.
   # NOTE: https://nixos.wiki/wiki/Command_Shell
   programs.zsh.enable = true;
-  users.users.lucas.shell = pkgs.zsh;
   security.sudo.wheelNeedsPassword = false;
-  users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
-
-  # NOTE:
-  # https://discourse.nixos.org/t/nixos-rebuild-switch-upgrade-networkmanager-wait-online-service-failure/30746/2
-  systemd.services.NetworkManager-wait-online.enable = pkgs.lib.mkForce false;
-
-  # Remove StateDirectory for services using ZFS datasets
-  systemd.services.prometheus.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
-  systemd.services.esphome.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
-  systemd.services.esphome.serviceConfig.DynamicUser = pkgs.lib.mkForce false;
-  systemd.services.esphome.serviceConfig.User = "esphome";
-  systemd.services.esphome.serviceConfig.Group = "esphome";
-  systemd.services.uptime-kuma.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
-  systemd.services.uptime-kuma.serviceConfig.DynamicUser = pkgs.lib.mkForce false;
-  systemd.services.uptime-kuma.serviceConfig.ProtectSystem = pkgs.lib.mkForce false;
-  systemd.services.uptime-kuma.serviceConfig.User = "nobody";
-  systemd.services.uptime-kuma.serviceConfig.Group = "nogroup";
-  systemd.services.ntfy-sh.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
-  systemd.services.ntfy-sh.serviceConfig.DynamicUser = pkgs.lib.mkForce false;
-  systemd.services.ntfy-sh.serviceConfig.ProtectSystem = pkgs.lib.mkForce false;
-  systemd.services.ntfy-sh.serviceConfig.User = pkgs.lib.mkForce "ntfy-sh";
-  systemd.services.ntfy-sh.serviceConfig.Group = pkgs.lib.mkForce "ntfy-sh";
-  systemd.services.lldap.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
-  systemd.services.papra.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
 
   nix = {
     settings = {

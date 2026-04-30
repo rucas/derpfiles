@@ -74,13 +74,15 @@ in
             extra-trusted-public-keys = derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q= nxvm.cachix.org-1:r4DyiW3QImNfegin8+kxPDOXYt16k+YDzxHhl+tqfRs=
           '';
         };
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = {
-          inherit inputs;
-          theme = fromTOML (readFile ../modules/themes/gruvbox.toml);
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          extraSpecialArgs = {
+            inherit inputs;
+            theme = fromTOML (readFile ../modules/themes/gruvbox.toml);
+          };
+          users.${cfg.username} = import ../hosts/${host}/home.nix;
         };
-        home-manager.users.${cfg.username} = import ../hosts/${host}/home.nix;
       };
 
       # Helper to create system configurations

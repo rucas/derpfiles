@@ -40,6 +40,14 @@ in
       playwright.enable = lib.mkEnableOption "playwright MCP";
       snowflake.enable = lib.mkEnableOption "snowflake MCP";
       nixos.enable = lib.mkEnableOption "nixos MCP";
+      homeAssistant = {
+        enable = lib.mkEnableOption "Home Assistant MCP";
+        url = lib.mkOption {
+          type = lib.types.str;
+          default = "http://localhost:8123";
+          description = "Home Assistant base URL";
+        };
+      };
     };
 
     lsp = {
@@ -215,6 +223,14 @@ in
           command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
         };
 
+        homeAssistant = lib.mkIf cfg.mcpServers.homeAssistant.enable {
+          command = "${pkgs.ha-mcp}/bin/ha-mcp";
+          env = {
+            HA_URL = cfg.mcpServers.homeAssistant.url;
+            HA_TOKEN = "\${HA_MCP_TOKEN}";
+          };
+        };
+
         snowflake = lib.mkIf cfg.mcpServers.snowflake.enable {
           command = "${pkgs.snowflake-labs-mcp}/bin/snowflake-labs-mcp";
           args = [
@@ -238,7 +254,7 @@ in
       (lib.mkIf (cfg.mcpServers.rollbar.enable && getSecretPath "rollbarMCPToken" != null) {
         ROLLBAR_MCP_TOKEN = "$(cat ${getSecretPath "rollbarMCPToken"})";
       })
-      (lib.mkIf (cfg.mcpServers.jira.enable) {
+      (lib.mkIf cfg.mcpServers.jira.enable {
         JIRA_MCP_TOKEN = lib.mkIf (
           getSecretPath "jiraMCPToken" != null
         ) "$(cat ${getSecretPath "jiraMCPToken"})";
@@ -247,7 +263,7 @@ in
           getSecretPath "jiraMCPUsername" != null
         ) "$(cat ${getSecretPath "jiraMCPUsername"})";
       })
-      (lib.mkIf (cfg.mcpServers.chronosphere.enable) {
+      (lib.mkIf cfg.mcpServers.chronosphere.enable {
         CHRONOSPHERE_ORG_NAME = lib.mkIf (
           getSecretPath "chronosphereMcpOrgName" != null
         ) "$(cat ${getSecretPath "chronosphereMcpOrgName"})";
@@ -255,7 +271,10 @@ in
           getSecretPath "chronosphereMcpToken" != null
         ) "$(cat ${getSecretPath "chronosphereMcpToken"})";
       })
-      (lib.mkIf (cfg.mcpServers.snowflake.enable) {
+      (lib.mkIf (cfg.mcpServers.homeAssistant.enable && getSecretPath "homeAssistantMCPToken" != null) {
+        HA_MCP_TOKEN = "$(cat ${getSecretPath "homeAssistantMCPToken"})";
+      })
+      (lib.mkIf cfg.mcpServers.snowflake.enable {
         SNOWFLAKE_MCP_ACCOUNT = lib.mkIf (
           getSecretPath "snowflakeMcpAccount" != null
         ) "$(cat ${getSecretPath "snowflakeMcpAccount"})";

@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
   programs.kitty = {
     enable = false;
     settings = {

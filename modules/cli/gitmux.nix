@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
   xdg.configFile."gitmux/gitmux.conf".text = ''
     tmux:
         symbols:

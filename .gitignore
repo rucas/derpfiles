@@ -33,3 +33,4 @@ node_modules
 result
 .scratch
 secret-key
+.git-crypt-key

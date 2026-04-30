@@ -1,4 +1,11 @@
-{ config, lib, pkgs, inputs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
+{
   programs.zsh = {
     initContent = ''
       fast-theme -q base16 > /dev/null 2>&1
@@ -7,16 +14,22 @@
       # FAST_HIGHLIGHT_STYLES[comment]=fg=240,bold
       FAST_HIGHLIGHT[ointeractive_comments]=1
     '';
-    sessionVariables = { FAST_WORK_DIR = "$HOME/.cache/fsh"; };
-    plugins = [{
-      name = "fast-syntax-highlighting";
-      src = inputs.fast-syntax-highlighting;
-    }];
+    sessionVariables = {
+      FAST_WORK_DIR = "$HOME/.cache/fsh";
+    };
+    plugins = [
+      {
+        name = "fast-syntax-highlighting";
+        src = inputs.fast-syntax-highlighting;
+      }
+    ];
   };
 
   home.activation.createFstCache =
-    let inherit (config.programs.zsh.sessionVariables) FAST_WORK_DIR;
-    in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    let
+      inherit (config.programs.zsh.sessionVariables) FAST_WORK_DIR;
+    in
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if [ -e "${FAST_WORK_DIR}" ]
       then
         if [ -d "${FAST_WORK_DIR}" ] && [ -w "${FAST_WORK_DIR}" ]

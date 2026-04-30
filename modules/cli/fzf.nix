@@ -1,9 +1,8 @@
-{ ... }: {
+_: {
   programs.fzf = {
     enable = true;
     fileWidgetCommand = "fd --type f";
-    fileWidgetOptions =
-      [ "--preview 'bat --color=always --line-range=:500 --style=plain {}'" ];
+    fileWidgetOptions = [ "--preview 'bat --color=always --line-range=:500 --style=plain {}'" ];
     changeDirWidgetCommand = "fd -L --max-depth=2 --type=directory";
     changeDirWidgetOptions = [ "--preview 'tree -C {} | head -200'" ];
     defaultOptions = [

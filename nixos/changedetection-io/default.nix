@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
   services.changedetection-io = {
     enable = true;
     behindProxy = true;

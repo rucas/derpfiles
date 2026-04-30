@@ -1,4 +1,9 @@
-{ pkgs, fetchFromGitHub, buildHomeAssistantComponent, petkitaio }:
+{
+  pkgs,
+  fetchFromGitHub,
+  buildHomeAssistantComponent,
+  petkitaio,
+}:
 
 buildHomeAssistantComponent rec {
 
@@ -7,12 +12,15 @@ buildHomeAssistantComponent rec {
   version = "0.1.10";
 
   src = fetchFromGitHub {
-    owner = owner;
+    inherit owner;
     repo = "home-assistant-petkit";
     rev = "ad09c6579b2c41bfd63104d3859772fc32c5e4c5";
     hash = ''
       sha256-Xun/djFEqzwslNmZgXbdjDtvKdUFZq8fx1aKfGlUdow=
     '';
   };
-  propagatedBuildInputs = [ pkgs.python311Packages.tzlocal petkitaio ];
+  propagatedBuildInputs = [
+    pkgs.python311Packages.tzlocal
+    petkitaio
+  ];
 }

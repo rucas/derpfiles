@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   programs.gitui = {
     enable = true;
     keyConfig = ''

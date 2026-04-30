@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   launchd.agents.maccy = {
     serviceConfig = {
       Label = "com.rucas.maccy";

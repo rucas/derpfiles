@@ -1,4 +1,8 @@
-{ lib, buildNpmPackage, fetchFromGitHub }:
+{
+  lib,
+  buildNpmPackage,
+  fetchFromGitHub,
+}:
 buildNpmPackage rec {
   pname = "mini-graph-card";
   version = "v0.12.1";

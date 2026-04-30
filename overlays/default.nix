@@ -5,9 +5,6 @@ final: prev: {
   direnv = prev.direnv.overrideAttrs { doCheck = false; };
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
-  mcp-server-fetch = prev.callPackage ../pkgs/mcp-server-fetch { };
-  mcp-server-git = prev.callPackage ../pkgs/mcp-server-git { };
-  mcp-server-time = prev.callPackage ../pkgs/mcp-server-time { };
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
   ledger-sync = prev.callPackage ../pkgs/ledger-sync { };
@@ -15,7 +12,6 @@ final: prev: {
     fswatch = if prev.stdenv.isDarwin then prev.fswatch else null;
     inotify-tools = if prev.stdenv.isLinux then prev.inotify-tools else null;
   };
-  playwright-mcp = prev.callPackage ../pkgs/playwright-mcp { inherit (inputs) playwright-mcp; };
   snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
 
   gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
@@ -42,6 +38,9 @@ final: prev: {
     (python-final: python-prev: {
       mcp = python-prev.mcp.overridePythonAttrs (old: {
         postPatch = "";
+        doCheck = false;
+      });
+      fastmcp = python-prev.fastmcp.overridePythonAttrs (old: {
         doCheck = false;
       });
     })
@@ -78,7 +77,7 @@ final: prev: {
 
     doCheck = false;
 
-    meta = prev.gitui.meta;
+    inherit (prev.gitui) meta;
   };
   cc-safety-net = prev.stdenv.mkDerivation {
     pname = "cc-safety-net";

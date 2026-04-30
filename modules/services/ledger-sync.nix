@@ -9,13 +9,11 @@ with lib;
 
 let
   cfg = config.services.ledger-sync;
-  isDarwin = pkgs.stdenv.isDarwin;
-  isLinux = pkgs.stdenv.isLinux;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 
   homeDir = config.home.homeDirectory;
 
-  logDir =
-    if isDarwin then "${homeDir}/Library/Logs" else "${homeDir}/.local/state/ledger-sync";
+  logDir = if isDarwin then "${homeDir}/Library/Logs" else "${homeDir}/.local/state/ledger-sync";
 
   envVars = {
     LEDGER_PATH = cfg.ledgerPath;

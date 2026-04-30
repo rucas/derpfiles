@@ -1,4 +1,8 @@
-{ lib, buildNpmPackage, fetchFromGitHub }:
+{
+  lib,
+  buildNpmPackage,
+  fetchFromGitHub,
+}:
 buildNpmPackage rec {
   pname = "mini-media-player";
   version = "v1.16.9";

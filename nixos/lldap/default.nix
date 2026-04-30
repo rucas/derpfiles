@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   services = {
     lldap = {
       enable = true;
@@ -6,14 +7,12 @@
         ldap_base_dn = "dc=rucaslab,dc=com";
         ldap_user_email = "admin@rucaslab.com";
         force_ldap_user_pass_reset = "always";
-        database_url =
-          "postgresql://lldap@localhost/lldap?host=/run/postgresql";
+        database_url = "postgresql://lldap@localhost/lldap?host=/run/postgresql";
       };
       environment = {
         LLDAP_JWT_SECRET_FILE = config.age.secrets.lldap_jwt_secret.path;
         LLDAP_KEY_SEED_FILE = config.age.secrets.lldap_key_seed.path;
-        LLDAP_LDAP_USER_PASS_FILE =
-          config.age.secrets.lldap_ldap_user_pass.path;
+        LLDAP_LDAP_USER_PASS_FILE = config.age.secrets.lldap_ldap_user_pass.path;
       };
     };
 
@@ -21,9 +20,7 @@
       virtualHosts = {
         "lldap.rucaslab.com" = {
           extraConfig = ''
-            import https-proxy :${
-              toString config.services.lldap.settings.http_port
-            }
+            import https-proxy :${toString config.services.lldap.settings.http_port}
           '';
         };
       };
@@ -38,10 +35,13 @@
     groups.lldap = { };
   };
 
-  systemd.services.lldap = let dependencies = [ "postgresql.service" ];
-  in {
-    # LLDAP requires PostgreSQL to be running
-    after = dependencies;
-    requires = dependencies;
-  };
+  systemd.services.lldap =
+    let
+      dependencies = [ "postgresql.service" ];
+    in
+    {
+      # LLDAP requires PostgreSQL to be running
+      after = dependencies;
+      requires = dependencies;
+    };
 }

@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
 
   imports = [ ../../modules/darwin ];
 
@@ -17,7 +18,12 @@
   };
 
   # TODO: better way to do users.users?
-  users.users.lucas = { home = "/Users/lucas"; };
+  users.users.lucas = {
+    home = "/Users/lucas";
+  };
+
+  users.knownGroups = [ "wheel" ];
+  users.groups.wheel = { gid = 0; members = [ "lucas" ]; };
 
   # NOTE: needed or else correct zsh path wont be set
   # correct path is /etc/profiles/per-user/lucas/bin/zsh

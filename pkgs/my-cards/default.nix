@@ -1,4 +1,8 @@
-{ lib, buildNpmPackage, fetchFromGitHub }:
+{
+  lib,
+  buildNpmPackage,
+  fetchFromGitHub,
+}:
 buildNpmPackage rec {
   pname = "my-cards";
   version = "v1.0.5";
@@ -24,8 +28,7 @@ buildNpmPackage rec {
   '';
 
   meta = with lib; {
-    description =
-      "Bundle of my custom Lovelace cards for Home Assistant. Includes: my-slider, my-slider-v2, my-button";
+    description = "Bundle of my custom Lovelace cards for Home Assistant. Includes: my-slider, my-slider-v2, my-button";
     homepage = "https://github.com/AnthonMS/my-cards";
     license = licenses.mit;
     maintainers = with maintainers; [ rucas ];

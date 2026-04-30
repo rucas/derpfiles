@@ -1,4 +1,4 @@
-{ ... }:
+_:
 #
 # Sanoid manages local ZFS snapshot retention for all datapool datasets.
 # Offsite backups are handled by restic → AWS S3 Glacier (nixos/restic).
@@ -42,25 +42,55 @@
 
     datasets = {
       # Critical
-      "datapool/postgresql"         = { useTemplate = [ "critical" ]; };
-      "datapool/hass"               = { useTemplate = [ "critical" ]; };
-      "datapool/esphome"            = { useTemplate = [ "critical" ]; };
-      "datapool/zigbee2mqtt"        = { useTemplate = [ "critical" ]; };
-      "datapool/zwave-js-ui"        = { useTemplate = [ "critical" ]; };
+      "datapool/postgresql" = {
+        useTemplate = [ "critical" ];
+      };
+      "datapool/hass" = {
+        useTemplate = [ "critical" ];
+      };
+      "datapool/esphome" = {
+        useTemplate = [ "critical" ];
+      };
+      "datapool/zigbee2mqtt" = {
+        useTemplate = [ "critical" ];
+      };
+      "datapool/zwave-js-ui" = {
+        useTemplate = [ "critical" ];
+      };
 
       # Standard
-      "datapool/adguardhome"        = { useTemplate = [ "standard" ]; };
-      "datapool/mosquitto"          = { useTemplate = [ "standard" ]; };
-      "datapool/uptime-kuma"        = { useTemplate = [ "standard" ]; };
-      "datapool/changedetection-io" = { useTemplate = [ "standard" ]; };
-      "datapool/ntfy-sh"            = { useTemplate = [ "standard" ]; };
-      "datapool/lldap"              = { useTemplate = [ "standard" ]; };
-      "datapool/papra"              = { useTemplate = [ "standard" ]; };
+      "datapool/adguardhome" = {
+        useTemplate = [ "standard" ];
+      };
+      "datapool/mosquitto" = {
+        useTemplate = [ "standard" ];
+      };
+      "datapool/uptime-kuma" = {
+        useTemplate = [ "standard" ];
+      };
+      "datapool/changedetection-io" = {
+        useTemplate = [ "standard" ];
+      };
+      "datapool/ntfy-sh" = {
+        useTemplate = [ "standard" ];
+      };
+      "datapool/lldap" = {
+        useTemplate = [ "standard" ];
+      };
+      "datapool/papra" = {
+        useTemplate = [ "standard" ];
+      };
 
       # Observability
-      "datapool/grafana"            = { useTemplate = [ "observability" ]; };
-      "datapool/prometheus2"        = { useTemplate = [ "observability" ]; };
-      "datapool/loki"               = { useTemplate = [ "observability" ]; };
+      "datapool/grafana" = {
+        useTemplate = [ "observability" ];
+      };
+      "datapool/prometheus2" = {
+        useTemplate = [ "observability" ];
+      };
+      "datapool/loki" = {
+        useTemplate = [ "observability" ];
+      };
     };
   };
 }

@@ -75,7 +75,7 @@
             }
           '';
         };
-};
+      };
     };
   };
   systemd.services.caddy = {

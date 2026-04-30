@@ -1,4 +1,8 @@
-{ lib, buildNpmPackage, fetchFromGitHub }:
+{
+  lib,
+  buildNpmPackage,
+  fetchFromGitHub,
+}:
 buildNpmPackage rec {
   pname = "lovelave-card-mod";
   version = "v3.4.3";
@@ -21,8 +25,7 @@ buildNpmPackage rec {
     runHook postInstall
   '';
   meta = with lib; {
-    description =
-      "Card Mode - Allows you to apply CSS styles to various elements of the Home Assistant frontend.";
+    description = "Card Mode - Allows you to apply CSS styles to various elements of the Home Assistant frontend.";
     homepage = "https://github.com/Clooos/Bubble-Card";
     license = licenses.mit;
     maintainers = with maintainers; [ rucas ];

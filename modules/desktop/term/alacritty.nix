@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs.alacritty = {
     enable = true;
-    settings.general.import =
-      [ pkgs.alacritty-theme.gruvbox_material_medium_dark ];
+    settings.general.import = [ pkgs.alacritty-theme.gruvbox_material_medium_dark ];
     settings = {
       cursor = {
         style = {
@@ -11,13 +11,15 @@
         };
         vi_mode_style = "Block";
       };
-      window.padding = {
-        x = 45;
-        y = 45;
+      window = {
+        padding = {
+          x = 45;
+          y = 45;
+        };
+        dynamic_title = true;
+        decorations = "Buttonless";
+        option_as_alt = "OnlyLeft";
       };
-      window.dynamic_title = true;
-      window.decorations = "Buttonless";
-      window.option_as_alt = "OnlyLeft";
       font = {
         normal = {
           family = "Hack Nerd Font";
@@ -41,7 +43,10 @@
           mods = "Command";
           command = {
             program = "sh";
-            args = [ "-c" "open ~/.config/alacritty/alacritty.toml" ];
+            args = [
+              "-c"
+              "open ~/.config/alacritty/alacritty.toml"
+            ];
           };
         }
         {

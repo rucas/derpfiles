@@ -1,4 +1,9 @@
-{ pkgs, lib, buildPythonPackage, fetchFromGitHub }:
+{
+  pkgs,
+  lib,
+  buildPythonPackage,
+  fetchFromGitHub,
+}:
 
 buildPythonPackage rec {
 
@@ -7,7 +12,7 @@ buildPythonPackage rec {
   version = "0.1.10";
 
   src = fetchFromGitHub {
-    owner = owner;
+    inherit owner;
     repo = "petkitaio";
     rev = "50f5ff6689a07090e255a168099df852f9818cba";
     hash = ''
@@ -15,8 +20,10 @@ buildPythonPackage rec {
     '';
   };
 
-  propagatedBuildInputs =
-    [ pkgs.python311Packages.aiohttp pkgs.python311Packages.tzlocal ];
+  propagatedBuildInputs = [
+    pkgs.python311Packages.aiohttp
+    pkgs.python311Packages.tzlocal
+  ];
 
   doCheck = false;
 

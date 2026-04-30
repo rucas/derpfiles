@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   networking.firewall = {
     # NOTE: sonos discovery
     allowedTCPPortRanges = [

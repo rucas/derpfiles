@@ -1,5 +1,7 @@
-{ ... }: {
-  programs.eza = { enable = true; };
+_: {
+  programs.eza = {
+    enable = true;
+  };
   programs.zsh.shellAliases = {
     l = "eza -1";
     ls = "eza --group-directories-first";

@@ -1,17 +1,22 @@
-{ config, ... }: {
+{ config, ... }:
+{
   services.prometheus = {
     enable = true;
     port = 9001;
 
-    scrapeConfigs = [{
-      job_name = "node";
-      scrape_interval = "15s";
-      static_configs = [{
-        targets = [
-          "localhost:${toString config.services.prometheus.exporters.node.port}"
+    scrapeConfigs = [
+      {
+        job_name = "node";
+        scrape_interval = "15s";
+        static_configs = [
+          {
+            targets = [
+              "localhost:${toString config.services.prometheus.exporters.node.port}"
+            ];
+          }
         ];
-      }];
-    }];
+      }
+    ];
 
     exporters = {
       node = {

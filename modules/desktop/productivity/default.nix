@@ -1,1 +1,4 @@
-{ ... }: { imports = [ ./espanso.nix ]; }
+{ ... }:
+{
+  imports = [ ./espanso.nix ];
+}

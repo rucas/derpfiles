@@ -65,17 +65,18 @@
   #     pam_unix.so is loaded but never invoked for authentication.
   #   - Scanner sshd: PasswordAuthentication=yes, so PAM is consulted and
   #     pam_unix.so validates the scanner user's hashed password.
-  security.pam.services.sshd.unixAuth = lib.mkForce true;
-
-  # Configure SSH agent auth for sudo
-  security.pam.sshAgentAuth.enable = true;
-
-  # Override the ssh_agent_auth file location
-  security.pam.services.sudo.rules.auth.ssh_agent_auth.settings.file =
-    lib.mkForce "/etc/ssh/authorized_keys.d/lucas";
-
-  # Keep SSH_AUTH_SOCK when sudo'ing
-  security.sudo.extraConfig = ''
-    Defaults env_keep+=SSH_AUTH_SOCK
-  '';
+  security = {
+    pam = {
+      services.sshd.unixAuth = lib.mkForce true;
+      # Configure SSH agent auth for sudo
+      sshAgentAuth.enable = true;
+      # Override the ssh_agent_auth file location
+      services.sudo.rules.auth.ssh_agent_auth.settings.file =
+        lib.mkForce "/etc/ssh/authorized_keys.d/lucas";
+    };
+    # Keep SSH_AUTH_SOCK when sudo'ing
+    sudo.extraConfig = ''
+      Defaults env_keep+=SSH_AUTH_SOCK
+    '';
+  };
 }

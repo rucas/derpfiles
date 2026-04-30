@@ -11,22 +11,28 @@ let
     "aeblfdkhhhdcdjpifhhbdiojplfjncoa" # 1Password
     "lmpnkcilhkcnpjbmdnkbepmlhjlnhkaf" # Isengard
   ];
-in mkMerge [
+in
+mkMerge [
   (lib.mkIf isLinux {
     programs.chromium = {
       # chromium isn't built for darwin so we'll want to avoid enabling it.
       enable = true;
-      extensions = extensions;
+      inherit extensions;
     };
   })
 
-  (lib.mkIf isDarwin (let
-    configDir = "Library/Application Support/Google/Chrome";
-    extensionJson = ext: {
-      name = "${configDir}/External Extensions/${ext}.json";
-      value.text = builtins.toJSON {
-        external_update_url = "https://clients2.google.com/service/update2/crx";
+  (lib.mkIf isDarwin (
+    let
+      configDir = "Library/Application Support/Google/Chrome";
+      extensionJson = ext: {
+        name = "${configDir}/External Extensions/${ext}.json";
+        value.text = builtins.toJSON {
+          external_update_url = "https://clients2.google.com/service/update2/crx";
+        };
       };
-    };
-  in { home.file = listToAttrs (map extensionJson extensions); }))
+    in
+    {
+      home.file = listToAttrs (map extensionJson extensions);
+    }
+  ))
 ]

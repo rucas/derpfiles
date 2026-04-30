@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   imports = [
     ./autopairs.nix
     ./fsh.nix
@@ -10,13 +11,21 @@
   programs.zsh = {
     enable = true;
     history = {
-      ignorePatterns =
-        [ "rm *" "pkill *" "touch *" "which *" "man *" "tldr *" ];
+      ignorePatterns = [
+        "rm *"
+        "pkill *"
+        "touch *"
+        "which *"
+        "man *"
+        "tldr *"
+      ];
       expireDuplicatesFirst = true;
       extended = true;
     };
     autocd = true;
-    autosuggestion = { enable = true; };
+    autosuggestion = {
+      enable = true;
+    };
     shellAliases = {
       awp = ''
         export AWS_PROFILE=$(aws configure list-profiles | fzf --prompt 'Choose active AWS profile:')

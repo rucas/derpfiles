@@ -86,40 +86,41 @@
     };
   };
 
-  home.file.".config/git/work.gitconfig".text = ''
-    [user]
-        email = lucas.rondenet@gmail.com
-        name = rucas
+  home.file = {
+    ".config/git/work.gitconfig".text = ''
+      [user]
+          email = lucas.rondenet@gmail.com
+          name = rucas
 
-    [core]
-        fsmonitor = true
-        untrackedCache = true
-        manyFiles = true
-  '';
-  home.file.".config/git/public.gitconfig".text = ''
-    [user]
-        email = lucas.rondenet@gmail.com
-        name = rucas
-  '';
+      [core]
+          fsmonitor = true
+          untrackedCache = true
+          manyFiles = true
+    '';
+    ".config/git/public.gitconfig".text = ''
+      [user]
+          email = lucas.rondenet@gmail.com
+          name = rucas
+    '';
+    ".config/git/gitalias".text = builtins.readFile "${inputs.git-alias}/gitalias.txt";
+    ".config/git/gitalias.custom".text = ''
+      [alias]
+        co = "!f() { \
+          if [ $# -eq 0 ]; then \
+            git branch -a | grep -v HEAD | \
+              sed 's|remotes/origin/||g' | \
+              sed 's/^[* ] //' | \
+              sort -u | \
+              fzf --height=10 --layout=reverse-list --no-info --border=none --prompt='Branch: ' | \
+              xargs git checkout; \
+          else \
+            git checkout \"$@\"; \
+          fi; \
+        }; f"
 
-  home.file.".config/git/gitalias".text = builtins.readFile "${inputs.git-alias}/gitalias.txt";
-  home.file.".config/git/gitalias.custom".text = ''
-    [alias]
-      co = "!f() { \
-        if [ $# -eq 0 ]; then \
-          git branch -a | grep -v HEAD | \
-            sed 's|remotes/origin/||g' | \
-            sed 's/^[* ] //' | \
-            sort -u | \
-            fzf --height=10 --layout=reverse-list --no-info --border=none --prompt='Branch: ' | \
-            xargs git checkout; \
-        else \
-          git checkout \"$@\"; \
-        fi; \
-      }; f"
-
-      # Pull from origin with optional branch (defaults to current branch)
-      # Automatically uses rebase+autostash from global config
-      po = "!f() { git pull origin \"''${1:-$(git current-branch)}\"; }; f"
-  '';
+        # Pull from origin with optional branch (defaults to current branch)
+        # Automatically uses rebase+autostash from global config
+        po = "!f() { git pull origin \"''${1:-$(git current-branch)}\"; }; f"
+    '';
+  };
 }

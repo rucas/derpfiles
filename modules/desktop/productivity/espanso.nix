@@ -111,7 +111,7 @@ mkMerge [
   (lib.mkIf isLinux {
     services.espanso = {
       enable = true;
-      settings = settings;
+      inherit settings;
     };
   })
 

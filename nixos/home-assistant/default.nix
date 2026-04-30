@@ -49,7 +49,10 @@ in
         frontend.themes = "!include ${theme}/${theme.pname}.yaml";
         recorder.db_url = "postgresql://@/hass";
         homeassistant = {
-          allowlist_external_dirs = [ "/etc/lutron" "/etc/home-assistant" ];
+          allowlist_external_dirs = [
+            "/etc/lutron"
+            "/etc/home-assistant"
+          ];
         };
         http = {
           trusted_proxies = [ "127.0.0.1" ];

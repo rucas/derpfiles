@@ -13,13 +13,12 @@ assert fswatch != null || inotify-tools != null;
 writeShellApplication {
   name = "ledger-watch";
 
-  runtimeInputs =
-    [
-      ledger-sync
-      coreutils
-    ]
-    ++ lib.optional (fswatch != null) fswatch
-    ++ lib.optional (inotify-tools != null) inotify-tools;
+  runtimeInputs = [
+    ledger-sync
+    coreutils
+  ]
+  ++ lib.optional (fswatch != null) fswatch
+  ++ lib.optional (inotify-tools != null) inotify-tools;
 
   text = ''
     LEDGER_PATH="''${LEDGER_PATH:-$HOME/Code/ledger}"

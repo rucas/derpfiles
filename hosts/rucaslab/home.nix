@@ -17,18 +17,19 @@
       time.enable = true;
       github.enable = true;
       nixos.enable = true;
+      homeAssistant.enable = true;
     };
   };
 
-  home.username = "lucas";
-
-  home.stateVersion = "23.05";
-
-  home.packages = [
-    (import ../../pkgs/git-wt pkgs)
-    (import ../../pkgs/shortuuid pkgs)
-    inputs.nxvm.packages.${pkgs.system}.default
-  ];
+  home = {
+    username = "lucas";
+    stateVersion = "23.05";
+    packages = [
+      (import ../../pkgs/git-wt pkgs)
+      (import ../../pkgs/shortuuid pkgs)
+      inputs.nxvm.packages.${pkgs.system}.default
+    ];
+  };
 
   xdg.dataFile."dict/words".source = inputs.english-words + "/words_alpha.txt";
 

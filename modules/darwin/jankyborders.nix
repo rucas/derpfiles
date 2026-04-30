@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
   services.jankyborders = {
     enable = true;
     style = "round";

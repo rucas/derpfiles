@@ -1,4 +1,4 @@
-{ ... }: {
+_: {
   services.loki = {
     enable = true;
     configuration = {
@@ -9,7 +9,9 @@
         lifecycler = {
           address = "0.0.0.0";
           ring = {
-            kvstore = { store = "inmemory"; };
+            kvstore = {
+              store = "inmemory";
+            };
             replication_factor = 1;
           };
           final_sleep = "0s";
@@ -26,16 +28,18 @@
         chunk_retain_period = "30s";
       };
 
-      schema_config.configs = [{
-        from = "2020-10-24";
-        store = "boltdb-shipper";
-        object_store = "filesystem";
-        schema = "v13";
-        index = {
-          prefix = "index_";
-          period = "24h";
-        };
-      }];
+      schema_config.configs = [
+        {
+          from = "2020-10-24";
+          store = "boltdb-shipper";
+          object_store = "filesystem";
+          schema = "v13";
+          index = {
+            prefix = "index_";
+            period = "24h";
+          };
+        }
+      ];
 
       storage_config = {
         boltdb_shipper = {
@@ -46,7 +50,9 @@
           cache_ttl = "24h";
         };
 
-        filesystem = { directory = "/data/loki/chunks"; };
+        filesystem = {
+          directory = "/data/loki/chunks";
+        };
       };
 
       limits_config = {
