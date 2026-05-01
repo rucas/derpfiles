@@ -11,7 +11,6 @@ _: {
       git_branch = {
         style = "purple";
         symbol = "";
-        # disabled = true;
       };
       command_timeout = 1000;
     };

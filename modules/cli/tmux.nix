@@ -32,7 +32,7 @@ in
     mouse = true;
     baseIndex = 1;
     terminal = "tmux-256color";
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = "/bin/zsh";
     sensibleOnTop = false;
     customPaneNavigationAndResize = true;
     plugins = with pkgs; [
