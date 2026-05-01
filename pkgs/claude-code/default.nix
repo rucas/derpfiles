@@ -33,12 +33,11 @@ stdenv.mkDerivation (finalAttrs: {
   __noChroot = stdenv.hostPlatform.isDarwin;
   dontStrip = true;
 
-  nativeBuildInputs =
-    [
-      installShellFiles
-      makeBinaryWrapper
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isElf [ autoPatchelfHook ];
+  nativeBuildInputs = [
+    installShellFiles
+    makeBinaryWrapper
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isElf [ autoPatchelfHook ];
 
   strictDeps = true;
 
