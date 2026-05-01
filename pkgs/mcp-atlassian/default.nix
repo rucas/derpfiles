@@ -73,6 +73,24 @@ let
 
   fakeredis-no-tests = fakeredis.override {
     valkey = valkey-no-tests;
+    lupa = lupa-2_7;
+  };
+
+  lupa-2_7 = buildPythonPackage rec {
+    pname = "lupa";
+    version = "2.7";
+    format = "wheel";
+    src = fetchPypi {
+      inherit pname version;
+      format = "wheel";
+      dist = "cp313";
+      python = "cp313";
+      abi = "cp313";
+      platform = "macosx_11_0_arm64";
+      hash = "sha256-1NPNYQDa1mZJkrYDl6PQcx/85mO5Zuqg/ctc/KwmVQs=";
+    };
+    dontCheckRuntimeDeps = true;
+    doCheck = false;
   };
 
   pydocket = buildPythonPackage rec {
@@ -90,7 +108,7 @@ let
       cloudpickle
       exceptiongroup
       fakeredis-no-tests
-      lupa
+      lupa-2_7
       opentelemetry-api
       opentelemetry-exporter-prometheus
       opentelemetry-instrumentation
@@ -140,7 +158,7 @@ let
 
   markdown-to-confluence = buildPythonPackage rec {
     pname = "markdown-to-confluence";
-    version = "0.3.0";
+    version = "0.3.5";
     format = "wheel";
     src = fetchPypi {
       pname = "markdown_to_confluence";
@@ -148,7 +166,7 @@ let
       format = "wheel";
       dist = "py3";
       python = "py3";
-      hash = "sha256-ZPAMGHfZL31v8Alm839wyv0l3w3/eBKU/tPfOHQVy9c=";
+      hash = "sha256-dEaXEKJdRSQoJ7IUP9sAvjxhq288rJmP1AIfJoSgG5E=";
     };
     propagatedBuildInputs = [
       markdown
@@ -198,7 +216,7 @@ let
 in
 buildPythonApplication rec {
   pname = "mcp-atlassian";
-  version = "0.12.0";
+  version = "0.21.1";
   format = "wheel";
 
   src = fetchPypi {
@@ -207,7 +225,7 @@ buildPythonApplication rec {
     format = "wheel";
     dist = "py3";
     python = "py3";
-    hash = "sha256-IVcUvA1j1xV5bAmylh9nr+OU/Cgx836ejNsTbP/A+eQ=";
+    hash = "sha256-jvn1popYrCZKpsmMiR598UoC7d5yTwasXqhpsL5gtmY=";
   };
 
   propagatedBuildInputs = [
@@ -230,6 +248,10 @@ buildPythonApplication rec {
     python-dateutil
     keyring
     cachetools
+    fakeredis-no-tests
+    truststore
+    unidecode
+    urllib3
   ];
 
   dontCheckRuntimeDeps = true;
