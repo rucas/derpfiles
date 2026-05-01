@@ -5,21 +5,16 @@
 ### Run the update script
 
 ```bash
-$ nix-shell -p nodejs --run "cd pkgs/claude-code && bash update.sh"
+$ cd pkgs/claude-code && bash update.sh
 ```
 
-This will:
-1. Download the latest claude-code version from npm
-2. Generate a new package-lock.json
-3. Update the version and source hash in default.nix
-
-### Build and fix npmDepsHash
+Or pin a specific version:
 
 ```bash
-$ nix build .#claude-code
+$ cd pkgs/claude-code && bash update.sh 2.1.126
 ```
 
-If the npmDepsHash is incorrect, nix will show the correct hash. Update it in `pkgs/claude-code/default.nix` and rebuild.
+This fetches the `manifest.json` for that version (or latest) from the upstream release bucket, which contains binary checksums for all platforms.
 
 ## how do I upgrade nix?
 

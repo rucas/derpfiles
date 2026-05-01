@@ -1,52 +1,71 @@
 {
   lib,
-  stdenv,
-  buildNpmPackage,
-  fetchzip,
+  stdenvNoCC,
+  fetchurl,
+  installShellFiles,
+  makeBinaryWrapper,
+  autoPatchelfHook,
+  procps,
+  ripgrep,
+  bubblewrap,
+  socat,
   versionCheckHook,
   writableTmpDirAsHomeHook,
-  bubblewrap,
-  procps,
-  socat,
 }:
-buildNpmPackage (finalAttrs: {
+let
+  stdenv = stdenvNoCC;
+  baseUrl = "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases";
+  manifest = lib.importJSON ./manifest.json;
+  platformKey = "${stdenv.hostPlatform.node.platform}-${stdenv.hostPlatform.node.arch}";
+  platformManifestEntry = manifest.platforms.${platformKey};
+in
+stdenv.mkDerivation (finalAttrs: {
   pname = "claude-code";
-  version = "2.1.126";
+  inherit (manifest) version;
 
-  src = fetchzip {
-    url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
-    hash = "sha256-Il9MGrnnIV3i86cU3BjslGEdVodnV50VW3f2DEjSlMk=";
+  src = fetchurl {
+    url = "${baseUrl}/${finalAttrs.version}/${platformKey}/claude";
+    sha256 = platformManifestEntry.checksum;
   };
 
-  npmDepsHash = "";
+  dontUnpack = true;
+  dontBuild = true;
+  __noChroot = stdenv.hostPlatform.isDarwin;
+  dontStrip = true;
 
-  postPatch = ''
-    cp ${./package-lock.json} package-lock.json
+  nativeBuildInputs =
+    [
+      installShellFiles
+      makeBinaryWrapper
+    ]
+    ++ lib.optionals stdenv.hostPlatform.isElf [ autoPatchelfHook ];
 
-    # https://github.com/anthropics/claude-code/issues/15195
-    substituteInPlace cli.js \
-      --replace-fail '#!/bin/sh' '#!/usr/bin/env sh'
-  '';
-
-  dontNpmBuild = true;
   strictDeps = true;
 
-  env.AUTHORIZED = "1";
+  installPhase = ''
+    runHook preInstall
 
-  postInstall = ''
+    installBin $src
+
     wrapProgram $out/bin/claude \
       --set DISABLE_AUTOUPDATER 1 \
+      --set-default FORCE_AUTOUPDATE_PLUGINS 1 \
       --set DISABLE_INSTALLATION_CHECKS 1 \
-      --unset DEV \
+      --set USE_BUILTIN_RIPGREP 0 \
       --prefix PATH : ${
         lib.makeBinPath (
-          [ procps ]
+          [
+            procps
+            ripgrep
+          ]
           ++ lib.optionals stdenv.hostPlatform.isLinux [
             bubblewrap
             socat
           ]
         )
       }
+
+    runHook postInstall
   '';
 
   doInstallCheck = true;
@@ -55,12 +74,23 @@ buildNpmPackage (finalAttrs: {
     versionCheckHook
   ];
   versionCheckKeepEnvironment = [ "HOME" ];
+  versionCheckProgramArg = "--version";
+
+  passthru.updateScript = ./update.sh;
 
   meta = {
     description = "Agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster";
     homepage = "https://github.com/anthropics/claude-code";
-    downloadPage = "https://www.npmjs.com/package/@anthropic-ai/claude-code";
+    downloadPage = "https://claude.com/product/claude-code";
+    changelog = "https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md";
     license = lib.licenses.unfree;
+    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+    platforms = [
+      "aarch64-darwin"
+      "x86_64-darwin"
+      "aarch64-linux"
+      "x86_64-linux"
+    ];
     maintainers = [ ];
     mainProgram = "claude";
   };
