@@ -374,11 +374,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775087534,
-        "narHash": "sha256-91qqW8lhL7TLwgQWijoGBbiD4t7/q75KTi8NxjVmSmA=",
+        "lastModified": 1777678872,
+        "narHash": "sha256-EPIFsulyon7Z1vLQq5Fk64GR8L7cQsT+IPhcsukVbgk=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "3107b77cd68437b9a76194f0f7f9c55f2329ca5b",
+        "rev": "5250617bffd85403b14dbf43c3870e7f255d2c16",
         "type": "github"
       },
       "original": {
@@ -692,11 +692,11 @@
         "norg-meta": "norg-meta"
       },
       "locked": {
-        "lastModified": 1777398306,
-        "narHash": "sha256-30lZV7YpFQai3oXOv4hbTJKOQZgZaOCAvTpxSUjSlPs=",
+        "lastModified": 1777727326,
+        "narHash": "sha256-OgD3XQ9n6HboESGvQkAZDgiBOXtpfsqWwDe9mLEi8QU=",
         "owner": "nvim-neorg",
         "repo": "nixpkgs-neorg-overlay",
-        "rev": "cb4e957bfd2385da95a58a18ad3427ba6a82350a",
+        "rev": "4264940de509bdddd73ffad857320cae2337c280",
         "type": "github"
       },
       "original": {
@@ -734,11 +734,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777421059,
-        "narHash": "sha256-j+RatOnOaHNQ7NeTx9Y+mCxk4LdfW1i110CfzvldrZ8=",
+        "lastModified": 1777766643,
+        "narHash": "sha256-Q8LsZy6hfRAZrSm0560OspF5ijkmcBRAZoKevrBFeEw=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "b6c0276d965f099bfa2c81b063185b91420ed71e",
+        "rev": "4f9b5a9d75f5a1908eb8abd8d4aa311c014157df",
         "type": "github"
       },
       "original": {
@@ -750,11 +750,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1777418282,
-        "narHash": "sha256-0Ob0no3cz2zs2RjO1B1tBWtm0p+uSSO0w11l73fgROU=",
+        "lastModified": 1777764119,
+        "narHash": "sha256-mNQDdRdoJeVGD908nqK/+uGX8jNEGREbs6z+jZgMmSk=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "c33e60f748ac4fbfcdc327ff85c18a6ff8258f88",
+        "rev": "14819d55fbca18ef70638cce38318fe6bc4b32dc",
         "type": "github"
       },
       "original": {
@@ -1016,11 +1016,11 @@
         "tree-sitter-tera": "tree-sitter-tera"
       },
       "locked": {
-        "lastModified": 1777484252,
-        "narHash": "sha256-+K5ZBEOjBbPDXEo4eqbbS+cpjhWIsKGNh/B7CdBw0aw=",
+        "lastModified": 1777910431,
+        "narHash": "sha256-AZZBe1YtVdQGhxGJf9cojeI9gG/n0Rz+RXlhhPmZ2o0=",
         "owner": "rucas",
         "repo": "nxvm",
-        "rev": "08e2d493d4d2eb158e4467a73a40aef20aa487da",
+        "rev": "817c61dfce89a4441138fc63ce92bac7a7975a88",
         "type": "github"
       },
       "original": {
