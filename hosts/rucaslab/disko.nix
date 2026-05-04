@@ -145,7 +145,6 @@ _: {
             type = "zfs_fs";
             mountpoint = "/var/lib/outline";
           };
-
           # --- Observability: regenerable data ---
           grafana = {
             type = "zfs_fs";
