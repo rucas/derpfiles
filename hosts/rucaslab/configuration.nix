@@ -36,6 +36,7 @@
     ../../nixos/lldap
     ../../nixos/authelia
     ../../nixos/cloudflared
+    ../../nixos/actual-budget
     ../../nixos/sanoid
     ../../nixos/restic
     ../../nixos/ollama
@@ -166,6 +167,16 @@
       owner = "grafana";
       group = "grafana";
     };
+    actual_budget_oidc_client_secret_env = {
+      file = ./secrets/actual_budget_oidc_client_secret_env.age;
+      owner = "actual";
+      group = "actual";
+    };
+    authelia_oidc_actual_budget_client_secret = {
+      file = ./secrets/authelia_oidc_actual_budget_client_secret.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      inherit (config.services.authelia.instances.rucaslab) group;
+    };
   };
 
   # Bootloader.
@@ -236,6 +247,13 @@
     };
     lldap.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
     papra.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
+    actual.serviceConfig = {
+      StateDirectory = pkgs.lib.mkForce [ ];
+      DynamicUser = pkgs.lib.mkForce false;
+      User = "actual";
+      Group = "actual";
+      ExecStartPre = "+${pkgs.coreutils}/bin/chown -R actual:actual /var/lib/actual-budget";
+    };
   };
 
   users = {
@@ -244,6 +262,10 @@
         isSystemUser = true;
         group = "adguardhome";
         uid = 62939;
+      };
+      actual = {
+        isSystemUser = true;
+        group = "actual";
       };
       lucas = {
         isNormalUser = true;
@@ -256,6 +278,7 @@
       };
     };
     groups.adguardhome.gid = 62939;
+    groups.actual = { };
     defaultUserShell = pkgs.zsh;
   };
 

@@ -147,4 +147,14 @@ in
     users.github-actions
     system
   ];
+  "actual_budget_oidc_client_secret_env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "authelia_oidc_actual_budget_client_secret.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
 }

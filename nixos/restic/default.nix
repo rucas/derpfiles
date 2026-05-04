@@ -91,6 +91,7 @@
       "/var/lib/ntfy-sh"
       "/var/lib/lldap"
       "/var/lib/papra"
+      "/var/lib/actual-budget"
     ];
 
     exclude = [
