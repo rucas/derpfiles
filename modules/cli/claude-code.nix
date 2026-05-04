@@ -226,8 +226,8 @@ in
         homeAssistant = lib.mkIf cfg.mcpServers.homeAssistant.enable {
           command = "${pkgs.ha-mcp}/bin/ha-mcp";
           env = {
-            HA_URL = cfg.mcpServers.homeAssistant.url;
-            HA_TOKEN = "\${HA_MCP_TOKEN}";
+            HOMEASSISTANT_URL = cfg.mcpServers.homeAssistant.url;
+            HOMEASSISTANT_TOKEN = "\${HA_MCP_TOKEN}";
           };
         };
 

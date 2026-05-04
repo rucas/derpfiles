@@ -11,6 +11,12 @@
         owner = "lucas";
         mode = "0600";
       };
+      githubMCPToken = {
+        reference = "op://Homelab/GitHub MCP Token/credential";
+        path = "/var/opnix/secrets/github/token";
+        owner = "lucas";
+        mode = "0600";
+      };
     };
   };
 }
