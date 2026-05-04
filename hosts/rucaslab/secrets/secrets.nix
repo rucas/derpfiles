@@ -92,6 +92,11 @@ in
     users.github-actions
     system
   ];
+  "grafana_admin_password.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
   "restic-aws-env.age".publicKeys = [
     users.personal-5c-nano
     users.github-actions
@@ -128,6 +133,16 @@ in
     system
   ];
   "scanner_password.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "authelia_oidc_grafana_client_secret.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "grafana_oidc_client_secret.age".publicKeys = [
     users.personal-5c-nano
     users.github-actions
     system

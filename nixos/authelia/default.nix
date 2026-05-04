@@ -115,6 +115,25 @@
               token_endpoint_auth_method = "client_secret_post";
               authorization_policy = "one_factor";
             }
+            {
+              client_id = "grafana";
+              client_name = "Grafana";
+              client_secret = "{{ secret \"${config.age.secrets.authelia_oidc_grafana_client_secret.path}\" }}";
+              redirect_uris = [ "https://grafana.rucaslab.com/login/generic_oauth" ];
+              scopes = [
+                "openid"
+                "profile"
+                "email"
+                "groups"
+              ];
+              grant_types = [
+                "authorization_code"
+                "refresh_token"
+              ];
+              response_types = [ "code" ];
+              token_endpoint_auth_method = "client_secret_post";
+              authorization_policy = "one_factor";
+            }
           ];
         };
       };

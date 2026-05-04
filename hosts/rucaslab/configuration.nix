@@ -119,6 +119,11 @@
       owner = "grafana";
       group = "grafana";
     };
+    grafana_admin_password = {
+      file = ./secrets/grafana_admin_password.age;
+      owner = "grafana";
+      group = "grafana";
+    };
     restic-aws-env = {
       file = ./secrets/restic-aws-env.age;
     };
@@ -151,6 +156,16 @@
       owner = config.services.authelia.instances.rucaslab.user;
       inherit (config.services.authelia.instances.rucaslab) group;
     };
+    authelia_oidc_grafana_client_secret = {
+      file = ./secrets/authelia_oidc_grafana_client_secret.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      inherit (config.services.authelia.instances.rucaslab) group;
+    };
+    grafana_oidc_client_secret = {
+      file = ./secrets/grafana_oidc_client_secret.age;
+      owner = "grafana";
+      group = "grafana";
+    };
   };
 
   # Bootloader.
@@ -182,9 +197,8 @@
       enable = true;
       interval = "weekly";
     };
-    # Snapshots are managed by Sanoid (nixos/sanoid/default.nix)
-    # which provides per-dataset retention policies and drives Syncoid
-    # for offsite replication.
+    # Snapshots are managed by Sanoid (nixos/sanoid/default.nix).
+    # TODO: add Syncoid replication to a ZFS NAS when available.
     autoSnapshot.enable = false;
   };
 
@@ -218,6 +232,7 @@
       ProtectSystem = pkgs.lib.mkForce false;
       User = pkgs.lib.mkForce "ntfy-sh";
       Group = pkgs.lib.mkForce "ntfy-sh";
+      ExecStartPre = "+${pkgs.coreutils}/bin/chown -R ntfy-sh:ntfy-sh /var/lib/ntfy-sh";
     };
     lldap.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];
     papra.serviceConfig.StateDirectory = pkgs.lib.mkForce [ ];

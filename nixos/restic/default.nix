@@ -80,6 +80,9 @@
       "/var/lib/zigbee2mqtt"
       "/var/lib/zwave-js-ui"
 
+      # Grafana — dashboards and alerts not fully provisioned in Nix
+      "/data/grafana"
+
       # Standard — painful to recreate
       "/var/lib/AdGuardHome"
       "/var/lib/mosquitto"

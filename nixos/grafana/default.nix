@@ -38,10 +38,30 @@
         http_addr = "127.0.0.1";
         http_port = 2342;
         domain = "grafana.rucaslab.com";
+        root_url = "https://grafana.rucaslab.com";
       };
-      security.secret_key = "$__file{${config.age.secrets.grafana.path}}";
+      security = {
+        secret_key = "$__file{${config.age.secrets.grafana.path}}";
+        admin_password = "$__file{${config.age.secrets.grafana_admin_password.path}}";
+      };
       paths = {
         data = "/data/grafana";
+      };
+      "auth.generic_oauth" = {
+        enabled = true;
+        name = "Authelia";
+        icon = "signin";
+        client_id = "grafana";
+        client_secret = "$__file{${config.age.secrets.grafana_oidc_client_secret.path}}";
+        scopes = "openid profile email groups";
+        auth_url = "https://auth.rucaslab.com/api/oidc/authorization";
+        token_url = "https://auth.rucaslab.com/api/oidc/token";
+        api_url = "https://auth.rucaslab.com/api/oidc/userinfo";
+        login_attribute_path = "preferred_username";
+        name_attribute_path = "name";
+        use_refresh_token = true;
+        auto_login = false;
+        allow_sign_up = true;
       };
     };
   };
