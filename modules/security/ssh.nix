@@ -30,7 +30,6 @@ in
           identitiesOnly = true;
           identityFile = "~/.ssh/id_ed25519_sk";
           forwardAgent = true;
-          addKeysToAgent = "yes";
         };
         "unlock" = {
           port = 22;
