@@ -6,6 +6,7 @@ _: {
       "authelia-rucaslab"
       "hass"
       "lldap"
+      "outline"
     ];
     ensureUsers = [
       {
@@ -18,6 +19,10 @@ _: {
       }
       {
         name = "lldap";
+        ensureDBOwnership = true;
+      }
+      {
+        name = "outline";
         ensureDBOwnership = true;
       }
     ];

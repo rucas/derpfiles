@@ -80,6 +80,12 @@ _:
       "datapool/papra" = {
         useTemplate = [ "standard" ];
       };
+      "datapool/actual-budget" = {
+        useTemplate = [ "standard" ];
+      };
+      "datapool/outline" = {
+        useTemplate = [ "standard" ];
+      };
 
       # Observability
       "datapool/grafana" = {
