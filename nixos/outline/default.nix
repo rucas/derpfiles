@@ -24,7 +24,11 @@
         authUrl = "https://auth.rucaslab.com/api/oidc/authorization";
         tokenUrl = "https://auth.rucaslab.com/api/oidc/token";
         userinfoUrl = "https://auth.rucaslab.com/api/oidc/userinfo";
-        scopes = [ "openid" "profile" "email" ];
+        scopes = [
+          "openid"
+          "profile"
+          "email"
+        ];
         usernameClaim = "preferred_username";
       };
     };
