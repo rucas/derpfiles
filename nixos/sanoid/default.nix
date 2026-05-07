@@ -83,6 +83,9 @@ _:
       "datapool/actual-budget" = {
         useTemplate = [ "standard" ];
       };
+      "datapool/outline" = {
+        useTemplate = [ "standard" ];
+      };
 
       # Observability
       "datapool/grafana" = {

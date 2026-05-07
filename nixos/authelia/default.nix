@@ -152,6 +152,24 @@
               token_endpoint_auth_method = "client_secret_basic";
               authorization_policy = "one_factor";
             }
+            {
+              client_id = "outline";
+              client_name = "Outline";
+              client_secret = "{{ secret \"${config.age.secrets.authelia_oidc_outline_client_secret.path}\" }}";
+              redirect_uris = [ "https://wiki.rucaslab.com/auth/oidc.callback" ];
+              scopes = [
+                "openid"
+                "profile"
+                "email"
+              ];
+              grant_types = [
+                "authorization_code"
+                "refresh_token"
+              ];
+              response_types = [ "code" ];
+              token_endpoint_auth_method = "client_secret_post";
+              authorization_policy = "one_factor";
+            }
           ];
         };
       };

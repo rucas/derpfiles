@@ -37,6 +37,7 @@
     ../../nixos/authelia
     ../../nixos/cloudflared
     ../../nixos/actual-budget
+    ../../nixos/outline
     ../../nixos/sanoid
     ../../nixos/restic
     ../../nixos/ollama
@@ -177,6 +178,16 @@
       owner = config.services.authelia.instances.rucaslab.user;
       inherit (config.services.authelia.instances.rucaslab) group;
     };
+    outline_oidc_client_secret = {
+      file = ./secrets/outline_oidc_client_secret.age;
+      owner = "outline";
+      group = "outline";
+    };
+    authelia_oidc_outline_client_secret = {
+      file = ./secrets/authelia_oidc_outline_client_secret.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      inherit (config.services.authelia.instances.rucaslab) group;
+    };
   };
 
   # Bootloader.
@@ -253,6 +264,10 @@
       User = "actual";
       Group = "actual";
       ExecStartPre = "+${pkgs.coreutils}/bin/chown -R actual:actual /var/lib/actual-budget";
+    };
+    outline.serviceConfig = {
+      StateDirectory = pkgs.lib.mkForce [ ];
+      ReadWritePaths = [ "/var/lib/outline" ];
     };
   };
 

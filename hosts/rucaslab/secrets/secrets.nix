@@ -157,4 +157,14 @@ in
     users.github-actions
     system
   ];
+  "outline_oidc_client_secret.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "authelia_oidc_outline_client_secret.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
 }

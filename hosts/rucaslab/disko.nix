@@ -141,6 +141,10 @@ _: {
             type = "zfs_fs";
             mountpoint = "/var/lib/actual-budget";
           };
+          outline = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/outline";
+          };
 
           # --- Observability: regenerable data ---
           grafana = {
