@@ -17,6 +17,12 @@
         owner = "lucas";
         mode = "0600";
       };
+      windmillApiToken = {
+        reference = "op://Homelab/Windmill API Token/credential";
+        path = "/var/opnix/secrets/windmill/token";
+        owner = "windmill";
+        mode = "0400";
+      };
     };
   };
 }

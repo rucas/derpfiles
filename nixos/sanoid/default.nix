@@ -86,6 +86,9 @@ _:
       "datapool/outline" = {
         useTemplate = [ "standard" ];
       };
+      "datapool/windmill" = {
+        useTemplate = [ "standard" ];
+      };
       # Observability
       "datapool/grafana" = {
         useTemplate = [ "observability" ];

@@ -38,6 +38,7 @@
     ../../nixos/cloudflared
     ../../nixos/actual-budget
     ../../nixos/outline
+    ../../nixos/windmill
     ../../nixos/sanoid
     ../../nixos/restic
     ../../nixos/ollama
@@ -269,6 +270,30 @@
       StateDirectory = pkgs.lib.mkForce [ ];
       ReadWritePaths = [ "/var/lib/outline" ];
     };
+    windmill-server.serviceConfig = {
+      StateDirectory = pkgs.lib.mkForce [ ];
+      DynamicUser = pkgs.lib.mkForce false;
+      User = "windmill";
+      Group = "windmill";
+    };
+    windmill-worker = {
+      path = with pkgs; [ python312 gnumake gcc bash coreutils nodejs ];
+      environment.HOME = "/var/lib/windmill-worker";
+      serviceConfig = {
+        DynamicUser = pkgs.lib.mkForce false;
+        User = "windmill";
+        Group = "windmill";
+      };
+    };
+    windmill-worker-native = {
+      path = [ pkgs.python312 ];
+      environment.HOME = "/var/lib/windmill-worker-native";
+      serviceConfig = {
+        DynamicUser = pkgs.lib.mkForce false;
+        User = "windmill";
+        Group = "windmill";
+      };
+    };
   };
 
   users = {
@@ -282,6 +307,10 @@
         isSystemUser = true;
         group = "actual";
       };
+      windmill = {
+        isSystemUser = true;
+        group = "windmill";
+      };
       lucas = {
         isNormalUser = true;
         description = "Lucas";
@@ -294,6 +323,7 @@
     };
     groups.adguardhome.gid = 62939;
     groups.actual = { };
+    groups.windmill = { };
     defaultUserShell = pkgs.zsh;
   };
 

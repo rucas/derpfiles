@@ -1,0 +1,27 @@
+{
+  "path": "f/scripts/actual_budget_sync",
+  "code_file": "main.sh",
+  "summary": "Actual Budget bank sync",
+  "description": "Triggers bank sync for linked accounts in Actual Budget via @actual-app/api",
+  "language": "bash",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "server_url": {
+        "type": "string",
+        "description": "Actual Budget server URL",
+        "default": "http://localhost:5006"
+      },
+      "session_token": {
+        "type": "string",
+        "description": "Actual Budget session token"
+      },
+      "budget_sync_id": {
+        "type": "string",
+        "description": "Budget sync ID (UUID)"
+      }
+    },
+    "required": ["server_url", "session_token", "budget_sync_id"]
+  }
+}

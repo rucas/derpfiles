@@ -1,0 +1,7 @@
+{
+  "path": "f/examples/hello_world",
+  "code_file": "main.py",
+  "summary": "Hello World example",
+  "description": "A simple test script deployed from the NixOS git repo",
+  "language": "python3"
+}

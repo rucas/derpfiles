@@ -8,6 +8,12 @@ final: prev: {
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
   ledger-sync = prev.callPackage ../pkgs/ledger-sync { };
+  windmill-sync = prev.callPackage ../pkgs/windmill-sync { };
+  windmill = prev.windmill.overrideAttrs (old: {
+    patches = map
+      (p: if builtins.baseNameOf (toString p) == "python_versions.patch" then ../pkgs/windmill-patches/python_versions.patch else p)
+      old.patches;
+  });
   ledger-watch = prev.callPackage ../pkgs/ledger-watch {
     fswatch = if prev.stdenv.isDarwin then prev.fswatch else null;
     inotify-tools = if prev.stdenv.isLinux then prev.inotify-tools else null;

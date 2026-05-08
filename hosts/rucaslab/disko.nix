@@ -145,6 +145,10 @@ _: {
             type = "zfs_fs";
             mountpoint = "/var/lib/outline";
           };
+          windmill = {
+            type = "zfs_fs";
+            mountpoint = "/var/lib/windmill";
+          };
           # --- Observability: regenerable data ---
           grafana = {
             type = "zfs_fs";

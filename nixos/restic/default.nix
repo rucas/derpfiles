@@ -53,6 +53,7 @@
       "hass"
       "lldap"
       "outline"
+      "windmill"
     ];
     # Run at 01:30 so dumps are ready when restic starts at 02:00
     startAt = "*-*-* 01:30:00";
@@ -94,6 +95,7 @@
       "/var/lib/papra"
       "/var/lib/actual-budget"
       "/var/lib/outline"
+      "/var/lib/windmill"
     ];
 
     exclude = [
