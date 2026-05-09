@@ -277,8 +277,12 @@
       Group = "windmill";
     };
     windmill-worker = {
-      path = with pkgs; [ python312 gnumake gcc bash coreutils nodejs ];
-      environment.HOME = "/var/lib/windmill-worker";
+      path = with pkgs; [ python312 gnumake gcc bash coreutils nodejs bun ];
+      environment = {
+        HOME = "/var/lib/windmill-worker";
+        PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+        WHITELIST_ENVS = "PLAYWRIGHT_BROWSERS_PATH";
+      };
       serviceConfig = {
         DynamicUser = pkgs.lib.mkForce false;
         User = "windmill";

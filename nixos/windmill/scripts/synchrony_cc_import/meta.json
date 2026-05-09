@@ -1,0 +1,48 @@
+{
+  "path": "f/scripts/synchrony_cc_import",
+  "code_file": "main.ts",
+  "summary": "Import Amazon CC transactions into Actual Budget",
+  "description": "Uses Playwright to download transactions from amazon.syf.com and imports them into Actual Budget with automatic deduplication",
+  "language": "deno",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "synchrony_username": {
+        "type": "string",
+        "description": "amazon.syf.com username"
+      },
+      "synchrony_password": {
+        "type": "string",
+        "description": "amazon.syf.com password"
+      },
+      "actual_server_url": {
+        "type": "string",
+        "description": "Actual Budget server URL",
+        "default": "http://localhost:5006"
+      },
+      "actual_password": {
+        "type": "string",
+        "description": "Actual Budget password"
+      },
+      "budget_sync_id": {
+        "type": "string",
+        "description": "Actual Budget sync ID (UUID)"
+      },
+      "account_name": {
+        "type": "string",
+        "description": "Account name in Actual Budget for the Amazon CC",
+        "default": "Amazon Credit Card"
+      },
+      "dry_run": {
+        "type": "boolean",
+        "description": "If true, only download and parse CSV — skip Actual Budget import",
+        "default": false
+      }
+    },
+    "required": [
+      "synchrony_username",
+      "synchrony_password"
+    ]
+  }
+}
