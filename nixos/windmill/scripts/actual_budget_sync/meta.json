@@ -13,15 +13,15 @@
         "description": "Actual Budget server URL",
         "default": "http://localhost:5006"
       },
-      "session_token": {
+      "password": {
         "type": "string",
-        "description": "Actual Budget session token"
+        "description": "Actual Budget password"
       },
       "budget_sync_id": {
         "type": "string",
         "description": "Budget sync ID (UUID)"
       }
     },
-    "required": ["server_url", "session_token", "budget_sync_id"]
+    "required": ["server_url", "password", "budget_sync_id"]
   }
 }
