@@ -9,6 +9,7 @@ let
         "pyenv-virtualenv"
         "sdkman-cli"
         "zlib" # needed for pyenv shit
+        "uv"
       ];
     };
     casks = {
