@@ -10,9 +10,13 @@ final: prev: {
   ledger-sync = prev.callPackage ../pkgs/ledger-sync { };
   windmill-sync = prev.callPackage ../pkgs/windmill-sync { };
   windmill = prev.windmill.overrideAttrs (old: {
-    patches = map
-      (p: if builtins.baseNameOf (toString p) == "python_versions.patch" then ../pkgs/windmill-patches/python_versions.patch else p)
-      old.patches;
+    patches = map (
+      p:
+      if builtins.baseNameOf (toString p) == "python_versions.patch" then
+        ../pkgs/windmill-patches/python_versions.patch
+      else
+        p
+    ) old.patches;
   });
   ledger-watch = prev.callPackage ../pkgs/ledger-watch {
     fswatch = if prev.stdenv.isDarwin then prev.fswatch else null;

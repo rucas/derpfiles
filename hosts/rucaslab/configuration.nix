@@ -277,7 +277,15 @@
       Group = "windmill";
     };
     windmill-worker = {
-      path = with pkgs; [ python312 gnumake gcc bash coreutils nodejs bun ];
+      path = with pkgs; [
+        python312
+        gnumake
+        gcc
+        bash
+        coreutils
+        nodejs
+        bun
+      ];
       environment = {
         HOME = "/var/lib/windmill-worker";
         PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
@@ -325,9 +333,11 @@
         shell = pkgs.zsh;
       };
     };
-    groups.adguardhome.gid = 62939;
-    groups.actual = { };
-    groups.windmill = { };
+    groups = {
+      adguardhome.gid = 62939;
+      actual = { };
+      windmill = { };
+    };
     defaultUserShell = pkgs.zsh;
   };
 

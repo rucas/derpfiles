@@ -25,6 +25,14 @@ $ sudo determinate-nixd upgrade
 ```
 
 
+## nix flake update is rate limited by github
+
+### Use `gh auth token` to authenticate
+
+```bash
+$ NIX_CONFIG="extra-access-tokens = github.com=$(gh auth token)" nix flake update
+```
+
 ## nix-darwin didnt start yabai, skhd, jankyborders...what do I do?
 
 ### Restart the LaunchAgent
