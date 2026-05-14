@@ -18,6 +18,8 @@ writeShellApplication {
   ];
 
   text = ''
+    _millis() { local e=$EPOCHREALTIME; echo $(( ''${e/./} / 1000 )); }
+
     _elapsed() {
       local t0=$1 t1=$2
       local ms=$(( t1 - t0 ))
@@ -43,7 +45,9 @@ writeShellApplication {
     _session_name() {
       local name
       name="$(basename "$1")"
-      echo "''${name#worktree_}"
+      name="''${name#worktree_}"
+      name="''${name#worktree-}"
+      echo "$name"
     }
 
     _worktrees() {
@@ -164,6 +168,58 @@ writeShellApplication {
       echo "Created $created session(s), skipped $skipped."
     }
 
+    sync() {
+      local mode="merge"
+      local patterns=()
+      for arg in "$@"; do
+        if [ "$arg" = "--rebase" ]; then
+          mode="rebase"
+        else
+          patterns+=("$arg")
+        fi
+      done
+
+      if [ "''${#patterns[@]}" -eq 0 ]; then
+        local cwd
+        cwd="$(git rev-parse --show-toplevel)"
+        patterns+=("$(_session_name "$cwd")")
+      fi
+
+      local branch
+      branch="$(_main_branch)"
+      git fetch origin "$branch"
+
+      local worktrees=()
+      while read -r wt_path branch_ref; do
+        worktrees+=("$wt_path $branch_ref")
+      done < <(_worktrees)
+
+      if [ "''${#worktrees[@]}" -eq 0 ]; then
+        echo "No worktrees found."
+        return
+      fi
+
+      for wt in "''${worktrees[@]}"; do
+        read -r wt_path _ <<< "$wt"
+        local session
+        session="$(_session_name "$wt_path")"
+
+        local matched=0
+        for pat in "''${patterns[@]}"; do
+          pat_re="^''${pat//\*/.*}$"
+          if [[ "$session" =~ $pat_re ]]; then matched=1; break; fi
+        done
+        [ "$matched" -eq 0 ] && continue
+
+        echo "Syncing $session..."
+        if [ "$mode" = "rebase" ]; then
+          git -C "$wt_path" rebase "origin/$branch"
+        else
+          git -C "$wt_path" merge "origin/$branch"
+        fi
+      done
+    }
+
     clean() {
       dry_run=1
       verbose=0
@@ -172,9 +228,9 @@ writeShellApplication {
         [ "$arg" = "--verbose" ] && verbose=1
       done
 
-      _log() { [ "$verbose" -eq 1 ] && echo "  ⏱  $1" >&2; }
+      _log() { [ "$verbose" -eq 1 ] && echo "  ⏱  $1" >&2 || true; }
 
-      t_start=$((EPOCHREALTIME * 1000))
+      t_start=$(_millis)
       t0=$t_start
 
       _main_branch >/dev/null
@@ -184,7 +240,7 @@ writeShellApplication {
         worktrees+=("$wt_path $branch_ref")
       done < <(_worktrees)
 
-      t1=$((EPOCHREALTIME * 1000)); _log "list worktrees: $(_elapsed $t0 $t1)"; t0=$t1
+      t1=$(_millis); _log "list worktrees: $(_elapsed "$t0" "$t1")"; t0=$t1
 
       if [ "''${#worktrees[@]}" -eq 0 ]; then
         echo "No worktrees found."
@@ -202,7 +258,7 @@ writeShellApplication {
 
       repo_nwo="$(git remote get-url origin | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
 
-      t1=$((EPOCHREALTIME * 1000)); _log "parse remote: $(_elapsed $t0 $t1)"; t0=$t1
+      t1=$(_millis); _log "parse remote: $(_elapsed "$t0" "$t1")"; t0=$t1
 
       if [ "''${#api_branches[@]}" -gt 0 ]; then
 
@@ -221,7 +277,7 @@ writeShellApplication {
           .[] | "\(.key)\t\(.value)"
         ' 2>/dev/null)" || result=""
 
-        t1=$((EPOCHREALTIME * 1000)); _log "graphql api: $(_elapsed $t0 $t1)"; t0=$t1
+        t1=$(_millis); _log "graphql api: $(_elapsed "$t0" "$t1")"; t0=$t1
 
         while IFS=$'\t' read -r idx url; do
           [ -z "$idx" ] && continue
@@ -279,24 +335,24 @@ writeShellApplication {
           mv "$wt_path" "$trash/" 2>/dev/null || rm -rf "$wt_path"
         done
 
-        t1=$((EPOCHREALTIME * 1000)); _log "move worktrees: $(_elapsed $t0 $t1)"; t0=$t1
+        t1=$(_millis); _log "move worktrees: $(_elapsed "$t0" "$t1")"; t0=$t1
 
         git worktree prune
 
-        t1=$((EPOCHREALTIME * 1000)); _log "worktree prune: $(_elapsed $t0 $t1)"; t0=$t1
+        t1=$(_millis); _log "worktree prune: $(_elapsed "$t0" "$t1")"; t0=$t1
 
         for entry in "''${entries[@]}"; do
           IFS='|' read -r _ branch_ref _ <<< "$entry"
           git branch -D "''${branch_ref#refs/heads/}" 2>/dev/null || true
         done
 
-        t1=$((EPOCHREALTIME * 1000)); _log "delete branches: $(_elapsed $t0 $t1)"; t0=$t1
+        t1=$(_millis); _log "delete branches: $(_elapsed "$t0" "$t1")"; t0=$t1
 
         rm -rf "$trash" &
         disown
       fi
 
-      t_end=$((EPOCHREALTIME * 1000)); _log "total: $(_elapsed $t_start $t_end)"
+      t_end=$(_millis); _log "total: $(_elapsed "$t_start" "$t_end")"
 
       if [ "$dry_run" -eq 1 ]; then
         echo ""
@@ -311,6 +367,9 @@ writeShellApplication {
       echo "    new <branch>        Create a worktree + tmux session (auto-prefixes worktree_)"
       echo "    ls                  List all worktrees with branch and tmux status"
       echo "    spawn               Create tmux sessions for worktrees missing one"
+      echo "    sync [--rebase] [pattern...]"
+      echo "                        Fetch main branch and merge (or rebase) into worktrees"
+      echo "                        Defaults to current worktree; pass globs to match others"
       echo "    clean [--execute] [--verbose]"
       echo "                        Remove worktrees with branches merged into master"
       echo "                        Dry-run by default; pass --execute to apply"
