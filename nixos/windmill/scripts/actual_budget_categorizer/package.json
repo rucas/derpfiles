@@ -1,0 +1,16 @@
+{
+  "name": "actual_budget_categorizer",
+  "private": true,
+  "scripts": {
+    "start": "node --experimental-strip-types run.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@actual-app/api": "^26.5.2"
+  }
+}

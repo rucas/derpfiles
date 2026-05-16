@@ -94,13 +94,55 @@ function findChromiumExecutable(): string | undefined {
   return `${browsersPath}/${chromiumDir}/chrome-linux64/chrome`;
 }
 
+const STEALTH_SCRIPT = `
+  Object.defineProperty(navigator, 'webdriver', { get: () => false });
+
+  Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
+  Object.defineProperty(navigator, 'language', { get: () => 'en-US' });
+
+  Object.defineProperty(navigator, 'plugins', {
+    get: () => {
+      const plugins = [
+        { name: 'Chrome PDF Plugin', filename: 'internal-pdf-viewer', description: 'Portable Document Format' },
+        { name: 'Chrome PDF Viewer', filename: 'mhjfbmdgcfjbbpaeojofohoefgiehjai', description: '' },
+        { name: 'Native Client', filename: 'internal-nacl-plugin', description: '' },
+      ];
+      plugins.length = 3;
+      return plugins;
+    },
+  });
+
+  if (!window.chrome) window.chrome = {};
+  if (!window.chrome.runtime) window.chrome.runtime = { connect: () => {}, sendMessage: () => {} };
+
+  const originalQuery = window.navigator.permissions?.query?.bind(window.navigator.permissions);
+  if (originalQuery) {
+    window.navigator.permissions.query = (params) =>
+      params.name === 'notifications'
+        ? Promise.resolve({ state: Notification.permission })
+        : originalQuery(params);
+  }
+
+  const getParameter = WebGLRenderingContext.prototype.getParameter;
+  WebGLRenderingContext.prototype.getParameter = function (param) {
+    if (param === 37445) return 'Google Inc. (NVIDIA)';
+    if (param === 37446) return 'ANGLE (NVIDIA, NVIDIA GeForce GTX 1650 Direct3D11 vs_5_0 ps_5_0, D3D11)';
+    return getParameter.call(this, param);
+  };
+`;
+
 async function downloadTransactionsFromSynchrony(
   username: string,
   password: string,
 ): Promise<Transaction[]> {
   const executablePath = findChromiumExecutable();
+  const baseDir = Deno.env.get("XDG_DATA_HOME")
+    ?? (Deno.env.get("HOME") ? `${Deno.env.get("HOME")}/.local/share` : "/tmp");
+  const profileDir = `${baseDir}/synchrony-cc-import/browser-profile`;
+  mkdirSync(profileDir, { recursive: true });
   console.log(`Using chromium at: ${executablePath ?? "default"}`);
-  const browser = await chromium.launch({
+
+  const context = await chromium.launchPersistentContext(profileDir, {
     headless: true,
     executablePath,
     args: [
@@ -108,14 +150,17 @@ async function downloadTransactionsFromSynchrony(
       "--disable-setuid-sandbox",
       "--disable-blink-features=AutomationControlled",
     ],
+    userAgent:
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    viewport: { width: 1920, height: 1080 },
+    locale: "en-US",
+    timezoneId: "America/New_York",
+    colorScheme: "light",
   });
 
   try {
-    const context = await browser.newContext({
-      userAgent:
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-    });
-    const page = await context.newPage();
+    await context.addInitScript(STEALTH_SCRIPT);
+    const page = context.pages()[0] ?? await context.newPage();
     await login(page, username, password);
 
     const transactions = await scrapeActivity(page);
@@ -124,7 +169,20 @@ async function downloadTransactionsFromSynchrony(
     );
     return transactions;
   } finally {
-    await browser.close();
+    await context.close();
+  }
+}
+
+function randomDelay(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+async function humanType(page: Page, selector: string, text: string) {
+  const locator = page.locator(selector);
+  await locator.click();
+  await page.waitForTimeout(randomDelay(200, 500));
+  for (const char of text) {
+    await locator.pressSequentially(char, { delay: randomDelay(50, 150) });
   }
 }
 
@@ -136,17 +194,23 @@ async function login(page: Page, username: string, password: string) {
   console.log(
     `Initial navigation: status=${response?.status()}, url=${page.url()}`,
   );
-  await page.waitForTimeout(10000);
+  await page.waitForTimeout(randomDelay(8000, 12000));
   console.log(`After wait: url=${page.url()}`);
   await screenshot(page, "login-page");
 
-  await page.locator('[data-test="login-userid"]').fill(username);
-  await page.locator('[data-test="login-password"]').fill(password);
+  await page.mouse.move(randomDelay(300, 600), randomDelay(200, 400));
+  await page.waitForTimeout(randomDelay(500, 1500));
+
+  await humanType(page, '[data-test="login-userid"]', username);
+  await page.waitForTimeout(randomDelay(800, 2000));
+
+  await humanType(page, '[data-test="login-password"]', password);
+  await page.waitForTimeout(randomDelay(500, 1200));
   await screenshot(page, "pre-submit");
-  await page
-    .getByRole("button", { name: /log in|sign in|secure login|submit/i })
-    .click();
-  await page.waitForTimeout(10000);
+  await page.mouse.move(randomDelay(400, 700), randomDelay(500, 700));
+  await page.waitForTimeout(randomDelay(300, 800));
+  await page.getByRole("button", { name: /log in|sign in|secure login|submit/i }).click();
+  await page.waitForTimeout(randomDelay(8000, 12000));
   console.log(`Post-login URL: ${page.url()}`);
   await screenshot(page, "post-login");
 
