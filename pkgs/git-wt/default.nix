@@ -4,6 +4,7 @@
   gh,
   gawk,
   tmux,
+  jq,
   ...
 }:
 
@@ -15,6 +16,7 @@ writeShellApplication {
     gh
     gawk
     tmux
+    jq
   ];
 
   text = ''
@@ -64,6 +66,29 @@ writeShellApplication {
         '
     }
 
+    _claude_status() {
+      local wt_path="$1"
+      local sessions_dir="$HOME/.claude/sessions"
+      [ -d "$sessions_dir" ] || return
+      for session_file in "$sessions_dir"/*.json; do
+        [ -f "$session_file" ] || continue
+        local pid cwd status
+        read -r pid cwd status < <(jq -r '[.pid, .cwd, .status] | @tsv' "$session_file")
+        case "$cwd" in
+          "''${wt_path}"/*|"''${wt_path}") ;;
+          *) continue ;;
+        esac
+        kill -0 "$pid" 2>/dev/null || continue
+        case "$status" in
+          busy)    printf '\033[1;33m[BUSY]\033[0m' ;;
+          idle)    printf '\033[1;32m[IDLE]\033[0m' ;;
+          waiting) printf '\033[1;31m[WAITING]\033[0m' ;;
+          *)       printf '[?]' ;;
+        esac
+        return
+      done
+    }
+
     ls() {
       local main_wt
       main_wt="$(_main_wt)"
@@ -84,32 +109,70 @@ writeShellApplication {
         return
       fi
 
-      local max_session=0 max_branch=0
+      local max_session=0 max_branch=0 max_claude=0
+      local -a claude_statuses=()
       for wt in "''${all_wts[@]}"; do
         read -r wt_path branch_ref <<< "$wt"
-        local session branch
+        local session branch claude_status
         session="$(_session_name "$wt_path")"
         branch="''${branch_ref#refs/heads/}"
+        branch="''${branch#worktree_}"
+        branch="''${branch#worktree-}"
+        claude_status="$(_claude_status "$wt_path")" || true
+        claude_statuses+=("$claude_status")
         [ "''${#session}" -gt "$max_session" ] && max_session=''${#session}
         [ "''${#branch}" -gt "$max_branch" ] && max_branch=''${#branch}
+        [ "''${#claude_status}" -gt "$max_claude" ] && max_claude=''${#claude_status}
       done
 
+      _claude_sort_key() {
+        case "$1" in
+          *WAITING*) echo 0 ;;
+          *BUSY*)    echo 1 ;;
+          *IDLE*)    echo 2 ;;
+          *)         echo 3 ;;
+        esac
+      }
+
+      local dim=$'\033[2m' reset=$'\033[0m'
+      if [ "$max_claude" -gt 0 ]; then
+        printf "  ''${dim}%-''${max_session}s  %-''${max_branch}s  %-4s  %s''${reset}\n" "NAME" "BRANCH" "TMUX" "CLAUDE"
+      else
+        printf "  ''${dim}%-''${max_session}s  %-''${max_branch}s  %s''${reset}\n" "NAME" "BRANCH" "TMUX"
+      fi
+
+      local idx=0
+      local lines=()
       for wt in "''${all_wts[@]}"; do
         read -r wt_path branch_ref <<< "$wt"
-        local session branch marker tmux_col
+        local session branch marker tmux_col claude_col sort_key
         session="$(_session_name "$wt_path")"
         branch="''${branch_ref#refs/heads/}"
+        branch="''${branch#worktree_}"
+        branch="''${branch#worktree-}"
+        claude_col="''${claude_statuses[$idx]}"
+        sort_key="$(_claude_sort_key "$claude_col")"
 
         marker="  "
         [ "$wt_path" = "$main_wt" ] && marker="* "
 
-        tmux_col="      "
+        tmux_col="    "
         if [ "$wt_path" != "$main_wt" ]; then
-          tmux has-session -t "=$session" 2>/dev/null && tmux_col="tmux ✓"
+          tmux has-session -t "=$session" 2>/dev/null && tmux_col="✓   "
         fi
 
-        printf "%s%-''${max_session}s  %-''${max_branch}s  %s\n" "$marker" "$session" "$branch" "$tmux_col"
+        local line
+        if [ "$max_claude" -gt 0 ]; then
+          line="$(printf "%s%-''${max_session}s  %-''${max_branch}s  %s  %s" "$marker" "$session" "$branch" "$tmux_col" "$claude_col")"
+        else
+          line="$(printf "%s%-''${max_session}s  %-''${max_branch}s  %s" "$marker" "$session" "$branch" "$tmux_col")"
+        fi
+        lines+=("$sort_key $line")
+
+        (( idx++ )) || true
       done
+
+      printf '%s\n' "''${lines[@]}" | sort -t ' ' -k1,1n | cut -d ' ' -f2-
     }
 
     new() {
@@ -170,10 +233,13 @@ writeShellApplication {
 
     sync() {
       local mode="merge"
+      local use_ai=0
       local patterns=()
       for arg in "$@"; do
         if [ "$arg" = "--rebase" ]; then
           mode="rebase"
+        elif [ "$arg" = "--ai" ]; then
+          use_ai=1
         else
           patterns+=("$arg")
         fi
@@ -187,7 +253,7 @@ writeShellApplication {
 
       local branch
       branch="$(_main_branch)"
-      git fetch origin "$branch"
+      git fetch --quiet origin "$branch"
 
       local worktrees=()
       while read -r wt_path branch_ref; do
@@ -212,10 +278,46 @@ writeShellApplication {
         [ "$matched" -eq 0 ] && continue
 
         echo "Syncing $session..."
+        local sync_failed=0
         if [ "$mode" = "rebase" ]; then
-          git -C "$wt_path" rebase "origin/$branch"
+          git -C "$wt_path" rebase "origin/$branch" > /dev/null 2>&1 || sync_failed=1
         else
-          git -C "$wt_path" merge "origin/$branch"
+          git -C "$wt_path" merge --quiet "origin/$branch" 2>/dev/null || sync_failed=1
+        fi
+
+        if [ "$sync_failed" -eq 1 ] && [ "$use_ai" -eq 1 ]; then
+          echo "Merge conflict in $session — launching claude in tmux session..."
+
+          local prompt_file
+          prompt_file="$(mktemp)"
+          cat > "$prompt_file" <<'RESOLVE_PROMPT'
+You are resolving merge conflicts in a git worktree. Follow these steps:
+
+1. Run `git status` to identify all conflicted files.
+2. For each conflicted file:
+   a. Read the file and understand both sides of the conflict (ours vs theirs).
+   b. Read `git log --oneline -10` on both branches for context on what each side intended.
+   c. If the correct resolution is clear, resolve it. Prefer preserving both sides intent when possible.
+   d. If the conflict is ambiguous or involves logic changes you are unsure about, ask the user a clarifying question before proceeding. Do not guess.
+3. After resolving all conflicts, run the projects validation steps:
+   a. Read the CLAUDE.md file(s) in the repo for project-specific test, lint, and build commands.
+   b. If no CLAUDE.md exists, look for a Makefile, package.json scripts, or CI config.
+   c. Run linters (e.g. lint, typecheck, shellcheck, etc.)
+   d. Run tests (e.g. test suite, unit tests)
+   e. If any validation fails, fix the issue and re-run.
+4. Once all validations pass, stage the resolved files and complete the merge/rebase:
+   a. `git add <resolved files>`
+   b. `git merge --continue` or `git rebase --continue` as appropriate.
+5. Report what you resolved and any decisions you made.
+RESOLVE_PROMPT
+
+          if ! tmux has-session -t "=$session" 2>/dev/null; then
+            tmux new-session -d -s "$session" -c "$wt_path"
+          fi
+
+          tmux send-keys -t "$session" "claude --append-system-prompt-file $prompt_file 'Resolve the merge conflicts'" Enter
+        elif [ "$sync_failed" -eq 1 ]; then
+          echo "Merge conflict in $session — resolve manually or re-run with --ai"
         fi
       done
     }
@@ -365,11 +467,12 @@ writeShellApplication {
       echo ""
       echo "Subcommands:"
       echo "    new <branch>        Create a worktree + tmux session (auto-prefixes worktree_)"
-      echo "    ls                  List all worktrees with branch and tmux status"
+      echo "    ls                  List all worktrees with branch, Claude, and tmux status"
       echo "    spawn               Create tmux sessions for worktrees missing one"
-      echo "    sync [--rebase] [pattern...]"
+      echo "    sync [--rebase] [--ai] [pattern...]"
       echo "                        Fetch main branch and merge (or rebase) into worktrees"
       echo "                        Defaults to current worktree; pass globs to match others"
+      echo "                        --ai launches claude in tmux to resolve merge conflicts"
       echo "    clean [--execute] [--verbose]"
       echo "                        Remove worktrees with branches merged into master"
       echo "                        Dry-run by default; pass --execute to apply"
