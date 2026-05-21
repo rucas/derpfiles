@@ -8,7 +8,7 @@
   imports = [
     ./atuin.nix
     ./bat.nix
-    ./claude-code.nix
+    ./claude
     ./direnv.nix
     ./eza.nix
     ./fzf.nix

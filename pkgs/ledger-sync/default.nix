@@ -87,27 +87,27 @@ writeShellApplication {
 
         local has_changes=false
 
-        if git diff --name-only | grep -q '\.norg$'; then
+        if git diff --name-only | grep -qE '\.(norg|md)$'; then
             has_changes=true
         fi
 
-        if git diff --cached --name-only | grep -q '\.norg$'; then
+        if git diff --cached --name-only | grep -qE '\.(norg|md)$'; then
             has_changes=true
         fi
 
-        if git ls-files --others --exclude-standard | grep -q '\.norg$'; then
+        if git ls-files --others --exclude-standard | grep -qE '\.(norg|md)$'; then
             has_changes=true
         fi
 
         if [[ "$has_changes" == "false" ]]; then
-            log_info "No .norg file changes detected, skipping commit"
+            log_info "No .norg or .md file changes detected, skipping commit"
             return 0
         fi
 
-        log_info "Found .norg file changes, staging files"
+        log_info "Found file changes, staging files"
 
-        if ! git add -- '*.norg' '*/*.norg' 2>&1 | tee -a "$LOG_FILE"; then
-            log_error "Failed to stage .norg files"
+        if ! git add -- '*.norg' '*/*.norg' '*.md' '*/*.md' 2>&1 | tee -a "$LOG_FILE"; then
+            log_error "Failed to stage files"
             return 1
         fi
 

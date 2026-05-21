@@ -75,7 +75,12 @@ in
       description = "Default model for Claude Code (e.g. \"claude-sonnet-4-6\"). Null uses Claude's built-in default.";
     };
 
-    # Optional: Override defaults
+    commands = lib.mkOption {
+      type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
+      default = { };
+      description = "Custom slash commands for Claude Code.";
+    };
+
     memory = lib.mkOption {
       type = lib.types.lines;
       default = ''
@@ -160,6 +165,7 @@ in
           ];
         };
       };
+      commands = cfg.commands;
       context = cfg.memory;
 
       mcpServers = lib.filterAttrs (n: v: v != null) {

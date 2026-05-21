@@ -21,6 +21,9 @@
   programs.claude-code-custom = {
     enable = true;
     model = "claude-opus-4-6";
+    commands = {
+      note = ../../modules/cli/claude/commands/note.md;
+    };
     mcpServers = {
       fetch.enable = true;
       git.enable = true;

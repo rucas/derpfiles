@@ -91,7 +91,7 @@ writeShellApplication {
     handle_change() {
         local changed_file="$1"
 
-        if [[ ! "$changed_file" =~ \.norg$ ]]; then
+        if [[ ! "$changed_file" =~ \.(norg|md)$ ]]; then
             return
         fi
 
