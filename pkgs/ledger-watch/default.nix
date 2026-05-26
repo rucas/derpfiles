@@ -120,6 +120,13 @@ writeShellApplication {
         exit 1
     fi
 
+    log_info "Running initial sync to catch any pending changes..."
+    if ledger-sync; then
+        log_info "Initial sync completed successfully"
+    else
+        log_warn "Initial sync failed (exit code $?), continuing to watch"
+    fi
+
     log_info "Watcher ready, monitoring for changes..."
 
     if command -v fswatch &> /dev/null; then
