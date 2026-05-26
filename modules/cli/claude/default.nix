@@ -165,7 +165,7 @@ in
           ];
         };
       };
-      commands = cfg.commands;
+      inherit (cfg) commands;
       context = cfg.memory;
 
       mcpServers = lib.filterAttrs (n: v: v != null) {
