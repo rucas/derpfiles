@@ -57,10 +57,16 @@ writeShellApplication {
       main_wt="$(_main_wt)"
       git worktree list --porcelain | \
         awk -v main="$main_wt" '
-          /^worktree /{path=$2}
-          /^branch /{
-            branch=$2
-            if (path != main && branch != "refs/heads/master" && branch != "refs/heads/main")
+          /^worktree /{path=$2; branch=""}
+          /^branch /{branch=$2}
+          /^detached/{branch="(detached)"}
+          /^$/{
+            if (path != "" && path != main && branch != "" && branch != "refs/heads/master" && branch != "refs/heads/main")
+              print path, branch
+            path=""; branch=""
+          }
+          END{
+            if (path != "" && path != main && branch != "" && branch != "refs/heads/master" && branch != "refs/heads/main")
               print path, branch
           }
         '
@@ -99,8 +105,11 @@ writeShellApplication {
       done < <(
         git worktree list --porcelain | \
           awk '
-            /^worktree /{path=$2}
-            /^branch /{print path, $2}
+            /^worktree /{path=$2; branch=""}
+            /^branch /{branch=$2}
+            /^detached/{branch="(detached)"}
+            /^$/{if (path != "" && branch != "") print path, branch; path=""; branch=""}
+            END{if (path != "" && branch != "") print path, branch}
           '
       )
 
@@ -176,28 +185,53 @@ writeShellApplication {
     }
 
     new() {
-      local name="''${1:-}"
-      if [ -z "$name" ]; then
-        echo "Usage: git wt new <branch>"
+      if [ $# -eq 0 ]; then
+        echo "Usage: git wt new <branch>... [repo-path]"
         exit 1
       fi
 
-      local branch="$name"
-      if [[ "$branch" != worktree_* ]]; then
-        branch="worktree_$name"
+      local args=("$@")
+      local repo=""
+      local names=()
+
+      local last="''${args[-1]}"
+      if [ -d "$last" ]; then
+        repo="$last"
+        names=("''${args[@]:0:$((''${#args[@]}-1))}")
+      else
+        names=("''${args[@]}")
       fi
 
-      local main_wt wt_path
-      main_wt="$(_main_wt)"
-      wt_path="$(dirname "$main_wt")/$branch"
+      if [ "''${#names[@]}" -eq 0 ]; then
+        echo "Usage: git wt new <branch>... [repo-path]"
+        exit 1
+      fi
 
-      git worktree add -b "$branch" "$wt_path"
+      local main_wt
+      if [ -n "$repo" ]; then
+        main_wt="$(git -C "$repo" worktree list --porcelain | head -1 | awk '{print $2}')"
+      else
+        main_wt="$(_main_wt)"
+      fi
 
-      local session
-      session="$(_session_name "$wt_path")"
-      tmux new-session -d -s "$session" -c "$wt_path"
-      printf "Worktree: %s\n" "$wt_path"
-      printf "Session:  %s\n" "$session"
+      mkdir -p "$main_wt/.claude/worktrees"
+
+      for name in "''${names[@]}"; do
+        local branch="$name"
+        if [[ "$branch" != worktree-* ]]; then
+          branch="worktree-$name"
+        fi
+
+        local wt_path="$main_wt/.claude/worktrees/$name"
+        git -C "$main_wt" worktree add -b "$branch" "$wt_path"
+
+        local session
+        session="$(_session_name "$wt_path")"
+        tmux new-session -d -s "$session" -c "$wt_path"
+        printf "Worktree: %s\n" "$wt_path"
+        printf "Session:  %s\n" "$session"
+        echo ""
+      done
     }
 
     spawn() {
@@ -466,7 +500,7 @@ RESOLVE_PROMPT
       echo "Usage: git wt <subcommand>"
       echo ""
       echo "Subcommands:"
-      echo "    new <branch>        Create a worktree + tmux session (auto-prefixes worktree_)"
+      echo "    new <branch>... [repo]  Create worktree(s) + tmux session(s) in <repo>/.claude/worktrees/"
       echo "    ls                  List all worktrees with branch, Claude, and tmux status"
       echo "    spawn               Create tmux sessions for worktrees missing one"
       echo "    sync [--rebase] [--ai] [pattern...]"
