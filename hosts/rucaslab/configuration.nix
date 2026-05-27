@@ -169,6 +169,11 @@
       owner = "grafana";
       group = "grafana";
     };
+    unpoller = {
+      file = ./secrets/unpoller.age;
+      owner = "unpoller-exporter";
+      group = "unpoller-exporter";
+    };
     actual_budget_oidc_client_secret_env = {
       file = ./secrets/actual_budget_oidc_client_secret_env.age;
       owner = "actual";
@@ -215,14 +220,114 @@
     networkmanager.enable = true;
   };
 
-  services.zfs = {
-    autoScrub = {
+  services = {
+    rucaslab = {
       enable = true;
-      interval = "weekly";
+      serverIP = "192.168.1.136";
+      golinks = [
+        {
+          name = "home";
+          url = "https://home.rucaslab.com";
+          description = "Home Assistant";
+        }
+        {
+          name = "grafana";
+          url = "https://grafana.rucaslab.com";
+          description = "Metrics and dashboards";
+        }
+        {
+          name = "budget";
+          url = "https://budget.rucaslab.com";
+          description = "Actual Budget";
+        }
+        {
+          name = "wiki";
+          url = "https://wiki.rucaslab.com";
+          description = "Outline wiki";
+        }
+        {
+          name = "status";
+          url = "https://status.rucaslab.com";
+          description = "Uptime Kuma";
+        }
+        {
+          name = "docs";
+          url = "https://docs.rucaslab.com";
+          description = "Papra";
+        }
+        {
+          name = "adguard";
+          url = "https://adguard.rucaslab.com";
+          description = "AdGuard Home";
+        }
+        {
+          name = "auth";
+          url = "https://auth.rucaslab.com";
+          description = "Authelia";
+        }
+        {
+          name = "esphome";
+          url = "https://esphome.rucaslab.com";
+          description = "ESPHome";
+        }
+        {
+          name = "zigbee";
+          url = "https://zigbee.rucaslab.com";
+          description = "Zigbee2MQTT";
+        }
+        {
+          name = "zwave";
+          url = "https://zwave.rucaslab.com";
+          description = "Z-Wave JS UI";
+        }
+        {
+          name = "changedetection";
+          url = "https://changedetection.rucaslab.com";
+          description = "ChangeDetection.io";
+        }
+        {
+          name = "unifi";
+          url = "https://unifi.rucaslab.com";
+          description = "UniFi";
+        }
+        {
+          name = "windmill";
+          url = "https://windmill.rucaslab.com";
+          description = "Windmill";
+        }
+        {
+          name = "ollama";
+          url = "https://ollama.rucaslab.com";
+          description = "Ollama";
+        }
+        {
+          name = "ntfy";
+          url = "https://ntfy.rucaslab.com";
+          description = "ntfy-sh";
+        }
+        {
+          name = "lldap";
+          url = "https://lldap.rucaslab.com";
+          description = "LLDAP";
+        }
+      ];
     };
-    # Snapshots are managed by Sanoid (nixos/sanoid/default.nix).
-    # TODO: add Syncoid replication to a ZFS NAS when available.
-    autoSnapshot.enable = false;
+    zfs = {
+      autoScrub = {
+        enable = true;
+        interval = "weekly";
+      };
+      # Snapshots are managed by Sanoid (nixos/sanoid/default.nix).
+      # TODO: add Syncoid replication to a ZFS NAS when available.
+      autoSnapshot.enable = false;
+    };
+    xserver = {
+      xkb = {
+        layout = "us";
+        variant = "";
+        options = "ctrl:swapcaps";
+      };
+    };
   };
 
   systemd.services = {
@@ -357,15 +462,6 @@
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
-  };
-
-  # Configure keymap in X11
-  services.xserver = {
-    xkb = {
-      layout = "us";
-      variant = "";
-      options = "ctrl:swapcaps";
-    };
   };
 
   console.useXkbConfig = true;

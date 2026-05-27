@@ -31,6 +31,26 @@
             hash = "sha256-9BYujV2xXRRDvNI4sjimZEB4Z2TY/0WhwJRh5P122rs=";
           };
         }
+        {
+          name = "UniFi";
+          type = "file";
+          options.path =
+            let
+              src = pkgs.fetchFromGitHub {
+                owner = "unpoller";
+                repo = "dashboards";
+                rev = "0fe7c05";
+                hash = "sha256-XLhmOoeTBhKxYs8tLeWy3ng7rLzaCjt0Dhn7pAuL0Vk=";
+              };
+            in
+            pkgs.runCommand "unpoller-prometheus-dashboards" { nativeBuildInputs = [ pkgs.jq ]; } ''
+              mkdir -p $out
+              for f in ${src}/v2.0.0/*Prometheus*.json; do
+                jq 'del(.__inputs, .__requires) | walk(if type == "object" and .datasource?.uid? == "''${DS_PROMETHEUS}" then .datasource = null else . end)' "$f" \
+                  > "$out/$(basename "$f")"
+              done
+            '';
+        }
       ];
     };
     settings = {

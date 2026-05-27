@@ -122,6 +122,7 @@ in
           inputs.home-manager.nixosModules.home-manager
           inputs.agenix.nixosModules.default
           inputs.opnix.nixosModules.default
+          inputs.rucaslab.nixosModules.default
         ]
       ) (lib.filterAttrs (n: v: v.env == "nixos") config.hosts);
     };

@@ -18,6 +18,7 @@
       tls {
         dns cloudflare {$CLOUDFLARE_API_TOKEN}
       }
+      import access-log
     '';
   };
 

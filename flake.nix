@@ -81,6 +81,10 @@
       url = "github:kenryu42/claude-code-safety-net";
       flake = false;
     };
+    rucaslab = {
+      url = "github:rucas/rucaslab";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";

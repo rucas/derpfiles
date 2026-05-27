@@ -8,21 +8,38 @@
         hash = "sha256-o0zYCp3h7E0L1cgmJwNtGNgzhmZk5BAVoWQA+eL+zqc=";
       };
       extraConfig = ''
+        (access-log) {
+          log {
+            output stderr
+            format json
+          }
+        }
         (https-proxy) {
           reverse_proxy {args[:]}
           encode zstd gzip
           tls {
             dns cloudflare {$CLOUDFLARE_API_TOKEN}
           }
+          import access-log
         }
       '';
       virtualHosts = {
+        "rucaslab.com" = {
+          extraConfig = ''
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+            import access-log
+          '';
+        };
         "home.rucaslab.com" = {
           extraConfig = ''
             encode zstd gzip
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
             }
+            import access-log
             handle_path /local* {
               root * /run/hass/
               file_server
@@ -37,6 +54,7 @@
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
             }
+            import access-log
           '';
         };
         "zwave.rucaslab.com" = {
@@ -46,6 +64,7 @@
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
             }
+            import access-log
           '';
         };
         "esphome.rucaslab.com" = {
@@ -55,6 +74,7 @@
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
             }
+            import access-log
           '';
         };
         "grafana.rucaslab.com" = {
@@ -64,6 +84,7 @@
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
             }
+            import access-log
           '';
         };
         "changedetection.rucaslab.com" = {
@@ -73,6 +94,21 @@
             tls {
               dns cloudflare {$CLOUDFLARE_API_TOKEN}
             }
+            import access-log
+          '';
+        };
+        "unifi.rucaslab.com" = {
+          extraConfig = ''
+            reverse_proxy https://192.168.1.1 {
+              transport http {
+                tls_insecure_skip_verify
+              }
+            }
+            encode zstd gzip
+            tls {
+              dns cloudflare {$CLOUDFLARE_API_TOKEN}
+            }
+            import access-log
           '';
         };
       };
