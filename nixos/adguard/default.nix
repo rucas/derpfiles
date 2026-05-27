@@ -120,6 +120,7 @@ in
           "@@||api.ipify.org^"
           "@@||checkip.amazonaws.com^"
           "@@||dynamicdns.park-your-domain.com^"
+          "@@||html-load.com^"
         ];
       };
     };
