@@ -3,6 +3,7 @@
 final: prev: {
   # NOTE: added to stop cache miss for direnv build
   direnv = prev.direnv.overrideAttrs { doCheck = false; };
+  mcp-nixos = prev.mcp-nixos.overrideAttrs { doCheck = false; };
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
