@@ -10,7 +10,7 @@
 
   programs.claude-code-custom = {
     enable = true;
-    model = "claude-opus-4-6";
+    model = "claude-opus-4-8";
     mcpServers = {
       fetch.enable = true;
       git.enable = true;

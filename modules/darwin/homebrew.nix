@@ -63,7 +63,8 @@ in
     onActivation = {
       autoUpdate = true;
       upgrade = true;
-      cleanup = "zap";
+      # TODO: restore to "zap" once nix-darwin#1774 is merged
+      cleanup = "none";
     };
     taps = [
       "bradyjoslin/sharewifi"
