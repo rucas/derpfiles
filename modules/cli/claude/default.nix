@@ -32,6 +32,7 @@ in
       time.enable = lib.mkEnableOption "time MCP" // {
         default = true;
       };
+      buildkite.enable = lib.mkEnableOption "buildkite MCP";
       github.enable = lib.mkEnableOption "github MCP";
       rollbar.enable = lib.mkEnableOption "rollbar MCP";
       jira.enable = lib.mkEnableOption "jira MCP";
@@ -185,6 +186,12 @@ in
           command = "${pkgs.mcp-server-time}/bin/mcp-server-time";
         };
 
+        buildkite = lib.mkIf cfg.mcpServers.buildkite.enable {
+          command = "${pkgs.buildkite-mcp-server}/bin/buildkite-mcp-server";
+          args = [ "stdio" ];
+          env.BUILDKITE_API_TOKEN = "\${BUILDKITE_MCP_TOKEN}";
+        };
+
         github = lib.mkIf cfg.mcpServers.github.enable {
           command = "${pkgs.github-mcp-server}/bin/github-mcp-server";
           args = [ "stdio" ];
@@ -206,12 +213,15 @@ in
         };
 
         chronosphere = lib.mkIf cfg.mcpServers.chronosphere.enable {
-          type = "http";
-          url = "https://\${CHRONOSPHERE_ORG_NAME}.chronosphere.io/api/mcp/mcp";
-          headers.Authorization = "\${CHRONOSPHERE_MCP_TOKEN}";
+          command = lib.getExe (pkgs.writeShellScriptBin "chronomcp-wrapper" ''
+            exec ${pkgs.chronosphere-mcp}/bin/chronomcp \
+              --config-file ${./chronosphere-mcp-config.yaml} \
+              --org-name "$CHRONOSPHERE_ORG_NAME" \
+              --api-token "$CHRONOSPHERE_API_TOKEN"
+          '');
           env = {
             CHRONOSPHERE_ORG_NAME = "\${CHRONOSPHERE_ORG_NAME}";
-            CHRONOSPHERE_MCP_TOKEN = "\${CHRONOSPHERE_MCP_TOKEN}";
+            CHRONOSPHERE_API_TOKEN = "\${CHRONOSPHERE_MCP_TOKEN}";
           };
         };
 
@@ -254,6 +264,9 @@ in
 
     # Session variables (only if osConfig secrets available)
     home.sessionVariables = lib.mkMerge [
+      (lib.mkIf (cfg.mcpServers.buildkite.enable && getSecretPath "buildkiteMCPToken" != null) {
+        BUILDKITE_MCP_TOKEN = "$(cat ${getSecretPath "buildkiteMCPToken"})";
+      })
       (lib.mkIf (cfg.mcpServers.github.enable && getSecretPath "githubMCPToken" != null) {
         GITHUB_MCP_TOKEN = "$(cat ${getSecretPath "githubMCPToken"})";
       })

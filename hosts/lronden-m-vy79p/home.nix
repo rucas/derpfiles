@@ -25,6 +25,7 @@
       note = ../../modules/cli/claude/commands/note.md;
     };
     mcpServers = {
+      buildkite.enable = true;
       fetch.enable = true;
       git.enable = true;
       time.enable = true;

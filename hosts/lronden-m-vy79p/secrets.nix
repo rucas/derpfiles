@@ -5,6 +5,14 @@
     tokenFile = "/etc/opnix-token";
 
     secrets = {
+      buildkiteMCPToken = {
+        reference = "op://Hermes/Buildkite MCP Token/credential";
+        path = "/usr/local/var/opnix/secrets/buildkite/token";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
+
       githubMCPToken = {
         reference = "op://Hermes/Github MCP Token/credential";
         path = "/usr/local/var/opnix/secrets/gh/token";

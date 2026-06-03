@@ -13,6 +13,7 @@ final: prev: {
   });
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
+  buildkite-mcp-server = prev.callPackage ../pkgs/buildkite-mcp-server { };
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
   ledger-sync = prev.callPackage ../pkgs/ledger-sync { };
@@ -31,6 +32,7 @@ final: prev: {
     inotify-tools = if prev.stdenv.isLinux then prev.inotify-tools else null;
   };
   snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
+  chronosphere-mcp = prev.callPackage ../pkgs/chronosphere-mcp { };
 
   gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
     version = "4.2.0";

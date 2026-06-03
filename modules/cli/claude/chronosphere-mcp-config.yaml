@@ -1,0 +1,4 @@
+server:
+  transport:
+    stdio:
+      enabled: true
