@@ -12,18 +12,11 @@
     ../../modules/services/ledger-sync.nix
   ];
 
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = _: true;
-    };
-  };
-
   programs.home-manager.enable = true;
 
   programs.claude-code = {
     enable = true;
-    memory.text = ''
+    context = ''
       - **Language:** English only - all code, comments, docs, examples, commits, configs, errors, tests
       - **Tools**: Use rg not grep, fd not find, tree is installed
       - **Style**: Prefer self-documenting code over comments

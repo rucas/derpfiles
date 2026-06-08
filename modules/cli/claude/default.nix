@@ -213,12 +213,14 @@ in
         };
 
         chronosphere = lib.mkIf cfg.mcpServers.chronosphere.enable {
-          command = lib.getExe (pkgs.writeShellScriptBin "chronomcp-wrapper" ''
-            exec ${pkgs.chronosphere-mcp}/bin/chronomcp \
-              --config-file ${./chronosphere-mcp-config.yaml} \
-              --org-name "$CHRONOSPHERE_ORG_NAME" \
-              --api-token "$CHRONOSPHERE_API_TOKEN"
-          '');
+          command = lib.getExe (
+            pkgs.writeShellScriptBin "chronomcp-wrapper" ''
+              exec ${pkgs.chronosphere-mcp}/bin/chronomcp \
+                --config-file ${./chronosphere-mcp-config.yaml} \
+                --org-name "$CHRONOSPHERE_ORG_NAME" \
+                --api-token "$CHRONOSPHERE_API_TOKEN"
+            ''
+          );
           env = {
             CHRONOSPHERE_ORG_NAME = "\${CHRONOSPHERE_ORG_NAME}";
             CHRONOSPHERE_API_TOKEN = "\${CHRONOSPHERE_MCP_TOKEN}";

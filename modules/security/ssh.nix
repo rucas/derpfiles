@@ -13,30 +13,30 @@ in
     # https://github.com/nix-community/home-manager/blob/master/modules/programs/ssh.nix#L555
     enableDefaultConfig = false;
     includes = [ (lib.mkIf isWorkMachine "config.d/*") ];
-    matchBlocks = lib.mkMerge [
+    settings = lib.mkMerge [
       # (lib.mkIf isWorkMachine {
       #   "work-*" = {
-      #     user = "work-user";
-      #     identityFile = "~/.ssh/work_key";
+      #     User = "work-user";
+      #     IdentityFile = "~/.ssh/work_key";
       #   };
       # })
       (lib.mkIf isHomeMachine {
         "phonehome" = {
-          user = "lucas";
-          hostname = "portal.rucaslab.com";
-          port = 2222;
-          serverAliveInterval = 30;
-          serverAliveCountMax = 3;
-          identitiesOnly = true;
-          identityFile = "~/.ssh/id_ed25519_sk";
-          forwardAgent = true;
+          User = "lucas";
+          HostName = "portal.rucaslab.com";
+          Port = 2222;
+          ServerAliveInterval = 30;
+          ServerAliveCountMax = 3;
+          IdentitiesOnly = true;
+          IdentityFile = "~/.ssh/id_ed25519_sk";
+          ForwardAgent = true;
         };
         "unlock" = {
-          port = 22;
-          user = "root";
-          identityFile = "~/.ssh/id_ed25519_sk";
-          proxyCommand = "ncat --proxy 127.0.0.1:9050 --proxy-type socks5 $(cat /usr/local/var/opnix/secrets/ssh/onion-host) %p";
-          extraOptions.RequestTTY = "yes";
+          Port = 22;
+          User = "root";
+          IdentityFile = "~/.ssh/id_ed25519_sk";
+          ProxyCommand = "ncat --proxy 127.0.0.1:9050 --proxy-type socks5 $(cat /usr/local/var/opnix/secrets/ssh/onion-host) %p";
+          RequestTTY = "yes";
         };
       })
     ];
