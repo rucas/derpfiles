@@ -22,7 +22,8 @@
     enable = true;
     model = "claude-opus-4-8";
     commands = {
-      note = ../../modules/cli/claude/commands/note.md;
+      note.enable = true;
+      commit.enable = true;
     };
     mcpServers = {
       buildkite.enable = true;

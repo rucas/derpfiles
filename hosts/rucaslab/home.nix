@@ -11,6 +11,10 @@
   programs.claude-code-custom = {
     enable = true;
     model = "claude-opus-4-8";
+    commands = {
+      note.enable = true;
+      commit.enable = true;
+    };
     mcpServers = {
       fetch.enable = true;
       git.enable = true;

@@ -9,6 +9,11 @@
 let
   cfg = config.programs.claude-code-custom;
 
+  bundledCommands = {
+    note = ./commands/note.md;
+    commit = ./commands/commit.md;
+  };
+
   # Helper to safely access osConfig secrets
   getSecretPath =
     name:
@@ -76,10 +81,19 @@ in
       description = "Default model for Claude Code (e.g. \"claude-sonnet-4-6\"). Null uses Claude's built-in default.";
     };
 
-    commands = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
-      default = { };
-      description = "Custom slash commands for Claude Code.";
+    # Bundled slash command toggles
+    commands = {
+      note.enable = lib.mkEnableOption "note slash command" // {
+        default = true;
+      };
+      commit.enable = lib.mkEnableOption "commit slash command" // {
+        default = true;
+      };
+      extra = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
+        default = { };
+        description = "Additional custom slash commands beyond the bundled ones.";
+      };
     };
 
     memory = lib.mkOption {
@@ -166,7 +180,8 @@ in
           ];
         };
       };
-      inherit (cfg) commands;
+      commands =
+        (lib.filterAttrs (name: _: cfg.commands.${name}.enable) bundledCommands) // cfg.commands.extra;
       context = cfg.memory;
 
       mcpServers = lib.filterAttrs (n: v: v != null) {
