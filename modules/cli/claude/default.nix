@@ -85,8 +85,7 @@ in
       default = true;
     };
 
-    gradleEnv.enable =
-      lib.mkEnableOption "auto-bootstrap the SDKMAN env for Gradle/Kotlin Bash commands";
+    gradleEnv.enable = lib.mkEnableOption "auto-bootstrap the SDKMAN env for Gradle/Kotlin Bash commands";
 
     model = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
