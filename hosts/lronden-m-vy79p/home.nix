@@ -28,6 +28,7 @@
       plan-to-jira.enable = true;
       resolve-conflicts.enable = true;
       fix-ci.enable = true;
+      address-review.enable = true;
     };
     mcpServers = {
       buildkite.enable = true;
