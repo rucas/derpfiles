@@ -13,6 +13,7 @@ let
     note = ./commands/note.md;
     commit = ./commands/commit.md;
     plan-to-jira = ./commands/plan-to-jira.md;
+    resolve-conflicts = ./commands/resolve-conflicts.md;
   };
 
   gradleEnvHook = pkgs.writeShellApplication {
@@ -100,6 +101,9 @@ in
         default = true;
       };
       plan-to-jira.enable = lib.mkEnableOption "plan-to-jira slash command";
+      resolve-conflicts.enable = lib.mkEnableOption "resolve-conflicts slash command" // {
+        default = true;
+      };
       extra = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
         default = { };

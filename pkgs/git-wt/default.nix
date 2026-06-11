@@ -322,34 +322,14 @@ writeShellApplication {
             if [ "$sync_failed" -eq 1 ] && [ "$use_ai" -eq 1 ]; then
               echo "Merge conflict in $session — launching claude in tmux session..."
 
-              local prompt_file
-              prompt_file="$(mktemp)"
-              cat > "$prompt_file" <<'RESOLVE_PROMPT'
-    You are resolving merge conflicts in a git worktree. Follow these steps:
-
-    1. Run `git status` to identify all conflicted files.
-    2. For each conflicted file:
-       a. Read the file and understand both sides of the conflict (ours vs theirs).
-       b. Read `git log --oneline -10` on both branches for context on what each side intended.
-       c. If the correct resolution is clear, resolve it. Prefer preserving both sides intent when possible.
-       d. If the conflict is ambiguous or involves logic changes you are unsure about, ask the user a clarifying question before proceeding. Do not guess.
-    3. After resolving all conflicts, run the projects validation steps:
-       a. Read the CLAUDE.md file(s) in the repo for project-specific test, lint, and build commands.
-       b. If no CLAUDE.md exists, look for a Makefile, package.json scripts, or CI config.
-       c. Run linters (e.g. lint, typecheck, shellcheck, etc.)
-       d. Run tests (e.g. test suite, unit tests)
-       e. If any validation fails, fix the issue and re-run.
-    4. Once all validations pass, stage the resolved files and complete the merge/rebase:
-       a. `git add <resolved files>`
-       b. `git merge --continue` or `git rebase --continue` as appropriate.
-    5. Report what you resolved and any decisions you made.
-    RESOLVE_PROMPT
-
               if ! tmux has-session -t "=$session" 2>/dev/null; then
                 tmux new-session -d -s "$session" -c "$wt_path"
               fi
 
-              tmux send-keys -t "$session" "claude --append-system-prompt-file $prompt_file 'Resolve the merge conflicts'" Enter
+              # The resolve-conflicts procedure is baked in at build time (single source of
+              # truth: modules/cli/claude/commands/resolve-conflicts.md), so --ai always has
+              # it regardless of whether the /resolve-conflicts slash command is enabled.
+              tmux send-keys -t "$session" "claude --append-system-prompt-file '${./../../modules/cli/claude/commands/resolve-conflicts.md}' 'Resolve the merge conflicts'" Enter
             elif [ "$sync_failed" -eq 1 ]; then
               echo "Merge conflict in $session — resolve manually or re-run with --ai"
             fi

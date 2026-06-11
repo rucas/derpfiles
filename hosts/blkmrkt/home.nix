@@ -21,6 +21,7 @@
     commands = {
       note.enable = true;
       commit.enable = true;
+      resolve-conflicts.enable = true;
     };
     mcpServers = {
       homeAssistant = {

@@ -26,6 +26,7 @@
       note.enable = true;
       commit.enable = true;
       plan-to-jira.enable = true;
+      resolve-conflicts.enable = true;
     };
     mcpServers = {
       buildkite.enable = true;
