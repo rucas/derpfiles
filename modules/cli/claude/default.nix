@@ -14,6 +14,7 @@ let
     commit = ./commands/commit.md;
     plan-to-jira = ./commands/plan-to-jira.md;
     resolve-conflicts = ./commands/resolve-conflicts.md;
+    fix-ci = ./commands/fix-ci.md;
   };
 
   gradleEnvHook = pkgs.writeShellApplication {
@@ -104,6 +105,7 @@ in
       resolve-conflicts.enable = lib.mkEnableOption "resolve-conflicts slash command" // {
         default = true;
       };
+      fix-ci.enable = lib.mkEnableOption "fix-ci slash command";
       extra = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
         default = { };
