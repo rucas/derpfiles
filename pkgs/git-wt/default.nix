@@ -218,16 +218,27 @@ writeShellApplication {
              elif (.cs | any(. == "pending")) then "CI"
              elif .pr.reviewDecision == "REVIEW_REQUIRED" then "WAITING"
              elif .pr.isDraft then "DRAFT"
-             else "WAITING" end) ]
+             else "WAITING" end),
+            (.pr.mergeable // "UNKNOWN") ]
         | @tsv'
 
-      local result
-      result="$(gh api graphql -f query="$query" --jq "$jq_prog" 2>/dev/null)" || result=""
+      # GitHub computes PR mergeability asynchronously: the first query for a PR that
+      # hasn't been checked recently returns mergeable=UNKNOWN (and the query itself
+      # kicks off the computation), which would mask a real conflict as WAITING. Re-query
+      # until every PR's mergeability has resolved, or until the attempt cap is reached.
+      local result attempt=0
+      while : ; do
+        result="$(gh api graphql -f query="$query" --jq "$jq_prog" 2>/dev/null)" || result=""
+        printf '%s\n' "$result" | awk -F'\t' '$3 == "UNKNOWN" { found = 1 } END { exit !found }' || break
+        attempt=$(( attempt + 1 ))
+        [ "$attempt" -ge 5 ] && break
+        sleep 2
+      done
 
       local tmp="''${cache_file}.tmp.$$"
       : > "$tmp"
       if [ -n "$result" ]; then
-        while IFS=$'\t' read -r idx tok; do
+        while IFS=$'\t' read -r idx tok _; do
           [ -z "$idx" ] && continue
           printf '%s\t%s\n' "''${branches[$idx]}" "$tok" >> "$tmp"
         done <<< "$result"
