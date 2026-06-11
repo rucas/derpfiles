@@ -92,6 +92,14 @@
         group = "staff";
         mode = "0600";
       };
+
+      gitWtConfig = {
+        reference = "op://Hermes/git-wt/config";
+        path = "/usr/local/var/opnix/secrets/git-wt/config";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
     };
   };
 }

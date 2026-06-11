@@ -14,6 +14,7 @@
     ../../modules/shell/zsh
     ../../modules/security
     ../../modules/services/ledger-sync.nix
+    ../../modules/services/git-wt.nix
   ];
 
   programs.home-manager.enable = true;
@@ -49,7 +50,6 @@
     stateVersion = "22.11";
     packages = [
       (import ../../pkgs/dnd pkgs)
-      (import ../../pkgs/git-wt pkgs)
       (import ../../pkgs/shortuuid pkgs)
       inputs.nxvm.packages.${pkgs.system}.default
       inputs.opnix.packages.${pkgs.system}.default
@@ -61,4 +61,10 @@
   xdg.dataFile."dict/words".source = inputs.english-words + "/words_alpha.txt";
 
   services.ledger-sync.enable = true;
+
+  programs.git-wt = {
+    enable = true;
+    repos = [ { path = "/Users/lucas.rondenet/Code/derpfiles"; } ];
+    configFile = "/usr/local/var/opnix/secrets/git-wt/config";
+  };
 }

@@ -17,6 +17,7 @@ final: prev: {
   rollbar-mcp-server = prev.callPackage ../pkgs/rollbar-mcp-server { };
   mcp-atlassian = prev.callPackage ../pkgs/mcp-atlassian { };
   ledger-sync = prev.callPackage ../pkgs/ledger-sync { };
+  git-wt = prev.callPackage ../pkgs/git-wt { };
   windmill-sync = prev.callPackage ../pkgs/windmill-sync { };
   windmill = prev.windmill.overrideAttrs (old: {
     patches = map (
