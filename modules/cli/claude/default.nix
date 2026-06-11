@@ -12,6 +12,7 @@ let
   bundledCommands = {
     note = ./commands/note.md;
     commit = ./commands/commit.md;
+    plan-to-jira = ./commands/plan-to-jira.md;
   };
 
   gradleEnvHook = pkgs.writeShellApplication {
@@ -98,6 +99,7 @@ in
       commit.enable = lib.mkEnableOption "commit slash command" // {
         default = true;
       };
+      plan-to-jira.enable = lib.mkEnableOption "plan-to-jira slash command";
       extra = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
         default = { };

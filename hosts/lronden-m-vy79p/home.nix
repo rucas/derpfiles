@@ -25,6 +25,7 @@
     commands = {
       note.enable = true;
       commit.enable = true;
+      plan-to-jira.enable = true;
     };
     mcpServers = {
       buildkite.enable = true;
