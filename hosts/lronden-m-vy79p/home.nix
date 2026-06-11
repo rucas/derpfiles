@@ -21,6 +21,7 @@
   programs.claude-code-custom = {
     enable = true;
     model = "claude-opus-4-8";
+    gradleEnv.enable = true;
     commands = {
       note.enable = true;
       commit.enable = true;

@@ -14,6 +14,12 @@ let
     commit = ./commands/commit.md;
   };
 
+  gradleEnvHook = pkgs.writeShellApplication {
+    name = "claude-gradle-sdkman-hook";
+    runtimeInputs = [ pkgs.jq ];
+    text = builtins.readFile ./gradlew-sdkman-hook.sh;
+  };
+
   # Helper to safely access osConfig secrets
   getSecretPath =
     name:
@@ -74,6 +80,9 @@ in
     safetyNet.enable = lib.mkEnableOption "cc-safety-net plugin" // {
       default = true;
     };
+
+    gradleEnv.enable =
+      lib.mkEnableOption "auto-bootstrap the SDKMAN env for Gradle/Kotlin Bash commands";
 
     model = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
@@ -144,16 +153,19 @@ in
             }) cfg.lsp.servers
           )
         );
-        hooks = lib.mkIf cfg.safetyNet.enable {
+        hooks = lib.mkIf (cfg.safetyNet.enable || cfg.gradleEnv.enable) {
           PreToolUse = [
             {
               matcher = "Bash";
-              hooks = [
-                {
+              hooks =
+                (lib.optional cfg.safetyNet.enable {
                   type = "command";
                   command = "${pkgs.cc-safety-net}/bin/cc-safety-net --claude-code";
-                }
-              ];
+                })
+                ++ (lib.optional cfg.gradleEnv.enable {
+                  type = "command";
+                  command = "${gradleEnvHook}/bin/claude-gradle-sdkman-hook";
+                });
             }
           ];
         };

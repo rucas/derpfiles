@@ -77,5 +77,8 @@ in
 
   environment.variables = {
     HOMEBREW_NO_ANALYTICS = "1";
+    # Taps are pinned declaratively above, so skip Homebrew 6's interactive
+    # tap-trust gate (otherwise `brew bundle` fails the rebuild on untrusted taps).
+    HOMEBREW_NO_REQUIRE_TAP_TRUST = "1";
   };
 }
