@@ -36,14 +36,36 @@ like `ABC-123` or an `atlassian.net/browse/ABC-123` URL). Both are optional.
 
 5. **Create the issue** with `jira_create_issue`:
    - `project_key` = derived project, `summary` = step 4, `issue_type` = step 4
-   - `description` = the FULL plan markdown, verbatim. The Jira MCP renders Markdown →
-     Jira wiki markup itself, so do NOT pre-convert or summarize.
+   - `description` = the plan markdown with the leading H1 line removed (it becomes the
+     `summary`, so keep it out of the body to avoid a duplicate title). The Jira MCP
+     renders Markdown → Jira wiki markup itself, so do NOT pre-convert the rest to wiki
+     markup or summarize the prose.
+   - Omit deliberation-only sections that aren't part of the actionable work — e.g.
+     headings like "Rejected alternative(s)", "Alternatives considered", "Options
+     considered". Keep everything that describes the problem, the chosen fix, and the
+     steps.
+   - Do NOT append any AI/Claude Code attribution line (matches the repo's no-attribution
+     convention in `commit.md`).
    - `additional_fields` = `{"parent": "<parent-key>"}`
-   - End the description with an attribution line noting it was authored via Claude Code
-     (per the repo's Jira/PR attribution rule).
 
-6. **Link back and report.**
+6. **Attach operational links (oncall / investigation tickets only).**
+   - Detect whether this is an oncall / incident / production-investigation ticket: the
+     plan references Rollbar, PagerDuty, an incident or page, a Chronosphere
+     monitor/alert, a runbook, or `$ARGUMENTS` flags it as such. If it isn't, skip this
+     step.
+   - Collect the operational URLs already present in the plan (or provided in
+     `$ARGUMENTS`): e.g. Rollbar item, PagerDuty incident, Chronosphere
+     dashboard/monitor/SLO, Buildkite build, Grafana/runbook.
+   - For each, add a Jira remote link via `jira_create_remote_issue_link` with a
+     descriptive title (e.g. `Rollbar merchant-risk #2968`, `PagerDuty incident
+     <id>`). Keep the same URLs inline in the description too — the remote links are an
+     addition, not a replacement.
+   - Only link URLs that actually appear in the plan or `$ARGUMENTS`; never invent or
+     guess links. If it's clearly an investigation but no operational links are present,
+     say so in the final report instead of fabricating them.
+
+7. **Link back and report.**
    - Record the created issue key + browse URL near the top of the plan file (in
      frontmatter if present, else a `**Jira:** <url>` line under the H1). If a Jira link
      is already there, update it.
-   - Print the created issue key and URL.
+   - Print the created issue key and URL, plus any remote links attached in step 6.

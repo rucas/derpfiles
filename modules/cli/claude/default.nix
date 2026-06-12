@@ -119,6 +119,7 @@ in
       default = ''
         - **Language:** English only
         - **Style**: Prefer self-documenting code over comments
+        - **Attribution:** Never add AI/Claude Code attribution (no `Co-Authored-By` trailers, no "Authored via Claude Code" lines) to commits, PRs, or Jira tickets.
 
         # Tool Usage Guidelines
         * **File Navigation:** When you need to find files or navigate the file system, use `fd`.
