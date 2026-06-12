@@ -611,9 +611,6 @@ writeShellApplication {
         return
       fi
 
-      tmpdir="$(mktemp -d)"
-      trap 'rm -rf "$tmpdir"' RETURN
-
       api_branches=()
       for wt in "''${worktrees[@]}"; do
         read -r _ branch_ref <<< "$wt"
@@ -643,21 +640,22 @@ writeShellApplication {
 
         t1=$(_millis); _log "graphql api: $(_elapsed "$t0" "$t1")"; t0=$t1
 
+        declare -A pr_url_by_idx
         while IFS=$'\t' read -r idx url; do
           [ -z "$idx" ] && continue
-          branch="''${api_branches[$idx]}"
-          echo "$url" > "$tmpdir/$branch"
+          pr_url_by_idx["$idx"]="$url"
         done <<< "$result"
       fi
 
       entries=()
+      idx=0
       for wt in "''${worktrees[@]}"; do
         read -r wt_path branch_ref <<< "$wt"
-        branch="''${branch_ref#refs/heads/}"
-        pr_url="$(cat "$tmpdir/$branch" 2>/dev/null)" || true
+        pr_url="''${pr_url_by_idx[$idx]:-}"
         if [ -n "$pr_url" ]; then
           entries+=("$wt_path|$branch_ref|$pr_url")
         fi
+        (( idx++ )) || true
       done
 
       if [ "''${#entries[@]}" -eq 0 ]; then
