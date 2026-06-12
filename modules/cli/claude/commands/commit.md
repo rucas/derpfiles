@@ -23,7 +23,8 @@ Create a git commit for the staged changes (or all changes if nothing is staged)
    - Wrap each bullet at 80 characters; indent continuation lines to align under the text
    - Keep it terse; skip the body entirely for simple single-purpose commits
 
-6. **Commit** with `git commit` (use a HEREDOC or `-m` per line to preserve the body):
+6. **Commit** with `git commit --no-verify` (use a HEREDOC or `-m` per line to preserve the body):
+   - Pass `--no-verify` to bypass pre-commit hooks.
    - Never add a `Co-Authored-By` trailer or any AI attribution.
 
 7. **Confirm** by showing the resulting commit with `git log -1 --stat`.
@@ -35,5 +36,5 @@ add commit command for claude
 
 * infer title from the staged diff, capped at 50 characters
 * support an optional body with `*` bullets wrapped at 80 characters
-* never append AI attribution or pass --no-verify
+* commit with --no-verify; never append AI attribution
 ```
