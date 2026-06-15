@@ -115,12 +115,13 @@ writeShellApplication {
 
     _pr_colorize() {
       local token="$1"
-      local green=$'\033[1;32m' red=$'\033[1;31m' yellow=$'\033[1;33m' cyan=$'\033[1;36m' dim=$'\033[2m' reset=$'\033[0m'
+      local green=$'\033[1;32m' red=$'\033[1;31m' yellow=$'\033[1;33m' cyan=$'\033[1;36m' magenta=$'\033[1;35m' dim=$'\033[2m' reset=$'\033[0m'
       case "$token" in
         CONFLICT) printf '%s' "''${red}CONFLICT''${reset}" ;;
         BROKEN)   printf '%s' "''${red}BROKEN''${reset}" ;;
         CHANGES)  printf '%s' "''${red}CHANGES''${reset}" ;;
         APPROVED) printf '%s' "''${green}APPROVED''${reset}" ;;
+        MERGED)   printf '%s' "''${magenta}MERGED''${reset}" ;;
         WAITING)  printf '%s' "''${yellow}WAITING''${reset}" ;;
         CI)       printf '%s' "''${cyan}CI''${reset}" ;;
         DRAFT)    printf '%s' "''${dim}DRAFT''${reset}" ;;
@@ -176,7 +177,7 @@ writeShellApplication {
         local branch="''${branches[$i]}"
         local safe_branch="''${branch//\\/\\\\}"
         safe_branch="''${safe_branch//\"/\\\"}"
-        query+=" b''${i}: search(query: \"repo:''${repo_nwo} is:pr is:open head:''${safe_branch}\", type: ISSUE, first: 1) { nodes { ... on PullRequest { isDraft mergeable reviewDecision commits(last: 1) { nodes { commit { statusCheckRollup { contexts(first: 100) { nodes { __typename ... on CheckRun { name status conclusion } ... on StatusContext { context state } } } } } } } } } }"
+        query+=" b''${i}: search(query: \"repo:''${repo_nwo} is:pr head:''${safe_branch} sort:updated-desc\", type: ISSUE, first: 1) { nodes { ... on PullRequest { state isDraft mergeable reviewDecision commits(last: 1) { nodes { commit { statusCheckRollup { contexts(first: 100) { nodes { __typename ... on CheckRun { name status conclusion } ... on StatusContext { context state } } } } } } } } } }"
       done
       query+=" }"
 
@@ -211,7 +212,9 @@ writeShellApplication {
                   | norm ]
           }
         | [ .idx,
-            (if .pr.mergeable == "CONFLICTING" then "CONFLICT"
+            (if .pr.state == "MERGED" then "MERGED"
+             elif .pr.state == "CLOSED" then ""
+             elif .pr.mergeable == "CONFLICTING" then "CONFLICT"
              elif (.cs | any(. == "fail")) then "BROKEN"
              elif .pr.reviewDecision == "CHANGES_REQUESTED" then "CHANGES"
              elif .pr.reviewDecision == "APPROVED" then "APPROVED"
@@ -219,7 +222,7 @@ writeShellApplication {
              elif .pr.reviewDecision == "REVIEW_REQUIRED" then "WAITING"
              elif .pr.isDraft then "DRAFT"
              else "WAITING" end),
-            (.pr.mergeable // "UNKNOWN") ]
+            (if .pr.state != "OPEN" then .pr.state else (.pr.mergeable // "UNKNOWN") end) ]
         | @tsv'
 
       # GitHub computes PR mergeability asynchronously: the first query for a PR that
@@ -381,7 +384,8 @@ writeShellApplication {
           CI)             echo 2 ;;
           APPROVED)       echo 3 ;;
           DRAFT)          echo 4 ;;
-          *)              echo 5 ;;
+          MERGED)         echo 5 ;;
+          *)              echo 6 ;;
         esac
       }
 
