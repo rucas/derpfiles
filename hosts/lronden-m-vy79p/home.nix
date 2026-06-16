@@ -43,6 +43,7 @@
         chronosphere.enable = true;
         playwright.enable = true;
         snowflake.enable = true;
+        notion.enable = true;
       };
     };
 

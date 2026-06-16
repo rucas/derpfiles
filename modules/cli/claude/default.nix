@@ -53,6 +53,7 @@ in
       jira.enable = lib.mkEnableOption "jira MCP";
       chronosphere.enable = lib.mkEnableOption "chronosphere MCP";
       figma.enable = lib.mkEnableOption "figma MCP";
+      notion.enable = lib.mkEnableOption "notion MCP";
       playwright.enable = lib.mkEnableOption "playwright MCP";
       snowflake.enable = lib.mkEnableOption "snowflake MCP";
       nixos.enable = lib.mkEnableOption "nixos MCP";
@@ -267,6 +268,11 @@ in
         figma = lib.mkIf cfg.mcpServers.figma.enable {
           type = "http";
           url = "https://mcp.figma.com/mcp";
+        };
+
+        notion = lib.mkIf cfg.mcpServers.notion.enable {
+          type = "http";
+          url = "https://mcp.notion.com/mcp";
         };
 
         playwright = lib.mkIf cfg.mcpServers.playwright.enable {
