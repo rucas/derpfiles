@@ -214,10 +214,6 @@ in
 
         git = lib.mkIf cfg.mcpServers.git.enable {
           command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
-          args = [
-            "--repository"
-            "."
-          ];
         };
 
         time = lib.mkIf cfg.mcpServers.time.enable {
