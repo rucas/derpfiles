@@ -14,11 +14,9 @@ let
     };
     casks = {
       "salus" = [
-        "granola"
         "slack"
       ];
       "lronden-m-vy79p" = [
-        "granola"
         "intellij-idea"
         "jetbrains-gateway"
         "postman"
@@ -63,8 +61,7 @@ in
     onActivation = {
       autoUpdate = true;
       upgrade = true;
-      # TODO: restore to "zap" once nix-darwin#1774 is merged
-      cleanup = "none";
+      cleanup = "zap";
     };
     taps = [
       "bradyjoslin/sharewifi"
