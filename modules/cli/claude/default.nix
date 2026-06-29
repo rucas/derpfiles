@@ -88,6 +88,8 @@ in
 
     gradleEnv.enable = lib.mkEnableOption "auto-bootstrap the SDKMAN env for Gradle/Kotlin Bash commands";
 
+    agentTeams.enable = lib.mkEnableOption "experimental agent teams (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS)";
+
     model = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
@@ -153,9 +155,13 @@ in
       settings = {
         theme = "dark";
         model = lib.mkIf (cfg.model != null) cfg.model;
-        env = lib.mkIf cfg.lsp.enable {
-          ENABLE_LSP_TOOL = "1";
-        };
+        env =
+          (lib.optionalAttrs cfg.lsp.enable {
+            ENABLE_LSP_TOOL = "1";
+          })
+          // (lib.optionalAttrs cfg.agentTeams.enable {
+            CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
+          });
         enabledPlugins = lib.mkIf cfg.lsp.enable (
           builtins.listToAttrs (
             map (name: {
