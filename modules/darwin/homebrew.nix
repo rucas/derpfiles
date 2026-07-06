@@ -74,8 +74,14 @@ in
 
   environment.variables = {
     HOMEBREW_NO_ANALYTICS = "1";
-    # Taps are pinned declaratively above, so skip Homebrew 6's interactive
-    # tap-trust gate (otherwise `brew bundle` fails the rebuild on untrusted taps).
-    HOMEBREW_NO_REQUIRE_TAP_TRUST = "1";
   };
+
+  # The `brew bundle` step runs via `sudo --preserve-env=PATH`, so shell env
+  # vars never reach it. Taps are pinned declaratively above, so disable
+  # Homebrew 6's tap-trust gate through its system-wide environment file
+  # instead (otherwise the rebuild fails on untrusted taps like sdkman/tap).
+  environment.etc."homebrew/brew.env".text = ''
+    HOMEBREW_NO_ANALYTICS=1
+    HOMEBREW_NO_REQUIRE_TAP_TRUST=1
+  '';
 }
