@@ -601,7 +601,42 @@ writeShellApplication {
       t_start=$(_millis)
       t0=$t_start
 
-      _main_branch >/dev/null
+      # A worktree is "merged" when its branch tip is an ancestor of the main
+      # branch, i.e. all of its commits already live in master. This is
+      # independent of PR/branch naming: a PR opened from a differently-named
+      # branch (or a fast-forward/rebase merge) is still detected. Prefer the
+      # remote-tracking ref so merges landed on origin are seen even before a
+      # local pull, but also accept the local main in case origin is stale.
+      main_branch="$(_main_branch)"
+      origin_ref=""
+      if git rev-parse --verify "origin/$main_branch" >/dev/null 2>&1; then
+        origin_ref="origin/$main_branch"
+      fi
+
+      main_tips=()
+      main_tips+=("$(git rev-parse --verify "$main_branch" 2>/dev/null || true)")
+      [ -n "$origin_ref" ] && main_tips+=("$(git rev-parse --verify "$origin_ref" 2>/dev/null || true)")
+
+      _is_merged() {
+        local rev="$1"
+        git merge-base --is-ancestor "$rev" "$main_branch" 2>/dev/null && return 0
+        [ -n "$origin_ref" ] && git merge-base --is-ancestor "$rev" "$origin_ref" 2>/dev/null && return 0
+        return 1
+      }
+
+      # A branch that is an ancestor of master has no unique commits, so a merged
+      # worktree is indistinguishable from a brand-new one that was branched and
+      # never worked on. Guard the two accident cases: a worktree sitting exactly
+      # at a main tip (freshly created, nothing merged yet), and one holding
+      # uncommitted or untracked work.
+      _is_safe_to_clean() {
+        local wt_path="$1" rev tip
+        rev="$(git rev-parse "$2" 2>/dev/null)" || return 1
+        for tip in "''${main_tips[@]}"; do
+          [ -n "$tip" ] && [ "$rev" = "$tip" ] && return 1
+        done
+        [ -z "$(git -C "$wt_path" status --porcelain 2>/dev/null)" ]
+      }
 
       worktrees=()
       while read -r wt_path branch_ref; do
@@ -615,52 +650,55 @@ writeShellApplication {
         return
       fi
 
-      api_branches=()
-      for wt in "''${worktrees[@]}"; do
-        read -r _ branch_ref <<< "$wt"
-        api_branches+=("''${branch_ref#refs/heads/}")
-      done
-
-      repo_nwo="$(git remote get-url origin | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
-
-      t1=$(_millis); _log "parse remote: $(_elapsed "$t0" "$t1")"; t0=$t1
-
-      if [ "''${#api_branches[@]}" -gt 0 ]; then
-
+      # Squash- and rebase-merges rewrite history, so a merged branch is not an
+      # ancestor of master and the git check alone misses it. Ask GitHub which
+      # branches have a merged PR (keyed on the full local branch name) and treat
+      # those as merged too. A merged PR is an unambiguous "done" signal, so it
+      # bypasses the safety guards below; the git-ancestor path keeps them because
+      # an ancestor branch with no unique commits is indistinguishable from a
+      # brand-new worktree.
+      declare -A merged_pr_by_idx
+      repo_nwo="$(git remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
+      if [ -n "$repo_nwo" ]; then
         query="{"
-        for i in "''${!api_branches[@]}"; do
-          branch="''${api_branches[$i]}"
+        idx=0
+        for wt in "''${worktrees[@]}"; do
+          read -r _ branch_ref <<< "$wt"
+          branch="''${branch_ref#refs/heads/}"
           safe_branch="''${branch//\\/\\\\}"
           safe_branch="''${safe_branch//\"/\\\"}"
-          query+=" b''${i}: search(query: \"repo:''${repo_nwo} is:pr is:merged head:''${safe_branch}\", type: ISSUE, first: 1) { nodes { ... on PullRequest { url } } }"
+          query+=" b''${idx}: search(query: \"repo:''${repo_nwo} is:pr is:merged head:''${safe_branch}\", type: ISSUE, first: 1) { nodes { ... on PullRequest { url } } }"
+          (( idx++ )) || true
         done
         query+=" }"
 
         result="$(gh api graphql -f query="$query" --jq '
-          [.data | to_entries[] | select(.value.nodes | length > 0) |
-           {key: (.key | ltrimstr("b")), value: .value.nodes[0].url}] |
-          .[] | "\(.key)\t\(.value)"
+          .data | to_entries[] | select(.value.nodes | length > 0)
+          | "\(.key | ltrimstr("b"))\t\(.value.nodes[0].url)"
         ' 2>/dev/null)" || result=""
 
-        t1=$(_millis); _log "graphql api: $(_elapsed "$t0" "$t1")"; t0=$t1
-
-        declare -A pr_url_by_idx
         while IFS=$'\t' read -r idx url; do
           [ -z "$idx" ] && continue
-          pr_url_by_idx["$idx"]="$url"
+          merged_pr_by_idx["$idx"]="$url"
         done <<< "$result"
       fi
+
+      t1=$(_millis); _log "merged-pr lookup: $(_elapsed "$t0" "$t1")"; t0=$t1
 
       entries=()
       idx=0
       for wt in "''${worktrees[@]}"; do
         read -r wt_path branch_ref <<< "$wt"
-        pr_url="''${pr_url_by_idx[$idx]:-}"
+        pr_url="''${merged_pr_by_idx[$idx]:-}"
         if [ -n "$pr_url" ]; then
           entries+=("$wt_path|$branch_ref|$pr_url")
+        elif _is_merged "$branch_ref" && _is_safe_to_clean "$wt_path" "$branch_ref"; then
+          entries+=("$wt_path|$branch_ref|")
         fi
         (( idx++ )) || true
       done
+
+      t1=$(_millis); _log "merge check: $(_elapsed "$t0" "$t1")"; t0=$t1
 
       if [ "''${#entries[@]}" -eq 0 ]; then
         echo "No merged worktrees found."
@@ -669,10 +707,9 @@ writeShellApplication {
 
       max_title=0
       for entry in "''${entries[@]}"; do
-        IFS='|' read -r wt_path _ pr_url <<< "$entry"
+        IFS='|' read -r wt_path _ _ <<< "$entry"
         session="$(_session_name "$wt_path")"
-        title="$session  $pr_url"
-        len=''${#title}
+        len=''${#session}
         if [ "$len" -gt "$max_title" ]; then max_title=$len; fi
       done
 
@@ -681,15 +718,16 @@ writeShellApplication {
 
       for entry in "''${entries[@]}"; do
         IFS='|' read -r wt_path branch_ref pr_url <<< "$entry"
-        branch="''${branch_ref#refs/heads/}"
         session="$(_session_name "$wt_path")"
-        title="$session  $pr_url"
         has_tmux=0
         tmux has-session -t "=$session" 2>/dev/null && has_tmux=1
 
         tmux_col="      "; if [ "$has_tmux" -eq 1 ]; then tmux_col="tmux ✓"; fi
 
-        printf "%s%-''${max_title}s  worktree ✓  %s  branch ✓\n" "$prefix" "$title" "$tmux_col"
+        reason="merged into $main_branch"
+        [ -n "$pr_url" ] && reason="$pr_url"
+
+        printf "%s%-''${max_title}s  worktree ✓  %s  branch ✓ (%s)\n" "$prefix" "$session" "$tmux_col" "$reason"
       done
 
       if [ "$dry_run" -eq 0 ]; then
