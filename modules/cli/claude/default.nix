@@ -16,6 +16,7 @@ let
     resolve-conflicts = ./commands/resolve-conflicts.md;
     fix-ci = ./commands/fix-ci.md;
     address-review = ./commands/address-review.md;
+    shepherd-draft-pr = ./commands/shepherd-draft-pr.md;
   };
 
   gradleEnvHook = pkgs.writeShellApplication {
@@ -110,6 +111,7 @@ in
       };
       fix-ci.enable = lib.mkEnableOption "fix-ci slash command";
       address-review.enable = lib.mkEnableOption "address-review slash command";
+      shepherd-draft-pr.enable = lib.mkEnableOption "shepherd-draft-pr slash command";
       extra = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
         default = { };

@@ -32,6 +32,7 @@
         resolve-conflicts.enable = true;
         fix-ci.enable = true;
         address-review.enable = true;
+        shepherd-draft-pr.enable = true;
       };
       mcpServers = {
         buildkite.enable = true;
