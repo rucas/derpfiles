@@ -48,6 +48,11 @@ _: {
       defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool "false"
       defaults write com.apple.loginwindow TALLogoutSavesState -bool "false"
       defaults write com.apple.loginwindow LoginwindowLaunchesRelaunchApps -bool "false"
+
+      # Determinate Nix post-build hook writes to a named pipe that has no reader
+      # without a FlakeHub Cache subscription, causing every build to block.
+      printf '#!/bin/sh\nexit 0\n' > /nix/var/determinate/post-build-hook.sh
+      chmod +x /nix/var/determinate/post-build-hook.sh
     '';
   };
 

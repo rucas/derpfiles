@@ -24,6 +24,7 @@ let
       ];
       "blkmrkt" = [
         "balenaetcher"
+        "garmin-express"
         "tailscale-app"
         "vlc"
       ];
