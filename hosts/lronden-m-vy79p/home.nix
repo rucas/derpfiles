@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  osConfig,
   ...
 }:
 {
@@ -59,6 +60,9 @@
   home = {
     username = "lucas.rondenet";
     stateVersion = "22.11";
+    sessionVariables = {
+      PAGERDUTY_API_TOKEN = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.pagerdutyApiToken})";
+    };
     packages = [
       (import ../../pkgs/dnd pkgs)
       (import ../../pkgs/shortuuid pkgs)

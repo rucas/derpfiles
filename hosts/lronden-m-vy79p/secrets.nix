@@ -100,6 +100,14 @@
         group = "staff";
         mode = "0600";
       };
+
+      pagerdutyApiToken = {
+        reference = "op://Hermes/PagerDuty API Token/credential";
+        path = "/usr/local/var/opnix/secrets/pagerduty/token";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
     };
   };
 }
