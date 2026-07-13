@@ -83,11 +83,11 @@ let
     src = fetchPypi {
       inherit pname version;
       format = "wheel";
-      dist = "cp313";
-      python = "cp313";
-      abi = "cp313";
+      dist = "cp314";
+      python = "cp314";
+      abi = "cp314";
       platform = "macosx_11_0_arm64";
-      hash = "sha256-1NPNYQDa1mZJkrYDl6PQcx/85mO5Zuqg/ctc/KwmVQs=";
+      hash = "sha256-4dgyRSl1siUb2okaEuX8I5FR80eAL9L24iJLOt9cr0k=";
     };
     dontCheckRuntimeDeps = true;
     doCheck = false;
@@ -186,11 +186,11 @@ let
     src = fetchPypi {
       inherit pname version;
       format = "wheel";
-      dist = "cp313";
-      python = "cp313";
-      abi = "cp313";
+      dist = "cp314";
+      python = "cp314";
+      abi = "cp314";
       platform = "macosx_11_0_arm64";
-      hash = "sha256-FwT8cNIUKU5VSiQhtHN3m83u9xWIHF6SfcDxHhaSoP8=";
+      hash = "sha256-HsDIwMPU+XztRrLhkeiD+Mgtu/bV68GEI2bX7/E81aY=";
     };
     dontCheckRuntimeDeps = true;
     doCheck = false;
@@ -216,7 +216,7 @@ let
 in
 buildPythonApplication rec {
   pname = "mcp-atlassian";
-  version = "0.21.1";
+  version = "0.22.1";
   format = "wheel";
 
   src = fetchPypi {
@@ -225,7 +225,7 @@ buildPythonApplication rec {
     format = "wheel";
     dist = "py3";
     python = "py3";
-    hash = "sha256-jvn1popYrCZKpsmMiR598UoC7d5yTwasXqhpsL5gtmY=";
+    hash = "sha256-J6Qa6S18ah17Ge9EqJqlw9imgiMcNiH6vkYmcjrMGKA=";
   };
 
   propagatedBuildInputs = [
