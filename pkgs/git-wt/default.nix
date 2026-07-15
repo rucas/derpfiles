@@ -436,9 +436,31 @@ writeShellApplication {
       printf '%s\n' "''${lines[@]}" | sort -t ' ' -k1,1n -k2,2n | cut -d ' ' -f3-
     }
 
+    # A worktree only contains committed files, so uncommitted skills (e.g. a
+    # not-yet-pushed /kotlin-pr-review) are absent in the checkout. Overlay the
+    # source repo's live .claude/skills onto the worktree so those skills resolve.
+    _copy_skills() {
+      local src_main_wt="$1" dest_wt="$2"
+      [ -d "$src_main_wt/.claude/skills" ] || return 0
+      mkdir -p "$dest_wt/.claude/skills"
+      cp -R "$src_main_wt/.claude/skills/." "$dest_wt/.claude/skills/"
+      echo "Skills:   copied from $src_main_wt/.claude/skills"
+    }
+
     new() {
+      local copy_skills=1
+      local rest=()
+      for arg in "$@"; do
+        if [ "$arg" = "--no-copy-skills" ]; then
+          copy_skills=0
+        else
+          rest+=("$arg")
+        fi
+      done
+      set -- "''${rest[@]}"
+
       if [ $# -eq 0 ]; then
-        echo "Usage: git wt new <branch>... [repo-path]"
+        echo "Usage: git wt new <branch>... [repo-path] [--no-copy-skills]"
         exit 1
       fi
 
@@ -455,7 +477,7 @@ writeShellApplication {
       fi
 
       if [ "''${#names[@]}" -eq 0 ]; then
-        echo "Usage: git wt new <branch>... [repo-path]"
+        echo "Usage: git wt new <branch>... [repo-path] [--no-copy-skills]"
         exit 1
       fi
 
@@ -477,6 +499,8 @@ writeShellApplication {
         local wt_path="$main_wt/.claude/worktrees/$name"
         git -C "$main_wt" worktree add -b "$branch" "$wt_path"
 
+        [ "$copy_skills" -eq 1 ] && _copy_skills "$main_wt" "$wt_path"
+
         local session
         session="$(_session_name "$wt_path")"
         tmux new-session -d -s "$session" -c "$wt_path"
@@ -484,6 +508,106 @@ writeShellApplication {
         printf "Session:  %s\n" "$session"
         echo ""
       done
+    }
+
+    review() {
+      local pr="" subdir="" skill="kotlin-pr-review" attach=1 repo="" copy_skills=1
+      while [ "$#" -gt 0 ]; do
+        case "$1" in
+          --skill)          skill="''${2:-}"; shift 2 ;;
+          --repo)           repo="''${2:-}"; shift 2 ;;
+          --no-attach)      attach=0; shift ;;
+          --no-copy-skills) copy_skills=0; shift ;;
+          -*)               echo "Unknown option: $1" >&2; exit 1 ;;
+          *)
+            if [ -z "$pr" ]; then pr="$1"; else subdir="$1"; fi
+            shift
+            ;;
+        esac
+      done
+
+      if [ -z "$pr" ]; then
+        echo "Usage: git wt review <pr-number> [subdir] [--skill NAME] [--no-attach]" >&2
+        exit 1
+      fi
+      if ! [[ "$pr" =~ ^[0-9]+$ ]]; then
+        echo "Error: PR must be a number, got '$pr'" >&2
+        exit 1
+      fi
+
+      local main_wt repo_nwo
+      if [ -n "$repo" ]; then
+        if [ ! -d "$repo" ]; then
+          echo "Error: repo path not found: $repo" >&2
+          exit 1
+        fi
+        main_wt="$(git -C "$repo" worktree list --porcelain | head -1 | awk '{print $2}')"
+      else
+        main_wt="$(_main_wt)"
+      fi
+      repo_nwo="$(git -C "$main_wt" remote get-url origin | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
+
+      local head_branch
+      head_branch="$(gh pr view "$pr" --repo "$repo_nwo" --json headRefName -q .headRefName 2>/dev/null)"
+      if [ -z "$head_branch" ]; then
+        echo "Error: could not resolve head branch for PR #$pr in $repo_nwo" >&2
+        exit 1
+      fi
+
+      local wt_path="$main_wt/.claude/worktrees/review-$pr"
+      mkdir -p "$main_wt/.claude/worktrees"
+
+      # pull/N/head resolves even for forks, so cross-repo PRs review the same as
+      # same-repo ones. The local branch is named after the PR's real head branch
+      # so 'git wt clean' detects the merged PR (keyed on head branch) and reaps
+      # the review worktree automatically once the PR lands.
+      if [ -d "$wt_path" ]; then
+        echo "Worktree exists, refreshing PR head..."
+        git -C "$wt_path" fetch --quiet origin "pull/$pr/head" \
+          && git -C "$wt_path" merge --ff-only FETCH_HEAD >/dev/null 2>&1 || true
+      else
+        git -C "$main_wt" fetch --quiet origin "+pull/$pr/head:$head_branch" || {
+          echo "Error: failed to fetch PR #$pr" >&2
+          exit 1
+        }
+        git -C "$main_wt" worktree add "$wt_path" "$head_branch"
+      fi
+
+      # Re-copied on refresh too, so editing a skill and re-running picks it up.
+      [ "$copy_skills" -eq 1 ] && _copy_skills "$main_wt" "$wt_path"
+
+      local review_dir="$wt_path"
+      if [ -n "$subdir" ]; then
+        review_dir="$wt_path/$subdir"
+        if [ ! -d "$review_dir" ]; then
+          echo "Error: subdir not found in worktree: $subdir" >&2
+          exit 1
+        fi
+      fi
+
+      local session
+      session="$(_session_name "$wt_path")"
+
+      # cwd = review_dir so Claude discovers the CLAUDE.md chain from that subdir
+      # up to the repo root, giving the review the right per-service context.
+      if ! tmux has-session -t "=$session" 2>/dev/null; then
+        tmux new-session -d -s "$session" -c "$review_dir"
+        tmux send-keys -t "$session" "claude '/$skill $pr'" Enter
+      fi
+
+      printf "PR:       #%s (%s)\n" "$pr" "$head_branch"
+      printf "Worktree: %s\n" "$wt_path"
+      printf "Context:  %s\n" "$review_dir"
+      printf "Skill:    /%s\n" "$skill"
+      printf "Session:  %s\n" "$session"
+
+      if [ "$attach" -eq 1 ] && [ -t 1 ]; then
+        if [ -n "''${TMUX:-}" ]; then
+          tmux switch-client -t "$session"
+        else
+          tmux attach-session -t "$session"
+        fi
+      fi
     }
 
     spawn() {
@@ -768,7 +892,17 @@ writeShellApplication {
       echo "Usage: git wt <subcommand>"
       echo ""
       echo "Subcommands:"
-      echo "    new <branch>... [repo]  Create worktree(s) + tmux session(s) in <repo>/.claude/worktrees/"
+      echo "    new <branch>... [repo] [--no-copy-skills]"
+      echo "                        Create worktree(s) + tmux session(s) in <repo>/.claude/worktrees/"
+      echo "                        Copies the repo's live .claude/skills into each worktree"
+      echo "                        (even uncommitted ones) unless --no-copy-skills."
+      echo "    review <pr> [subdir] [--repo PATH] [--skill NAME] [--no-attach] [--no-copy-skills]"
+      echo "                        Check out PR <pr> into an isolated worktree, launch claude"
+      echo "                        in <subdir> (so its CLAUDE.md chain loads) and run /NAME"
+      echo "                        (default: kotlin-pr-review). --repo targets a repo outside"
+      echo "                        the cwd; <subdir> is relative to it. The repo's live"
+      echo "                        .claude/skills are copied into the worktree (even uncommitted"
+      echo "                        ones) unless --no-copy-skills. Attaches unless --no-attach."
       echo "    ls                  List all worktrees with branch, PR, Claude, and tmux status"
       echo "                        The PR column is populated by 'pr-sync' (run on a schedule)"
       echo "    pr-sync [--repo PATH [--ignore-check NAME]...]... [--config FILE]"
