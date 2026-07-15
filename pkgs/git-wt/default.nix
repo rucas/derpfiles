@@ -888,6 +888,88 @@ writeShellApplication {
       fi
     }
 
+    # Named _wt_kill (not kill) so it does not shadow the kill builtin that
+    # _claude_status relies on; the dispatcher maps the 'kill' subcommand to it.
+    _wt_kill() {
+      # Unlike 'clean' (which only reaps merged worktrees), 'kill' force-removes
+      # the named worktrees regardless of state: uncommitted work is discarded and
+      # the branch is deleted. It is the deliberate last-resort cleanup, so it
+      # requires an explicit target and confirms unless -y is given.
+      local force=0 patterns=()
+      for arg in "$@"; do
+        case "$arg" in
+          -y|--yes|--force) force=1 ;;
+          *)                patterns+=("$arg") ;;
+        esac
+      done
+
+      if [ "''${#patterns[@]}" -eq 0 ]; then
+        echo "Usage: git wt kill <name|pattern>... [-y]" >&2
+        exit 1
+      fi
+
+      local main_wt
+      main_wt="$(_main_wt)"
+
+      # _worktrees already excludes the main worktree and master/main, so kill can
+      # never target them no matter what pattern is passed.
+      local matches=()
+      while read -r wt_path branch_ref; do
+        local session pat pat_re
+        session="$(_session_name "$wt_path")"
+        for pat in "''${patterns[@]}"; do
+          pat_re="^''${pat//\*/.*}$"
+          if [[ "$session" =~ $pat_re ]]; then
+            matches+=("$wt_path|$branch_ref|$session")
+            break
+          fi
+        done
+      done < <(_worktrees)
+
+      if [ "''${#matches[@]}" -eq 0 ]; then
+        echo "No worktrees match: ''${patterns[*]}"
+        return
+      fi
+
+      echo "Will kill (worktree + branch + tmux, discarding uncommitted work):"
+      local m wt_path branch_ref session
+      for m in "''${matches[@]}"; do
+        IFS='|' read -r wt_path branch_ref session <<< "$m"
+        printf "  %s  (%s)\n" "$session" "''${branch_ref#refs/heads/}"
+      done
+
+      if [ "$force" -eq 0 ]; then
+        if [ ! -t 0 ]; then
+          echo "Refusing to kill without a tty; re-run with -y to confirm." >&2
+          exit 1
+        fi
+        local reply
+        printf "Proceed? [y/N] "
+        read -r reply
+        case "$reply" in
+          y|Y|yes|YES) ;;
+          *) echo "Aborted."; return ;;
+        esac
+      fi
+
+      # Deleting a worktree's files inline is slow in a big monorepo (a full
+      # checkout is hundreds of thousands of files). Mirror 'clean': move each
+      # worktree into a trash dir (an instant rename on the same filesystem),
+      # prune the admin metadata, then rm the trash in the background.
+      local trash
+      trash="$(mktemp -d)"
+      for m in "''${matches[@]}"; do
+        IFS='|' read -r wt_path branch_ref session <<< "$m"
+        tmux kill-session -t "=$session" 2>/dev/null || true
+        mv "$wt_path" "$trash/" 2>/dev/null || { [ -n "$wt_path" ] && rm -rf "$wt_path"; }
+        git -C "$main_wt" branch -D "''${branch_ref#refs/heads/}" 2>/dev/null || true
+        printf "Killed %s\n" "$session"
+      done
+      git -C "$main_wt" worktree prune
+      rm -rf "$trash" &
+      disown
+    }
+
     help() {
       echo "Usage: git wt <subcommand>"
       echo ""
@@ -923,12 +1005,20 @@ writeShellApplication {
       echo "                        Remove worktrees with branches merged into master"
       echo "                        Dry-run by default; pass --execute to apply"
       echo "                        --verbose shows timing for each phase"
+      echo "    kill <name|pattern>... [-y]"
+      echo "                        Force-remove matching worktrees + branches + tmux"
+      echo "                        sessions, discarding uncommitted work. Destructive"
+      echo "                        last-resort cleanup; confirms unless -y is given"
     }
 
     subcommand="''${1:-}"
     case "$subcommand" in
       ""|"-h"|"--help")
         help
+        ;;
+      kill)
+        shift
+        _wt_kill "$@"
         ;;
       *)
         shift
