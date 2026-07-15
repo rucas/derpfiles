@@ -6,6 +6,7 @@
   tmux,
   jq,
   coreutils,
+  findutils,
   ...
 }:
 
@@ -19,6 +20,7 @@ writeShellApplication {
     tmux
     jq
     coreutils
+    findutils
   ];
 
   text = ''
@@ -447,6 +449,25 @@ writeShellApplication {
       echo "Skills:   copied from $src_main_wt/.claude/skills"
     }
 
+    # Copy every nested .claude/skills in the repo into the matching path in the
+    # worktree, preserving relative location (root, deployable/<svc>/.claude/...,
+    # etc.). .claude/worktrees is pruned so we neither descend into sibling
+    # worktrees nor copy their skills. Used by 'new', which has no target subdir.
+    _copy_all_skills() {
+      local src_main_wt="$1" dest_wt="$2"
+      local skills_dir rel count=0
+      while IFS= read -r skills_dir; do
+        rel="''${skills_dir#"$src_main_wt"/}"
+        mkdir -p "$dest_wt/$rel"
+        cp -R "$skills_dir/." "$dest_wt/$rel/"
+        count=$(( count + 1 ))
+      done < <(
+        find "$src_main_wt" -type d -path '*/.claude/worktrees' -prune \
+          -o -type d -path '*/.claude/skills' -print 2>/dev/null
+      )
+      [ "$count" -gt 0 ] && echo "Skills:   copied $count nested .claude/skills into worktree"
+    }
+
     new() {
       local copy_skills=1
       local rest=()
@@ -499,7 +520,7 @@ writeShellApplication {
         local wt_path="$main_wt/.claude/worktrees/$name"
         git -C "$main_wt" worktree add -b "$branch" "$wt_path"
 
-        [ "$copy_skills" -eq 1 ] && _copy_skills "$main_wt" "$wt_path"
+        [ "$copy_skills" -eq 1 ] && _copy_all_skills "$main_wt" "$wt_path"
 
         local session
         session="$(_session_name "$wt_path")"
@@ -573,9 +594,6 @@ writeShellApplication {
         git -C "$main_wt" worktree add "$wt_path" "$head_branch"
       fi
 
-      # Re-copied on refresh too, so editing a skill and re-running picks it up.
-      [ "$copy_skills" -eq 1 ] && _copy_skills "$main_wt" "$wt_path"
-
       local review_dir="$wt_path"
       if [ -n "$subdir" ]; then
         review_dir="$wt_path/$subdir"
@@ -583,6 +601,23 @@ writeShellApplication {
           echo "Error: subdir not found in worktree: $subdir" >&2
           exit 1
         fi
+      fi
+
+      # Skills can live in a nested .claude (e.g. deployable/merchant-risk/.claude/
+      # skills), and .claude is often gitignored so the checkout has none at all.
+      # Overlay skills from the repo root and from every path segment down to the
+      # review subdir, mirroring how Claude discovers a nested skill tree.
+      # Re-copied on refresh too, so editing a skill and re-running picks it up.
+      if [ "$copy_skills" -eq 1 ]; then
+        _copy_skills "$main_wt" "$wt_path"
+        local acc="$main_wt" dacc="$wt_path" seg seg_rest="$subdir"
+        while [ -n "$seg_rest" ]; do
+          seg="''${seg_rest%%/*}"
+          if [ "$seg" = "$seg_rest" ]; then seg_rest=""; else seg_rest="''${seg_rest#*/}"; fi
+          [ -z "$seg" ] && continue
+          acc="$acc/$seg"; dacc="$dacc/$seg"
+          _copy_skills "$acc" "$dacc"
+        done
       fi
 
       local session
@@ -976,15 +1011,16 @@ writeShellApplication {
       echo "Subcommands:"
       echo "    new <branch>... [repo] [--no-copy-skills]"
       echo "                        Create worktree(s) + tmux session(s) in <repo>/.claude/worktrees/"
-      echo "                        Copies the repo's live .claude/skills into each worktree"
-      echo "                        (even uncommitted ones) unless --no-copy-skills."
+      echo "                        Copies every nested live .claude/skills into each worktree"
+      echo "                        (even gitignored ones) unless --no-copy-skills."
       echo "    review <pr> [subdir] [--repo PATH] [--skill NAME] [--no-attach] [--no-copy-skills]"
       echo "                        Check out PR <pr> into an isolated worktree, launch claude"
       echo "                        in <subdir> (so its CLAUDE.md chain loads) and run /NAME"
       echo "                        (default: kotlin-pr-review). --repo targets a repo outside"
-      echo "                        the cwd; <subdir> is relative to it. The repo's live"
-      echo "                        .claude/skills are copied into the worktree (even uncommitted"
-      echo "                        ones) unless --no-copy-skills. Attaches unless --no-attach."
+      echo "                        the cwd; <subdir> is relative to it. Live .claude/skills"
+      echo "                        (from the repo root and every level down to <subdir>, even"
+      echo "                        gitignored ones) are copied into the worktree unless"
+      echo "                        --no-copy-skills. Attaches unless --no-attach."
       echo "    ls                  List all worktrees with branch, PR, Claude, and tmux status"
       echo "                        The PR column is populated by 'pr-sync' (run on a schedule)"
       echo "    pr-sync [--repo PATH [--ignore-check NAME]...]... [--config FILE]"
