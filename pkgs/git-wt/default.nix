@@ -532,11 +532,14 @@ writeShellApplication {
     }
 
     review() {
-      local pr="" subdir="" skill="kotlin-pr-review" attach=1 repo="" copy_skills=1
+      local pr="" subdir="" skill="kotlin-pr-review" attach=1 repo="" copy_skills=1 full=0
+      local includes=()
       while [ "$#" -gt 0 ]; do
         case "$1" in
           --skill)          skill="''${2:-}"; shift 2 ;;
           --repo)           repo="''${2:-}"; shift 2 ;;
+          --include)        includes+=("''${2:-}"); shift 2 ;;
+          --full)           full=1; shift ;;
           --no-attach)      attach=0; shift ;;
           --no-copy-skills) copy_skills=0; shift ;;
           -*)               echo "Unknown option: $1" >&2; exit 1 ;;
@@ -582,16 +585,36 @@ writeShellApplication {
       # same-repo ones. The local branch is named after the PR's real head branch
       # so 'git wt clean' detects the merged PR (keyed on head branch) and reaps
       # the review worktree automatically once the PR lands.
+      # A full monorepo checkout writes ~340k files (~80s). When a subdir is given
+      # (and not --full), sparse-checkout in cone mode writes only that subtree,
+      # its ancestor-dir files (which include the whole CLAUDE.md chain and the
+      # root build files), and any --include paths (e.g. a sibling module needed
+      # to compile). That drops the checkout from hundreds of thousands of files
+      # to a couple thousand.
+      local sparse=0
+      [ "$full" -eq 0 ] && [ -n "$subdir" ] && sparse=1
+
       if [ -d "$wt_path" ]; then
         echo "Worktree exists, refreshing PR head..."
         git -C "$wt_path" fetch --quiet origin "pull/$pr/head" \
           && git -C "$wt_path" merge --ff-only FETCH_HEAD >/dev/null 2>&1 || true
+        if [ "$sparse" -eq 1 ]; then
+          git -C "$wt_path" sparse-checkout set --cone "$subdir" "''${includes[@]}"
+        elif [ "$full" -eq 1 ]; then
+          git -C "$wt_path" sparse-checkout disable 2>/dev/null || true
+        fi
       else
         git -C "$main_wt" fetch --quiet origin "+pull/$pr/head:$head_branch" || {
           echo "Error: failed to fetch PR #$pr" >&2
           exit 1
         }
-        git -C "$main_wt" worktree add "$wt_path" "$head_branch"
+        if [ "$sparse" -eq 1 ]; then
+          git -C "$main_wt" worktree add --no-checkout "$wt_path" "$head_branch"
+          git -C "$wt_path" sparse-checkout set --cone "$subdir" "''${includes[@]}"
+          git -C "$wt_path" checkout
+        else
+          git -C "$main_wt" worktree add "$wt_path" "$head_branch"
+        fi
       fi
 
       local review_dir="$wt_path"
@@ -1013,14 +1036,18 @@ writeShellApplication {
       echo "                        Create worktree(s) + tmux session(s) in <repo>/.claude/worktrees/"
       echo "                        Copies every nested live .claude/skills into each worktree"
       echo "                        (even gitignored ones) unless --no-copy-skills."
-      echo "    review <pr> [subdir] [--repo PATH] [--skill NAME] [--no-attach] [--no-copy-skills]"
+      echo "    review <pr> [subdir] [--repo PATH] [--skill NAME] [--include PATH]..."
+      echo "           [--full] [--no-attach] [--no-copy-skills]"
       echo "                        Check out PR <pr> into an isolated worktree, launch claude"
       echo "                        in <subdir> (so its CLAUDE.md chain loads) and run /NAME"
       echo "                        (default: kotlin-pr-review). --repo targets a repo outside"
       echo "                        the cwd; <subdir> is relative to it. Live .claude/skills"
       echo "                        (from the repo root and every level down to <subdir>, even"
-      echo "                        gitignored ones) are copied into the worktree unless"
-      echo "                        --no-copy-skills. Attaches unless --no-attach."
+      echo "                        gitignored ones) are copied in unless --no-copy-skills."
+      echo "                        With a <subdir>, checks out only that subtree (sparse cone)"
+      echo "                        for speed; --include PATH adds sibling modules (repeatable,"
+      echo "                        e.g. a package needed to build); --full checks out everything."
+      echo "                        Attaches unless --no-attach."
       echo "    ls                  List all worktrees with branch, PR, Claude, and tmux status"
       echo "                        The PR column is populated by 'pr-sync' (run on a schedule)"
       echo "    pr-sync [--repo PATH [--ignore-check NAME]...]... [--config FILE]"
