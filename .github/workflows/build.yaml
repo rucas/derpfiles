@@ -1,13 +1,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: nix build
-on:
-  workflow_run:
-    workflows:
-      - "nix flake check"
-    types:
-      - completed
+"on": push
 jobs:
   build:
+    name: build (${{ matrix.host }})
     permissions:
       id-token: write
       contents: read
@@ -31,7 +27,6 @@ jobs:
             os: ubuntu-latest
             config_type: nixosConfigurations
     runs-on: ${{ matrix.os }}
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Maximize Nix disk space
         if: matrix.host == 'rucaslab'

@@ -29,6 +29,7 @@ jobs:
           token: ${{ secrets.ACTIONS_TOKEN }}
 
       - name: Merge Changes
-        run: gh pr merge ${{ steps.update.outputs.pull-request-number }} --squash --delete-branch
+        if: steps.update.outputs.pull-request-number != ''
+        run: gh pr merge ${{ steps.update.outputs.pull-request-number }} --squash --delete-branch --auto
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
