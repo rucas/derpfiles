@@ -192,11 +192,6 @@
           arch = "aarch64-darwin";
           env = "darwin";
         };
-        c889f3b8f7d7 = {
-          username = "awslucas";
-          arch = "aarch64-darwin";
-          env = "darwin";
-        };
         lronden-m-vy79p = {
           username = "lucas.rondenet";
           arch = "aarch64-darwin";
