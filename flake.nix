@@ -168,6 +168,12 @@
 
           devShells.default = pkgs.mkShell {
             inherit (self'.checks.pre-commit-check) shellHook;
+            packages = [
+              pkgs.just
+              pkgs.nixd
+              pkgs.statix
+              pkgs.deadnix
+            ];
           };
 
           packages = {

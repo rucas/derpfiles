@@ -75,18 +75,36 @@ may get error about `/etc/nix/nix.conf` already exists. To fix:
 $ sudo mv /etc/nix/nix.conf /etc/nix/nix.conf.bak
 ```
 
+## Development
+
+Enter the dev shell (`just`, `nixd`, `statix`, `deadnix`, plus the pre-commit hooks):
+
+```sh
+$ nix develop
+```
+
+Common tasks are wrapped in a [`justfile`](justfile) — run `just` to list them:
+
+```sh
+$ just build [HOST]   # build a host without activating (defaults to `hostname -s`)
+$ just switch [HOST]  # build and activate
+$ just check          # nix flake check (statix, deadnix, treefmt, host evals)
+$ just fmt            # format the tree with treefmt
+$ just update [INPUT] # update all flake inputs, or just one
+```
+
 ## FAQ
 
 ### How do I update a flake input?
 
 ```sh
-$ nix flake lock --update-input <INPUT>
+$ nix flake update <INPUT>   # or: just update <INPUT>
 ```
 
 ### How do I update a nixpkgs in `home.packages` declared in home-manager and not as a flake?
 
 ```sh
-$ nix flake lock --update-input nixpkgs
+$ nix flake update nixpkgs
 ```
 
 ### How do I open the current terminal line in my editor in Normal mode (zsh-vi-mode)?
