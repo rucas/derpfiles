@@ -79,7 +79,7 @@ export async function main(
   } finally {
     try {
       await api.shutdown();
-    } catch { }
+    } catch {}
   }
 }
 
@@ -119,7 +119,9 @@ async function downloadTransactionsFromSynchrony(
     await login(page, username, password);
 
     const transactions = await scrapeActivity(page);
-    console.log(`Scraped ${transactions.length} transactions from activity page`);
+    console.log(
+      `Scraped ${transactions.length} transactions from activity page`,
+    );
     return transactions;
   } finally {
     await browser.close();
@@ -141,7 +143,9 @@ async function login(page: Page, username: string, password: string) {
   await page.locator('[data-test="login-userid"]').fill(username);
   await page.locator('[data-test="login-password"]').fill(password);
   await screenshot(page, "pre-submit");
-  await page.getByRole("button", { name: /log in|sign in|secure login|submit/i }).click();
+  await page
+    .getByRole("button", { name: /log in|sign in|secure login|submit/i })
+    .click();
   await page.waitForTimeout(10000);
   console.log(`Post-login URL: ${page.url()}`);
   await screenshot(page, "post-login");
@@ -236,15 +240,34 @@ function tryParseTransactionArray(arr: unknown[]): Transaction[] {
     if (!item || typeof item !== "object") continue;
     const rec = item as Record<string, unknown>;
 
-    const dateVal = findField(rec, ["date", "transactionDate", "transDate", "postDate", "postingDate"]);
-    const descVal = findField(rec, ["description", "merchantName", "merchant", "payee", "transactionDescription"]);
-    const amountVal = findField(rec, ["amount", "transactionAmount", "transAmount"]);
+    const dateVal = findField(rec, [
+      "date",
+      "transactionDate",
+      "transDate",
+      "postDate",
+      "postingDate",
+    ]);
+    const descVal = findField(rec, [
+      "description",
+      "merchantName",
+      "merchant",
+      "payee",
+      "transactionDescription",
+    ]);
+    const amountVal = findField(rec, [
+      "amount",
+      "transactionAmount",
+      "transAmount",
+    ]);
 
     if (!dateVal || amountVal === undefined) continue;
 
     const date = parseDate(String(dateVal));
     const description = descVal ? String(descVal) : "Amazon Synchrony";
-    const raw = typeof amountVal === "number" ? amountVal : parseFloat(String(amountVal).replace(/[,$]/g, ""));
+    const raw =
+      typeof amountVal === "number"
+        ? amountVal
+        : parseFloat(String(amountVal).replace(/[,$]/g, ""));
     if (isNaN(raw)) continue;
     const cents = Math.round(raw * 100);
 
@@ -258,7 +281,10 @@ function tryParseTransactionArray(arr: unknown[]): Transaction[] {
   return transactions;
 }
 
-function findField(obj: Record<string, unknown>, candidates: string[]): unknown {
+function findField(
+  obj: Record<string, unknown>,
+  candidates: string[],
+): unknown {
   for (const key of candidates) {
     const lower = key.toLowerCase();
     for (const [k, v] of Object.entries(obj)) {
@@ -270,11 +296,15 @@ function findField(obj: Record<string, unknown>, candidates: string[]): unknown 
 
 async function scrapeTransactionsFromDom(page: Page): Promise<Transaction[]> {
   const bodyText = await page.locator("body").innerText();
-  console.log(`Activity page text (first 1000 chars): ${bodyText.slice(0, 1000)}`);
-
-  const rows = await page.locator("[class*='transaction'], [class*='activity'], [data-testid*='transaction'], tr").evaluateAll((els) =>
-    els.map((el) => el.textContent?.trim() ?? "")
+  console.log(
+    `Activity page text (first 1000 chars): ${bodyText.slice(0, 1000)}`,
   );
+
+  const rows = await page
+    .locator(
+      "[class*='transaction'], [class*='activity'], [data-testid*='transaction'], tr",
+    )
+    .evaluateAll((els) => els.map((el) => el.textContent?.trim() ?? ""));
   console.log(`Found ${rows.length} potential transaction rows`);
   for (const row of rows.slice(0, 5)) {
     console.log(`Row: ${row.slice(0, 200)}`);
@@ -309,5 +339,5 @@ async function screenshot(page: Page, name: string) {
       path: `/tmp/synchrony-cc-import/${name}.png`,
       fullPage: true,
     });
-  } catch { }
+  } catch {}
 }

@@ -215,7 +215,7 @@ in
         (lib.filterAttrs (name: _: cfg.commands.${name}.enable) bundledCommands) // cfg.commands.extra;
       context = cfg.memory;
 
-      mcpServers = lib.filterAttrs (n: v: v != null) {
+      mcpServers = lib.filterAttrs (_n: v: v != null) {
         fetch = lib.mkIf cfg.mcpServers.fetch.enable {
           command = "${pkgs.mcp-server-fetch}/bin/mcp-server-fetch";
         };

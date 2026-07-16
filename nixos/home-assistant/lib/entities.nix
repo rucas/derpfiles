@@ -47,7 +47,7 @@ rec {
     chime = "select.doorbell_chime";
   };
 
-  allMobileDevices = lib.attrValues (lib.mapAttrs (name: person: person.mobile) people);
+  allMobileDevices = lib.attrValues (lib.mapAttrs (_name: person: person.mobile) people);
 
   roomLights = room: lib.attrValues lights.${room} or [ ];
 

@@ -66,7 +66,7 @@ let
     doCheck = false;
   };
 
-  valkey-no-tests = valkey.overridePythonAttrs (old: {
+  valkey-no-tests = valkey.overridePythonAttrs (_old: {
     doCheck = false;
     doInstallCheck = false;
   });

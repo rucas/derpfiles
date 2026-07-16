@@ -94,6 +94,10 @@
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -107,6 +111,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./flake-modules/hosts.nix
+        inputs.treefmt-nix.flakeModule
       ];
 
       systems = [
@@ -115,7 +120,12 @@
       ];
 
       perSystem =
-        { system, self', ... }:
+        {
+          config,
+          system,
+          self',
+          ...
+        }:
         let
           pkgs = import nixpkgs {
             localSystem.system = system;
@@ -125,6 +135,20 @@
           inherit (pkgs.stdenv) isDarwin;
         in
         {
+          _module.args.pkgs = pkgs;
+
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs = {
+              nixfmt.enable = true;
+              prettier.enable = true;
+              shfmt.enable = true;
+              taplo.enable = true;
+            };
+            # Leave hand-maintained prose docs alone; format data/config only.
+            settings.formatter.prettier.excludes = [ "*.md" ];
+          };
+
           checks = {
             pre-commit-check = pre-commit-hooks.lib.${system}.run {
               src = builtins.path {
@@ -133,12 +157,19 @@
               };
               hooks = {
                 statix.enable = true;
-                nixfmt.enable = true;
+                deadnix = {
+                  enable = true;
+                  # Module/library signatures carry args (pkgs, config, entities)
+                  # that callers pass by name; flagging them breaks eval.
+                  settings.noLambdaPatternNames = true;
+                };
+                treefmt = {
+                  enable = true;
+                  package = config.treefmt.build.wrapper;
+                };
               };
             };
           };
-
-          formatter = pkgs.nixfmt;
 
           devShells.default = pkgs.mkShell {
             inherit (self'.checks.pre-commit-check) shellHook;

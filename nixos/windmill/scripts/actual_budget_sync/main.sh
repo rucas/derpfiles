@@ -8,11 +8,11 @@ mkdir -p "$DATA_DIR"
 
 if [ ! -d "$CACHE_DIR/node_modules/@actual-app/api" ]; then
   cd "$CACHE_DIR" || exit
-  npm init -y > /dev/null 2>&1
-  npm install @actual-app/api > /dev/null 2>&1
+  npm init -y >/dev/null 2>&1
+  npm install @actual-app/api >/dev/null 2>&1
 fi
 
-cat > "$CACHE_DIR/sync.mjs" << 'SCRIPT'
+cat >"$CACHE_DIR/sync.mjs" <<'SCRIPT'
 import * as api from "@actual-app/api";
 const [serverURL, password, budgetSyncId] = process.argv.slice(2);
 try {

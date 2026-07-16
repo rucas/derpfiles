@@ -1143,7 +1143,8 @@
         "rucaslab": "rucaslab",
         "spacebar": "spacebar",
         "tmux-1password": "tmux-1password",
-        "tmux-pomodoro-plus": "tmux-pomodoro-plus"
+        "tmux-pomodoro-plus": "tmux-pomodoro-plus",
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "rucaslab": {
@@ -1308,6 +1309,26 @@
       "original": {
         "owner": "uncenter",
         "repo": "tree-sitter-tera",
+        "type": "github"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780220602,
+        "narHash": "sha256-eynAfOmbmxJnkp7YewvCEbShNnnYJ9gLLqkzsYtBPeM=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "db947814a175b7ca6ded66e21383d938df01c227",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
         "type": "github"
       }
     }

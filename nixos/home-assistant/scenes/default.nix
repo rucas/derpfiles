@@ -1,7 +1,7 @@
 { lib, ... }:
 let
   haLib = import ../lib { inherit lib; };
-  inherit (haLib) entities builders;
+  inherit (haLib) builders;
 in
 {
   services.home-assistant.config."scene manual" = [

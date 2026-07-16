@@ -124,7 +124,7 @@ in
           ]
           ++ lib.optional (builtins.pathExists ../hosts/${host}/secrets.nix) ../hosts/${host}/secrets.nix
         )
-      ) (lib.filterAttrs (n: v: v.env == "darwin") config.hosts);
+      ) (lib.filterAttrs (_n: v: v.env == "darwin") config.hosts);
 
       flake.nixosConfigurations = lib.mapAttrs (
         host: cfg:
@@ -137,6 +137,6 @@ in
           inputs.opnix.nixosModules.default
           inputs.rucaslab.nixosModules.default
         ]
-      ) (lib.filterAttrs (n: v: v.env == "nixos") config.hosts);
+      ) (lib.filterAttrs (_n: v: v.env == "nixos") config.hosts);
     };
 }

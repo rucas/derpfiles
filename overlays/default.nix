@@ -1,6 +1,6 @@
 # NOTE: https://www.fbrs.io/nix-overlays/
 { inputs, ... }:
-final: prev: {
+_final: prev: {
   # NOTE: added to stop cache miss for direnv build
   direnv = prev.direnv.overrideAttrs { doCheck = false; };
   mcp-nixos = prev.mcp-nixos.overrideAttrs (old: {
@@ -56,12 +56,12 @@ final: prev: {
   });
 
   pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-    (python-final: python-prev: {
-      mcp = python-prev.mcp.overridePythonAttrs (old: {
+    (_python-final: python-prev: {
+      mcp = python-prev.mcp.overridePythonAttrs (_old: {
         postPatch = "";
         doCheck = false;
       });
-      fastmcp = python-prev.fastmcp.overridePythonAttrs (old: {
+      fastmcp = python-prev.fastmcp.overridePythonAttrs (_old: {
         doCheck = false;
       });
     })
