@@ -157,12 +157,7 @@
               };
               hooks = {
                 statix.enable = true;
-                deadnix = {
-                  enable = true;
-                  # Module/library signatures carry args (pkgs, config, entities)
-                  # that callers pass by name; flagging them breaks eval.
-                  settings.noLambdaPatternNames = true;
-                };
+                deadnix.enable = true;
                 treefmt = {
                   enable = true;
                   package = config.treefmt.build.wrapper;

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   systemd.tmpfiles.rules = [
     "d /var/lib/papra 0750 papra papra -"

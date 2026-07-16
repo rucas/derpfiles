@@ -1,4 +1,4 @@
-{ config, ... }:
+{ ... }:
 {
   services.onepassword-secrets = {
     enable = true;
