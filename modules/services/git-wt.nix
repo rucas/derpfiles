@@ -5,9 +5,17 @@
   ...
 }:
 
-with lib;
-
 let
+  inherit (lib)
+    concatMap
+    optionals
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    mkMerge
+    escapeShellArgs
+    ;
   cfg = config.programs.git-wt;
   inherit (pkgs.stdenv) isDarwin isLinux;
 

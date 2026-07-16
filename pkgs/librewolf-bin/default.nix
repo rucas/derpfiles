@@ -28,9 +28,9 @@ stdenvNoCC.mkDerivation rec {
     sha256 = "sha256-09iHaWdU5w5oYb1HbwQ7TlbgxsZBoYvB4w9MomwFe88=";
   };
 
-  meta = with lib; {
+  meta = {
     description = "LibreWolf (binary distribution)";
     homepage = "https://librewolf.net/";
-    platforms = platforms.darwin;
+    platforms = lib.platforms.darwin;
   };
 }

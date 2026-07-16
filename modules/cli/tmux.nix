@@ -35,28 +35,28 @@ in
     shell = "/bin/zsh";
     sensibleOnTop = false;
     customPaneNavigationAndResize = true;
-    plugins = with pkgs; [
+    plugins = [
       {
-        plugin = tmuxPlugins.resurrect;
+        plugin = pkgs.tmuxPlugins.resurrect;
         extraConfig = ''
           set -g @resurrect-processes "'~vi->nvim'"
         '';
       }
       {
-        plugin = tmuxPlugins.continuum;
+        plugin = pkgs.tmuxPlugins.continuum;
         extraConfig = ''
           set -g @continuum-restore 'on'
           set -g @continuum-save-interval '5'
         '';
       }
       {
-        plugin = tmuxPlugins.tmux-thumbs;
+        plugin = pkgs.tmuxPlugins.tmux-thumbs;
         extraConfig = ''
           set -g @thumbs-command 'echo -n {} | pbcopy'
         '';
       }
       {
-        plugin = tmuxPlugins.tmux-1password;
+        plugin = pkgs.tmuxPlugins.tmux-1password;
         extraConfig = ''
           ${
             let
@@ -67,7 +67,7 @@ in
         '';
       }
       {
-        plugin = tmuxPlugins.tmux-pomodoro-plus;
+        plugin = pkgs.tmuxPlugins.tmux-pomodoro-plus;
         extraConfig = ''
           set -g @pomodoro_on " 󱩠 "
         '';

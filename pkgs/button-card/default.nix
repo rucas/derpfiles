@@ -19,11 +19,11 @@ stdenv.mkDerivation rec {
     install -D $src $out/button-card.js
   '';
 
-  meta = with lib; {
+  meta = {
     changelog = "https://github.com/custom-cards/button-card/releases/tag/v${version}";
     description = "Button Card - Lovelace button-card for home assistant";
     homepage = "https://github.com/custom-cards/button-card";
-    license = licenses.mit;
-    maintainers = with maintainers; [ rucas ];
+    license = lib.licenses.mit;
+    maintainers = [ lib.maintainers.rucas ];
   };
 }

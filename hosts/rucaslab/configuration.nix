@@ -382,14 +382,14 @@
       Group = "windmill";
     };
     windmill-worker = {
-      path = with pkgs; [
-        python312
-        gnumake
-        gcc
-        bash
-        coreutils
-        nodejs
-        bun
+      path = [
+        pkgs.python312
+        pkgs.gnumake
+        pkgs.gcc
+        pkgs.bash
+        pkgs.coreutils
+        pkgs.nodejs
+        pkgs.bun
       ];
       environment = {
         HOME = "/var/lib/windmill-worker";
@@ -470,7 +470,7 @@
   # NOTE: https://nixos.wiki/wiki/Command_Shell
   programs.zsh.enable = true;
   security.sudo.wheelNeedsPassword = false;
-  environment.shells = with pkgs; [ zsh ];
+  environment.shells = [ pkgs.zsh ];
 
   nix = {
     settings = {
@@ -503,9 +503,9 @@
     '';
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    vim
+  environment.systemPackages = [
+    pkgs.git
+    pkgs.vim
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

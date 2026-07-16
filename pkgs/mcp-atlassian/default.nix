@@ -257,10 +257,10 @@ buildPythonApplication rec {
   dontCheckRuntimeDeps = true;
   doCheck = false;
 
-  meta = with lib; {
+  meta = {
     description = "MCP server for Atlassian products (Jira and Confluence)";
     homepage = "https://github.com/sooperset/mcp-atlassian";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
   };
 }

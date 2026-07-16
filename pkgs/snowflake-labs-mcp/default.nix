@@ -21,12 +21,12 @@ stdenv.mkDerivation {
       --add-flags "snowflake-labs-mcp"
   '';
 
-  meta = with lib; {
+  meta = {
     description = "MCP server for Snowflake (via uvx)";
     homepage = "https://github.com/Snowflake-Labs/mcp";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
-    platforms = platforms.all;
+    platforms = lib.platforms.all;
     mainProgram = "snowflake-labs-mcp";
   };
 }

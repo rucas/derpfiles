@@ -20,11 +20,11 @@ stdenv.mkDerivation rec {
     cp -v dist/bubble-card.js $out/
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Bubble Card is a minimalist card collection for Home Assistant with a nice pop-up touch";
     homepage = "https://github.com/Clooos/Bubble-Card";
-    license = licenses.mit;
-    maintainers = with maintainers; [ rucas ];
+    license = lib.licenses.mit;
+    maintainers = [ lib.maintainers.rucas ];
     mainProgram = "Bubble-Card";
   };
 }

@@ -24,11 +24,11 @@ buildNpmPackage rec {
 
     runHook postInstall
   '';
-  meta = with lib; {
+  meta = {
     description = "Card Mode - Allows you to apply CSS styles to various elements of the Home Assistant frontend.";
     homepage = "https://github.com/Clooos/Bubble-Card";
-    license = licenses.mit;
-    maintainers = with maintainers; [ rucas ];
+    license = lib.licenses.mit;
+    maintainers = [ lib.maintainers.rucas ];
   };
 
 }

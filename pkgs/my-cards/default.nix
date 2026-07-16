@@ -27,11 +27,11 @@ buildNpmPackage rec {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Bundle of my custom Lovelace cards for Home Assistant. Includes: my-slider, my-slider-v2, my-button";
     homepage = "https://github.com/AnthonMS/my-cards";
-    license = licenses.mit;
-    maintainers = with maintainers; [ rucas ];
+    license = lib.licenses.mit;
+    maintainers = [ lib.maintainers.rucas ];
   };
 
 }

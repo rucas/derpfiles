@@ -27,11 +27,11 @@ buildNpmPackage rec {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Control any light or switch entity";
     homepage = "https://github.com/ljmerza/light-entity-card";
-    license = licenses.mit;
-    maintainers = with maintainers; [ rucas ];
+    license = lib.licenses.mit;
+    maintainers = [ lib.maintainers.rucas ];
   };
 
 }

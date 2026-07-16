@@ -25,11 +25,11 @@ buildNpmPackage rec {
     runHook postInstall
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Minimalistic media card for Home Assistant Lovelace UI";
     homepage = "https://github.com/kalkih/mini-media-player";
-    license = licenses.mit;
-    maintainers = with maintainers; [ rucas ];
+    license = lib.licenses.mit;
+    maintainers = [ lib.maintainers.rucas ];
   };
 
 }

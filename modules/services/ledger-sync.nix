@@ -5,9 +5,15 @@
   ...
 }:
 
-with lib;
-
 let
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    mkMerge
+    mapAttrsToList
+    ;
   cfg = config.services.ledger-sync;
   inherit (pkgs.stdenv) isDarwin isLinux;
 

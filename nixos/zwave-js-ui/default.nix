@@ -5,9 +5,14 @@
   ...
 }:
 
-with lib;
-
 let
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkIf
+    optionalAttrs
+    types
+    ;
   cfg = config.services.zwave-js-ui-rucas;
 
   jsonType = (pkgs.formats.json { }).type;

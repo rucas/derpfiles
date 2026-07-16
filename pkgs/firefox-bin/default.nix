@@ -28,9 +28,9 @@ stdenvNoCC.mkDerivation rec {
     sha256 = "sha256-HkRLgJIbyZnVbAWn3swer4jAKXysW5BBYpmvLHf17Mk=";
   };
 
-  meta = with lib; {
+  meta = {
     description = "Mozilla Firefox (binary distribution)";
     homepage = "https://www.mozilla.org/firefox/";
-    platforms = platforms.darwin;
+    platforms = lib.platforms.darwin;
   };
 }

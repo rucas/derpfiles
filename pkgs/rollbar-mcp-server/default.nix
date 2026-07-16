@@ -17,12 +17,12 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-84NQFg7HgJ8Kiu8zx7C3RrfyUEYpQRNP42KTxaIO6GY=";
 
-  meta = with lib; {
+  meta = {
     description = "Model Context Protocol server for Rollbar error monitoring";
     homepage = "https://github.com/rollbar/rollbar-mcp-server";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
-    platforms = platforms.all;
+    platforms = lib.platforms.all;
     mainProgram = "rollbar-mcp-server";
   };
 }

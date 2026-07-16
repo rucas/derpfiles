@@ -24,11 +24,11 @@ buildNpmPackage rec {
 
     runHook postInstall
   '';
-  meta = with lib; {
+  meta = {
     description = "Get more control over the placement of lovelace cards.";
     homepage = "https://github.com/thomasloven/lovelace-layout-card";
-    license = licenses.mit;
-    maintainers = with maintainers; [ rucas ];
+    license = lib.licenses.mit;
+    maintainers = [ lib.maintainers.rucas ];
   };
 
 }

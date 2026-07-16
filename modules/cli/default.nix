@@ -19,102 +19,102 @@
     ./tealdeer.nix
     ./tmux.nix
   ];
-  home.packages = with pkgs; [
-    _1password-cli
+  home.packages = [
+    pkgs._1password-cli
 
-    age
-    age-plugin-yubikey
-    amp-cli
-    ast-grep
-    awscli2
+    pkgs.age
+    pkgs.age-plugin-yubikey
+    pkgs.amp-cli
+    pkgs.ast-grep
+    pkgs.awscli2
 
-    bandwhich
+    pkgs.bandwhich
 
-    cachix
-    calc
-    coreutils
-    curl
+    pkgs.cachix
+    pkgs.calc
+    pkgs.coreutils
+    pkgs.curl
 
     # dateutils
-    doggo
-    dust
+    pkgs.doggo
+    pkgs.dust
 
-    eva
+    pkgs.eva
 
-    fastfetch
-    fd
-    fnm
+    pkgs.fastfetch
+    pkgs.fd
+    pkgs.fnm
 
-    gcal
-    git-crypt
-    gitmux
-    glow
-    gnumake
-    gnused
-    (google-cloud-sdk.withExtraComponents (
-      with google-cloud-sdk.components; [ gke-gcloud-auth-plugin ]
+    pkgs.gcal
+    pkgs.git-crypt
+    pkgs.gitmux
+    pkgs.glow
+    pkgs.gnumake
+    pkgs.gnused
+    (pkgs.google-cloud-sdk.withExtraComponents (
+      with pkgs.google-cloud-sdk.components; [ gke-gcloud-auth-plugin ]
     ))
-    graphviz
-    grex
+    pkgs.graphviz
+    pkgs.grex
 
-    haskellPackages.patat
+    pkgs.haskellPackages.patat
 
-    (lib.mkIf pkgs.stdenv.isLinux haveged)
-    hexyl
-    htop
-    hurl
-    hyperfine
+    (lib.mkIf pkgs.stdenv.isLinux pkgs.haveged)
+    pkgs.hexyl
+    pkgs.htop
+    pkgs.hurl
+    pkgs.hyperfine
 
     inputs.agenix.packages."${pkgs.stdenv.hostPlatform.system}".default
-    inetutils
-    inter
+    pkgs.inetutils
+    pkgs.inter
 
-    jira-cli-go
-    jwt-cli
-    jq
+    pkgs.jira-cli-go
+    pkgs.jwt-cli
+    pkgs.jq
 
-    kubectl
-    kubectx
+    pkgs.kubectl
+    pkgs.kubectx
 
-    lsof
+    pkgs.lsof
 
-    (lib.mkIf pkgs.stdenv.isDarwin m-cli)
+    (lib.mkIf pkgs.stdenv.isDarwin pkgs.m-cli)
 
-    netcat
-    nmap
+    pkgs.netcat
+    pkgs.nmap
 
-    onefetch
+    pkgs.onefetch
 
-    nerd-fonts.hack
-    nerd-fonts.fira-code
-    nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.hack
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.jetbrains-mono
 
-    parallel
-    pandoc
-    pre-commit
-    procs
+    pkgs.parallel
+    pkgs.pandoc
+    pkgs.pre-commit
+    pkgs.procs
 
-    rainfrog
-    ripgrep
+    pkgs.rainfrog
+    pkgs.ripgrep
 
-    sd
-    sqlite
+    pkgs.sd
+    pkgs.sqlite
 
-    tailspin
-    timer
-    tree
-    tokei
-    (lib.mkIf pkgs.stdenv.isLinux tor)
+    pkgs.tailspin
+    pkgs.timer
+    pkgs.tree
+    pkgs.tokei
+    (lib.mkIf pkgs.stdenv.isLinux pkgs.tor)
 
-    (lib.mkIf pkgs.stdenv.isLinux usbutils)
+    (lib.mkIf pkgs.stdenv.isLinux pkgs.usbutils)
 
-    wget
+    pkgs.wget
 
-    xan
-    xz
+    pkgs.xan
+    pkgs.xz
 
-    yq
-    yubikey-agent
-    yubikey-manager
+    pkgs.yq
+    pkgs.yubikey-agent
+    pkgs.yubikey-manager
   ];
 }

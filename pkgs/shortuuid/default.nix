@@ -2,7 +2,6 @@
 
 pkgs.writeShellApplication {
   name = "shortuuid";
-  # runtimeInputs = with pkgs; [ ];
 
   text = ''
     shortuuid () {

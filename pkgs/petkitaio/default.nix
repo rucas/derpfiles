@@ -29,10 +29,10 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "petkitaio" ];
 
-  meta = with lib; {
+  meta = {
     description = "Asynchronous Python library for PetKit's API.";
     homepage = "https://github.com/RobertD502/petkitaio";
-    license = licenses.mit;
-    maintainers = with maintainers; [ rucas ];
+    license = lib.licenses.mit;
+    maintainers = [ lib.maintainers.rucas ];
   };
 }

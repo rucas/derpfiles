@@ -24,10 +24,10 @@
 
   hardware.graphics = {
     enable = true;
-    extraPackages = with pkgs; [
-      intel-media-driver
-      intel-compute-runtime
-      vulkan-loader
+    extraPackages = [
+      pkgs.intel-media-driver
+      pkgs.intel-compute-runtime
+      pkgs.vulkan-loader
     ];
   };
 }

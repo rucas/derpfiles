@@ -21,11 +21,11 @@ stdenv.mkDerivation rec {
     cp ./doc/yabai.1 $out/share/man/man1/yabai.1
   '';
 
-  meta = with lib; {
+  meta = {
     description = ''
       A tiling window manager for macOS based on binary space partitioning
     '';
     homepage = "https://github.com/koekeishiya/yabai";
-    platforms = platforms.darwin;
+    platforms = lib.platforms.darwin;
   };
 }
