@@ -1,32 +1,33 @@
 # Contributing
 
-The project is divided into directories to manage individual programs. Below is a description of each program.
+This is a Nix flake managing macOS (nix-darwin) and NixOS hosts with
+home-manager. See [CLAUDE.md](CLAUDE.md) for the layout and conventions.
 
-## [ chunkwm ](chunkwm/)
-[ website ](https://github.com/koekeishiya/chunkwm)
+## Getting started
 
-## [ git ](git/)
-[ website ](https://git-scm.com/)
+```sh
+nix develop   # dev shell: just, nixd, statix, deadnix, and the pre-commit hooks
+just          # list available tasks
+```
 
-## [ homebrew ](homebrew/)
-[ website ](https://brew.sh/)
+## Making changes
 
-## [ iterm2 ](iterm2/)
-[ website ](https://www.iterm2.com/)
+- Follow the Nix style in [CLAUDE.md](CLAUDE.md) — notably, avoid `with lib;` /
+  `with pkgs;` (prefer `inherit (lib) ...` and explicit refs).
+- Format and lint before committing:
 
-## [ neovim ](neovim/)
-[ website ](https://github.com/neovim/neovim)
+  ```sh
+  just fmt      # treefmt: nixfmt, prettier, shfmt, taplo
+  just check    # nix flake check: statix, deadnix, treefmt, host evals
+  ```
 
-## [ osx ]()
+- Verify an affected host still evaluates/builds:
 
-## [ skhdrc ](skhdrc/)
-[ website ](https://github.com/koekeishiya/skhd)
+  ```sh
+  just build <host>
+  ```
 
-## [ tmux ](tmux/)
-[ website ](https://github.com/tmux/tmux/wiki)
+## CI
 
-## [ ubersicht ](uebersicht/)
-[ website ](https://github.com/felixhageloh/uebersicht)
-
-## [ zsh ](zsh/)
-[ website ](http://www.zsh.org/)
+Every push runs `nix flake check` and a per-host `nix build` on ubuntu and
+macOS. `master` is protected — those checks must pass before a change merges.
