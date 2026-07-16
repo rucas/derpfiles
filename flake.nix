@@ -4,6 +4,7 @@
   inputs = {
     agenix = {
       url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
       url = "github:nix-community/disko";
@@ -22,15 +23,19 @@
     };
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     alacritty-theme = {
       url = "github:alexghr/alacritty-theme.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     tmux-1password = {
       url = "github:yardnsm/tmux-1password";
       flake = false;
     };
     spacebar = {
+      # Pins its own nixpkgs: the build references darwin.apple_sdk_11_0,
+      # removed from nixpkgs-unstable, so it cannot follow root.
       url = "github:cmacrae/spacebar";
     };
     fast-syntax-highlighting = {
