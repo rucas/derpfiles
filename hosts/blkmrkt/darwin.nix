@@ -18,11 +18,7 @@
     };
   };
 
-  # TODO: better way to do users.users?
   users = {
-    users.lucas = {
-      home = "/Users/lucas";
-    };
     knownGroups = [ "wheel" ];
     groups.wheel = {
       gid = 0;
@@ -44,6 +40,4 @@
   # https://github.com/LnL7/nix-darwin/pull/1020
   # security.pam.enableSudoTouchIdAuth = true;
   security.pam.services.sudo_local.touchIdAuth = true;
-
-  system.primaryUser = "lucas";
 }

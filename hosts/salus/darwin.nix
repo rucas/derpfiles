@@ -14,14 +14,7 @@
     cores = 0;
   };
 
-  # TODO: better way to do users.users?
-  users.users = {
-    lucas = {
-      name = "lucas";
-      home = "/Users/lucas";
-      uid = 501;
-    };
-  };
+  users.users.lucas.uid = 501;
 
   # NOTE: needed or else correct zsh path wont be set
   # correct path is /etc/profiles/per-user/lucas/bin/zsh
@@ -31,8 +24,6 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
-
-  system.primaryUser = "lucas";
 
   security.pam.services.sudo_local = {
     enable = true;
