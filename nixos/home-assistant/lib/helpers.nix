@@ -1,4 +1,4 @@
-{ lib, entities }:
+{ lib }:
 rec {
   triggers = {
     time = at: {

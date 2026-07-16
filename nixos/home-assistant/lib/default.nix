@@ -1,7 +1,7 @@
 { lib }:
 let
   entities = import ./entities.nix { inherit lib; };
-  helpers = import ./helpers.nix { inherit lib entities; };
+  helpers = import ./helpers.nix { inherit lib; };
   builders = import ./builders.nix { inherit lib entities helpers; };
 in
 {
