@@ -3,6 +3,14 @@ verify the result, and continue the operation.
 
 `$ARGUMENTS` may carry extra guidance (e.g. a preferred side for a specific file). Optional.
 
+## Context first
+
+Before doing anything else, load this repo's own guidance so your work follows its
+conventions: read the repo-root `CLAUDE.md` and any `.claude/` context that applies
+(`.claude/CLAUDE.md`, `.claude/rules/*`). Let those commands, conventions, and
+policies govern every step below. If none exist, fall back to the Makefile /
+package.json / CI config.
+
 ## Steps
 
 1. **Identify the operation and the conflicts.**

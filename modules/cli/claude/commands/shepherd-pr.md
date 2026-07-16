@@ -20,6 +20,15 @@ Take an open PR — **draft or already under review** — and move it forward:
 Ignore checks that can only be satisfied by a human — review approvals, CODEOWNERS
 sign-off, and manual/environment approval gates. Never wait on those.
 
+## Context first
+
+Before doing anything else, load this repo's own guidance so your work follows its
+conventions: read the repo-root `CLAUDE.md` and any `.claude/` context that applies
+(`.claude/CLAUDE.md`, `.claude/rules/*`). Let those commands, conventions, and
+policies govern every step below. If none exist, fall back to the Makefile /
+package.json / CI config. (The delegated commands — `/fix-ci`, `/address-review`,
+`/resolve-conflicts` — load the same context on their own.)
+
 ## Steps
 
 1. **Resolve the PR.**

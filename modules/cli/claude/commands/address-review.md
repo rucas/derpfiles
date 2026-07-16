@@ -3,6 +3,14 @@ replies. Never post or push by default.
 
 `$ARGUMENTS` may carry a PR number, a PR URL, or a specific review/comment URL. Optional.
 
+## Context first
+
+Before doing anything else, load this repo's own guidance so your work follows its
+conventions: read the repo-root `CLAUDE.md` and any `.claude/` context that applies
+(`.claude/CLAUDE.md`, `.claude/rules/*`). Let those commands, conventions, and
+policies govern every step below. If none exist, fall back to the Makefile /
+package.json / CI config.
+
 ## Steps
 
 1. **Resolve the PR.** Use `$ARGUMENTS` if it names a PR/review/comment; otherwise current

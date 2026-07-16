@@ -3,6 +3,14 @@ Investigate failing CI for the current PR/branch, reproduce locally, fix, and ve
 `$ARGUMENTS` may carry a PR number, a CI build/run URL or id, or a path to a saved log.
 All optional.
 
+## Context first
+
+Before doing anything else, load this repo's own guidance so your work follows its
+conventions: read the repo-root `CLAUDE.md` and any `.claude/` context that applies
+(`.claude/CLAUDE.md`, `.claude/rules/*`). Let those commands, conventions, and
+policies govern every step below. If none exist, fall back to the Makefile /
+package.json / CI config.
+
 ## Steps
 
 1. **Resolve the failing checks.**
