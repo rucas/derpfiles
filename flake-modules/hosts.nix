@@ -47,7 +47,6 @@ in
         {
           nixpkgs.config = {
             allowUnfree = true;
-            permittedInsecurePackages = [ "openssl-1.1.1w" ];
           };
           nixpkgs.overlays = [
             self.overlays.default
