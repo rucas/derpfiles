@@ -41,6 +41,16 @@ in
 
   config =
     let
+      # Extra binary caches shared across hosts (cache.nixos.org is a default).
+      cachixSubstituters = [
+        "https://derpfiles.cachix.org"
+        "https://nxvm.cachix.org"
+      ];
+      cachixKeys = [
+        "derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q="
+        "nxvm.cachix.org-1:r4DyiW3QImNfegin8+kxPDOXYt16k+YDzxHhl+tqfRs="
+      ];
+
       # Common configuration shared by all hosts
       mkCommonModule =
         host: cfg:
@@ -56,23 +66,18 @@ in
             inputs.nur.overlays.default
           ];
           nix.settings = {
-            substituters = [
-              "https://cache.nixos.org/"
-              "https://derpfiles.cachix.org"
-              "https://nxvm.cachix.org"
-            ];
+            substituters = [ "https://cache.nixos.org/" ] ++ cachixSubstituters;
             trusted-public-keys = [
               "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-              "derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q="
-              "nxvm.cachix.org-1:r4DyiW3QImNfegin8+kxPDOXYt16k+YDzxHhl+tqfRs="
-            ];
+            ]
+            ++ cachixKeys;
           };
           # Determinate Nix owns /etc/nix/nix.conf on darwin and ignores nix.settings.
           # It includes nix.custom.conf for user overrides.
           environment.etc."nix/nix.custom.conf" = lib.mkIf (cfg.env == "darwin") {
             text = ''
-              extra-substituters = https://derpfiles.cachix.org https://nxvm.cachix.org
-              extra-trusted-public-keys = derpfiles.cachix.org-1:kgIPfQBZenYGvQr3weMaslNjYtfBUMvE3PU+/+Aur8Q= nxvm.cachix.org-1:r4DyiW3QImNfegin8+kxPDOXYt16k+YDzxHhl+tqfRs=
+              extra-substituters = ${lib.concatStringsSep " " cachixSubstituters}
+              extra-trusted-public-keys = ${lib.concatStringsSep " " cachixKeys}
             '';
           };
           home-manager = {
