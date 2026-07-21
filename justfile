@@ -1,5 +1,5 @@
 host := `hostname -s`
-rebuild := if os() == "macos" { "darwin-rebuild" } else { "sudo nixos-rebuild" }
+rebuild := if os() == "macos" { "darwin-rebuild" } else { "nixos-rebuild" }
 impure := if os() == "macos" { "--impure" } else { "" }
 
 # List available recipes
@@ -12,7 +12,7 @@ build host=host:
 
 # Build and activate a host's system configuration
 switch host=host:
-    {{ rebuild }} switch --flake ".#{{ host }}" {{ impure }}
+    sudo "$(command -v {{ rebuild }})" switch --flake ".#{{ host }}" {{ impure }}
 
 # Run all flake checks (statix, deadnix, treefmt, host evals)
 check:
