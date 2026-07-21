@@ -156,7 +156,10 @@
                 name = "source";
               };
               hooks = {
-                statix.enable = true;
+                statix = {
+                  enable = true;
+                  settings.ignore = [ ".direnv" ];
+                };
                 deadnix.enable = true;
                 treefmt = {
                   enable = true;
