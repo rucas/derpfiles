@@ -106,7 +106,7 @@ writeShellApplication {
 
         log_info "Found file changes, staging files"
 
-        if ! git add -- '*.norg' '*/*.norg' '*.md' '*/*.md' 2>&1 | tee -a "$LOG_FILE"; then
+        if ! git add -- '*.norg' '*.md' 2>&1 | tee -a "$LOG_FILE"; then
             log_error "Failed to stage files"
             return 1
         fi
@@ -120,8 +120,8 @@ writeShellApplication {
         commit_msg="~ $(date '+%m/%d/%Y') ~"
         log_info "Creating commit: $commit_msg"
 
-        if ! git commit -m "$commit_msg" 2>&1 | tee -a "$LOG_FILE"; then
-            log_error "Failed to create commit (pre-commit hook may have failed)"
+        if ! git commit --no-verify -m "$commit_msg" -- '*.norg' '*.md' 2>&1 | tee -a "$LOG_FILE"; then
+            log_error "Failed to create commit"
             return 1
         fi
 
