@@ -20,7 +20,6 @@ let
         "intellij-idea"
         "jetbrains-gateway"
         "postman"
-        "slack"
       ];
       "blkmrkt" = [
         "balenaetcher"
