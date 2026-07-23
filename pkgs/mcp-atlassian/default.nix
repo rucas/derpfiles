@@ -22,29 +22,9 @@ let
     doCheck = false;
   };
 
-  py-key-value-shared = buildPythonPackage rec {
-    pname = "py-key-value-shared";
-    version = "0.3.0";
-    format = "wheel";
-    src = fetchPypi {
-      pname = "py_key_value_shared";
-      inherit version;
-      format = "wheel";
-      dist = "py3";
-      python = "py3";
-      hash = "sha256-Ww77p+vKCLsVix6Tr8LwfTC49AwvwSziSkwNhPQvkpg=";
-    };
-    propagatedBuildInputs = [
-      typing-extensions
-      beartype
-    ];
-    dontCheckRuntimeDeps = true;
-    doCheck = false;
-  };
-
   py-key-value-aio = buildPythonPackage rec {
     pname = "py-key-value-aio";
-    version = "0.3.0";
+    version = "0.4.4";
     format = "wheel";
     src = fetchPypi {
       pname = "py_key_value_aio";
@@ -52,15 +32,15 @@ let
       format = "wheel";
       dist = "py3";
       python = "py3";
-      hash = "sha256-HHgZFXZgeL/WCNqnaf77l+ZdHXN0aj37ZARg4yIHG2Q=";
+      hash = "sha256-GOF1ZOyuYbmH+Qn8LNQe4gEshLSx3LjAVc+LS8G/P10=";
     };
     propagatedBuildInputs = [
-      py-key-value-shared
       beartype
+      typing-extensions
+      aiofile
+      anyio
+      keyring
       cachetools
-      redis
-      diskcache
-      pathvalidate
     ];
     dontCheckRuntimeDeps = true;
     doCheck = false;
@@ -93,64 +73,76 @@ let
     doCheck = false;
   };
 
-  pydocket = buildPythonPackage rec {
-    pname = "pydocket";
-    version = "0.16.3";
+  uncalled-for = buildPythonPackage rec {
+    pname = "uncalled-for";
+    version = "0.3.2";
     format = "wheel";
     src = fetchPypi {
-      inherit pname version;
+      pname = "uncalled_for";
+      inherit version;
       format = "wheel";
       dist = "py3";
       python = "py3";
-      hash = "sha256-4rUJJTVufNU1KGJVGVRYrHu6FfJSkzVmUbNtIj213Xw=";
+      hash = "sha256-D/YLFCx9H4BwvenUKvqnCu3HfcwQmYwidofpwVcTQY4=";
     };
-    propagatedBuildInputs = [
-      cloudpickle
-      exceptiongroup
-      fakeredis-no-tests
-      lupa-2_7
-      opentelemetry-api
-      opentelemetry-exporter-prometheus
-      opentelemetry-instrumentation
-      prometheus-client
-      py-key-value-aio
-      python-json-logger
-      redis
-      rich
-      typer
-      typing-extensions
-    ];
     dontCheckRuntimeDeps = true;
     doCheck = false;
   };
 
-  fastmcp-2_14 = buildPythonPackage rec {
+  fastmcp-3 = buildPythonPackage rec {
     pname = "fastmcp";
-    version = "2.14.0";
+    version = "3.2.4";
     format = "wheel";
     src = fetchPypi {
       inherit pname version;
       format = "wheel";
       dist = "py3";
       python = "py3";
-      hash = "sha256-ezdMC8rx7x70a5JV6oTGB/NUKR6vZH/1akfGn17AwgQ=";
+      hash = "sha256-5snEKRcQQUVeR6uUuz+DxGV2IqDsKJIvaUAFOVm9WKk=";
     };
     propagatedBuildInputs = [
       authlib
       cyclopts
       exceptiongroup
+      griffelib
       httpx
+      jsonref
       jsonschema-path
       mcp
       openapi-pydantic
+      opentelemetry-api
+      packaging
       platformdirs
       py-key-value-aio
-      pydocket
+      pydantic
+      email-validator
       pyperclip
       python-dotenv
+      pyyaml
       rich
-      typer
+      uncalled-for
+      uvicorn
+      watchfiles
       websockets
+    ];
+    dontCheckRuntimeDeps = true;
+    doCheck = false;
+  };
+
+  cattrs-26 = buildPythonPackage rec {
+    pname = "cattrs";
+    version = "26.1.0";
+    format = "wheel";
+    src = fetchPypi {
+      inherit pname version;
+      format = "wheel";
+      dist = "py3";
+      python = "py3";
+      hash = "sha256-0eCATEJjlJTUadCNTybWud6birJrRG23tfjC6X98MJY=";
+    };
+    propagatedBuildInputs = [
+      attrs
+      typing-extensions
     ];
     dontCheckRuntimeDeps = true;
     doCheck = false;
@@ -158,7 +150,7 @@ let
 
   markdown-to-confluence = buildPythonPackage rec {
     pname = "markdown-to-confluence";
-    version = "0.3.5";
+    version = "0.6.1";
     format = "wheel";
     src = fetchPypi {
       pname = "markdown_to_confluence";
@@ -166,14 +158,17 @@ let
       format = "wheel";
       dist = "py3";
       python = "py3";
-      hash = "sha256-dEaXEKJdRSQoJ7IUP9sAvjxhq288rJmP1AIfJoSgG5E=";
+      hash = "sha256-7asQs9lOSEQnM7L+xHhHNev7HbF0g0vVm7R0D/G+szE=";
     };
     propagatedBuildInputs = [
-      markdown
+      cattrs-26
       lxml
+      markdown
+      orjson
       pymdown-extensions
       pyyaml
       requests
+      truststore
     ];
     dontCheckRuntimeDeps = true;
     doCheck = false;
@@ -216,7 +211,7 @@ let
 in
 buildPythonApplication rec {
   pname = "mcp-atlassian";
-  version = "0.22.1";
+  version = "0.23.0";
   format = "wheel";
 
   src = fetchPypi {
@@ -225,7 +220,7 @@ buildPythonApplication rec {
     format = "wheel";
     dist = "py3";
     python = "py3";
-    hash = "sha256-J6Qa6S18ah17Ge9EqJqlw9imgiMcNiH6vkYmcjrMGKA=";
+    hash = "sha256-7MsazUVy368zKy2ochTM8uUnwBxjDl4mETeCPqtz1Pc=";
   };
 
   propagatedBuildInputs = [
@@ -234,7 +229,7 @@ buildPythonApplication rec {
     beautifulsoup4
     httpx
     mcp
-    fastmcp-2_14
+    fastmcp-3
     python-dotenv
     markdownify
     markdown
@@ -252,6 +247,7 @@ buildPythonApplication rec {
     truststore
     unidecode
     urllib3
+    anyio
   ];
 
   dontCheckRuntimeDeps = true;
