@@ -26,26 +26,23 @@ writeShellApplication {
   text = ''
     _millis() { local e=$EPOCHREALTIME; echo $(( ''${e/./} / 1000 )); }
 
-    _elapsed() {
-      local t0=$1 t1=$2
-      local ms=$(( t1 - t0 ))
-      echo "''${ms}ms"
-    }
+    _elapsed() { echo "$(( $2 - $1 ))ms"; }
 
     _main_branch() {
-      local branch="master"
-      if ! git rev-parse --verify "$branch" >/dev/null 2>&1; then
-        branch="main"
-        if ! git rev-parse --verify "$branch" >/dev/null 2>&1; then
-          echo "Error: neither 'master' nor 'main' branch found" >&2
-          exit 1
-        fi
-      fi
-      echo "$branch"
+      local branch
+      for branch in master main; do
+        git rev-parse --verify "$branch" >/dev/null 2>&1 && { echo "$branch"; return; }
+      done
+      echo "Error: neither 'master' nor 'main' branch found" >&2
+      exit 1
     }
 
     _main_wt() {
-      git worktree list --porcelain | head -1 | awk '{print $2}'
+      git -C "''${1:-.}" worktree list --porcelain | head -1 | awk '{print $2}'
+    }
+
+    _repo_nwo() {
+      git -C "''${1:-.}" remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]##; s#\.git$##'
     }
 
     _session_name() {
@@ -56,47 +53,119 @@ writeShellApplication {
       echo "$name"
     }
 
+    # Strip refs/heads/ and the worktree-/worktree_ prefix for display.
+    _branch_name() {
+      local b="''${1#refs/heads/}"
+      b="''${b#worktree_}"
+      echo "''${b#worktree-}"
+    }
+
+    # Emit "<path> <branch_ref>" per worktree. Without --all the main worktree and the
+    # master/main branches are excluded (the set every mutating subcommand acts on).
+    # An optional repo path (default cwd) selects which repo to list.
     _worktrees() {
+      local repo="." all=0 arg
+      for arg in "$@"; do
+        case "$arg" in
+          --all) all=1 ;;
+          *)     repo="$arg" ;;
+        esac
+      done
       local main_wt
-      main_wt="$(_main_wt)"
-      git worktree list --porcelain | \
-        awk -v main="$main_wt" '
-          /^worktree /{path=$2; branch=""}
-          /^branch /{branch=$2}
-          /^detached/{branch="(detached)"}
-          /^$/{
-            if (path != "" && path != main && branch != "" && branch != "refs/heads/master" && branch != "refs/heads/main")
+      main_wt="$(_main_wt "$repo")"
+      git -C "$repo" worktree list --porcelain | \
+        awk -v main="$main_wt" -v all="$all" '
+          function emit() {
+            if (path != "" && branch != "" && (all == 1 || (path != main && branch != "refs/heads/master" && branch != "refs/heads/main")))
               print path, branch
             path=""; branch=""
           }
-          END{
-            if (path != "" && path != main && branch != "" && branch != "refs/heads/master" && branch != "refs/heads/main")
-              print path, branch
-          }
+          /^worktree /{path=$2; branch=""}
+          /^branch /{branch=$2}
+          /^detached/{branch="(detached)"}
+          /^$/{emit()}
+          END{emit()}
         '
     }
 
-    _claude_status() {
-      local wt_path="$1"
-      local sessions_dir="$HOME/.claude/sessions"
-      [ -d "$sessions_dir" ] || return
-      for session_file in "$sessions_dir"/*.json; do
-        [ -f "$session_file" ] || continue
-        local pid cwd status
-        read -r pid cwd status < <(jq -r '[.pid, .cwd, .status] | @tsv' "$session_file")
-        case "$cwd" in
-          "''${wt_path}"/*|"''${wt_path}") ;;
-          *) continue ;;
-        esac
-        kill -0 "$pid" 2>/dev/null || continue
-        case "$status" in
-          busy)    printf '\033[1;33m[BUSY]\033[0m' ;;
-          idle)    printf '\033[1;32m[IDLE]\033[0m' ;;
-          waiting) printf '\033[1;31m[WAITING]\033[0m' ;;
-          *)       printf '[?]' ;;
-        esac
-        return
+    _ensure_session() {
+      tmux has-session -t "=$1" 2>/dev/null && return 1
+      tmux new-session -d -s "$1" -c "$2"
+    }
+
+    _kill_session() { tmux kill-session -t "=$1" 2>/dev/null || true; }
+
+    _attach_session() {
+      [ -t 1 ] || return 0
+      if [ -n "''${TMUX:-}" ]; then
+        tmux switch-client -t "$1"
+      else
+        tmux attach-session -t "$1"
+      fi
+    }
+
+    _session_matches() {
+      local session="$1"
+      shift
+      local pat
+      for pat in "$@"; do
+        [[ "$session" =~ ^''${pat//\*/.*}$ ]] && return 0
       done
+      return 1
+    }
+
+    _claude_badge() {
+      case "$1" in
+        busy)    printf '\033[1;33m[BUSY]\033[0m' ;;
+        idle)    printf '\033[1;32m[IDLE]\033[0m' ;;
+        waiting) printf '\033[1;31m[WAITING]\033[0m' ;;
+        *)       printf '[?]' ;;
+      esac
+    }
+
+    # Read every Claude session file once, keeping the live ones (pid still running)
+    # as "<status>\t<cwd>" entries in the global _CLAUDE_SESSIONS array, so 'ls' can
+    # resolve a worktree's status by lookup instead of re-scanning per row.
+    _load_claude_sessions() {
+      _CLAUDE_SESSIONS=()
+      local sessions_dir="$HOME/.claude/sessions"
+      [ -d "$sessions_dir" ] || return 0
+      local pid cwd status
+      while IFS=$'\t' read -r pid cwd status; do
+        [ -n "$pid" ] || continue
+        kill -0 "$pid" 2>/dev/null || continue
+        _CLAUDE_SESSIONS+=("$status"$'\t'"$cwd")
+      done < <(jq -r '[.pid, .cwd, .status] | @tsv' "$sessions_dir"/*.json 2>/dev/null)
+    }
+
+    _claude_status() {
+      local wt_path="$1" entry
+      for entry in "''${_CLAUDE_SESSIONS[@]}"; do
+        case "''${entry#*$'\t'}" in
+          "$wt_path"/*|"$wt_path") _claude_badge "''${entry%%$'\t'*}"; return ;;
+        esac
+      done
+    }
+
+    _claude_sort_key() {
+      case "$1" in
+        *WAITING*) echo 0 ;;
+        *BUSY*)    echo 1 ;;
+        *IDLE*)    echo 2 ;;
+        *)         echo 3 ;;
+      esac
+    }
+
+    _pr_sort_key() {
+      case "$1" in
+        CONFLICT | BROKEN | CHANGES) echo 0 ;;
+        WAITING)        echo 1 ;;
+        CI)             echo 2 ;;
+        APPROVED)       echo 3 ;;
+        DRAFT)          echo 4 ;;
+        MERGED)         echo 5 ;;
+        *)              echo 6 ;;
+      esac
     }
 
     _pr_cache_dir() {
@@ -104,15 +173,21 @@ writeShellApplication {
     }
 
     _pr_cache_file() {
-      local main_wt="$1" key
-      key="$(printf '%s' "$main_wt" | sha1sum | awk '{print $1}')"
+      local key
+      key="$(printf '%s' "$1" | sha1sum | awk '{print $1}')"
       echo "$(_pr_cache_dir)/$key.tsv"
     }
 
-    _pr_plain() {
-      local cache_file="$1" branch="$2"
-      [ -f "$cache_file" ] || return
-      awk -F'\t' -v b="$branch" '$1==b{print $2; exit}' "$cache_file"
+    # Load a PR-status cache file into the global _PR_STATUS map (branch -> token), so
+    # 'ls' resolves each row with a lookup instead of re-parsing the file per row.
+    declare -A _PR_STATUS
+    _load_pr_cache() {
+      _PR_STATUS=()
+      local cache_file="$1" branch tok
+      [ -f "$cache_file" ] || return 0
+      while IFS=$'\t' read -r branch tok; do
+        [ -n "$branch" ] && _PR_STATUS["$branch"]="$tok"
+      done < "$cache_file"
     }
 
     _pr_colorize() {
@@ -132,34 +207,34 @@ writeShellApplication {
       esac
     }
 
+    # Build an aliased GraphQL search query (b0, b1, ...) over the given branches.
+    # Args: <repo_nwo> <extra-qualifiers> <node-fragment> <branch>...
+    _pr_search_query() {
+      local nwo="$1" quals="$2" frag="$3"
+      shift 3
+      local q="{" i=0 branch safe
+      for branch in "$@"; do
+        safe="''${branch//\\/\\\\}"
+        safe="''${safe//\"/\\\"}"
+        q+=" b''${i}: search(query: \"repo:''${nwo} is:pr ''${quals} head:''${safe}\", type: ISSUE, first: 1) { nodes { ... on PullRequest { ''${frag} } } }"
+        i=$(( i + 1 ))
+      done
+      q+=" }"
+      printf '%s' "$q"
+    }
+
     _pr_fetch_repo() {
       local repo="$1"
       shift
       local ignore_checks=("$@")
       local main_wt
-      main_wt="$(git -C "$repo" worktree list --porcelain | head -1 | awk '{print $2}')"
+      main_wt="$(_main_wt "$repo")"
       [ -n "$main_wt" ] || return 0
 
       local branches=()
       while read -r _ branch_ref; do
         branches+=("''${branch_ref#refs/heads/}")
-      done < <(
-        git -C "$repo" worktree list --porcelain | \
-          awk -v main="$main_wt" '
-            /^worktree /{path=$2; branch=""}
-            /^branch /{branch=$2}
-            /^detached/{branch="(detached)"}
-            /^$/{
-              if (path != "" && path != main && branch != "" && branch != "refs/heads/master" && branch != "refs/heads/main")
-                print path, branch
-              path=""; branch=""
-            }
-            END{
-              if (path != "" && path != main && branch != "" && branch != "refs/heads/master" && branch != "refs/heads/main")
-                print path, branch
-            }
-          '
-      )
+      done < <(_worktrees "$repo")
 
       local cache_file
       cache_file="$(_pr_cache_file "$main_wt")"
@@ -170,18 +245,11 @@ writeShellApplication {
         return 0
       fi
 
-      local repo_nwo
-      repo_nwo="$(git -C "$repo" remote get-url origin | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
-
-      local query="{"
-      local i
-      for i in "''${!branches[@]}"; do
-        local branch="''${branches[$i]}"
-        local safe_branch="''${branch//\\/\\\\}"
-        safe_branch="''${safe_branch//\"/\\\"}"
-        query+=" b''${i}: search(query: \"repo:''${repo_nwo} is:pr head:''${safe_branch} sort:updated-desc\", type: ISSUE, first: 1) { nodes { ... on PullRequest { state isDraft mergeable reviewDecision commits(last: 1) { nodes { commit { statusCheckRollup { contexts(first: 100) { nodes { __typename ... on CheckRun { name status conclusion } ... on StatusContext { context state } } } } } } } } } }"
-      done
-      query+=" }"
+      local repo_nwo query
+      repo_nwo="$(_repo_nwo "$repo")"
+      query="$(_pr_search_query "$repo_nwo" "sort:updated-desc" \
+        'state isDraft mergeable reviewDecision commits(last: 1) { nodes { commit { statusCheckRollup { contexts(first: 100) { nodes { __typename ... on CheckRun { name status conclusion } ... on StatusContext { context state } } } } } } }' \
+        "''${branches[@]}")"
 
       # Checks named in --ignore-check are excluded when deciding BROKEN/CI, so gating
       # contexts (deploy locks, approval gates) don't make tests look "still running".
@@ -331,65 +399,29 @@ writeShellApplication {
       local main_wt pr_cache_file
       main_wt="$(_main_wt)"
       pr_cache_file="$(_pr_cache_file "$main_wt")"
+      _load_claude_sessions
+      _load_pr_cache "$pr_cache_file"
 
-      local all_wts=()
+      local paths=() sessions=() branches=() claude_cols=() pr_plains=()
+      local max_session=0 max_branch=0 max_claude=0 max_pr=0
+      local wt_path branch_ref session branch claude_col pr_plain
       while read -r wt_path branch_ref; do
-        all_wts+=("$wt_path $branch_ref")
-      done < <(
-        git worktree list --porcelain | \
-          awk '
-            /^worktree /{path=$2; branch=""}
-            /^branch /{branch=$2}
-            /^detached/{branch="(detached)"}
-            /^$/{if (path != "" && branch != "") print path, branch; path=""; branch=""}
-            END{if (path != "" && branch != "") print path, branch}
-          '
-      )
+        session="$(_session_name "$wt_path")"
+        branch="$(_branch_name "$branch_ref")"
+        claude_col="$(_claude_status "$wt_path")" || true
+        pr_plain="''${_PR_STATUS[''${branch_ref#refs/heads/}]:-}"
+        paths+=("$wt_path"); sessions+=("$session"); branches+=("$branch")
+        claude_cols+=("$claude_col"); pr_plains+=("$pr_plain")
+        [ "''${#session}" -gt "$max_session" ] && max_session=''${#session}
+        [ "''${#branch}" -gt "$max_branch" ] && max_branch=''${#branch}
+        [ "''${#claude_col}" -gt "$max_claude" ] && max_claude=''${#claude_col}
+        [ "''${#pr_plain}" -gt "$max_pr" ] && max_pr=''${#pr_plain}
+      done < <(_worktrees --all)
 
-      if [ "''${#all_wts[@]}" -eq 0 ]; then
+      if [ "''${#paths[@]}" -eq 0 ]; then
         echo "No worktrees found."
         return
       fi
-
-      local max_session=0 max_branch=0 max_claude=0 max_pr=0
-      local -a claude_statuses=() pr_plains=()
-      for wt in "''${all_wts[@]}"; do
-        read -r wt_path branch_ref <<< "$wt"
-        local session branch claude_status pr_plain
-        session="$(_session_name "$wt_path")"
-        branch="''${branch_ref#refs/heads/}"
-        branch="''${branch#worktree_}"
-        branch="''${branch#worktree-}"
-        claude_status="$(_claude_status "$wt_path")" || true
-        claude_statuses+=("$claude_status")
-        pr_plain="$(_pr_plain "$pr_cache_file" "''${branch_ref#refs/heads/}")" || true
-        pr_plains+=("$pr_plain")
-        [ "''${#session}" -gt "$max_session" ] && max_session=''${#session}
-        [ "''${#branch}" -gt "$max_branch" ] && max_branch=''${#branch}
-        [ "''${#claude_status}" -gt "$max_claude" ] && max_claude=''${#claude_status}
-        [ "''${#pr_plain}" -gt "$max_pr" ] && max_pr=''${#pr_plain}
-      done
-
-      _claude_sort_key() {
-        case "$1" in
-          *WAITING*) echo 0 ;;
-          *BUSY*)    echo 1 ;;
-          *IDLE*)    echo 2 ;;
-          *)         echo 3 ;;
-        esac
-      }
-
-      _pr_sort_key() {
-        case "$1" in
-          CONFLICT | BROKEN | CHANGES) echo 0 ;;
-          WAITING)        echo 1 ;;
-          CI)             echo 2 ;;
-          APPROVED)       echo 3 ;;
-          DRAFT)          echo 4 ;;
-          MERGED)         echo 5 ;;
-          *)              echo 6 ;;
-        esac
-      }
 
       local dim=$'\033[2m' reset=$'\033[0m'
       local header
@@ -398,41 +430,25 @@ writeShellApplication {
       [ "$max_claude" -gt 0 ] && header="$(printf "%s  %s" "$header" "CLAUDE")"
       printf "  ''${dim}%s''${reset}\n" "$header"
 
-      local idx=0
-      local lines=()
-      for wt in "''${all_wts[@]}"; do
-        read -r wt_path branch_ref <<< "$wt"
-        local session branch marker tmux_col claude_col pr_plain claude_key pr_key line
-        session="$(_session_name "$wt_path")"
-        branch="''${branch_ref#refs/heads/}"
-        branch="''${branch#worktree_}"
-        branch="''${branch#worktree-}"
-        claude_col="''${claude_statuses[$idx]}"
-        pr_plain="''${pr_plains[$idx]}"
-        claude_key="$(_claude_sort_key "$claude_col")"
-        pr_key="$(_pr_sort_key "$pr_plain")"
-
+      local i marker tmux_col pr_col pr_pad line lines=()
+      for i in "''${!paths[@]}"; do
         marker="  "
-        [ "$wt_path" = "$main_wt" ] && marker="* "
+        [ "''${paths[$i]}" = "$main_wt" ] && marker="* "
 
         tmux_col="    "
-        if [ "$wt_path" != "$main_wt" ]; then
-          tmux has-session -t "=$session" 2>/dev/null && tmux_col="✓   "
+        if [ "''${paths[$i]}" != "$main_wt" ] && tmux has-session -t "=''${sessions[$i]}" 2>/dev/null; then
+          tmux_col="✓   "
         fi
 
-        line="$(printf "%s%-''${max_session}s  %-''${max_branch}s  %s" "$marker" "$session" "$branch" "$tmux_col")"
+        line="$(printf "%s%-''${max_session}s  %-''${max_branch}s  %s" "$marker" "''${sessions[$i]}" "''${branches[$i]}" "$tmux_col")"
         if [ "$max_pr" -gt 0 ]; then
-          local pr_col pr_pad
-          pr_col="$(_pr_colorize "$pr_plain")"
-          pr_pad=$(( max_pr - ''${#pr_plain} ))
+          pr_col="$(_pr_colorize "''${pr_plains[$i]}")"
+          pr_pad=$(( max_pr - ''${#pr_plains[$i]} ))
           line="$(printf "%s  %s%*s" "$line" "$pr_col" "$pr_pad" "")"
         fi
-        if [ "$max_claude" -gt 0 ]; then
-          line="$(printf "%s  %s" "$line" "$claude_col")"
-        fi
-        lines+=("$claude_key $pr_key $line")
+        [ "$max_claude" -gt 0 ] && line="$(printf "%s  %s" "$line" "''${claude_cols[$i]}")"
 
-        (( idx++ )) || true
+        lines+=("$(_claude_sort_key "''${claude_cols[$i]}") $(_pr_sort_key "''${pr_plains[$i]}") $line")
       done
 
       printf '%s\n' "''${lines[@]}" | sort -t ' ' -k1,1n -k2,2n | cut -d ' ' -f3-
@@ -469,19 +485,21 @@ writeShellApplication {
     }
 
     new() {
-      local copy_skills=1
+      local usage="Usage: git wt new <branch>... [repo-path] [--attach] [--no-copy-skills]"
+      local copy_skills=1 attach=0
       local rest=()
       for arg in "$@"; do
-        if [ "$arg" = "--no-copy-skills" ]; then
-          copy_skills=0
-        else
-          rest+=("$arg")
-        fi
+        case "$arg" in
+          --no-copy-skills) copy_skills=0 ;;
+          --attach|-a)      attach=1 ;;
+          -h|--help)        echo "$usage"; return ;;
+          *)                rest+=("$arg") ;;
+        esac
       done
       set -- "''${rest[@]}"
 
       if [ $# -eq 0 ]; then
-        echo "Usage: git wt new <branch>... [repo-path] [--no-copy-skills]"
+        echo "$usage" >&2
         exit 1
       fi
 
@@ -498,19 +516,20 @@ writeShellApplication {
       fi
 
       if [ "''${#names[@]}" -eq 0 ]; then
-        echo "Usage: git wt new <branch>... [repo-path] [--no-copy-skills]"
+        echo "$usage" >&2
         exit 1
       fi
 
       local main_wt
       if [ -n "$repo" ]; then
-        main_wt="$(git -C "$repo" worktree list --porcelain | head -1 | awk '{print $2}')"
+        main_wt="$(_main_wt "$repo")"
       else
         main_wt="$(_main_wt)"
       fi
 
       mkdir -p "$main_wt/.claude/worktrees"
 
+      local last_session=""
       for name in "''${names[@]}"; do
         local branch="$name"
         if [[ "$branch" != worktree-* ]]; then
@@ -524,14 +543,18 @@ writeShellApplication {
 
         local session
         session="$(_session_name "$wt_path")"
-        tmux new-session -d -s "$session" -c "$wt_path"
+        _ensure_session "$session" "$wt_path" || true
+        last_session="$session"
         printf "Worktree: %s\n" "$wt_path"
         printf "Session:  %s\n" "$session"
         echo ""
       done
+
+      [ "$attach" -eq 1 ] && [ -n "$last_session" ] && _attach_session "$last_session"
     }
 
     review() {
+      local usage="Usage: git wt review <pr-number> [subdir] [--repo PATH] [--skill NAME] [--include PATH]... [--full] [--no-attach] [--no-copy-skills]"
       local pr="" subdir="" skill="kotlin-pr-review" attach=1 repo="" copy_skills=1 full=0
       local includes=()
       while [ "$#" -gt 0 ]; do
@@ -542,6 +565,7 @@ writeShellApplication {
           --full)           full=1; shift ;;
           --no-attach)      attach=0; shift ;;
           --no-copy-skills) copy_skills=0; shift ;;
+          -h|--help)        echo "$usage"; return ;;
           -*)               echo "Unknown option: $1" >&2; exit 1 ;;
           *)
             if [ -z "$pr" ]; then pr="$1"; else subdir="$1"; fi
@@ -551,7 +575,7 @@ writeShellApplication {
       done
 
       if [ -z "$pr" ]; then
-        echo "Usage: git wt review <pr-number> [subdir] [--skill NAME] [--no-attach]" >&2
+        echo "$usage" >&2
         exit 1
       fi
       if ! [[ "$pr" =~ ^[0-9]+$ ]]; then
@@ -565,11 +589,11 @@ writeShellApplication {
           echo "Error: repo path not found: $repo" >&2
           exit 1
         fi
-        main_wt="$(git -C "$repo" worktree list --porcelain | head -1 | awk '{print $2}')"
+        main_wt="$(_main_wt "$repo")"
       else
         main_wt="$(_main_wt)"
       fi
-      repo_nwo="$(git -C "$main_wt" remote get-url origin | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
+      repo_nwo="$(_repo_nwo "$main_wt")"
 
       local head_branch
       head_branch="$(gh pr view "$pr" --repo "$repo_nwo" --json headRefName -q .headRefName 2>/dev/null)"
@@ -648,8 +672,7 @@ writeShellApplication {
 
       # cwd = review_dir so Claude discovers the CLAUDE.md chain from that subdir
       # up to the repo root, giving the review the right per-service context.
-      if ! tmux has-session -t "=$session" 2>/dev/null; then
-        tmux new-session -d -s "$session" -c "$review_dir"
+      if _ensure_session "$session" "$review_dir"; then
         tmux send-keys -t "$session" "claude '/$skill $pr'" Enter
       fi
 
@@ -659,13 +682,7 @@ writeShellApplication {
       printf "Skill:    /%s\n" "$skill"
       printf "Session:  %s\n" "$session"
 
-      if [ "$attach" -eq 1 ] && [ -t 1 ]; then
-        if [ -n "''${TMUX:-}" ]; then
-          tmux switch-client -t "$session"
-        else
-          tmux attach-session -t "$session"
-        fi
-      fi
+      [ "$attach" -eq 1 ] && _attach_session "$session"
     }
 
     spawn() {
@@ -685,13 +702,12 @@ writeShellApplication {
         local session
         session="$(_session_name "$wt_path")"
 
-        if tmux has-session -t "=$session" 2>/dev/null; then
-          printf "  skip  %s (session exists)\n" "$session"
-          (( skipped++ )) || true
-        else
-          tmux new-session -d -s "$session" -c "$wt_path"
+        if _ensure_session "$session" "$wt_path"; then
           printf "  new   %s\n" "$session"
           (( created++ )) || true
+        else
+          printf "  skip  %s (session exists)\n" "$session"
+          (( skipped++ )) || true
         fi
       done
 
@@ -700,17 +716,17 @@ writeShellApplication {
     }
 
     sync() {
+      local usage="Usage: git wt sync [--rebase] [--ai] [pattern...]"
       local mode="merge"
       local use_ai=0
       local patterns=()
       for arg in "$@"; do
-        if [ "$arg" = "--rebase" ]; then
-          mode="rebase"
-        elif [ "$arg" = "--ai" ]; then
-          use_ai=1
-        else
-          patterns+=("$arg")
-        fi
+        case "$arg" in
+          --rebase)  mode="rebase" ;;
+          --ai)      use_ai=1 ;;
+          -h|--help) echo "$usage"; return ;;
+          *)         patterns+=("$arg") ;;
+        esac
       done
 
       if [ "''${#patterns[@]}" -eq 0 ]; then
@@ -738,12 +754,7 @@ writeShellApplication {
         local session
         session="$(_session_name "$wt_path")"
 
-        local matched=0
-        for pat in "''${patterns[@]}"; do
-          pat_re="^''${pat//\*/.*}$"
-          if [[ "$session" =~ $pat_re ]]; then matched=1; break; fi
-        done
-        [ "$matched" -eq 0 ] && continue
+        _session_matches "$session" "''${patterns[@]}" || continue
 
         echo "Syncing $session..."
         local sync_failed=0
@@ -756,9 +767,7 @@ writeShellApplication {
         if [ "$sync_failed" -eq 1 ] && [ "$use_ai" -eq 1 ]; then
           echo "Merge conflict in $session — launching claude in tmux session..."
 
-          if ! tmux has-session -t "=$session" 2>/dev/null; then
-            tmux new-session -d -s "$session" -c "$wt_path"
-          fi
+          _ensure_session "$session" "$wt_path" || true
 
           # The resolve-conflicts procedure is baked in at build time (single source of
           # truth: modules/cli/claude/commands/resolve-conflicts.md), so --ai always has
@@ -771,11 +780,15 @@ writeShellApplication {
     }
 
     clean() {
+      local usage="Usage: git wt clean [--execute] [--verbose]"
       dry_run=1
       verbose=0
       for arg in "$@"; do
-        [ "$arg" = "--execute" ] && dry_run=0
-        [ "$arg" = "--verbose" ] && verbose=1
+        case "$arg" in
+          --execute) dry_run=0 ;;
+          --verbose) verbose=1 ;;
+          -h|--help) echo "$usage"; return ;;
+        esac
       done
 
       _log() { [ "$verbose" -eq 1 ] && echo "  ⏱  $1" >&2 || true; }
@@ -840,19 +853,14 @@ writeShellApplication {
       # an ancestor branch with no unique commits is indistinguishable from a
       # brand-new worktree.
       declare -A merged_pr_by_idx
-      repo_nwo="$(git remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
+      repo_nwo="$(_repo_nwo)"
       if [ -n "$repo_nwo" ]; then
-        query="{"
-        idx=0
+        branches=()
         for wt in "''${worktrees[@]}"; do
           read -r _ branch_ref <<< "$wt"
-          branch="''${branch_ref#refs/heads/}"
-          safe_branch="''${branch//\\/\\\\}"
-          safe_branch="''${safe_branch//\"/\\\"}"
-          query+=" b''${idx}: search(query: \"repo:''${repo_nwo} is:pr is:merged head:''${safe_branch}\", type: ISSUE, first: 1) { nodes { ... on PullRequest { url } } }"
-          (( idx++ )) || true
+          branches+=("''${branch_ref#refs/heads/}")
         done
-        query+=" }"
+        query="$(_pr_search_query "$repo_nwo" "is:merged" "url" "''${branches[@]}")"
 
         result="$(gh api graphql -f query="$query" --jq '
           .data | to_entries[] | select(.value.nodes | length > 0)
@@ -917,7 +925,7 @@ writeShellApplication {
         for entry in "''${entries[@]}"; do
           IFS='|' read -r wt_path _ _ <<< "$entry"
           session="$(_session_name "$wt_path")"
-          tmux kill-session -t "=$session" 2>/dev/null || true
+          _kill_session "$session"
           mv "$wt_path" "$trash/" 2>/dev/null || rm -rf "$wt_path"
         done
 
@@ -953,16 +961,18 @@ writeShellApplication {
       # the named worktrees regardless of state: uncommitted work is discarded and
       # the branch is deleted. It is the deliberate last-resort cleanup, so it
       # requires an explicit target and confirms unless -y is given.
+      local usage="Usage: git wt kill <name|pattern>... [-y]"
       local force=0 patterns=()
       for arg in "$@"; do
         case "$arg" in
           -y|--yes|--force) force=1 ;;
+          -h|--help)        echo "$usage"; return ;;
           *)                patterns+=("$arg") ;;
         esac
       done
 
       if [ "''${#patterns[@]}" -eq 0 ]; then
-        echo "Usage: git wt kill <name|pattern>... [-y]" >&2
+        echo "$usage" >&2
         exit 1
       fi
 
@@ -973,15 +983,10 @@ writeShellApplication {
       # never target them no matter what pattern is passed.
       local matches=()
       while read -r wt_path branch_ref; do
-        local session pat pat_re
+        local session
         session="$(_session_name "$wt_path")"
-        for pat in "''${patterns[@]}"; do
-          pat_re="^''${pat//\*/.*}$"
-          if [[ "$session" =~ $pat_re ]]; then
-            matches+=("$wt_path|$branch_ref|$session")
-            break
-          fi
-        done
+        _session_matches "$session" "''${patterns[@]}" \
+          && matches+=("$wt_path|$branch_ref|$session")
       done < <(_worktrees)
 
       if [ "''${#matches[@]}" -eq 0 ]; then
@@ -1018,7 +1023,7 @@ writeShellApplication {
       trash="$(mktemp -d)"
       for m in "''${matches[@]}"; do
         IFS='|' read -r wt_path branch_ref session <<< "$m"
-        tmux kill-session -t "=$session" 2>/dev/null || true
+        _kill_session "$session"
         mv "$wt_path" "$trash/" 2>/dev/null || { [ -n "$wt_path" ] && rm -rf "$wt_path"; }
         git -C "$main_wt" branch -D "''${branch_ref#refs/heads/}" 2>/dev/null || true
         printf "Killed %s\n" "$session"
@@ -1032,10 +1037,11 @@ writeShellApplication {
       echo "Usage: git wt <subcommand>"
       echo ""
       echo "Subcommands:"
-      echo "    new <branch>... [repo] [--no-copy-skills]"
+      echo "    new <branch>... [repo] [--attach] [--no-copy-skills]"
       echo "                        Create worktree(s) + tmux session(s) in <repo>/.claude/worktrees/"
       echo "                        Copies every nested live .claude/skills into each worktree"
       echo "                        (even gitignored ones) unless --no-copy-skills."
+      echo "                        --attach opens the last new session."
       echo "    review <pr> [subdir] [--repo PATH] [--skill NAME] [--include PATH]..."
       echo "           [--full] [--no-attach] [--no-copy-skills]"
       echo "                        Check out PR <pr> into an isolated worktree, launch claude"
@@ -1048,7 +1054,7 @@ writeShellApplication {
       echo "                        for speed; --include PATH adds sibling modules (repeatable,"
       echo "                        e.g. a package needed to build); --full checks out everything."
       echo "                        Attaches unless --no-attach."
-      echo "    ls                  List all worktrees with branch, PR, Claude, and tmux status"
+      echo "    ls (list)           List all worktrees with branch, PR, Claude, and tmux status"
       echo "                        The PR column is populated by 'pr-sync' (run on a schedule)"
       echo "    pr-sync [--repo PATH [--ignore-check NAME]...]... [--config FILE]"
       echo "                        Refresh cached PR status for the given repos"
@@ -1072,20 +1078,27 @@ writeShellApplication {
       echo "                        Force-remove matching worktrees + branches + tmux"
       echo "                        sessions, discarding uncommitted work. Destructive"
       echo "                        last-resort cleanup; confirms unless -y is given"
+      echo ""
+      echo "Run 'git wt <subcommand> -h' for a subcommand's usage."
     }
 
     subcommand="''${1:-}"
+    [ "$#" -gt 0 ] && shift
     case "$subcommand" in
-      ""|"-h"|"--help")
-        help
-        ;;
-      kill)
-        shift
-        _wt_kill "$@"
-        ;;
+      ""|-h|--help|help) help ;;
+      new)               new "$@" ;;
+      review)            review "$@" ;;
+      ls|list)           ls "$@" ;;
+      pr-sync)           pr-sync "$@" ;;
+      spawn)             spawn "$@" ;;
+      sync)              sync "$@" ;;
+      clean)             clean "$@" ;;
+      kill)              _wt_kill "$@" ;;
       *)
-        shift
-        "$subcommand" "$@"
+        echo "Unknown subcommand: $subcommand" >&2
+        echo "" >&2
+        help >&2
+        exit 1
         ;;
     esac
   '';
