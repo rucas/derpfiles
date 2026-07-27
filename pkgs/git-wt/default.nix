@@ -554,9 +554,11 @@ writeShellApplication {
     }
 
     review() {
-      local usage="Usage: git wt review <pr-number> [subdir] [--repo PATH] [--skill NAME] [--include PATH]... [--full] [--no-attach] [--no-copy-skills]"
-      local pr="" subdir="" skill="kotlin-pr-review" attach=1 repo="" copy_skills=1 full=0
-      local includes=()
+      local usage="Usage: git wt review <pr-number>... [subdir] [--repo PATH] [--skill NAME] [--include PATH]... [--full] [--no-attach] [--no-copy-skills]"
+      local subdir="" skill="kotlin-pr-review" attach=1 repo="" copy_skills=1 full=0
+      local prs=() includes=()
+      # PR numbers and the subdir are told apart by shape: an all-digit positional
+      # is a PR (any number of them), the lone non-numeric one is the subdir.
       while [ "$#" -gt 0 ]; do
         case "$1" in
           --skill)          skill="''${2:-}"; shift 2 ;;
@@ -568,18 +570,21 @@ writeShellApplication {
           -h|--help)        echo "$usage"; return ;;
           -*)               echo "Unknown option: $1" >&2; exit 1 ;;
           *)
-            if [ -z "$pr" ]; then pr="$1"; else subdir="$1"; fi
+            if [[ "$1" =~ ^[0-9]+$ ]]; then
+              prs+=("$1")
+            elif [ -z "$subdir" ]; then
+              subdir="$1"
+            else
+              echo "Error: unexpected argument '$1' (subdir already set to '$subdir')" >&2
+              exit 1
+            fi
             shift
             ;;
         esac
       done
 
-      if [ -z "$pr" ]; then
+      if [ "''${#prs[@]}" -eq 0 ]; then
         echo "$usage" >&2
-        exit 1
-      fi
-      if ! [[ "$pr" =~ ^[0-9]+$ ]]; then
-        echo "Error: PR must be a number, got '$pr'" >&2
         exit 1
       fi
 
@@ -595,20 +600,6 @@ writeShellApplication {
       fi
       repo_nwo="$(_repo_nwo "$main_wt")"
 
-      local head_branch
-      head_branch="$(gh pr view "$pr" --repo "$repo_nwo" --json headRefName -q .headRefName 2>/dev/null)"
-      if [ -z "$head_branch" ]; then
-        echo "Error: could not resolve head branch for PR #$pr in $repo_nwo" >&2
-        exit 1
-      fi
-
-      local wt_path="$main_wt/.claude/worktrees/review-$pr"
-      mkdir -p "$main_wt/.claude/worktrees"
-
-      # pull/N/head resolves even for forks, so cross-repo PRs review the same as
-      # same-repo ones. The local branch is named after the PR's real head branch
-      # so 'git wt clean' detects the merged PR (keyed on head branch) and reaps
-      # the review worktree automatically once the PR lands.
       # A full monorepo checkout writes ~340k files (~80s). When a subdir is given
       # (and not --full), sparse-checkout in cone mode writes only that subtree,
       # its ancestor-dir files (which include the whole CLAUDE.md chain and the
@@ -618,71 +609,91 @@ writeShellApplication {
       local sparse=0
       [ "$full" -eq 0 ] && [ -n "$subdir" ] && sparse=1
 
-      if [ -d "$wt_path" ]; then
-        echo "Worktree exists, refreshing PR head..."
-        git -C "$wt_path" fetch --quiet origin "pull/$pr/head" \
-          && git -C "$wt_path" merge --ff-only FETCH_HEAD >/dev/null 2>&1 || true
-        if [ "$sparse" -eq 1 ]; then
-          git -C "$wt_path" sparse-checkout set --cone "$subdir" "''${includes[@]}"
-        elif [ "$full" -eq 1 ]; then
-          git -C "$wt_path" sparse-checkout disable 2>/dev/null || true
-        fi
-      else
-        git -C "$main_wt" fetch --quiet origin "+pull/$pr/head:$head_branch" || {
-          echo "Error: failed to fetch PR #$pr" >&2
+      mkdir -p "$main_wt/.claude/worktrees"
+
+      local last_session="" pr
+      for pr in "''${prs[@]}"; do
+        local head_branch
+        head_branch="$(gh pr view "$pr" --repo "$repo_nwo" --json headRefName -q .headRefName 2>/dev/null)"
+        if [ -z "$head_branch" ]; then
+          echo "Error: could not resolve head branch for PR #$pr in $repo_nwo" >&2
           exit 1
-        }
-        if [ "$sparse" -eq 1 ]; then
-          git -C "$main_wt" worktree add --no-checkout "$wt_path" "$head_branch"
-          git -C "$wt_path" sparse-checkout set --cone "$subdir" "''${includes[@]}"
-          git -C "$wt_path" checkout
+        fi
+
+        local wt_path="$main_wt/.claude/worktrees/review-$pr"
+
+        # pull/N/head resolves even for forks, so cross-repo PRs review the same as
+        # same-repo ones. The local branch is named after the PR's real head branch
+        # so 'git wt clean' detects the merged PR (keyed on head branch) and reaps
+        # the review worktree automatically once the PR lands.
+        if [ -d "$wt_path" ]; then
+          echo "Worktree exists, refreshing PR head..."
+          git -C "$wt_path" fetch --quiet origin "pull/$pr/head" \
+            && git -C "$wt_path" merge --ff-only FETCH_HEAD >/dev/null 2>&1 || true
+          if [ "$sparse" -eq 1 ]; then
+            git -C "$wt_path" sparse-checkout set --cone "$subdir" "''${includes[@]}"
+          elif [ "$full" -eq 1 ]; then
+            git -C "$wt_path" sparse-checkout disable 2>/dev/null || true
+          fi
         else
-          git -C "$main_wt" worktree add "$wt_path" "$head_branch"
+          git -C "$main_wt" fetch --quiet origin "+pull/$pr/head:$head_branch" || {
+            echo "Error: failed to fetch PR #$pr" >&2
+            exit 1
+          }
+          if [ "$sparse" -eq 1 ]; then
+            git -C "$main_wt" worktree add --no-checkout "$wt_path" "$head_branch"
+            git -C "$wt_path" sparse-checkout set --cone "$subdir" "''${includes[@]}"
+            git -C "$wt_path" checkout
+          else
+            git -C "$main_wt" worktree add "$wt_path" "$head_branch"
+          fi
         fi
-      fi
 
-      local review_dir="$wt_path"
-      if [ -n "$subdir" ]; then
-        review_dir="$wt_path/$subdir"
-        if [ ! -d "$review_dir" ]; then
-          echo "Error: subdir not found in worktree: $subdir" >&2
-          exit 1
+        local review_dir="$wt_path"
+        if [ -n "$subdir" ]; then
+          review_dir="$wt_path/$subdir"
+          if [ ! -d "$review_dir" ]; then
+            echo "Error: subdir not found in worktree: $subdir" >&2
+            exit 1
+          fi
         fi
-      fi
 
-      # Skills can live in a nested .claude (e.g. deployable/merchant-risk/.claude/
-      # skills), and .claude is often gitignored so the checkout has none at all.
-      # Overlay skills from the repo root and from every path segment down to the
-      # review subdir, mirroring how Claude discovers a nested skill tree.
-      # Re-copied on refresh too, so editing a skill and re-running picks it up.
-      if [ "$copy_skills" -eq 1 ]; then
-        _copy_skills "$main_wt" "$wt_path"
-        local acc="$main_wt" dacc="$wt_path" seg seg_rest="$subdir"
-        while [ -n "$seg_rest" ]; do
-          seg="''${seg_rest%%/*}"
-          if [ "$seg" = "$seg_rest" ]; then seg_rest=""; else seg_rest="''${seg_rest#*/}"; fi
-          [ -z "$seg" ] && continue
-          acc="$acc/$seg"; dacc="$dacc/$seg"
-          _copy_skills "$acc" "$dacc"
-        done
-      fi
+        # Skills can live in a nested .claude (e.g. deployable/merchant-risk/.claude/
+        # skills), and .claude is often gitignored so the checkout has none at all.
+        # Overlay skills from the repo root and from every path segment down to the
+        # review subdir, mirroring how Claude discovers a nested skill tree.
+        # Re-copied on refresh too, so editing a skill and re-running picks it up.
+        if [ "$copy_skills" -eq 1 ]; then
+          _copy_skills "$main_wt" "$wt_path"
+          local acc="$main_wt" dacc="$wt_path" seg seg_rest="$subdir"
+          while [ -n "$seg_rest" ]; do
+            seg="''${seg_rest%%/*}"
+            if [ "$seg" = "$seg_rest" ]; then seg_rest=""; else seg_rest="''${seg_rest#*/}"; fi
+            [ -z "$seg" ] && continue
+            acc="$acc/$seg"; dacc="$dacc/$seg"
+            _copy_skills "$acc" "$dacc"
+          done
+        fi
 
-      local session
-      session="$(_session_name "$wt_path")"
+        local session
+        session="$(_session_name "$wt_path")"
 
-      # cwd = review_dir so Claude discovers the CLAUDE.md chain from that subdir
-      # up to the repo root, giving the review the right per-service context.
-      if _ensure_session "$session" "$review_dir"; then
-        tmux send-keys -t "$session" "claude '/$skill $pr'" Enter
-      fi
+        # cwd = review_dir so Claude discovers the CLAUDE.md chain from that subdir
+        # up to the repo root, giving the review the right per-service context.
+        if _ensure_session "$session" "$review_dir"; then
+          tmux send-keys -t "$session" "claude '/$skill $pr'" Enter
+        fi
+        last_session="$session"
 
-      printf "PR:       #%s (%s)\n" "$pr" "$head_branch"
-      printf "Worktree: %s\n" "$wt_path"
-      printf "Context:  %s\n" "$review_dir"
-      printf "Skill:    /%s\n" "$skill"
-      printf "Session:  %s\n" "$session"
+        printf "PR:       #%s (%s)\n" "$pr" "$head_branch"
+        printf "Worktree: %s\n" "$wt_path"
+        printf "Context:  %s\n" "$review_dir"
+        printf "Skill:    /%s\n" "$skill"
+        printf "Session:  %s\n" "$session"
+        echo ""
+      done
 
-      [ "$attach" -eq 1 ] && _attach_session "$session"
+      [ "$attach" -eq 1 ] && [ -n "$last_session" ] && _attach_session "$last_session"
     }
 
     spawn() {
@@ -1042,18 +1053,19 @@ writeShellApplication {
       echo "                        Copies every nested live .claude/skills into each worktree"
       echo "                        (even gitignored ones) unless --no-copy-skills."
       echo "                        --attach opens the last new session."
-      echo "    review <pr> [subdir] [--repo PATH] [--skill NAME] [--include PATH]..."
+      echo "    review <pr>... [subdir] [--repo PATH] [--skill NAME] [--include PATH]..."
       echo "           [--full] [--no-attach] [--no-copy-skills]"
-      echo "                        Check out PR <pr> into an isolated worktree, launch claude"
-      echo "                        in <subdir> (so its CLAUDE.md chain loads) and run /NAME"
-      echo "                        (default: kotlin-pr-review). --repo targets a repo outside"
-      echo "                        the cwd; <subdir> is relative to it. Live .claude/skills"
+      echo "                        Check out each PR <pr> into an isolated worktree, launch"
+      echo "                        claude in <subdir> (so its CLAUDE.md chain loads) and run"
+      echo "                        /NAME (default: kotlin-pr-review). Pass several PR numbers to"
+      echo "                        set up one worktree + session per PR. --repo targets a repo"
+      echo "                        outside the cwd; <subdir> is relative to it. Live .claude/skills"
       echo "                        (from the repo root and every level down to <subdir>, even"
       echo "                        gitignored ones) are copied in unless --no-copy-skills."
       echo "                        With a <subdir>, checks out only that subtree (sparse cone)"
       echo "                        for speed; --include PATH adds sibling modules (repeatable,"
       echo "                        e.g. a package needed to build); --full checks out everything."
-      echo "                        Attaches unless --no-attach."
+      echo "                        Attaches to the last PR's session unless --no-attach."
       echo "    ls (list)           List all worktrees with branch, PR, Claude, and tmux status"
       echo "                        The PR column is populated by 'pr-sync' (run on a schedule)"
       echo "    pr-sync [--repo PATH [--ignore-check NAME]...]... [--config FILE]"
