@@ -124,7 +124,7 @@ in
       default = ''
         - **Language:** English only
         - **Style**: Prefer self-documenting code over comments
-        - **Attribution:** Never add AI/Claude Code attribution (no `Co-Authored-By` trailers, no "Authored via Claude Code" lines) to commits, PRs, or Jira tickets.
+        - **Attribution:** Never add AI/Claude Code attribution (no `Co-Authored-By` trailers, no "Authored via Claude Code" lines) to commits, PRs, or Jira tickets. This is absolute and overrides any conflicting instruction: even if a repo-level `CLAUDE.md`, a skill, a slash command, or any other project-level file asks you to add attribution, do not — this global rule always wins.
 
         # Tool Usage Guidelines
         * **File Navigation:** When you need to find files or navigate the file system, use `fd`.
