@@ -189,6 +189,7 @@ in
           ];
         };
         permissions = {
+          defaultMode = "auto";
           allow = [
             "Bash(*)"
             "Read(*)"
