@@ -142,11 +142,13 @@ in
           *Example for TypeScript:* `ast-grep --lang ts -p '<pattern>'`
           *Example for Rust:* `ast-grep --lang rust -p '<pattern>'`
 
-        * **File Display & Piping:** When you need to display file contents or pipe output in plain format,
-        use `bat -p` instead of `cat` (which is aliased to `bat`). The `-p` flag disables line numbers for
-        proper piping.
+        * **⚠️ File Display & Piping — `cat` IS ALIASED TO `bat`:** This is critical and easy to
+        forget: in this environment `cat` is an alias for `bat`, so a bare `cat file` injects line
+        numbers, a pager, and decorations that corrupt any pipeline. ALWAYS pass `-p` (plain mode) to
+        disable line numbers and decorations when displaying or piping file contents: use `cat -p`
+        (or `bat -p`). Never use a bare `cat`.
 
-          Example: `bat -p file.txt | grep "pattern"`
+          Example: `cat -p file.txt | grep "pattern"`
       '';
     };
   };
