@@ -1,9 +1,9 @@
 {
   "path": "f/scripts/actual_budget_categorizer",
-  "code_file": "main.ts",
+  "code_file": "main.sh",
   "summary": "AI-powered transaction categorizer for Actual Budget",
   "description": "Fetches uncategorized transactions from Actual Budget, uses Ollama to suggest categories based on payee names and amounts, and updates the transactions with matched categories",
-  "language": "bun",
+  "language": "bash",
   "schema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
