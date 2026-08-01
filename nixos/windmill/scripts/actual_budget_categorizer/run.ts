@@ -11,4 +11,4 @@ const result = await main(
   process.env.DRY_RUN === "true",
 );
 
-console.log(JSON.stringify(result, null, 2));
+console.log(JSON.stringify(result));

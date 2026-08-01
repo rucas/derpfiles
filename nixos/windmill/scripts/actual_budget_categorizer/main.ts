@@ -96,8 +96,11 @@ export async function main(
     const uncategorized: Array<{
       id: string;
       payee: string;
+      imported_payee: string;
       amount: number;
       date: string;
+      account: string;
+      notes: string;
     }> = [];
 
     for (const account of targetAccounts) {
@@ -110,16 +113,18 @@ export async function main(
       for (const t of transactions) {
         if (t.category || t.is_parent || t.transfer_id) continue;
 
+        const importedPayee = (t as any).imported_payee ?? "";
         const payeeName =
-          (t as any).imported_payee ||
-          payeeMap.get(t.payee ?? "") ||
-          "Unknown";
+          payeeMap.get(t.payee ?? "") || importedPayee || "Unknown";
 
         uncategorized.push({
           id: t.id,
           payee: payeeName,
+          imported_payee: importedPayee,
           amount: t.amount,
           date: t.date,
+          account: account.name,
+          notes: (t as any).notes ?? "",
         });
       }
     }
@@ -135,7 +140,7 @@ export async function main(
       };
     }
 
-    console.log(
+    console.error(
       `Found ${uncategorized.length} uncategorized transactions across ${targetAccounts.length} account(s)`,
     );
 
@@ -143,7 +148,7 @@ export async function main(
 
     for (let i = 0; i < uncategorized.length; i += BATCH_SIZE) {
       const batch = uncategorized.slice(i, i + BATCH_SIZE);
-      console.log(
+      console.error(
         `Processing batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(uncategorized.length / BATCH_SIZE)}`,
       );
 
@@ -154,6 +159,8 @@ export async function main(
         ollama_url,
         ollama_model,
       );
+
+      const batchStart = allSuggestions.length;
 
       for (let j = 0; j < batch.length; j++) {
         const tx = batch[j];
@@ -187,6 +194,8 @@ export async function main(
           applied: !dry_run,
         });
       }
+
+      console.error(JSON.stringify(allSuggestions.slice(batchStart), null, 2));
     }
 
     if (!dry_run) {
@@ -241,7 +250,15 @@ function buildCategoryData(categoryGroups: any[]): {
 }
 
 async function categorizeBatch(
-  batch: Array<{ id: string; payee: string; amount: number; date: string }>,
+  batch: Array<{
+    id: string;
+    payee: string;
+    imported_payee: string;
+    amount: number;
+    date: string;
+    account: string;
+    notes: string;
+  }>,
   categoryList: string,
   categoryMap: Map<string, CategoryInfo>,
   ollamaUrl: string,
@@ -258,6 +275,8 @@ async function categorizeBatch(
 Available categories (grouped):
 ${categoryList}
 
+For each transaction you are given the cleaned payee, the raw bank text (which often reveals the true merchant and business type via prefixes like "SQ *", "TST*", "AMZN MKTP" or store names), the amount with its direction (expense vs income/refund), the date, the account it posted to, and any notes. Use ALL of these fields together to infer what kind of business it is (restaurant, grocery, clothing, utilities, transport, etc.) and then pick the closest matching budget category.
+
 Respond with a JSON object containing a "results" array. Each element must have:
 - "index": the transaction number (0-based)
 - "category": the exact category name from the list above
@@ -272,9 +291,19 @@ Respond ONLY with the JSON object, no other text.`;
     .map((tx, i) => {
       const dollars = (Math.abs(tx.amount) / 100).toFixed(2);
       const sign = tx.amount < 0 ? "-" : "";
-      return `${i}. Payee: "${tx.payee}", Amount: ${sign}$${dollars}, Date: ${tx.date}`;
+      const direction = tx.amount < 0 ? "expense" : "income/refund";
+      return [
+        `${i}. Payee: "${tx.payee}"`,
+        tx.imported_payee && tx.imported_payee !== tx.payee
+          ? `   Raw bank text: "${tx.imported_payee}"`
+          : "",
+        `   Amount: ${sign}$${dollars} (${direction})  Date: ${tx.date}  Account: "${tx.account}"`,
+        tx.notes ? `   Notes: "${tx.notes}"` : "",
+      ]
+        .filter(Boolean)
+        .join("\n");
     })
-    .join("\n");
+    .join("\n\n");
 
   try {
     const response = await fetch(`${ollamaUrl}/api/chat`, {
@@ -309,7 +338,7 @@ Respond ONLY with the JSON object, no other text.`;
 
       const matched = findCategory(result.category, categoryMap);
       if (!matched) {
-        console.log(`No category match for "${result.category}"`);
+        console.error(`No category match for "${result.category}"`);
         return {
           suggested_category: result.category,
           category_id: "",
