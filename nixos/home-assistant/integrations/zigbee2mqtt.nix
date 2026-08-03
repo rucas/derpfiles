@@ -12,6 +12,8 @@
         adapter = "zstack";
       };
       frontend = true;
+      availability = true;
+      device_options.retain = true;
       advanced = {
         channel = 25;
         network_key = "!secret.yaml network_key";
