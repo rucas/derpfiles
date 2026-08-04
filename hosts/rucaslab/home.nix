@@ -11,6 +11,7 @@
   programs.claude-code-custom = {
     enable = true;
     model = "claude-opus-4-8";
+    plugins.adhd.enable = true;
     commands = {
       note.enable = true;
       commit.enable = true;

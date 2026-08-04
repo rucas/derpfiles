@@ -24,6 +24,7 @@
     claude-code-custom = {
       enable = true;
       model = "claude-opus-4-8";
+      plugins.adhd.enable = true;
       gradleEnv.enable = true;
       agentTeams.enable = true;
       commands = {

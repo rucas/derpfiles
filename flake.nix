@@ -86,6 +86,10 @@
       url = "github:kenryu42/claude-code-safety-net";
       flake = false;
     };
+    i-have-adhd = {
+      url = "github:ayghri/i-have-adhd";
+      flake = false;
+    };
     rucaslab = {
       url = "github:rucas/rucaslab";
       inputs.nixpkgs.follows = "nixpkgs";

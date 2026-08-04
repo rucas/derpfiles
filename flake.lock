@@ -619,6 +619,22 @@
         "type": "github"
       }
     },
+    "i-have-adhd": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785260420,
+        "narHash": "sha256-5iBMkUeTAroSTip5XbhxF8syDjqC2ERvzIXywybfC6g=",
+        "owner": "ayghri",
+        "repo": "i-have-adhd",
+        "rev": "07684c4ab625dd7d1ea6e99e065f60bc0ac6a1ba",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ayghri",
+        "repo": "i-have-adhd",
+        "type": "github"
+      }
+    },
     "import-tree": {
       "locked": {
         "lastModified": 1763762820,
@@ -1133,6 +1149,7 @@
         "git-alias": "git-alias",
         "gitui": "gitui",
         "home-manager": "home-manager_2",
+        "i-have-adhd": "i-have-adhd",
         "kube-aliases": "kube-aliases",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",

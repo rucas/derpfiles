@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   osConfig ? null,
   ...
 }:
@@ -87,6 +88,8 @@ in
       default = true;
     };
 
+    plugins.adhd.enable = lib.mkEnableOption "i-have-adhd plugin (ADHD-friendly output formatting)";
+
     gradleEnv.enable = lib.mkEnableOption "auto-bootstrap the SDKMAN env for Gradle/Kotlin Bash commands";
 
     agentTeams.enable = lib.mkEnableOption "experimental agent teams (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS)";
@@ -156,6 +159,9 @@ in
   config = lib.mkIf cfg.enable {
     programs.claude-code = {
       enable = true;
+      marketplaces = lib.optionalAttrs cfg.plugins.adhd.enable {
+        "i-have-adhd" = inputs.i-have-adhd;
+      };
       settings = {
         theme = "dark";
         model = lib.mkIf (cfg.model != null) cfg.model;
@@ -166,14 +172,18 @@ in
           // (lib.optionalAttrs cfg.agentTeams.enable {
             CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
           });
-        enabledPlugins = lib.mkIf cfg.lsp.enable (
-          builtins.listToAttrs (
-            map (name: {
-              name = "${name}-lsp@claude-plugins-official";
-              value = true;
-            }) cfg.lsp.servers
-          )
-        );
+        enabledPlugins =
+          (lib.optionalAttrs cfg.lsp.enable (
+            builtins.listToAttrs (
+              map (name: {
+                name = "${name}-lsp@claude-plugins-official";
+                value = true;
+              }) cfg.lsp.servers
+            )
+          ))
+          // (lib.optionalAttrs cfg.plugins.adhd.enable {
+            "i-have-adhd@i-have-adhd" = true;
+          });
         hooks = lib.mkIf (cfg.safetyNet.enable || cfg.gradleEnv.enable) {
           PreToolUse = [
             {
