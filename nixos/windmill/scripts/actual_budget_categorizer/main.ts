@@ -313,7 +313,10 @@ Respond ONLY with the JSON object, no other text.`;
         model: ollamaModel,
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: `Categorize these transactions:\n\n${userMessage}` },
+          {
+            role: "user",
+            content: `Categorize these transactions:\n\n${userMessage}`,
+          },
         ],
         stream: false,
         format: "json",
@@ -322,15 +325,20 @@ Respond ONLY with the JSON object, no other text.`;
     });
 
     if (!response.ok) {
-      console.error(`Ollama returned ${response.status}: ${await response.text()}`);
+      console.error(
+        `Ollama returned ${response.status}: ${await response.text()}`,
+      );
       return batch.map(() => null);
     }
 
     const data = await response.json();
     const content = data.message?.content ?? "";
     const parsed = JSON.parse(content);
-    const results: Array<{ index: number; category: string | null; confidence: string }> =
-      parsed.results ?? parsed;
+    const results: Array<{
+      index: number;
+      category: string | null;
+      confidence: string;
+    }> = parsed.results ?? parsed;
 
     return batch.map((_, i) => {
       const result = results.find((r) => r.index === i);

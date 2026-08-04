@@ -136,8 +136,9 @@ async function downloadTransactionsFromSynchrony(
   password: string,
 ): Promise<Transaction[]> {
   const executablePath = findChromiumExecutable();
-  const baseDir = Deno.env.get("XDG_DATA_HOME")
-    ?? (Deno.env.get("HOME") ? `${Deno.env.get("HOME")}/.local/share` : "/tmp");
+  const baseDir =
+    Deno.env.get("XDG_DATA_HOME") ??
+    (Deno.env.get("HOME") ? `${Deno.env.get("HOME")}/.local/share` : "/tmp");
   const profileDir = `${baseDir}/synchrony-cc-import/browser-profile`;
   mkdirSync(profileDir, { recursive: true });
   console.log(`Using chromium at: ${executablePath ?? "default"}`);
@@ -160,7 +161,7 @@ async function downloadTransactionsFromSynchrony(
 
   try {
     await context.addInitScript(STEALTH_SCRIPT);
-    const page = context.pages()[0] ?? await context.newPage();
+    const page = context.pages()[0] ?? (await context.newPage());
     await login(page, username, password);
 
     const transactions = await scrapeActivity(page);
@@ -209,7 +210,9 @@ async function login(page: Page, username: string, password: string) {
   await screenshot(page, "pre-submit");
   await page.mouse.move(randomDelay(400, 700), randomDelay(500, 700));
   await page.waitForTimeout(randomDelay(300, 800));
-  await page.getByRole("button", { name: /log in|sign in|secure login|submit/i }).click();
+  await page
+    .getByRole("button", { name: /log in|sign in|secure login|submit/i })
+    .click();
   await page.waitForTimeout(randomDelay(8000, 12000));
   console.log(`Post-login URL: ${page.url()}`);
   await screenshot(page, "post-login");
