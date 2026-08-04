@@ -565,15 +565,15 @@
     "gitui": {
       "flake": false,
       "locked": {
-        "lastModified": 1785493795,
-        "narHash": "sha256-jkuepZYBljw4/IJ93f+RgkuQJ6GsKhau4BxwD6wvwoM=",
-        "owner": "extrawurst",
+        "lastModified": 1785494342,
+        "narHash": "sha256-/wc8BSYmaeX6n7LXwMvPk3D25GygBOYin3AKBrkXZjc=",
+        "owner": "gitui-org",
         "repo": "gitui",
-        "rev": "d78d2647f59733cdba859f8c700ec07969917e24",
+        "rev": "2fa693cb6ed431b21ebc300dd02e83c2476699ce",
         "type": "github"
       },
       "original": {
-        "owner": "extrawurst",
+        "owner": "gitui-org",
         "repo": "gitui",
         "type": "github"
       }

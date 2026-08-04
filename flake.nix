@@ -79,7 +79,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     gitui = {
-      url = "github:extrawurst/gitui";
+      url = "github:gitui-org/gitui";
       flake = false;
     };
     claude-code-safety-net = {
