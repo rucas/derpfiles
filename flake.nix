@@ -151,6 +151,8 @@
             };
             # Leave hand-maintained prose docs alone; format data/config only.
             settings.formatter.prettier.excludes = [ "*.md" ];
+            # git-crypt-encrypted files are opaque blobs when locked; never format them.
+            settings.global.excludes = [ "secrets/**" ];
           };
 
           checks = {
