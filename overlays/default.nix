@@ -4,12 +4,9 @@ _final: prev: {
   # NOTE: added to stop cache miss for direnv build
   direnv = prev.direnv.overrideAttrs { doCheck = false; };
   mcp-nixos = prev.mcp-nixos.overrideAttrs (old: {
-    postPatch = (old.postPatch or "") + ''
-      substituteInPlace tests/test_store.py \
-        --replace-fail \
-          'assert "Error" not in result' \
-          'assert True  # skip: flaky when store has files containing "Error" as content'
-    '';
+    # test_store.py scans the real /nix/store and is flaky in the sandbox
+    # (e.g. store filenames containing "Error" trip its assertions).
+    disabledTestPaths = (old.disabledTestPaths or [ ]) ++ [ "tests/test_store.py" ];
   });
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
