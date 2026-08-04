@@ -19,6 +19,7 @@ _final: prev: {
   ledger-sync = prev.callPackage ../pkgs/ledger-sync { };
   git-wt = prev.callPackage ../pkgs/git-wt { };
   windmill-sync = prev.callPackage ../pkgs/windmill-sync { };
+  actual-budget-api = prev.callPackage ../pkgs/actual-budget-api { };
   windmill = prev.windmill.overrideAttrs (old: {
     patches = map (
       p:

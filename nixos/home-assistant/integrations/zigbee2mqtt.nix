@@ -12,8 +12,14 @@
         adapter = "zstack";
       };
       frontend = true;
+      availability = {
+        enabled = true;
+        passive.timeout = 180;
+      };
+      device_options.retain = true;
       advanced = {
         channel = 25;
+        last_seen = "ISO_8601";
         network_key = "!secret.yaml network_key";
         transmit_power = 20;
       };

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   osConfig ? null,
   ...
 }:
@@ -87,6 +88,8 @@ in
       default = true;
     };
 
+    plugins.adhd.enable = lib.mkEnableOption "i-have-adhd plugin (ADHD-friendly output formatting)";
+
     gradleEnv.enable = lib.mkEnableOption "auto-bootstrap the SDKMAN env for Gradle/Kotlin Bash commands";
 
     agentTeams.enable = lib.mkEnableOption "experimental agent teams (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS)";
@@ -142,11 +145,13 @@ in
           *Example for TypeScript:* `ast-grep --lang ts -p '<pattern>'`
           *Example for Rust:* `ast-grep --lang rust -p '<pattern>'`
 
-        * **File Display & Piping:** When you need to display file contents or pipe output in plain format,
-        use `bat -p` instead of `cat` (which is aliased to `bat`). The `-p` flag disables line numbers for
-        proper piping.
+        * **⚠️ File Display & Piping — `cat` IS ALIASED TO `bat`:** This is critical and easy to
+        forget: in this environment `cat` is an alias for `bat`, so a bare `cat file` injects line
+        numbers, a pager, and decorations that corrupt any pipeline. ALWAYS pass `-p` (plain mode) to
+        disable line numbers and decorations when displaying or piping file contents: use `cat -p`
+        (or `bat -p`). Never use a bare `cat`.
 
-          Example: `bat -p file.txt | grep "pattern"`
+          Example: `cat -p file.txt | grep "pattern"`
       '';
     };
   };
@@ -154,6 +159,9 @@ in
   config = lib.mkIf cfg.enable {
     programs.claude-code = {
       enable = true;
+      marketplaces = lib.optionalAttrs cfg.plugins.adhd.enable {
+        "i-have-adhd" = inputs.i-have-adhd;
+      };
       settings = {
         theme = "dark";
         model = lib.mkIf (cfg.model != null) cfg.model;
@@ -164,14 +172,18 @@ in
           // (lib.optionalAttrs cfg.agentTeams.enable {
             CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
           });
-        enabledPlugins = lib.mkIf cfg.lsp.enable (
-          builtins.listToAttrs (
-            map (name: {
-              name = "${name}-lsp@claude-plugins-official";
-              value = true;
-            }) cfg.lsp.servers
-          )
-        );
+        enabledPlugins =
+          (lib.optionalAttrs cfg.lsp.enable (
+            builtins.listToAttrs (
+              map (name: {
+                name = "${name}-lsp@claude-plugins-official";
+                value = true;
+              }) cfg.lsp.servers
+            )
+          ))
+          // (lib.optionalAttrs cfg.plugins.adhd.enable {
+            "i-have-adhd@i-have-adhd" = true;
+          });
         hooks = lib.mkIf (cfg.safetyNet.enable || cfg.gradleEnv.enable) {
           PreToolUse = [
             {

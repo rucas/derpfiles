@@ -394,7 +394,7 @@
       environment = {
         HOME = "/var/lib/windmill-worker";
         PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
-        WHITELIST_ENVS = "PLAYWRIGHT_BROWSERS_PATH";
+        WHITELIST_ENVS = "PLAYWRIGHT_BROWSERS_PATH,CATEGORIZER_APP,SYNC_APP";
       };
       serviceConfig = {
         DynamicUser = pkgs.lib.mkForce false;

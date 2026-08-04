@@ -1,0 +1,51 @@
+{
+  "path": "f/scripts/actual_budget_categorizer",
+  "code_file": "main.sh",
+  "summary": "AI-powered transaction categorizer for Actual Budget",
+  "description": "Fetches uncategorized transactions from Actual Budget, uses Ollama to suggest categories based on payee names and amounts, and updates the transactions with matched categories",
+  "language": "bash",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "actual_server_url": {
+        "type": "string",
+        "description": "Actual Budget server URL",
+        "default": "http://localhost:5006"
+      },
+      "actual_password": {
+        "type": "string",
+        "description": "Actual Budget password"
+      },
+      "budget_sync_id": {
+        "type": "string",
+        "description": "Actual Budget sync ID (UUID)"
+      },
+      "ollama_url": {
+        "type": "string",
+        "description": "Ollama API base URL",
+        "default": "http://localhost:11434"
+      },
+      "ollama_model": {
+        "type": "string",
+        "description": "Ollama model name to use for categorization",
+        "default": "qwen2.5:7b"
+      },
+      "account_name": {
+        "type": "string",
+        "description": "Optional: only categorize transactions in this account. Leave empty for all accounts."
+      },
+      "lookback_days": {
+        "type": "number",
+        "description": "Number of days to look back for uncategorized transactions",
+        "default": 90
+      },
+      "dry_run": {
+        "type": "boolean",
+        "description": "If true, show suggested categories without updating transactions",
+        "default": false
+      }
+    },
+    "required": ["actual_password", "budget_sync_id"]
+  }
+}

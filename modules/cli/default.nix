@@ -51,8 +51,10 @@
     pkgs.glow
     pkgs.gnumake
     pkgs.gnused
-    (pkgs.google-cloud-sdk.withExtraComponents (
-      with pkgs.google-cloud-sdk.components; [ gke-gcloud-auth-plugin ]
+    (lib.mkIf pkgs.stdenv.isDarwin (
+      pkgs.google-cloud-sdk.withExtraComponents (
+        with pkgs.google-cloud-sdk.components; [ gke-gcloud-auth-plugin ]
+      )
     ))
     pkgs.graphviz
     pkgs.grex
