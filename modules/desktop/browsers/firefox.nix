@@ -121,6 +121,10 @@ in
         # such as form content, scrollbar positions, and POST data
         "browser.sessionstore.privacy_level" = 2;
 
+        # PREF: never prompt to restore the previous session after an
+        # unclean shutdown — the session is meant to be dropped on quit
+        "browser.sessionstore.resume_from_crash" = false;
+
         "browser.download.useDownloadDir" = false;
         "browser.screenshots.folderList" = 2;
         "browser.screenshots.dir" = "/tmp";
