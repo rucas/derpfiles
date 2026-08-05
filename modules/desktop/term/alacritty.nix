@@ -76,14 +76,18 @@
         args = [ "--login" ];
       };
       terminal.osc52 = "CopyPaste";
-      #hints = {
-      #  enabled = [{
-      #    regex =
-      #      "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+";
-      #    command = "open";
-      #    mouse = { enabled = true; };
-      #  }];
-      #};
+      hints.enabled = [
+        {
+          regex = ''(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\u{0}-\u{1f}\u{7f}-\u{9f}<>"\s{-}\^⟨⟩`]+'';
+          hyperlinks = true;
+          command = "open";
+          mouse.enabled = true;
+          binding = {
+            key = "U";
+            mods = "Control|Shift";
+          };
+        }
+      ];
     };
   };
 }
