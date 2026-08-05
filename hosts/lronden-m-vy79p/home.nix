@@ -23,7 +23,7 @@
 
     claude-code-custom = {
       enable = true;
-      model = "claude-opus-4-8";
+      model = "claude-opus-5";
       plugins.adhd.enable = true;
       gradleEnv.enable = true;
       agentTeams.enable = true;
