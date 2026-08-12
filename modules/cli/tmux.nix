@@ -9,6 +9,51 @@ let
     "lronden-m-vy79p" = "Hermes";
     "salus" = "Salus";
   };
+  # writeShellScript's bash lacks readline (no `bind`), needed here for tab completion
+  tmuxPopupPrompt = pkgs.writeScript "tmux-popup-prompt" ''
+    #!${pkgs.bashInteractive}/bin/bash
+    # fzf-pick a tmux command name, seeded with $1 as the initial query.
+    # Prints the chosen name on stdout; prints nothing and fails if cancelled.
+    _pick_tmux_command() {
+      local choice
+      choice=$(
+        tmux list-commands -F $'#{command_list_name}\t#{command_list_usage}' |
+          fzf --reverse --height=100% --delimiter=$'\t' --with-nth=1,2 \
+              --prompt="tmux command> " --query="$1"
+      ) || return 1
+      [ -z "$choice" ] && return 1
+      printf '%s\n' "''${choice%%$'\t'*}"
+    }
+
+    _tmux_cmd_complete() {
+      local line="$READLINE_LINE"
+      local first="''${line%% *}"
+      local rest="''${line#"$first"}"
+      local choice
+      choice=$(_pick_tmux_command "$first") || return
+      READLINE_LINE="''${choice}''${rest}"
+      READLINE_POINT="''${#choice}"
+    }
+
+    # bind warns "line editing not enabled" here since readline isn't engaged
+    # until the read -e below starts; the binding still takes effect fine.
+    bind -x '"\t": _tmux_cmd_complete' 2>/dev/null
+
+    initial=$(_pick_tmux_command "")
+    [ -n "$initial" ] && initial="$initial "
+
+    read -e -p "tmux> " -i "$initial" cmd
+
+    if [ -n "$cmd" ]; then
+      output=$(eval tmux "$cmd" 2>&1)
+      status=$?
+      if [ -n "$output" ]; then
+        clear
+        printf '%s\n\n[exit %d] press any key to close...' "$output" "$status"
+        read -n 1 -s -r
+      fi
+    fi
+  '';
 in
 {
   programs.zsh.shellAliases = {
@@ -173,6 +218,9 @@ in
       bind-key Tab display-menu -T "#[align=centre]Sessions" \
         "Switch" . 'choose-session -Zw' Last l "switch-client -l" "" \
         Exit q detach
+
+      # prefix + : opens the tmux command prompt in a popup instead of the status line
+      bind-key : display-popup -T " Command " -w 70% -h 40% -E "${tmuxPopupPrompt}"
 
       bind C-x display-popup -E "tmux list-windows -a -F '#{session_name}:#{window_index} - #{window_name}' \
                           | grep -v \"^$(tmux display-message -p '#S')\$\" \
