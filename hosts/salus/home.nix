@@ -20,6 +20,7 @@
 
   programs.claude-code-custom = {
     enable = true;
+    plugins.adhd.enable = true;
     lsp = {
       enable = true;
       servers = [
@@ -28,7 +29,7 @@
         "typescript"
       ];
     };
-    model = "claude-opus-4-8";
+    model = "claude-opus-5";
     commands = {
       note.enable = true;
       commit.enable = true;

@@ -59,19 +59,22 @@ in
           use_x_forwarded_for = true;
         };
         lovelace = {
-          resources = map (name: {
-            url = "/local/${name}.js";
-            type = "module";
-          }) [
-            "my-cards"
-            "auto-entities"
-            "button-card"
-            "light-entity-card"
-            "layout-card"
-            "bubble-card"
-            "card-mod"
-            "mushroom"
-          ];
+          resources =
+            map
+              (name: {
+                url = "/local/${name}.js";
+                type = "module";
+              })
+              [
+                "my-cards"
+                "auto-entities"
+                "button-card"
+                "light-entity-card"
+                "layout-card"
+                "bubble-card"
+                "card-mod"
+                "mushroom"
+              ];
         };
         alarmo = { };
         mqtt = { };

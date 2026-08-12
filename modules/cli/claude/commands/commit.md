@@ -27,6 +27,9 @@ Create one or more git commits from the current changes, broken into atomic logi
 
 4. **Execute each commit in order**:
    - `git add <files>` for only the files in that group
+   - When two logical changes live in the same file, stage individual hunks with
+     `git add -p <file>` (or `git apply --cached` for finer control) so each commit is a
+     coherent, self-contained unit rather than lumping unrelated edits together
    - Commit with `git commit --no-verify`
    - Title conventions (apply to every commit):
      - 50 characters maximum — hard limit
@@ -42,8 +45,9 @@ Create one or more git commits from the current changes, broken into atomic logi
 
 ## Notes
 
-- Splitting is file-level. If two logical changes live in the same file, keep them in one commit
-  rather than producing a broken intermediate state.
+- Prefer file-level splitting, but reach for hunk-level staging (`git add -p`) when two logical
+  changes share a file and can be cleanly separated. Never leave a broken intermediate state — if
+  the hunks are interdependent, keep them in one commit instead.
 - Never add a `Co-Authored-By` trailer or any AI attribution.
 - Pass `--no-verify` on every `git commit`.
 

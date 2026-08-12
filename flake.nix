@@ -79,11 +79,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     gitui = {
-      url = "github:extrawurst/gitui";
+      url = "github:gitui-org/gitui";
       flake = false;
     };
     claude-code-safety-net = {
       url = "github:kenryu42/claude-code-safety-net";
+      flake = false;
+    };
+    i-have-adhd = {
+      url = "github:ayghri/i-have-adhd";
       flake = false;
     };
     rucaslab = {
@@ -147,6 +151,8 @@
             };
             # Leave hand-maintained prose docs alone; format data/config only.
             settings.formatter.prettier.excludes = [ "*.md" ];
+            # git-crypt-encrypted files are opaque blobs when locked; never format them.
+            settings.global.excludes = [ "secrets/**" ];
           };
 
           checks = {

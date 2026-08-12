@@ -928,7 +928,7 @@ writeShellApplication {
         reason="merged into $main_branch"
         [ -n "$pr_url" ] && reason="$pr_url"
 
-        printf "%s%-''${max_title}s  worktree ✓  %s  branch ✓ (%s)\n" "$prefix" "$session" "$tmux_col" "$reason"
+        printf "%s%-''${max_title}s  worktree ✓  %s  branch ✓  %s\n" "$prefix" "$session" "$tmux_col" "$reason"
       done
 
       if [ "$dry_run" -eq 0 ]; then

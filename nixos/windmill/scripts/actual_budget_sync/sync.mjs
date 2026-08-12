@@ -7,7 +7,9 @@ try {
   await api.downloadBudget(budgetSyncId);
   await api.runBankSync();
   await api.sync();
-  console.log(JSON.stringify({ success: true, message: "Bank sync completed" }));
+  console.log(
+    JSON.stringify({ success: true, message: "Bank sync completed" }),
+  );
 } finally {
   try {
     await api.shutdown();

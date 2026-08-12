@@ -16,6 +16,7 @@
 
   programs.claude-code-custom = {
     enable = true;
+    plugins.adhd.enable = true;
     # fetch, git, and time are enabled by default
     # memory uses the same default configuration
     commands = {
