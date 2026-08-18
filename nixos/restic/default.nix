@@ -54,6 +54,7 @@
       "lldap"
       "outline"
       "windmill"
+      "open-webui"
     ];
     # Run at 01:30 so dumps are ready when restic starts at 02:00
     startAt = "*-*-* 01:30:00";
@@ -96,6 +97,7 @@
       "/var/lib/actual-budget"
       "/var/lib/outline"
       "/var/lib/windmill"
+      "/var/lib/open-webui"
     ];
 
     exclude = [
@@ -105,6 +107,10 @@
       "/var/lib/hass/home-assistant_v2.db-wal"
       # ESPHome: skip compiled firmware blobs (can be rebuilt)
       "/var/lib/esphome/.esphome/build"
+      # Open WebUI: skip downloaded embedding models and HTTP cache (re-fetched on demand)
+      "/var/lib/open-webui/hf_home"
+      "/var/lib/open-webui/transformers_home"
+      "/var/lib/open-webui/data/cache"
       # Loki / Prometheus are observability data — large and regenerable,
       # excluded here; local Sanoid snapshots provide short-term protection
     ];
