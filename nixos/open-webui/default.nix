@@ -49,6 +49,22 @@ in
         # the local GPU and the expensive models
         TASK_MODEL_EXTERNAL = "google/gemini-3.5-flash-lite";
 
+        # Off upstream by default. These are persistent-config settings, so with
+        # ENABLE_PERSISTENT_CONFIG=False the admin UI toggles would not survive a
+        # restart — they have to be set here.
+        ENABLE_SUBAGENTS = "True";
+        # Background subagents pay off against OpenRouter, where fan-out is
+        # network-bound and genuinely parallel; against the local model they just
+        # queue behind OLLAMA_NUM_PARALLEL. Note they run without external tool
+        # servers and without the pyodide code interpreter — web search, native
+        # tools and skills still work.
+        SUBAGENTS_BACKGROUND_ENABLED = "True";
+        # These caps live in module-level state, so each of the 4 uvicorn workers
+        # enforces its own. 5 per worker lands the real ceiling near 20 rather
+        # than the 80 the upstream default of 20 would allow.
+        SUBAGENTS_MAX_CONCURRENT = "5";
+        SUBAGENTS_MAX_ASYNC = "5";
+
         # Authelia is the only way in — no local accounts, no signup form
         ENABLE_LOGIN_FORM = "False";
         ENABLE_SIGNUP = "False";
