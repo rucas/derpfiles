@@ -42,6 +42,7 @@
     ../../nixos/sanoid
     ../../nixos/restic
     ../../nixos/ollama
+    ../../nixos/open-webui
 
   ];
 
@@ -194,6 +195,14 @@
       owner = config.services.authelia.instances.rucaslab.user;
       inherit (config.services.authelia.instances.rucaslab) group;
     };
+    # NOTE: these stay root-owned — systemd reads EnvironmentFile as root
+    # before entering the service sandbox
+    open_webui_env = {
+      file = ./secrets/open_webui_env.age;
+    };
+    open_webui_openrouter_env = {
+      file = ./secrets/open_webui_openrouter_env.age;
+    };
     authelia_oidc_open_webui_client_secret = {
       file = ./secrets/authelia_oidc_open_webui_client_secret.age;
       owner = config.services.authelia.instances.rucaslab.user;
@@ -304,6 +313,11 @@
           name = "ollama";
           url = "https://ollama.rucaslab.com";
           description = "Ollama";
+        }
+        {
+          name = "ai";
+          url = "https://ai.rucaslab.com";
+          description = "Open WebUI";
         }
         {
           name = "ntfy";
