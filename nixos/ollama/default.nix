@@ -3,7 +3,12 @@
   services.ollama = {
     enable = true;
     package = pkgs.ollama-vulkan;
-    loadModels = [ "qwen2.5:7b" ];
+    loadModels = [
+      "qwen2.5:7b"
+      # Open WebUI's RAG embedding model — keeps SentenceTransformers out of
+      # the web workers
+      "nomic-embed-text"
+    ];
     environmentVariables = {
       OLLAMA_MAX_LOADED_MODELS = "1";
       OLLAMA_NUM_PARALLEL = "2";
