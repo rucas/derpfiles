@@ -194,6 +194,11 @@
       owner = config.services.authelia.instances.rucaslab.user;
       inherit (config.services.authelia.instances.rucaslab) group;
     };
+    authelia_oidc_open_webui_client_secret = {
+      file = ./secrets/authelia_oidc_open_webui_client_secret.age;
+      owner = config.services.authelia.instances.rucaslab.user;
+      inherit (config.services.authelia.instances.rucaslab) group;
+    };
   };
 
   # Bootloader.
