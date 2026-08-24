@@ -170,6 +170,27 @@
               token_endpoint_auth_method = "client_secret_post";
               authorization_policy = "one_factor";
             }
+            {
+              client_id = "open-webui";
+              client_name = "Open WebUI";
+              # NOTE: unlike the clients above this holds a PBKDF2 digest, not the plaintext
+              # secret — Authelia deprecated plaintext client secrets. The matching plaintext
+              # lives in open_webui_env.age as OAUTH_CLIENT_SECRET.
+              client_secret = "{{ secret \"${config.age.secrets.authelia_oidc_open_webui_client_secret.path}\" }}";
+              redirect_uris = [ "https://ai.rucaslab.com/oauth/oidc/callback" ];
+              scopes = [
+                "openid"
+                "profile"
+                "email"
+                "groups"
+              ];
+              grant_types = [ "authorization_code" ];
+              response_types = [ "code" ];
+              token_endpoint_auth_method = "client_secret_basic";
+              require_pkce = true;
+              pkce_challenge_method = "S256";
+              authorization_policy = "one_factor";
+            }
           ];
         };
       };

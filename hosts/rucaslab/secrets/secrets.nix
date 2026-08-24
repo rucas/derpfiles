@@ -167,6 +167,21 @@ in
     users.github-actions
     system
   ];
+  "open_webui_env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "open_webui_openrouter_env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "authelia_oidc_open_webui_client_secret.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
   "unpoller.age".publicKeys = [
     users.personal-5c-nano
     users.github-actions

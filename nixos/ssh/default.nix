@@ -52,6 +52,9 @@
 
       # Regular ed25519 key for sudo authentication via agent forwarding
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO06wFEJR3Y9YFfo45RqirpDzJ+Qy8dj0GWvZhbbEIwu sudo-auth-key"
+
+      # PIV slot 9a on YubiKey 5C Nano FIPS — iPad / Moshi
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMD7AGIa0wNxG7+xFZCSFB8xW9IFXLqAbpJnkQeXLeuuottvzdz+QF/Kzqy9F5tvBQTEoqxohwO3I4i4PxxatzM= ipad-moshi-piv"
     ];
   };
 
