@@ -481,21 +481,36 @@ writeShellApplication {
         find "$src_main_wt" -type d -path '*/.claude/worktrees' -prune \
           -o -type d -path '*/.claude/skills' -print 2>/dev/null
       )
-      [ "$count" -gt 0 ] && echo "Skills:   copied $count nested .claude/skills into worktree"
+      # Plain `[ ... ] && echo` would return 1 in a repo with no skills at all,
+      # which under `set -e` aborts the caller mid-way.
+      if [ "$count" -gt 0 ]; then
+        echo "Skills:   copied $count nested .claude/skills into worktree"
+      fi
     }
 
     new() {
-      local usage="Usage: git wt new <branch>... [repo-path] [--attach] [--no-copy-skills]"
-      local copy_skills=1 attach=0
-      local rest=()
+      local usage="Usage: git wt new <branch>... [repo-path] [--cd SUBDIR] [--attach] [--no-copy-skills]"
+      local copy_skills=1 attach=0 subdir=""
+      local rest=() want_cd=0
       for arg in "$@"; do
+        if [ "$want_cd" -eq 1 ]; then
+          subdir="$arg"
+          want_cd=0
+          continue
+        fi
         case "$arg" in
           --no-copy-skills) copy_skills=0 ;;
           --attach|-a)      attach=1 ;;
+          --cd)             want_cd=1 ;;
+          --cd=*)           subdir="''${arg#--cd=}" ;;
           -h|--help)        echo "$usage"; return ;;
           *)                rest+=("$arg") ;;
         esac
       done
+      if [ "$want_cd" -eq 1 ]; then
+        echo "Error: --cd needs a subdir" >&2
+        exit 1
+      fi
       set -- "''${rest[@]}"
 
       if [ $# -eq 0 ]; then
@@ -527,6 +542,9 @@ writeShellApplication {
         main_wt="$(_main_wt)"
       fi
 
+      subdir="''${subdir#/}"
+      subdir="''${subdir%/}"
+
       mkdir -p "$main_wt/.claude/worktrees"
 
       local last_session=""
@@ -539,18 +557,39 @@ writeShellApplication {
         local wt_path="$main_wt/.claude/worktrees/$name"
         git -C "$main_wt" worktree add -b "$branch" "$wt_path"
 
-        [ "$copy_skills" -eq 1 ] && _copy_all_skills "$main_wt" "$wt_path"
+        if [ "$copy_skills" -eq 1 ]; then
+          _copy_all_skills "$main_wt" "$wt_path"
+        fi
+
+        # --cd points the session at a subdir of the worktree, so Claude (and the
+        # shell) start where the work happens and pick up that subdir's CLAUDE.md
+        # chain instead of only the repo root's.
+        local session_dir="$wt_path"
+        if [ -n "$subdir" ]; then
+          session_dir="$wt_path/$subdir"
+          if [ ! -d "$session_dir" ]; then
+            echo "Error: subdir not found in worktree: $subdir" >&2
+            exit 1
+          fi
+        fi
 
         local session
         session="$(_session_name "$wt_path")"
-        _ensure_session "$session" "$wt_path" || true
+        _ensure_session "$session" "$session_dir" || true
         last_session="$session"
         printf "Worktree: %s\n" "$wt_path"
+        if [ -n "$subdir" ]; then
+          printf "Context:  %s\n" "$session_dir"
+        fi
         printf "Session:  %s\n" "$session"
         echo ""
       done
 
-      [ "$attach" -eq 1 ] && [ -n "$last_session" ] && _attach_session "$last_session"
+      # Guarded with `if` rather than `[ ... ] && ...`: as the last statement of the
+      # subcommand a false test would make 'git wt new' exit 1 on success.
+      if [ "$attach" -eq 1 ] && [ -n "$last_session" ]; then
+        _attach_session "$last_session"
+      fi
     }
 
     review() {
@@ -693,7 +732,9 @@ writeShellApplication {
         echo ""
       done
 
-      [ "$attach" -eq 1 ] && [ -n "$last_session" ] && _attach_session "$last_session"
+      if [ "$attach" -eq 1 ] && [ -n "$last_session" ]; then
+        _attach_session "$last_session"
+      fi
     }
 
     spawn() {
@@ -1048,8 +1089,12 @@ writeShellApplication {
       echo "Usage: git wt <subcommand>"
       echo ""
       echo "Subcommands:"
-      echo "    new <branch>... [repo] [--attach] [--no-copy-skills]"
+      echo "    new <branch>... [repo] [--cd SUBDIR] [--attach] [--no-copy-skills]"
       echo "                        Create worktree(s) + tmux session(s) in <repo>/.claude/worktrees/"
+      echo "                        [repo] may be any path inside the repo (a subdir works); the"
+      echo "                        worktree is always created off the main worktree's root."
+      echo "                        --cd SUBDIR starts each session in that subdir of the worktree"
+      echo "                        (relative to the repo root) so its CLAUDE.md chain loads."
       echo "                        Copies every nested live .claude/skills into each worktree"
       echo "                        (even gitignored ones) unless --no-copy-skills."
       echo "                        --attach opens the last new session."
