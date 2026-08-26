@@ -7,7 +7,7 @@
 let
   yamlFormat = pkgs.formats.yaml { };
   inherit (lib) mkMerge;
-  inherit (pkgs.stdenv) isLinux isDarwin;
+  inherit (pkgs.stdenv.hostPlatform) isLinux isDarwin;
 
   secretMatches =
     let

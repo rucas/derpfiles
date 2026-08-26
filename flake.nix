@@ -136,7 +136,7 @@
             config.allowUnfree = true;
             overlays = [ self.overlays.default ];
           };
-          inherit (pkgs.stdenv) isDarwin;
+          inherit (pkgs.stdenv.hostPlatform) isDarwin;
         in
         {
           _module.args.pkgs = pkgs;

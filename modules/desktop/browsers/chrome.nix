@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 let
   inherit (lib) mkMerge listToAttrs;
-  inherit (pkgs.stdenv) isLinux isDarwin;
+  inherit (pkgs.stdenv.hostPlatform) isLinux isDarwin;
   extensions = [
     "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock
     "fmkadmapgofadopljbjfkapdkoienihi" # React Dev Tools

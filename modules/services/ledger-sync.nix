@@ -15,7 +15,7 @@ let
     mapAttrsToList
     ;
   cfg = config.services.ledger-sync;
-  inherit (pkgs.stdenv) isDarwin isLinux;
+  inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
 
   homeDir = config.home.homeDirectory;
 

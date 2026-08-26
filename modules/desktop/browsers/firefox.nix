@@ -32,7 +32,7 @@ in
 
   programs.firefox = {
     enable = true;
-    package = if pkgs.stdenv.isDarwin then pkgs.firefox else null;
+    package = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.firefox else null;
     policies = {
       FirefoxHome = {
         Search = true;

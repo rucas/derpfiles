@@ -27,8 +27,8 @@ _final: prev: {
     ) old.patches;
   });
   ledger-watch = prev.callPackage ../pkgs/ledger-watch {
-    fswatch = if prev.stdenv.isDarwin then prev.fswatch else null;
-    inotify-tools = if prev.stdenv.isLinux then prev.inotify-tools else null;
+    fswatch = if prev.stdenv.hostPlatform.isDarwin then prev.fswatch else null;
+    inotify-tools = if prev.stdenv.hostPlatform.isLinux then prev.inotify-tools else null;
   };
   snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
   chronosphere-mcp = prev.callPackage ../pkgs/chronosphere-mcp { };

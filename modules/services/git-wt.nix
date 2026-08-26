@@ -17,7 +17,7 @@ let
     escapeShellArgs
     ;
   cfg = config.programs.git-wt;
-  inherit (pkgs.stdenv) isDarwin isLinux;
+  inherit (pkgs.stdenv.hostPlatform) isDarwin isLinux;
 
   homeDir = config.home.homeDirectory;
 

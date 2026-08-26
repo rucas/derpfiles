@@ -61,7 +61,7 @@
       W = "| wc -l";
     };
     initContent = ''
-      ${lib.optionalString pkgs.stdenv.isDarwin ''
+      ${lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
         export PATH="/opt/homebrew/bin:$PATH"
         export PATH="/opt/homebrew/sbin:$PATH"
       ''}

@@ -51,7 +51,7 @@
     pkgs.glow
     pkgs.gnumake
     pkgs.gnused
-    (lib.mkIf pkgs.stdenv.isDarwin (
+    (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
       pkgs.google-cloud-sdk.withExtraComponents (
         with pkgs.google-cloud-sdk.components; [ gke-gcloud-auth-plugin ]
       )
@@ -61,7 +61,7 @@
 
     pkgs.haskellPackages.patat
 
-    (lib.mkIf pkgs.stdenv.isLinux pkgs.haveged)
+    (lib.mkIf pkgs.stdenv.hostPlatform.isLinux pkgs.haveged)
     pkgs.hexyl
     pkgs.htop
     pkgs.hurl
@@ -80,7 +80,7 @@
 
     pkgs.lsof
 
-    (lib.mkIf pkgs.stdenv.isDarwin pkgs.m-cli)
+    (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin pkgs.m-cli)
 
     pkgs.netcat
     pkgs.nmap
@@ -106,9 +106,9 @@
     pkgs.timer
     pkgs.tree
     pkgs.tokei
-    (lib.mkIf pkgs.stdenv.isLinux pkgs.tor)
+    (lib.mkIf pkgs.stdenv.hostPlatform.isLinux pkgs.tor)
 
-    (lib.mkIf pkgs.stdenv.isLinux pkgs.usbutils)
+    (lib.mkIf pkgs.stdenv.hostPlatform.isLinux pkgs.usbutils)
 
     pkgs.wget
 
