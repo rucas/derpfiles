@@ -18,6 +18,7 @@ let
     fix-ci = ./commands/fix-ci.md;
     address-review = ./commands/address-review.md;
     shepherd-pr = ./commands/shepherd-pr.md;
+    execute-plan = ./commands/execute-plan.md;
   };
 
   gradleEnvHook = pkgs.writeShellApplication {
@@ -115,6 +116,7 @@ in
       fix-ci.enable = lib.mkEnableOption "fix-ci slash command";
       address-review.enable = lib.mkEnableOption "address-review slash command";
       shepherd-pr.enable = lib.mkEnableOption "shepherd-pr slash command";
+      execute-plan.enable = lib.mkEnableOption "execute-plan slash command";
       extra = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
         default = { };
