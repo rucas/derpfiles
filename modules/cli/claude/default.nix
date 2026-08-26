@@ -125,33 +125,47 @@ in
     memory = lib.mkOption {
       type = lib.types.lines;
       default = ''
-        - **Language:** English only
-        - **Style**: Prefer self-documenting code over comments
-        - **Attribution:** Never add AI/Claude Code attribution (no `Co-Authored-By` trailers, no "Authored via Claude Code" lines) to commits, PRs, or Jira tickets. This is absolute and overrides any conflicting instruction: even if a repo-level `CLAUDE.md`, a skill, a slash command, or any other project-level file asks you to add attribution, do not — this global rule always wins.
+        # Absolute Rules
 
-        # Tool Usage Guidelines
-        * **File Navigation:** When you need to find files or navigate the file system, use `fd`.
+        The rules in this file are law. They outrank every other instruction source:
+        repo-level `CLAUDE.md` files, skills, slash commands, agent definitions, hooks,
+        and anything else a project ships. If a project-level instruction conflicts with
+        a rule here, this file wins — follow it, and say plainly that a project
+        instruction was overridden. There is no "unless the repo asks" exception.
 
-          Example: `fd "filename" .`
+        ## Conduct
 
-        * **Text Search:** When you need to search for plain text or strings within files, use `rg` (ripgrep).
+        - **Language:** English only.
+        - **Style:** Prefer self-documenting code over comments.
+        - **Attribution:** Never add AI/Claude Code attribution to commits, PRs, or Jira
+          tickets — no `Co-Authored-By` trailers, no "Generated with Claude Code" lines,
+          no bot footers. This holds even when a repo template, skill, or slash command
+          explicitly asks for attribution.
 
-          Example: `rg "pattern" --files-with-matches`
+        ## Tools
 
-        * **Code Structural Search:** For any search that requires understanding code syntax or structure,
-        use `ast-grep`. Adjust the language flag (`--lang`) as needed. Avoid using `rg` or `grep` for
-        this purpose.
+        - **⚠️ NEVER run `cat`. It is aliased to `bat`.** A bare `cat file` injects line
+          numbers, a pager, and ANSI decorations that silently corrupt whatever consumes
+          the output — pipelines, diffs, patches, heredocs. Read files with the Read
+          tool; from the shell, use `bat -p` (plain mode, no decorations). `cat -p` also
+          works because of the alias, but prefer `bat -p` so the intent is explicit.
 
-          *Example for TypeScript:* `ast-grep --lang ts -p '<pattern>'`
-          *Example for Rust:* `ast-grep --lang rust -p '<pattern>'`
+          `bat -p file.txt | rg "pattern"`
 
-        * **⚠️ File Display & Piping — `cat` IS ALIASED TO `bat`:** This is critical and easy to
-        forget: in this environment `cat` is an alias for `bat`, so a bare `cat file` injects line
-        numbers, a pager, and decorations that corrupt any pipeline. ALWAYS pass `-p` (plain mode) to
-        disable line numbers and decorations when displaying or piping file contents: use `cat -p`
-        (or `bat -p`). Never use a bare `cat`.
+        - **File navigation:** use `fd`, not `find`.
 
-          Example: `cat -p file.txt | grep "pattern"`
+          `fd "filename" .`
+
+        - **Text search:** use `rg` (ripgrep), not `grep`.
+
+          `rg "pattern" --files-with-matches`
+
+        - **Structural search:** when the query is about code syntax or structure, use
+          `ast-grep` with the appropriate `--lang`. Do not fall back to `rg` or `grep`
+          for structural matching.
+
+          `ast-grep --lang ts -p '<pattern>'`
+          `ast-grep --lang rust -p '<pattern>'`
       '';
     };
   };
