@@ -60,8 +60,6 @@ in
           nixpkgs.overlays = [
             self.overlays.default
             inputs.alacritty-theme.overlays.default
-
-            inputs.spacebar.overlay
             inputs.nur.overlays.default
           ];
           nix.settings = {

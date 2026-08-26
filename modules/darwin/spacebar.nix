@@ -1,8 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   services.spacebar = {
     enable = true;
-    package = pkgs.spacebar;
+    # Bypass inputs.spacebar.overlay: its flake-utils wrapper reads the deprecated
+    # `pkgs.system` alias, which warns on every evaluation.
+    package = inputs.spacebar.packages.${pkgs.stdenv.hostPlatform.system}.spacebar;
     config = {
       position = "top";
       height = 26;
