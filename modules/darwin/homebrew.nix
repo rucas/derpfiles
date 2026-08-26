@@ -14,6 +14,7 @@ let
     };
     casks = {
       "salus" = [
+        "1password"
         "slack"
       ];
       "lronden-m-vy79p" = [
@@ -22,6 +23,7 @@ let
         "postman"
       ];
       "blkmrkt" = [
+        "1password"
         "balenaetcher"
         "garmin-express"
         "tailscale-app"
@@ -36,8 +38,9 @@ let
       "openssh"
       "tor"
     ];
+    # NOTE: 1password is per-host: on work laptops MDM owns /Applications and
+    # brew's cask upgrade fights it, so it is not in the common list.
     casks = [
-      "1password"
       "aerial"
       "appcleaner"
       "blackhole-16ch"
