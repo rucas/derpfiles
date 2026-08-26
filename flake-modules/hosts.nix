@@ -80,6 +80,11 @@ in
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
+            # `man home-configuration.nix` is generated through nixpkgs'
+            # make-options-doc, which leaks the nixpkgs source path into the
+            # options.json derivation without string context and warns on every
+            # evaluation. The manual is online; skip building it.
+            sharedModules = [ { manual.manpages.enable = false; } ];
             extraSpecialArgs = {
               inherit inputs;
               theme = fromTOML (readFile ../modules/themes/gruvbox.toml);
