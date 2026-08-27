@@ -1,0 +1,187 @@
+blueprint:
+  name: Aqara Wireless Mini Switch T1 (Zigbee2MQTT)
+  description: >-
+    Run custom actions for each gesture of an Aqara Wireless Mini Switch T1
+    (WXKG13LM / lumi.remote.b1acn02) paired through Zigbee2MQTT.
+
+
+    Triggers directly on the device's MQTT topic, so it needs neither
+    Zigbee2MQTT device triggers (which are only published after a gesture has
+    fired at least once) nor the experimental event entities.
+  domain: automation
+  homeassistant:
+    min_version: "2024.6.0"
+  input:
+    device:
+      name: Device
+      icon: mdi:gesture-tap-button
+      input:
+        topic:
+          name: Zigbee2MQTT topic
+          description: >-
+            Base topic the device publishes on, for example
+            `zigbee2mqtt/Dishwasher Button`.
+          selector:
+            text:
+        max_age:
+          name: Maximum action age
+          description: >-
+            Ignore actions older than this many seconds. With
+            `device_options.retain` enabled, Zigbee2MQTT retains the last
+            payload and Home Assistant replays it on every restart or broker
+            reconnect; this guard keeps those replays from firing the
+            automation. It relies on `advanced.last_seen: ISO_8601` in
+            Zigbee2MQTT — without it the guard is skipped. Set to 0 to disable.
+          default: 10
+          selector:
+            number:
+              min: 0
+              max: 300
+              unit_of_measurement: seconds
+              mode: box
+    actions:
+      name: Button actions
+      icon: mdi:gesture-tap
+      input:
+        single_action:
+          name: Single press
+          default: []
+          selector:
+            action:
+        double_action:
+          name: Double press
+          default: []
+          selector:
+            action:
+        hold_action:
+          name: Hold
+          description: Fires while the button is held down.
+          default: []
+          selector:
+            action:
+        release_action:
+          name: Release
+          description: Fires when the button is let go after a hold.
+          default: []
+          selector:
+            action:
+    advanced_actions:
+      name: Advanced gestures
+      icon: mdi:gesture-double-tap
+      collapsed: true
+      input:
+        triple_action:
+          name: Triple press
+          default: []
+          selector:
+            action:
+        quadruple_action:
+          name: Quadruple press
+          default: []
+          selector:
+            action:
+        quintuple_action:
+          name: Quintuple press
+          default: []
+          selector:
+            action:
+        many_action:
+          name: Many presses
+          description: >-
+            Fires when Zigbee2MQTT counts more presses than it has a name for.
+          default: []
+          selector:
+            action:
+
+mode: queued
+max: 10
+max_exceeded: silent
+
+variables:
+  max_age: !input max_age
+
+triggers:
+  - trigger: mqtt
+    topic: !input topic
+    value_template: "{{ value_json.action | default('') }}"
+    payload: single
+    id: single
+  - trigger: mqtt
+    topic: !input topic
+    value_template: "{{ value_json.action | default('') }}"
+    payload: double
+    id: double
+  - trigger: mqtt
+    topic: !input topic
+    value_template: "{{ value_json.action | default('') }}"
+    payload: triple
+    id: triple
+  - trigger: mqtt
+    topic: !input topic
+    value_template: "{{ value_json.action | default('') }}"
+    payload: quadruple
+    id: quadruple
+  - trigger: mqtt
+    topic: !input topic
+    value_template: "{{ value_json.action | default('') }}"
+    payload: quintuple
+    id: quintuple
+  - trigger: mqtt
+    topic: !input topic
+    value_template: "{{ value_json.action | default('') }}"
+    payload: hold
+    id: hold
+  - trigger: mqtt
+    topic: !input topic
+    value_template: "{{ value_json.action | default('') }}"
+    payload: release
+    id: release
+  - trigger: mqtt
+    topic: !input topic
+    value_template: "{{ value_json.action | default('') }}"
+    payload: many
+    id: many
+
+conditions:
+  - condition: template
+    value_template: >-
+      {{ max_age | int(0) == 0
+         or trigger.payload_json.last_seen is not defined
+         or (now().timestamp()
+             - (trigger.payload_json.last_seen | as_datetime | as_timestamp))
+            < (max_age | int(10)) }}
+
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: single
+        sequence: !input single_action
+      - conditions:
+          - condition: trigger
+            id: double
+        sequence: !input double_action
+      - conditions:
+          - condition: trigger
+            id: triple
+        sequence: !input triple_action
+      - conditions:
+          - condition: trigger
+            id: quadruple
+        sequence: !input quadruple_action
+      - conditions:
+          - condition: trigger
+            id: quintuple
+        sequence: !input quintuple_action
+      - conditions:
+          - condition: trigger
+            id: hold
+        sequence: !input hold_action
+      - conditions:
+          - condition: trigger
+            id: release
+        sequence: !input release_action
+      - conditions:
+          - condition: trigger
+            id: many
+        sequence: !input many_action
