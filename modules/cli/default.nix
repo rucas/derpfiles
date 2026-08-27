@@ -84,6 +84,7 @@
 
     pkgs.netcat
     pkgs.nmap
+    pkgs.nodejs
 
     pkgs.onefetch
 
