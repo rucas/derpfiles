@@ -47,6 +47,13 @@ rec {
     chime = "select.doorbell_chime";
   };
 
+  dishwasher = {
+    needsRunning = "input_boolean.dishwasher_needs_running";
+    topic = "zigbee2mqtt/Dishwasher Button";
+  };
+
+  bedtime = "input_datetime.bedtime";
+
   allMobileDevices = lib.attrValues (lib.mapAttrs (_name: person: person.mobile) people);
 
   roomLights = room: lib.attrValues lights.${room} or [ ];

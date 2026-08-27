@@ -9,6 +9,7 @@ in
   imports = [
     ./automations
     ./blueprints.nix
+    ./helpers.nix
     ./integrations/lutron_caseta.nix
     ./integrations/notify.nix
     ./integrations/sonos.nix

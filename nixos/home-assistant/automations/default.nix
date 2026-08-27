@@ -6,6 +6,7 @@
     ./master_bedroom_pico.nix
     ./downstairs_lamps_pico.nix
     ./dishwasher_button.nix
+    ./dishwasher_reminder.nix
   ];
   services.home-assistant.config = {
     "automation ui" = "!include automations.yaml";
