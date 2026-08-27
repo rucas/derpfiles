@@ -180,6 +180,62 @@ rec {
         inherit message title data;
       };
 
+    # Companion-app push carrying a nested data payload. Needs the legacy
+    # notify.mobile_app_<device> service — the notify.send_message entity action
+    # drops the nested data the app parses. Re-sending the same tag replaces the
+    # earlier notification instead of stacking a second one.
+    notifyMobile =
+      {
+        service,
+        message,
+        title ? null,
+        tag ? null,
+        interruptionLevel ? null,
+        data ? { },
+      }:
+      actions.notify {
+        inherit service message title;
+        data.data =
+          lib.optionalAttrs (tag != null) { inherit tag; }
+          // lib.optionalAttrs (interruptionLevel != null) {
+            push."interruption-level" = interruptionLevel;
+          }
+          // data;
+      };
+
+    # iOS Live Activity / Android Live Update. Gated behind the companion app's
+    # Labs flag, which currently ships only in the TestFlight build.
+    liveActivity =
+      {
+        service,
+        tag,
+        message,
+        title ? null,
+        data ? { },
+      }:
+      actions.notifyMobile {
+        inherit
+          service
+          tag
+          message
+          title
+          ;
+        data = {
+          live_update = true;
+        }
+        // data;
+      };
+
+    clearNotification =
+      { service, tag }:
+      actions.notify {
+        inherit service;
+        message = "clear_notification";
+        data.data = {
+          inherit tag;
+        };
+      };
+
     lightTurn =
       {
         entity_id,
