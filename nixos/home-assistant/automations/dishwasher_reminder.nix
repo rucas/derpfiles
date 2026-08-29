@@ -12,13 +12,24 @@ let
   phone = entities.people.lucas.mobile;
   tag = "dishwasher-reminder";
 
-  defaultBedtime = "21:00:00";
+  reminderTime = "21:00:00";
   startedAction = "DISHWASHER_STARTED";
 
-  bedtimeUnset = "{{ states('${entities.bedtime}') in ['unknown', 'unavailable'] }}";
+  nagIntervalMinutes = 20;
+  nagLimit = 6;
 
-  nagIntervalMinutes = 15;
-  nagLimit = 8;
+  # Zigbee2MQTT retains the last payload, so Home Assistant replays it on every
+  # restart and broker reconnect. Without this the replay would re-arm the flag
+  # long after the press. Mirrors the guard in the aqara_mini_switch_t1
+  # blueprint, and relies on `advanced.last_seen: ISO_8601`.
+  maxPressAgeSeconds = 10;
+
+  freshPress = ''
+    {{ trigger.payload_json.last_seen is not defined
+       or (now().timestamp()
+           - (trigger.payload_json.last_seen | as_datetime | as_timestamp))
+          < ${toString maxPressAgeSeconds} }}
+  '';
 
   armed = conditions.state {
     entity_id = entities.dishwasher.needsRunning;
@@ -44,11 +55,21 @@ in
     (mkMultiTriggerAutomation {
       id = "dishwasher_reminder";
       alias = "Dishwasher Reminder";
-      description = "Nags at bedtime until the dishwasher gets started.";
+      description = "Nags at 9 PM until the dishwasher gets started.";
       # Parallel, not queued: the bedtime branch runs a repeat loop for up to
       # two hours, and a queued clear would sit behind it instead of dismissing.
       mode = "parallel";
       triggers = [
+        (
+          triggers.mqtt {
+            topic = entities.dishwasher.topic;
+            value_template = "{{ value_json.action | default('') }}";
+            payload = "single";
+          }
+          // {
+            id = "button";
+          }
+        )
         (
           triggers.state {
             entity_id = entities.dishwasher.needsRunning;
@@ -67,28 +88,32 @@ in
             id = "cleared";
           }
         )
-        (triggers.time entities.bedtime // { id = "bedtime"; })
+        (triggers.time reminderTime // { id = "bedtime"; })
         {
           platform = "event";
           event_type = "mobile_app_notification_action";
           event_data.action = startedAction;
           id = "started";
         }
-        (triggers.homeAssistantStart // { id = "startup"; })
       ];
       action = [
         {
-          "if" = [ (conditions.template bedtimeUnset) ];
-          "then" = [
-            {
-              action = "input_datetime.set_datetime";
-              target.entity_id = entities.bedtime;
-              data.time = defaultBedtime;
-            }
-          ];
-        }
-        {
           choose = [
+            # Single press on the Aqara mini switch by the dishwasher arms the
+            # reminder. Turn on rather than toggle, so a stray second press
+            # can't silently disarm it.
+            {
+              conditions = [
+                (firedBy "button")
+                (conditions.template freshPress)
+              ];
+              sequence = [
+                {
+                  action = "input_boolean.turn_on";
+                  target.entity_id = entities.dishwasher.needsRunning;
+                }
+              ];
+            }
             # Silent on arming: lands in Notification Center with no banner or
             # sound, so it reads as ambient state rather than an interruption.
             {
@@ -98,9 +123,8 @@ in
                   service = phone;
                   inherit tag;
                   title = "Dishwasher";
-                  message = "Loaded — reminder set for bedtime";
+                  message = "Loaded — reminder set for 9 PM";
                   interruptionLevel = "passive";
-                  data = startedButton;
                 })
               ];
             }
@@ -125,36 +149,43 @@ in
               ];
             }
             # Time-sensitive so it breaks through a sleep Focus, and reuses the
-            # tag so each re-ping replaces the last rather than stacking. The
-            # delay sits after the notify, so clearing mid-cycle exits the loop
-            # at the next check without firing again.
+            # tag so each re-ping replaces the last rather than stacking.
             {
               conditions = [
                 (firedBy "bedtime")
                 armed
               ];
               sequence = [
+                # Every ping carries the action. iOS only reveals it on a
+                # long-press, so it costs nothing on the banner, and dismissing
+                # from the first reminder beats waiting out an interval.
+                (actions.notifyMobile {
+                  service = phone;
+                  inherit tag;
+                  title = "Dishwasher";
+                  message = "Start the dishwasher";
+                  interruptionLevel = "time-sensitive";
+                  data = startedButton;
+                })
                 {
                   repeat = {
                     sequence = [
+                      { delay.minutes = nagIntervalMinutes; }
+                      # Bails out when the flag cleared mid-delay, so a
+                      # dismissed reminder never pings again. Nothing follows
+                      # the repeat, so halting here ends the run cleanly.
+                      armed
                       (actions.notifyMobile {
                         service = phone;
                         inherit tag;
                         title = "Dishwasher";
-                        message = "Start it before bed";
+                        message = "Did you start it?";
                         interruptionLevel = "time-sensitive";
                         data = startedButton;
                       })
-                      { delay.minutes = nagIntervalMinutes; }
                     ];
                     until = [
-                      (conditions.or [
-                        (conditions.state {
-                          entity_id = entities.dishwasher.needsRunning;
-                          state = "off";
-                        })
-                        (conditions.template "{{ repeat.index >= ${toString nagLimit} }}")
-                      ])
+                      (conditions.template "{{ repeat.index >= ${toString nagLimit} }}")
                     ];
                   };
                 }

@@ -47,6 +47,19 @@ rec {
       webhook_id = id;
     };
 
+    mqtt =
+      {
+        topic,
+        payload ? null,
+        value_template ? null,
+      }:
+      {
+        platform = "mqtt";
+        inherit topic;
+      }
+      // lib.optionalAttrs (payload != null) { inherit payload; }
+      // lib.optionalAttrs (value_template != null) { inherit value_template; };
+
     zone =
       {
         entity_id,
