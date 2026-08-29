@@ -47,6 +47,11 @@ rec {
     chime = "select.doorbell_chime";
   };
 
+  rustyCrate = {
+    door = "binary_sensor.rusty_crate_door_contact";
+    privacy = "switch.rusty_crate_privacy_mode";
+  };
+
   dishwasher = {
     needsRunning = "input_boolean.dishwasher_needs_running";
     topic = "zigbee2mqtt/Dishwasher Button";
