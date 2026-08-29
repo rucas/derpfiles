@@ -13,15 +13,18 @@ _: {
       icon = "mdi:bag-suitcase";
     };
 
-    # No `initial` — it would clobber the restored value on every restart, and
-    # an unseeded input_datetime reads as 00:00:00 rather than unknown, so a
-    # "seed if unset" guard cannot tell the two apart. Nothing consumes this
-    # yet; dishwasher_reminder.nix triggers on a literal 21:00:00 instead.
+    # `initial` re-applies on every restart rather than restoring the previous
+    # value. That is the point here: Nix owns the time, so a UI edit survives
+    # only until the next restart. Wall-clock, interpreted in the host time
+    # zone (`time.timeZone`), so it follows the PST/PDT shift on its own.
+    # dishwasher_reminder.nix triggers on this entity instead of a literal,
+    # which keeps this the single source of truth for the nag time.
     input_datetime.bedtime = {
       name = "Bedtime";
       icon = "mdi:bed-clock";
       has_date = false;
       has_time = true;
+      initial = "21:00:00";
     };
   };
 }

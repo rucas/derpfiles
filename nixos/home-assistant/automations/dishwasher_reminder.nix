@@ -12,7 +12,6 @@ let
   phone = entities.people.lucas.mobile;
   tag = "dishwasher-reminder";
 
-  reminderTime = "21:00:00";
   startedAction = "DISHWASHER_STARTED";
 
   nagIntervalMinutes = 20;
@@ -60,7 +59,7 @@ in
     (mkMultiTriggerAutomation {
       id = "dishwasher_reminder";
       alias = "Dishwasher Reminder";
-      description = "Nags at 9 PM until the dishwasher gets started.";
+      description = "Nags from input_datetime.bedtime until the dishwasher gets started.";
       # Parallel, not queued: the bedtime branch runs a repeat loop for up to
       # two hours, and a queued clear would sit behind it instead of dismissing.
       mode = "parallel";
@@ -93,7 +92,7 @@ in
             id = "cleared";
           }
         )
-        (triggers.time reminderTime // { id = "bedtime"; })
+        (triggers.time entities.bedtime // { id = "bedtime"; })
         {
           platform = "event";
           event_type = "mobile_app_notification_action";
