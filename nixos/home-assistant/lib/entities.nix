@@ -59,6 +59,8 @@ rec {
 
   bedtime = "input_datetime.bedtime";
 
+  vacationMode = "input_boolean.vacation_mode";
+
   allMobileDevices = lib.attrValues (lib.mapAttrs (_name: person: person.mobile) people);
 
   roomLights = room: lib.attrValues lights.${room} or [ ];

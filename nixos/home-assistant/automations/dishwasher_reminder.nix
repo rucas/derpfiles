@@ -36,6 +36,11 @@ let
     state = "on";
   };
 
+  notOnVacation = conditions.state {
+    entity_id = entities.vacationMode;
+    state = "off";
+  };
+
   firedBy = id: {
     condition = "trigger";
     inherit id;
@@ -154,6 +159,7 @@ in
               conditions = [
                 (firedBy "bedtime")
                 armed
+                notOnVacation
               ];
               sequence = [
                 # Every ping carries the action. iOS only reveals it on a
@@ -171,10 +177,12 @@ in
                   repeat = {
                     sequence = [
                       { delay.minutes = nagIntervalMinutes; }
-                      # Bails out when the flag cleared mid-delay, so a
-                      # dismissed reminder never pings again. Nothing follows
-                      # the repeat, so halting here ends the run cleanly.
+                      # Bails out when the flag cleared or vacation mode came
+                      # on mid-delay, so a dismissed reminder never pings
+                      # again. Nothing follows the repeat, so halting here ends
+                      # the run cleanly.
                       armed
+                      notOnVacation
                       (actions.notifyMobile {
                         service = phone;
                         inherit tag;
