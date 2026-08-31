@@ -44,6 +44,7 @@
     ../../nixos/ollama
     ../../nixos/open-webui
     ../../nixos/searxng
+    ../../nixos/crw
 
   ];
 
@@ -212,6 +213,14 @@
     # SEARX_SECRET_KEY — root-owned for the same reason as open_webui_env above
     searx_env = {
       file = ./secrets/searx_env.age;
+    };
+    # CRW_RENDERER__CAMOFOX__API_KEY and CAMOFOX_API_KEY — the same token from
+    # both ends, so they have to be rotated together
+    crw_env = {
+      file = ./secrets/crw_env.age;
+    };
+    camofox_env = {
+      file = ./secrets/camofox_env.age;
     };
   };
 

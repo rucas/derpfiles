@@ -192,4 +192,14 @@ in
     users.github-actions
     system
   ];
+  "crw_env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
+  "camofox_env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
 }
