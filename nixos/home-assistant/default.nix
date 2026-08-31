@@ -30,6 +30,7 @@ in
         "lutron_caseta"
         "met"
         "radio_browser"
+        "roborock"
         "unifiprotect"
         "zwave_js"
       ];
