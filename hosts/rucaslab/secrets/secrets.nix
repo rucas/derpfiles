@@ -187,4 +187,9 @@ in
     users.github-actions
     system
   ];
+  "searx_env.age".publicKeys = [
+    users.personal-5c-nano
+    users.github-actions
+    system
+  ];
 }

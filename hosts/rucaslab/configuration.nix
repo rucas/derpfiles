@@ -43,6 +43,7 @@
     ../../nixos/restic
     ../../nixos/ollama
     ../../nixos/open-webui
+    ../../nixos/searxng
 
   ];
 
@@ -208,6 +209,10 @@
       owner = config.services.authelia.instances.rucaslab.user;
       inherit (config.services.authelia.instances.rucaslab) group;
     };
+    # SEARX_SECRET_KEY — root-owned for the same reason as open_webui_env above
+    searx_env = {
+      file = ./secrets/searx_env.age;
+    };
   };
 
   # Bootloader.
@@ -318,6 +323,11 @@
           name = "ai";
           url = "https://ai.rucaslab.com";
           description = "Open WebUI";
+        }
+        {
+          name = "search";
+          url = "https://search.rucaslab.com";
+          description = "SearXNG";
         }
         {
           name = "ntfy";

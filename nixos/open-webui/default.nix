@@ -120,6 +120,17 @@ in
         # Caddy already does `encode zstd gzip` in front of this
         ENABLE_COMPRESSION_MIDDLEWARE = "False";
 
+        # Web search. SearXNG returns the URLs; the page fetch still runs
+        # through the built-in loader until crw lands.
+        ENABLE_WEB_SEARCH = "True";
+        WEB_SEARCH_ENGINE = "searxng";
+        SEARXNG_QUERY_URL = "http://127.0.0.1:8082/search";
+        WEB_SEARCH_RESULT_COUNT = "5";
+        WEB_SEARCH_CONCURRENT_REQUESTS = "4";
+        # Search results are already short and topical; re-chunking them through
+        # pgvector costs latency for no recall gain.
+        BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL = "True";
+
         ANONYMIZED_TELEMETRY = "False";
         DO_NOT_TRACK = "True";
         SCARF_NO_ANALYTICS = "True";
@@ -191,10 +202,12 @@ in
         "ollama.service"
         "postgresql-setup.service"
         "redis-open-webui.service"
+        "searx.service"
         "tika.service"
       ];
       wants = [
         "ollama.service"
+        "searx.service"
         "tika.service"
       ];
       requires = [
