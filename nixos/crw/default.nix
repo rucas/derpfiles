@@ -99,20 +99,6 @@ in
         };
       };
 
-      # oci-containers has no declarative network option, so create it here.
-      podman-network-crw = {
-        description = "Create the DNS-less podman network for camofox";
-        wantedBy = [ "podman-camofox.service" ];
-        before = [ "podman-camofox.service" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-        script = ''
-          ${config.virtualisation.podman.package}/bin/podman network exists crw \
-            || ${config.virtualisation.podman.package}/bin/podman network create --disable-dns crw
-        '';
-      };
     };
 
     tmpfiles.rules = [
@@ -125,6 +111,18 @@ in
     podman = {
       enable = true;
       autoPrune.enable = true;
+      # aardvark-dns cannot bind 10.88.0.1:53 because AdGuard Home holds the
+      # *:53 wildcard, so podman's default network fails to come up. Nothing
+      # here resolves container names — containers inherit the host's resolvers
+      # through /etc/resolv.conf — so turn DNS off for it. This lands in
+      # /etc/containers/networks/podman.json, which `podman system prune`
+      # cannot delete (a user-created network can be, and was).
+      #
+      # mkForce overrides services.changedetection-io, which asserts this
+      # unconditionally for its chrome/playwright sidecars. Neither is enabled
+      # here — camofox is the only container on this host — and those sidecars
+      # are reached on published loopback ports rather than by container name.
+      defaultNetwork.settings.dns_enabled = lib.mkForce false;
     };
 
     oci-containers = {
@@ -151,15 +149,13 @@ in
         environmentFiles = [ config.age.secrets.camofox_env.path ];
 
         volumes = [ "/var/lib/camofox:/home/node/.camofox" ];
+        # Hold the unit "activating" until the image's own /health check passes,
+        # so crw's ordering on this unit means the browser is actually ready.
+        podman.sdnotify = "healthy";
         extraOptions = [
           # Firefox needs a real shared-memory segment; the 64M default crashes tabs.
           "--shm-size=1g"
           "--pids-limit=512"
-          # Podman's default network runs aardvark-dns, which cannot bind
-          # 10.88.0.1:53 because AdGuard Home already holds the *:53 wildcard.
-          # Nothing here resolves container names, so the network drops DNS and
-          # the container inherits the host's resolvers via /etc/resolv.conf.
-          "--network=crw"
         ];
       };
     };
