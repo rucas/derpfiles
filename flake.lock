@@ -1173,11 +1173,11 @@
         "pre-commit-hooks": "pre-commit-hooks_3"
       },
       "locked": {
-        "lastModified": 1779295993,
-        "narHash": "sha256-ARKY6jiPmEo5dFcxmJAMB9uodEqA9ZcdzT0utSm8Vh0=",
+        "lastModified": 1789405971,
+        "narHash": "sha256-fAia1Sc2yQC5z2Bd4QDQgc+j9IFVtmOMHQ3zla++sNE=",
         "owner": "rucas",
         "repo": "rucaslab",
-        "rev": "a01c42100721bea13cc4e63d96476e389b5e9031",
+        "rev": "250211a9877aace6c82114d6ff3b9488503e17ac",
         "type": "github"
       },
       "original": {
