@@ -8,7 +8,8 @@ current branch.
 
 Take an open PR — **draft or already under review** — and move it forward:
 
-- Keep the branch up to date with its base (un-stale it).
+- Keep the branch up to date with its base (un-stale it), resolving merge conflicts
+  yourself via `/resolve-conflicts`.
 - Get every automated **test** and **lint** check green, fixing real failures via
   `/fix-ci`.
 - If the PR is still a **draft** and everything is green, mark it ready
@@ -19,6 +20,18 @@ Take an open PR — **draft or already under review** — and move it forward:
 
 Ignore checks that can only be satisfied by a human — review approvals, CODEOWNERS
 sign-off, and manual/environment approval gates. Never wait on those.
+
+## Autonomy boundary
+
+Do these **without asking**: update the branch, resolve merge conflicts, and commit
+and push work from `/fix-ci`. Those commands default to not pushing on their own —
+this command explicitly authorizes it, so tell them so in their `$ARGUMENTS`.
+
+**Always** stop for the user on anything from `/address-review`: once to push the
+review-fix commits, then again per thread before replying or resolving. Review
+feedback is the user's conversation, not yours.
+
+Never force-push. Everything above is reachable with a plain `git push`.
 
 ## Context first
 
@@ -51,9 +64,24 @@ package.json / CI config. (The delegated commands — `/fix-ci`, `/address-revie
    - If stale, update the branch by merging the base:
      `gh pr update-branch <pr>`. If the base must be rebased instead (or the user
      asked for a rebase), use `gh pr update-branch <pr> --rebase`.
-   - If the update reports a **conflict** (non-zero exit / "merge conflict"), STOP
-     and report — resolving conflicts needs the user (or `/resolve-conflicts`). Do
-     not force anything.
+   - If the update reports a **conflict** (non-zero exit / "merge conflict"), resolve
+     it yourself. `gh pr update-branch` merges server-side and fails without touching
+     your worktree, so there is no local conflict state yet — `/resolve-conflicts`
+     would find nothing and stop. Create it first:
+     1. `git fetch origin`, then `git merge origin/<baseRefName>` to materialize the
+        conflict locally.
+     2. Invoke `/resolve-conflicts` to resolve every file and complete the merge
+        commit. Let it ask the user about any resolution it finds ambiguous — that
+        is its own gate, and it stands.
+     3. `git push` (plain — no `--force`, no `--force-with-lease`), then fall through
+        to step 3 for the fresh CI run.
+   - **Merge, never rebase, to clear a conflict.** A rebase rewrites already-pushed
+     history and needs `git push --force-with-lease`, which the `Bash(git push
+     --force*)` deny rule blocks — and an allow rule cannot carve an exception out of
+     a deny rule. If the PR genuinely requires a rebase, STOP and report.
+   - If `/resolve-conflicts` cannot finish (it asks and gets no answer, or the
+     conflict needs a decision you do not have), leave the merge in progress, STOP,
+     and report which files are still conflicted.
    - After a successful update, the base merge/rebase triggers a fresh CI run, so
      fall through to step 3 and wait for it. Bots usually drop the `stale` label on
      their own; if it lingers after the update, note it in the report rather than
@@ -89,9 +117,11 @@ package.json / CI config. (The delegated commands — `/fix-ci`, `/address-revie
        being behind base is a common cause of failures, so let the fresh run settle
        before touching code.
      - If it still fails after that (or the branch was already current), invoke
-       `/fix-ci` with the failing check(s) (pass the check name / `link` as its
-       `$ARGUMENTS`). Let it reproduce locally, fix the root cause, and push. Once it
-       has pushed a fix, go back to step 3. See the failure-handling rules below.
+       `/fix-ci` with the failing check(s) and an explicit instruction to commit and
+       push (e.g. `<check name> <link> — commit the fix and push it`). `/fix-ci`
+       defaults to not pushing, so it needs that authorization in its `$ARGUMENTS`.
+       Let it reproduce locally, fix the root cause, commit via `/commit`, and push.
+       Once it has pushed, go back to step 3. See the failure-handling rules below.
    - When every non-human check is `pass`/`skipping`, the PR is **green** →
      go to step 6.
 
@@ -130,8 +160,9 @@ package.json / CI config. (The delegated commands — `/fix-ci`, `/address-revie
 8. **Report** a short summary:
    - The PR, its mode (draft/review), and final state (marked ready / replies posted
      / still open).
-   - Whether the branch was updated for staleness (and how — merge vs rebase), or
-     blocked on a conflict.
+   - Whether the branch was updated for staleness (and how — server-side update vs
+     local merge), and for a conflict: which files conflicted, how each was resolved,
+     and the merge commit SHA.
    - Per-check outcome grouped as passed / skipped / ignored-human-gate / failed.
    - Any failures fixed via `/fix-ci`, and the fix.
    - For review mode: per comment → the commit that addressed it (or why not), and
@@ -145,8 +176,14 @@ package.json / CI config. (The delegated commands — `/fix-ci`, `/address-revie
 - Guard against infinite loops: if the **same** check fails again after a `/fix-ci`
   attempt, or after **3** total fix attempts across the run, STOP and report the
   outstanding failures with their `link`s so the user can take over.
-- `/fix-ci` needs to push for a new CI run to start. If it declines to push or
-  cannot, STOP and report — do not proceed to the finishing step.
+- `/fix-ci` needs to push for a new CI run to start, and this command authorizes
+  that push (see Autonomy boundary) — pass the instruction in its `$ARGUMENTS` rather
+  than expecting its default. If it still cannot push, STOP and report; do not
+  proceed to the finishing step.
+- A conflict resolved under step 2 counts toward neither the per-check nor the
+  3-attempt fix budget. But if the same branch conflicts again after you have
+  already merged base once this run, STOP and report — base is moving faster than
+  you can settle, and that needs the user.
 
 ## Notes
 
@@ -156,7 +193,8 @@ package.json / CI config. (The delegated commands — `/fix-ci`, `/address-revie
   not blockers for this command.
 - Prefer `--interval 60` on `--watch` so the loop is responsive without hammering
   the API. For very long suites, a longer interval is fine.
-- Writes are gated: the branch update (step 2) and `/fix-ci` pushes are automatic,
+- Writes are gated: the branch update and conflict resolution (step 2) and
+  `/fix-ci` commits and pushes are automatic,
   but pushing review-fix commits and posting/resolving review threads (step 7b)
   **always** require explicit user confirmation — pushing once for the commits, and
   again per thread before replying/resolving.
