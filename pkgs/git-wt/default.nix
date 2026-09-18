@@ -93,6 +93,25 @@ writeShellApplication {
       tmux new-session -d -s "$1" -c "$2"
     }
 
+    # Echo a pane id in session $1 whose foreground process is a shell, or nothing
+    # when every pane is running something else.
+    _shell_pane() {
+      tmux list-panes -s -t "=$1" -F '#{pane_id} #{pane_current_command}' 2>/dev/null \
+        | awk '$2 ~ /^-?(zsh|bash|sh|fish|dash|ksh)$/ { print $1; exit }'
+    }
+
+    # Echo a pane id in session $1 that is safe to type a shell command into,
+    # opening a detached window rooted at $2 when no pane sits at a prompt.
+    # `send-keys -t <session>` targets the session's *active* pane, which on a
+    # long-lived worktree session is usually the one already running claude — the
+    # command would land in claude's prompt as a chat message instead of launching it.
+    _command_pane() {
+      local pane
+      pane="$(_shell_pane "$1")"
+      [ -n "$pane" ] || pane="$(tmux new-window -d -t "=$1" -c "$2" -P -F '#{pane_id}')"
+      echo "$pane"
+    }
+
     _kill_session() { tmux kill-session -t "=$1" 2>/dev/null || true; }
 
     _attach_session() {
@@ -821,10 +840,14 @@ writeShellApplication {
 
           _ensure_session "$session" "$wt_path" || true
 
+          local pane
+          pane="$(_command_pane "$session" "$wt_path")"
+
           # The resolve-conflicts procedure is baked in at build time (single source of
           # truth: modules/cli/claude/commands/resolve-conflicts.md), so --ai always has
           # it regardless of whether the /resolve-conflicts slash command is enabled.
-          tmux send-keys -t "$session" "claude --append-system-prompt-file '${./../../modules/cli/claude/commands/resolve-conflicts.md}' 'Resolve the merge conflicts'" Enter
+          tmux send-keys -t "$pane" C-u
+          tmux send-keys -t "$pane" "claude --append-system-prompt-file '${./../../modules/cli/claude/commands/resolve-conflicts.md}' 'Resolve the merge conflicts'" Enter
         elif [ "$sync_failed" -eq 1 ]; then
           echo "Merge conflict in $session — resolve manually or re-run with --ai"
         fi
