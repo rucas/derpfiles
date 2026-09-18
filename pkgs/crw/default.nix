@@ -6,8 +6,8 @@
 
 # Firecrawl-compatible scrape/crawl/search API, used as Open WebUI's web loader
 # (WEB_LOADER_ENGINE=firecrawl). This fork replaces upstream's SearXNG sidecar
-# with browser-driven search through Camoufox; only the scrape surface is used
-# here, so `/v1/search` stays unconfigured.
+# with browser-driven search through Camoufox. Open WebUI only ever reaches the
+# scrape surface; its search results come from SearXNG.
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "crw";
   version = "1.2.0";
