@@ -278,6 +278,66 @@ rec {
       delay = { inherit seconds; };
     };
 
+    # Leaving privacy has to re-assert the mic level and record mode by hand:
+    # Protect replays what it stashed on the privacy switch, but drops the
+    # replay often enough to leave a camera muted and not recording. The delay
+    # is what makes this work — without it a late replay of the stashed values
+    # lands on top of these writes and undoes them.
+    cameraPrivacyOff =
+      camera:
+      [
+        (actions.switchTurn {
+          entity_id = camera.privacy;
+          state = "off";
+        })
+      ]
+      ++ lib.optional (camera ? statusLight) (
+        actions.switchTurn {
+          entity_id = camera.statusLight;
+          state = "on";
+        }
+      )
+      ++ [
+        (actions.delay 5)
+
+        (actions.service {
+          service = "number.set_value";
+          entity_id = camera.microphone;
+          data.value = 100;
+        })
+
+        (actions.service {
+          service = "select.select_option";
+          entity_id = camera.recording;
+          data.option = "always";
+        })
+      ];
+
+    # Entering privacy needs no such care: Protect zeroes the mic itself on the
+    # way in, and the record mode is pinned here only so a camera cannot keep
+    # recording if Protect is slow to apply privacy.
+    cameraPrivacyOn =
+      camera:
+      [
+        (actions.switchTurn {
+          entity_id = camera.privacy;
+          state = "on";
+        })
+      ]
+      ++ lib.optional (camera ? statusLight) (
+        actions.switchTurn {
+          entity_id = camera.statusLight;
+          state = "off";
+        }
+      )
+      ++ [
+        (actions.service {
+          service = "select.select_option";
+          entity_id = camera.recording;
+          data.option = "never";
+        })
+      ];
+
     waitForTrigger =
       {
         trigger,

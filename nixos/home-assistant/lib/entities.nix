@@ -49,7 +49,34 @@ rec {
 
   rustyCrate = {
     door = "binary_sensor.rusty_crate_door_contact";
-    privacy = "switch.rusty_crate_privacy_mode";
+  };
+
+  # UniFi Protect cameras, grouped per camera so the privacy helpers can take a
+  # whole camera rather than four loose entity ids. Protect stashes the
+  # pre-privacy mic level and record mode on the privacy switch
+  # (prev_mic_level / prev_record_mode) and replays them when privacy lifts, but
+  # the replay drops often enough that both have to be re-asserted by hand.
+  # Entity ids are named after the camera model, not its Protect label.
+  cameras = {
+    rustyCrate = {
+      privacy = "switch.rusty_crate_privacy_mode";
+      microphone = "number.rusty_crate_microphone_level";
+      recording = "select.g6_instant_recording_mode";
+    };
+
+    garage = {
+      privacy = "switch.g4_instant_privacy_mode";
+      microphone = "number.g4_instant_microphone_level";
+      recording = "select.g4_instant_recording_mode";
+      statusLight = "switch.g4_instant_status_light_on";
+    };
+
+    kitchen = {
+      privacy = "switch.g5_flex_privacy_mode";
+      microphone = "number.g5_flex_microphone_level";
+      recording = "select.g5_flex_recording_mode";
+      statusLight = "switch.g5_flex_status_light_on";
+    };
   };
 
   thermostat = {
