@@ -7,6 +7,7 @@
     ./downstairs_lamps_pico.nix
     ./dishwasher_reminder.nix
     ./rusty_crate_privacy.nix
+    ./security_camera_privacy.nix
     ./climate_door_pause.nix
   ];
   services.home-assistant.config = {
