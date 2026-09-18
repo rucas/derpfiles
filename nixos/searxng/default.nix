@@ -11,7 +11,7 @@ in
     searx = {
       enable = true;
       # searx-init envsubst's this over settings.yml into /run/searx before the
-      # server starts, so the key itself never enters the Nix store.
+      # server starts, so the keys themselves never enter the Nix store.
       environmentFile = config.age.secrets.searx_env.path;
 
       settings = {
@@ -35,9 +35,55 @@ in
             "html"
             "json"
           ];
+          # Its own subsystem in searx/autocomplete.py, unrelated to the
+          # duckduckgo engine disabled below, and only used by the web UI.
           autocomplete = "duckduckgo";
           safe_search = 0;
         };
+
+        # Merged by name into the upstream engine list that use_default_settings
+        # pulls in.
+        #
+        # Everything disabled here fails closed on bot detection from a
+        # residential IP: the scrape endpoints fingerprint the HTTP client, not
+        # just the address, so there is no configuration that recovers them.
+        # Each one left enabled would still be queried on every Open WebUI
+        # search and still have to time out before results are returned.
+        # Measured failure rates come from /stats/errors.
+        engines = [
+          # 429 TooManyRequests, 45% of requests. Superseded by braveapi below.
+          {
+            name = "brave";
+            disabled = true;
+          }
+          # CAPTCHA, 90%.
+          {
+            name = "duckduckgo";
+            disabled = true;
+          }
+          # CAPTCHA, 65%.
+          {
+            name = "startpage";
+            disabled = true;
+          }
+          {
+            name = "startpage images";
+            disabled = true;
+          }
+          # The same index as the scraped engine, over the official API.
+          # Upstream ships this entry as `inactive`, which drops it before
+          # registration, so it has to be flipped for the engine to exist at all.
+          {
+            name = "braveapi";
+            inactive = false;
+            shortcut = "brapi";
+            # Substituted from environmentFile, same as secret_key above.
+            api_key = "$BRAVE_API_KEY";
+            # The free tier allows 1 req/s and 2000/month. Open WebUI reads the
+            # top handful of results, so one page per query stays inside that.
+            results_per_page = 20;
+          }
+        ];
       };
     };
 
