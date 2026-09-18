@@ -40,7 +40,11 @@ let
     bind -x '"\t": _tmux_cmd_complete' 2>/dev/null
 
     initial=$(_pick_tmux_command "")
-    [ -n "$initial" ] && initial="$initial "
+    if [ "$initial" = "rename-window" ]; then
+      initial="rename-window '$(tmux display-message -p '#W')'"
+    elif [ -n "$initial" ]; then
+      initial="$initial "
+    fi
 
     read -e -p "tmux> " -i "$initial" cmd
 
