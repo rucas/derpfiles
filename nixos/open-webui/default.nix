@@ -120,6 +120,23 @@ in
         # Caddy already does `encode zstd gzip` in front of this
         ENABLE_COMPRESSION_MIDDLEWARE = "False";
 
+        # Web search. SearXNG returns the URLs, crw fetches each one and hands
+        # back markdown — so the HTML never gets parsed in the uvicorn workers.
+        ENABLE_WEB_SEARCH = "True";
+        WEB_SEARCH_ENGINE = "searxng";
+        SEARXNG_QUERY_URL = "http://127.0.0.1:8082/search";
+        WEB_SEARCH_RESULT_COUNT = "5";
+        WEB_SEARCH_CONCURRENT_REQUESTS = "4";
+
+        WEB_LOADER_ENGINE = "firecrawl";
+        # Open WebUI appends /v2 itself, so no version suffix here. crw is
+        # loopback-bound and its own auth is off, so no FIRECRAWL_API_KEY.
+        FIRECRAWL_API_BASE_URL = "http://127.0.0.1:3002";
+        FIRECRAWL_TIMEOUT = "60";
+        # Search results are already short and topical; re-chunking them through
+        # pgvector costs latency for no recall gain.
+        BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL = "True";
+
         ANONYMIZED_TELEMETRY = "False";
         DO_NOT_TRACK = "True";
         SCARF_NO_ANALYTICS = "True";
@@ -191,10 +208,14 @@ in
         "ollama.service"
         "postgresql-setup.service"
         "redis-open-webui.service"
+        "searx.service"
+        "crw.service"
         "tika.service"
       ];
       wants = [
         "ollama.service"
+        "searx.service"
+        "crw.service"
         "tika.service"
       ];
       requires = [

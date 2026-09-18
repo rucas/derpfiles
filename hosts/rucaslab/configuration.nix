@@ -43,6 +43,8 @@
     ../../nixos/restic
     ../../nixos/ollama
     ../../nixos/open-webui
+    ../../nixos/searxng
+    ../../nixos/crw
 
   ];
 
@@ -208,6 +210,18 @@
       owner = config.services.authelia.instances.rucaslab.user;
       inherit (config.services.authelia.instances.rucaslab) group;
     };
+    # SEARX_SECRET_KEY — root-owned for the same reason as open_webui_env above
+    searx_env = {
+      file = ./secrets/searx_env.age;
+    };
+    # CRW_RENDERER__CAMOFOX__API_KEY and CAMOFOX_API_KEY — the same token from
+    # both ends, so they have to be rotated together
+    crw_env = {
+      file = ./secrets/crw_env.age;
+    };
+    camofox_env = {
+      file = ./secrets/camofox_env.age;
+    };
   };
 
   # Bootloader.
@@ -318,6 +332,11 @@
           name = "ai";
           url = "https://ai.rucaslab.com";
           description = "Open WebUI";
+        }
+        {
+          name = "search";
+          url = "https://search.rucaslab.com";
+          description = "SearXNG";
         }
         {
           name = "ntfy";
