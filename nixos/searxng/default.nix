@@ -28,6 +28,13 @@ in
           limiter = false;
         };
 
+        # query.wikidata.org enforces the Wikimedia User-Agent policy and 403s
+        # the bare "SearXNG/<version>" default, which killed the wikidata engine
+        # at init on every start. A URL-form contact is what the policy wants;
+        # it satisfies the check without putting an email in a header that goes
+        # to every engine. The host need not be publicly reachable.
+        outgoing.useragent_suffix = "(+https://search.rucaslab.com)";
+
         search = {
           # Upstream ships html only. Open WebUI's searxng loader requests
           # format=json and gets a 403 without this.
