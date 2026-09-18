@@ -63,12 +63,11 @@ _final: prev: {
       fastmcp = python-prev.fastmcp.overridePythonAttrs (_old: {
         doCheck = false;
       });
-      posthog = python-prev.posthog.overridePythonAttrs (old: {
-        # test_contexts.py forks a multi-threaded process; the child fails with
-        # ENOMEM on memory-constrained builders (CI runners).
-        disabledTests = (old.disabledTests or [ ]) ++ [
-          "test_fork_clears_context_in_child_and_preserves_parent"
-        ];
+      posthog = python-prev.posthog.overridePythonAttrs (_old: {
+        # The suite assumes a fast, idle machine: test_contexts.py forks a
+        # multi-threaded process (ENOMEM on CI), and test_client.py asserts
+        # exact background-consumer batch counts after a 1s sleep.
+        doCheck = false;
       });
     })
   ];
