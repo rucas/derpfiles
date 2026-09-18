@@ -32,6 +32,7 @@ _final: prev: {
   };
   snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
   chronosphere-mcp = prev.callPackage ../pkgs/chronosphere-mcp { };
+  crw = prev.callPackage ../pkgs/crw { };
 
   gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
     version = "4.2.0";
@@ -60,6 +61,12 @@ _final: prev: {
         doCheck = false;
       });
       fastmcp = python-prev.fastmcp.overridePythonAttrs (_old: {
+        doCheck = false;
+      });
+      posthog = python-prev.posthog.overridePythonAttrs (_old: {
+        # The suite assumes a fast, idle machine: test_contexts.py forks a
+        # multi-threaded process (ENOMEM on CI), and test_client.py asserts
+        # exact background-consumer batch counts after a 1s sleep.
         doCheck = false;
       });
     })
