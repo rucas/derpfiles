@@ -29,7 +29,7 @@ jobs:
         if: matrix.host == 'rucaslab'
         uses: wimpysworld/nothing-but-nix@main
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           token: ${{ secrets.ACTIONS_TOKEN }}
           fetch-depth: 1
@@ -57,8 +57,10 @@ jobs:
           echo "${{ secrets.AGENIX_KEY }}" > ~/.ssh/agenix
           chmod 600 ~/.ssh/agenix
       - name: Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@v8
-      - uses: cachix/cachix-action@v15
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: "disabled"
+      - uses: cachix/cachix-action@v17
         with:
           name: derpfiles
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
