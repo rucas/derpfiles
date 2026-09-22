@@ -612,15 +612,17 @@ writeShellApplication {
     }
 
     review() {
-      local usage="Usage: git wt review <pr-number>... [subdir] [--repo PATH] [--skill NAME] [--include PATH]... [--full] [--no-attach] [--no-copy-skills]"
-      local subdir="" skill="kotlin-pr-review" attach=1 repo="" copy_skills=1 full=0
-      local prs=() includes=()
+      local usage="Usage: git wt review <pr-number>... [subdir] [--repo PATH] [--skill NAME] [--context FILE]... [--prompt TEXT] [--include PATH]... [--full] [--no-attach] [--no-copy-skills]"
+      local subdir="" skill="kotlin-pr-review" attach=1 repo="" copy_skills=1 full=0 extra_prompt=""
+      local prs=() includes=() contexts=()
       # PR numbers and the subdir are told apart by shape: an all-digit positional
       # is a PR (any number of them), the lone non-numeric one is the subdir.
       while [ "$#" -gt 0 ]; do
         case "$1" in
           --skill)          skill="''${2:-}"; shift 2 ;;
           --repo)           repo="''${2:-}"; shift 2 ;;
+          --context)        contexts+=("''${2:-}"); shift 2 ;;
+          --prompt)         extra_prompt="''${2:-}"; shift 2 ;;
           --include)        includes+=("''${2:-}"); shift 2 ;;
           --full)           full=1; shift ;;
           --no-attach)      attach=0; shift ;;
@@ -645,6 +647,17 @@ writeShellApplication {
         echo "$usage" >&2
         exit 1
       fi
+
+      # Resolve context files up front: a typo'd path should fail before any
+      # worktree is created, and the copy step below runs from a different cwd.
+      local ctx_abs=() ctx
+      for ctx in "''${contexts[@]}"; do
+        if [ ! -f "$ctx" ]; then
+          echo "Error: context file not found: $ctx" >&2
+          exit 1
+        fi
+        ctx_abs+=("$(cd "$(dirname "$ctx")" && pwd)/$(basename "$ctx")")
+      done
 
       local main_wt repo_nwo
       if [ -n "$repo" ]; then
@@ -733,13 +746,51 @@ writeShellApplication {
           done
         fi
 
+        # Context files are copied into the worktree rather than @-mentioned where
+        # they live: the review then carries its own briefing material, editing the
+        # original mid-review can't change what was reviewed, and the path stays
+        # inside the worktree so Claude reads it without a permission prompt.
+        # Absolute refs, because the session's cwd is review_dir, not the worktree root.
+        local ctx_refs="" ctx_dir="$wt_path/.claude/context" ctx_dest ctx_base ctx_stem ctx_ext n
+        if [ "''${#ctx_abs[@]}" -gt 0 ]; then
+          mkdir -p "$ctx_dir"
+          for ctx in "''${ctx_abs[@]}"; do
+            ctx_base="$(basename "$ctx")"
+            ctx_dest="$ctx_dir/$ctx_base"
+            # Two --context files sharing a basename would silently clobber; suffix
+            # the later ones. Identical content is treated as the same file.
+            if [[ "$ctx_base" == *.* ]]; then
+              ctx_stem="''${ctx_base%.*}"; ctx_ext=".''${ctx_base##*.}"
+            else
+              ctx_stem="$ctx_base"; ctx_ext=""
+            fi
+            n=2
+            while [ -e "$ctx_dest" ] && ! cmp -s "$ctx" "$ctx_dest"; do
+              ctx_dest="$ctx_dir/$ctx_stem-$n$ctx_ext"
+              n=$(( n + 1 ))
+            done
+            cp "$ctx" "$ctx_dest"
+            if [ -z "$ctx_refs" ]; then ctx_refs="@$ctx_dest"; else ctx_refs="$ctx_refs @$ctx_dest"; fi
+          done
+        fi
+
+        local prompt="/$skill $pr"
+        if [ -n "$ctx_refs" ]; then
+          prompt="$prompt $ctx_refs"
+        fi
+        if [ -n "$extra_prompt" ]; then
+          prompt="$prompt $extra_prompt"
+        fi
+
         local session
         session="$(_session_name "$wt_path")"
 
         # cwd = review_dir so Claude discovers the CLAUDE.md chain from that subdir
         # up to the repo root, giving the review the right per-service context.
+        # printf %q so a --prompt carrying quotes or $ reaches claude intact: send-keys
+        # types the string into a shell, so it has to survive one round of shell parsing.
         if _ensure_session "$session" "$review_dir"; then
-          tmux send-keys -t "$session" "claude '/$skill $pr'" Enter
+          tmux send-keys -t "$session" "claude $(printf '%q' "$prompt")" Enter
         fi
         last_session="$session"
 
@@ -747,6 +798,12 @@ writeShellApplication {
         printf "Worktree: %s\n" "$wt_path"
         printf "Context:  %s\n" "$review_dir"
         printf "Skill:    /%s\n" "$skill"
+        if [ -n "$ctx_refs" ]; then
+          printf "Context+: %s\n" "$ctx_refs"
+        fi
+        if [ -n "$extra_prompt" ]; then
+          printf "Prompt:   %s\n" "$extra_prompt"
+        fi
         printf "Session:  %s\n" "$session"
         echo ""
       done
@@ -1121,13 +1178,18 @@ writeShellApplication {
       echo "                        Copies every nested live .claude/skills into each worktree"
       echo "                        (even gitignored ones) unless --no-copy-skills."
       echo "                        --attach opens the last new session."
-      echo "    review <pr>... [subdir] [--repo PATH] [--skill NAME] [--include PATH]..."
-      echo "           [--full] [--no-attach] [--no-copy-skills]"
+      echo "    review <pr>... [subdir] [--repo PATH] [--skill NAME] [--context FILE]..."
+      echo "           [--prompt TEXT] [--include PATH]... [--full] [--no-attach]"
+      echo "           [--no-copy-skills]"
       echo "                        Check out each PR <pr> into an isolated worktree, launch"
       echo "                        claude in <subdir> (so its CLAUDE.md chain loads) and run"
       echo "                        /NAME (default: kotlin-pr-review). Pass several PR numbers to"
-      echo "                        set up one worktree + session per PR. --repo targets a repo"
-      echo "                        outside the cwd; <subdir> is relative to it. Live .claude/skills"
+      echo "                        set up one worktree + session per PR. --context FILE copies a"
+      echo "                        briefing file into <worktree>/.claude/context and @-mentions it"
+      echo "                        in the prompt (repeatable); --prompt TEXT appends free text"
+      echo "                        after the skill invocation. Both apply to every PR given."
+      echo "                        --repo targets a repo outside the cwd; <subdir> is relative"
+      echo "                        to it. Live .claude/skills"
       echo "                        (from the repo root and every level down to <subdir>, even"
       echo "                        gitignored ones) are copied in unless --no-copy-skills."
       echo "                        With a <subdir>, checks out only that subtree (sparse cone)"
