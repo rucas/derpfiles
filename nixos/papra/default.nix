@@ -22,7 +22,7 @@
   services = {
     papra = {
       enable = true;
-      environmentFile = config.age.secrets.papra_env.path;
+      environmentFiles = [ config.age.secrets.papra_env.path ];
       environment = {
         APP_BASE_URL = "https://docs.rucaslab.com";
         PORT = 1221;
