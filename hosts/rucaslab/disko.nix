@@ -88,7 +88,7 @@ _: {
           };
           postgresql = {
             type = "zfs_fs";
-            mountpoint = "/data/postgresql/14";
+            mountpoint = "/data/postgresql";
             options = {
               recordsize = "8K";
               primarycache = "metadata";

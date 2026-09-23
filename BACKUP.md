@@ -219,7 +219,7 @@ journalctl -u restic-backups-s3-glacier.service --since "24 hours ago"
 | Service | Data path | Backup method |
 |---|---|---|
 | Home Assistant | `/var/lib/hass` | Sanoid + restic |
-| PostgreSQL (hass, lldap, authelia) | `/data/postgresql/14` | Sanoid + pg_dump → restic |
+| PostgreSQL (hass, lldap, authelia) | `/data/postgresql/17` | Sanoid + pg_dump → restic |
 | ESPHome | `/var/lib/esphome` | Sanoid + restic |
 | Zigbee2MQTT | `/var/lib/zigbee2mqtt` | Sanoid + restic |
 | Z-Wave JS UI | `/var/lib/zwave-js-ui` | Sanoid + restic |
