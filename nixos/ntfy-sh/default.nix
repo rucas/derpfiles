@@ -1,5 +1,14 @@
 { config, ... }:
 {
+  users = {
+    users.ntfy-sh = {
+      isSystemUser = true;
+      group = "ntfy-sh";
+      home = "/var/lib/ntfy-sh";
+    };
+    groups.ntfy-sh = { };
+  };
+
   services = {
     caddy = {
       virtualHosts = {
