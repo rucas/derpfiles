@@ -142,6 +142,22 @@ rec {
       inherit value_template;
     };
 
+    # Zigbee2MQTT retains the last payload, so Home Assistant replays it on
+    # every restart and broker reconnect. Without this guard an mqtt-triggered
+    # automation re-fires long after the press. Mirrors the guard in the
+    # aqara_mini_switch_t1 blueprint and relies on `advanced.last_seen:
+    # ISO_8601`; a payload without that field is let through rather than
+    # dropped, so a device missing the setting still works.
+    freshMqttPress = maxAgeSeconds: {
+      condition = "template";
+      value_template = ''
+        {{ trigger.payload_json.last_seen is not defined
+           or (now().timestamp()
+               - (trigger.payload_json.last_seen | as_datetime | as_timestamp))
+              < ${toString maxAgeSeconds} }}
+      '';
+    };
+
     and = conditions_list: {
       condition = "and";
       conditions = conditions_list;

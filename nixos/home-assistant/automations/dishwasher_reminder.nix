@@ -17,18 +17,7 @@ let
   nagIntervalMinutes = 20;
   nagLimit = 6;
 
-  # Zigbee2MQTT retains the last payload, so Home Assistant replays it on every
-  # restart and broker reconnect. Without this the replay would re-arm the flag
-  # long after the press. Mirrors the guard in the aqara_mini_switch_t1
-  # blueprint, and relies on `advanced.last_seen: ISO_8601`.
   maxPressAgeSeconds = 10;
-
-  freshPress = ''
-    {{ trigger.payload_json.last_seen is not defined
-       or (now().timestamp()
-           - (trigger.payload_json.last_seen | as_datetime | as_timestamp))
-          < ${toString maxPressAgeSeconds} }}
-  '';
 
   armed = conditions.state {
     entity_id = entities.dishwasher.needsRunning;
@@ -109,7 +98,7 @@ in
             {
               conditions = [
                 (firedBy "button")
-                (conditions.template freshPress)
+                (conditions.freshMqttPress maxPressAgeSeconds)
               ];
               sequence = [
                 {
