@@ -109,6 +109,18 @@ rec {
     topic = "zigbee2mqtt/Dishwasher Button";
   };
 
+  # `vacThenMop` is a Roborock in-app routine surfaced as a button entity rather
+  # than a `vacuum.start` call: the room order, fan speed and the vac-then-mop
+  # pass order all live in the routine, so pressing it is the only way to
+  # reproduce what the app does. The entity id is the routine name slugified, so
+  # renaming the routine in the Roborock app renames the entity.
+  robovac = {
+    vacuum = "vacuum.roborock_qrevo_curv";
+    vacThenMop = "button.roborock_qrevo_curv_vac_than_vac_mop";
+    scheduled = "input_boolean.robovac_scheduled";
+    runTime = "input_datetime.robovac_run_time";
+  };
+
   bedtime = "input_datetime.bedtime";
 
   vacationMode = "input_boolean.vacation_mode";

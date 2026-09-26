@@ -37,20 +37,39 @@ in
         name = "Thermostat Paused By Door";
         icon = "mdi:hvac-off";
       };
+
+      # Armed by a double press on the Dishwasher Button, consumed by
+      # robovac_schedule.nix at input_datetime.robovac_run_time. No `initial`,
+      # for the same reason as the restore helpers above: the press lands the
+      # evening before the run, so the flag has to survive a restart in between.
+      robovac_scheduled = {
+        name = "Robovac Scheduled";
+        icon = "mdi:robot-vacuum";
+      };
     };
 
     # `initial` re-applies on every restart rather than restoring the previous
-    # value. That is the point here: Nix owns the time, so a UI edit survives
-    # only until the next restart. Wall-clock, interpreted in the host time
-    # zone (`time.timeZone`), so it follows the PST/PDT shift on its own.
-    # dishwasher_reminder.nix triggers on this entity instead of a literal,
-    # which keeps this the single source of truth for the nag time.
-    input_datetime.bedtime = {
-      name = "Bedtime";
-      icon = "mdi:bed-clock";
-      has_date = false;
-      has_time = true;
-      initial = "21:00:00";
+    # value. That is the point here: Nix owns these times, so a UI edit survives
+    # only until the next restart. Wall-clock, interpreted in the host time zone
+    # (`time.timeZone`), so they follow the PST/PDT shift on their own. The
+    # automations trigger on these entities instead of literals, which keeps
+    # each one the single source of truth for its schedule.
+    input_datetime = {
+      bedtime = {
+        name = "Bedtime";
+        icon = "mdi:bed-clock";
+        has_date = false;
+        has_time = true;
+        initial = "21:00:00";
+      };
+
+      robovac_run_time = {
+        name = "Robovac Run Time";
+        icon = "mdi:clock-time-six-outline";
+        has_date = false;
+        has_time = true;
+        initial = "06:00:00";
+      };
     };
 
     # One entity standing for "some opening is letting conditioned air out".
