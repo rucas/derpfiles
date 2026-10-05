@@ -66,6 +66,7 @@
       PAGERDUTY_API_TOKEN = "$(cat ${osConfig.services.onepassword-secrets.secretPaths.pagerdutyApiToken})";
     };
     packages = [
+      pkgs.chronoctl
       (import ../../pkgs/dnd pkgs)
       (import ../../pkgs/shortuuid pkgs)
       inputs.nxvm.packages.${pkgs.stdenv.hostPlatform.system}.default

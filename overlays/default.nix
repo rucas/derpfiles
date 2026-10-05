@@ -32,6 +32,7 @@ _final: prev: {
   };
   snowflake-labs-mcp = prev.callPackage ../pkgs/snowflake-labs-mcp { };
   chronosphere-mcp = prev.callPackage ../pkgs/chronosphere-mcp { };
+  chronoctl = prev.callPackage ../pkgs/chronoctl { };
   crw = prev.callPackage ../pkgs/crw { };
 
   gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
