@@ -34,6 +34,7 @@ _final: prev: {
   chronosphere-mcp = prev.callPackage ../pkgs/chronosphere-mcp { };
   chronoctl = prev.callPackage ../pkgs/chronoctl { };
   crw = prev.callPackage ../pkgs/crw { };
+  temporal-mcp = prev.callPackage ../pkgs/temporal-mcp { src = inputs.temporal-mcp; };
 
   gcal = prev.gcal.overrideAttrs (oldAttrs: rec {
     version = "4.2.0";

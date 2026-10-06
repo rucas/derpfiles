@@ -1113,6 +1113,7 @@
         "pre-commit-hooks": "pre-commit-hooks_2",
         "rucaslab": "rucaslab",
         "spacebar": "spacebar",
+        "temporal-mcp": "temporal-mcp",
         "tmux-1password": "tmux-1password",
         "tmux-pomodoro-plus": "tmux-pomodoro-plus",
         "treefmt-nix": "treefmt-nix"
@@ -1218,6 +1219,23 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "temporal-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791312488,
+        "narHash": "sha256-iM/0rUhMrlsvTepEF4K4DuaaGOOw3dbZ4YEVXOQSyJg=",
+        "owner": "rucas",
+        "repo": "temporal-mcp",
+        "rev": "6e403ffd69212865bef8a16eb3967b7cf85f1c67",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rucas",
+        "ref": "worktree-codec-endpoint-support",
+        "repo": "temporal-mcp",
         "type": "github"
       }
     },
