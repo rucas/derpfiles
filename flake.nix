@@ -86,6 +86,10 @@
       url = "github:kenryu42/claude-code-safety-net";
       flake = false;
     };
+    temporal-mcp = {
+      url = "github:rucas/temporal-mcp/worktree-codec-endpoint-support";
+      flake = false;
+    };
     i-have-adhd = {
       url = "github:ayghri/i-have-adhd";
       flake = false;

@@ -93,6 +93,22 @@
         mode = "0600";
       };
 
+      temporalMcpConfig = {
+        reference = "op://Hermes/Temporal MCP/config";
+        path = "/usr/local/var/opnix/secrets/temporal/config";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
+
+      temporalMcpToken = {
+        reference = "op://Hermes/Temporal MCP/credential";
+        path = "/usr/local/var/opnix/secrets/temporal/token";
+        owner = config.system.primaryUser;
+        group = "staff";
+        mode = "0600";
+      };
+
       gitWtConfig = {
         reference = "op://Hermes/git-wt/config";
         path = "/usr/local/var/opnix/secrets/git-wt/config";
