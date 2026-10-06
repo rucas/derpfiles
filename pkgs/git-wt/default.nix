@@ -41,6 +41,19 @@ writeShellApplication {
       git -C "''${1:-.}" worktree list --porcelain | head -1 | awk '{print $2}'
     }
 
+    # git-crypt finds its key through `git rev-parse --git-dir`, which in a linked
+    # worktree is .git/worktrees/<name> rather than the checkout holding the key, so
+    # every encrypted file fails its smudge filter on checkout and its clean filter on
+    # commit. Point the new worktree's gitdir at the shared one. Callers create the
+    # worktree --no-checkout and populate it afterwards.
+    _link_git_crypt() {
+      local common wt_gitdir
+      common="$(git -C "$1" rev-parse --path-format=absolute --git-common-dir)"
+      [ -d "$common/git-crypt" ] || return 0
+      wt_gitdir="$(git -C "$2" rev-parse --absolute-git-dir)"
+      [ -e "$wt_gitdir/git-crypt" ] || ln -s ../../git-crypt "$wt_gitdir/git-crypt"
+    }
+
     _repo_nwo() {
       git -C "''${1:-.}" remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]##; s#\.git$##'
     }
@@ -574,7 +587,9 @@ writeShellApplication {
         fi
 
         local wt_path="$main_wt/.claude/worktrees/$name"
-        git -C "$main_wt" worktree add -b "$branch" "$wt_path"
+        git -C "$main_wt" worktree add --no-checkout -b "$branch" "$wt_path"
+        _link_git_crypt "$main_wt" "$wt_path"
+        git -C "$wt_path" checkout
 
         if [ "$copy_skills" -eq 1 ]; then
           _copy_all_skills "$main_wt" "$wt_path"
@@ -713,10 +728,13 @@ writeShellApplication {
           }
           if [ "$sparse" -eq 1 ]; then
             git -C "$main_wt" worktree add --no-checkout "$wt_path" "$head_branch"
+            _link_git_crypt "$main_wt" "$wt_path"
             git -C "$wt_path" sparse-checkout set --cone "$subdir" "''${includes[@]}"
             git -C "$wt_path" checkout
           else
-            git -C "$main_wt" worktree add "$wt_path" "$head_branch"
+            git -C "$main_wt" worktree add --no-checkout "$wt_path" "$head_branch"
+            _link_git_crypt "$main_wt" "$wt_path"
+            git -C "$wt_path" checkout
           fi
         fi
 
