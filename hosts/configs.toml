@@ -11,4 +11,4 @@ trusted = [
   "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIKCLdEAArRtMhdvIdXKbBE19qhS3R2pL4Ws79d0U3czlAAAAEHNzaDpydWNhc2xhYi5jb20= lucas@rucaslab.com",
 ]
 zwave.device = "/dev/serial/by-id/usb-Zooz_800_Z-Wave_Stick_533D004242-if00"
-zigbee.device = "/dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_ce8f1ba2aa45ed11bb9dc58f0a86e0b4-if00-port0"
+zigbee.device = "/dev/serial/by-id/usb-Nabu_Casa_ZBT-2_1CDBD45E0700-if00"
