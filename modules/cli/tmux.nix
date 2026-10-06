@@ -1,4 +1,5 @@
 {
+  config,
   osConfig,
   pkgs,
   theme,
@@ -242,6 +243,14 @@ in
       bind-key J run-shell "~/Code/ledger/scripts/journal-session"
 
       bind-key R source-file ~/.config/tmux/tmux.conf \; display-message " 󰑓 tmux reloaded"
+
+      # the server caches __HM_SESS_VARS_SOURCED from whenever it started, so every
+      # new pane short-circuits hm-session-vars.sh and misses vars added since then
+      bind-key -N "Reload home-manager session variables" V \
+        run-shell 'tmux setenv -gu __HM_SESS_VARS_SOURCED; tmux setenv -gu __HM_ZSH_SESS_VARS_SOURCED' \; \
+        if-shell -F '#{m:*zsh*,#{pane_current_command}}' \
+          "send-keys 'unset __HM_SESS_VARS_SOURCED __HM_ZSH_SESS_VARS_SOURCED && . ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh' Enter ; display-message ' 󰑓 session vars reloaded'" \
+          "display-message ' 󰑓 new panes reloaded; #{pane_current_command} is not a shell'"
     '';
   };
 }
