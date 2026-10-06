@@ -27,6 +27,27 @@ let
     text = builtins.readFile ./gradlew-sdkman-hook.sh;
   };
 
+  temporalCfg = config.programs.claude-code-custom.mcpServers.temporal;
+
+  temporalGeneratedConfig = pkgs.writeText "temporal-mcp.json" (
+    builtins.toJSON {
+      temporal = {
+        inherit (temporalCfg) defaultProfile;
+        profiles = lib.mapAttrs (
+          _: profile:
+          {
+            inherit (profile) kind address namespace;
+          }
+          // lib.optionalAttrs (profile.codecEndpoint != null) { inherit (profile) codecEndpoint; }
+        ) temporalCfg.profiles;
+      };
+      security.codecAllowlist = temporalCfg.codecAllowlist;
+    }
+  );
+
+  temporalConfigPath =
+    if temporalCfg.configFile != null then temporalCfg.configFile else "${temporalGeneratedConfig}";
+
   # Helper to safely access osConfig secrets
   getSecretPath =
     name:
@@ -59,6 +80,59 @@ in
       notion.enable = lib.mkEnableOption "notion MCP";
       playwright.enable = lib.mkEnableOption "playwright MCP";
       snowflake.enable = lib.mkEnableOption "snowflake MCP";
+      temporal = {
+        enable = lib.mkEnableOption "Temporal MCP";
+        configFile = lib.mkOption {
+          type = lib.types.nullOr lib.types.str;
+          default = null;
+          description = "Path to an existing temporal-mcp config file, for profiles whose addresses do not belong in this repo. Takes precedence over the options below.";
+        };
+        defaultProfile = lib.mkOption {
+          type = lib.types.str;
+          default = "local";
+          description = "Profile used by tool calls that do not name one";
+        };
+        profiles = lib.mkOption {
+          type = lib.types.attrsOf (
+            lib.types.submodule {
+              options = {
+                kind = lib.mkOption {
+                  type = lib.types.enum [
+                    "self-hosted"
+                    "cloud"
+                  ];
+                  default = "self-hosted";
+                  description = "Cloud profiles authenticate with TEMPORAL_API_KEY";
+                };
+                address = lib.mkOption {
+                  type = lib.types.str;
+                  default = "localhost:7233";
+                  description = "Temporal frontend gRPC address";
+                };
+                namespace = lib.mkOption {
+                  type = lib.types.str;
+                  default = "default";
+                  description = "Namespace this profile reads";
+                };
+                codecEndpoint = lib.mkOption {
+                  type = lib.types.nullOr lib.types.str;
+                  default = null;
+                  description = "Base URL of a remote codec server, for clusters using client-side encryption";
+                };
+              };
+            }
+          );
+          default = {
+            local = { };
+          };
+          description = "Temporal clusters the server can reach";
+        };
+        codecAllowlist = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+          description = "Codec endpoints on private networks permitted despite the SSRF guard";
+        };
+      };
       nixos.enable = lib.mkEnableOption "nixos MCP";
       homeAssistant = {
         enable = lib.mkEnableOption "Home Assistant MCP";
@@ -337,6 +411,14 @@ in
             SNOWFLAKE_PASSWORD = "\${SNOWFLAKE_MCP_PASSWORD}";
           };
         };
+
+        temporal = lib.mkIf cfg.mcpServers.temporal.enable {
+          command = "${pkgs.temporal-mcp}/bin/temporal-mcp";
+          env = {
+            TEMPORAL_MCP_CONFIG = temporalConfigPath;
+            TEMPORAL_API_KEY = "\${TEMPORAL_MCP_TOKEN}";
+          };
+        };
       };
     };
 
@@ -381,6 +463,9 @@ in
         SNOWFLAKE_MCP_PASSWORD = lib.mkIf (
           getSecretPath "snowflakeMcpPassword" != null
         ) "$(cat ${getSecretPath "snowflakeMcpPassword"})";
+      })
+      (lib.mkIf (cfg.mcpServers.temporal.enable && getSecretPath "temporalMcpToken" != null) {
+        TEMPORAL_MCP_TOKEN = "$(cat ${getSecretPath "temporalMcpToken"})";
       })
     ];
   };

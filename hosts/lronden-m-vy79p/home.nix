@@ -49,6 +49,10 @@
         playwright.enable = true;
         snowflake.enable = true;
         notion.enable = true;
+        temporal = {
+          enable = true;
+          configFile = "/usr/local/var/opnix/secrets/temporal/config";
+        };
       };
     };
 
