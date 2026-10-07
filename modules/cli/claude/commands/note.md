@@ -1,3 +1,8 @@
+---
+description: Save one observation from this conversation to the ledger, with a backlink in today's norg.
+argument-hint: "[what to capture]"
+---
+
 Save an observation from this conversation to the ledger.
 
 `$ARGUMENTS` is a short description of the observation to capture. If empty, review the conversation and ask the user what observation they want to save.

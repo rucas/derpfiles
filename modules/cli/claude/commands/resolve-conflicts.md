@@ -1,15 +1,16 @@
+---
+description: Finish an in-progress merge, rebase, or cherry-pick by resolving every conflicted file.
+argument-hint: "[resolution guidance]"
+---
+
 Resolve the in-progress git merge/rebase/cherry-pick conflicts in the current repo,
 verify the result, and continue the operation.
 
 `$ARGUMENTS` may carry extra guidance (e.g. a preferred side for a specific file). Optional.
 
-## Context first
-
-Before doing anything else, load this repo's own guidance so your work follows its
-conventions: read the repo-root `CLAUDE.md` and any `.claude/` context that applies
-(`.claude/CLAUDE.md`, `.claude/rules/*`). Let those commands, conventions, and
-policies govern every step below. If none exist, fall back to the Makefile /
-package.json / CI config.
+This repo's guidance — the `CLAUDE.md` chain and `.claude/rules/*` — is already loaded in
+context; let its commands and conventions govern every step below. Where a repo ships
+none, fall back to its Makefile / package.json / CI config.
 
 ## Steps
 
@@ -33,13 +34,12 @@ package.json / CI config.
 3. **Confirm no markers remain.** Run `git diff --check` — it flags leftover conflict
    markers and whitespace errors. Fix whatever it reports. Don't hand-roll greps for this.
 
-4. **Project-specific fixups.** Read the repo's `CLAUDE.md` and `.claude/rules/*` and apply
-   any convention the conflicted files trigger (e.g. regenerate a lockfile if a dependency
-   manifest conflicted, bump a version/config field the project requires).
+4. **Project-specific fixups.** Apply any repo convention the conflicted files trigger
+   (e.g. regenerate a lockfile if a dependency manifest conflicted, bump a version/config
+   field the project requires).
 
-5. **Validate the touched scope.** Using the commands in `CLAUDE.md` (or Makefile /
-   package.json / CI config if there's no CLAUDE.md), compile + lint + test ONLY the
-   affected modules — never the whole repo. Iterate until green. Parse test results with the
+5. **Validate the touched scope.** Using the repo's documented commands, compile + lint +
+   test ONLY the affected modules — never the whole repo. Iterate until green. Parse test results with the
    project's helper (e.g. a `parse_junit.py`) rather than reading XML by hand.
 
 6. **Stage and continue.**

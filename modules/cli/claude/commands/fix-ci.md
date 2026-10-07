@@ -1,15 +1,16 @@
+---
+description: Take one red CI check green — find it, reproduce locally, fix the root cause, verify.
+argument-hint: "[pr | build url | log path]"
+---
+
 Investigate failing CI for the current PR/branch, reproduce locally, fix, and verify green.
 
 `$ARGUMENTS` may carry a PR number, a CI build/run URL or id, or a path to a saved log.
 All optional.
 
-## Context first
-
-Before doing anything else, load this repo's own guidance so your work follows its
-conventions: read the repo-root `CLAUDE.md` and any `.claude/` context that applies
-(`.claude/CLAUDE.md`, `.claude/rules/*`). Let those commands, conventions, and
-policies govern every step below. If none exist, fall back to the Makefile /
-package.json / CI config.
+This repo's guidance — the `CLAUDE.md` chain and `.claude/rules/*` — is already loaded in
+context; let its commands and conventions govern every step below. Where a repo ships
+none, fall back to its Makefile / package.json / CI config.
 
 ## Steps
 
@@ -33,8 +34,8 @@ package.json / CI config.
    **lint** violation, **spec/codegen drift**, or a repo **rules/policy** check. Identify the
    responsible module/task or file.
 
-4. **Reproduce + fix locally.** Read the repo's `CLAUDE.md` / `.claude/rules/*` for the
-   build, lint, test, and codegen commands. Run the **scoped** command for the affected
+4. **Reproduce + fix locally.** Use the repo's documented build, lint, test, and codegen
+   commands. Run the **scoped** command for the affected
    module only — never the whole repo. Reproduce the failure, fix the root cause, and re-run.
    Parse test results with the project's helper (e.g. `parse_junit.py`) rather than reading
    raw report files by hand.

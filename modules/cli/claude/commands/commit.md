@@ -1,3 +1,8 @@
+---
+description: Split the working tree into atomic git commits, one per logical unit of work.
+argument-hint: "[grouping hint | confirm]"
+---
+
 Create one or more git commits from the current changes, broken into atomic logical units.
 
 `$ARGUMENTS` is an optional hint about grouping or what to emphasize. If empty, infer everything from the diff.
