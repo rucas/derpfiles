@@ -35,7 +35,9 @@
         fix-ci.enable = true;
         address-review.enable = true;
         shepherd-pr.enable = true;
-        execute-plan.enable = true;
+      };
+      skills = {
+        execute-task.enable = true;
       };
       mcpServers = {
         buildkite.enable = true;

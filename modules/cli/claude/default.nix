@@ -18,7 +18,12 @@ let
     fix-ci = ./commands/fix-ci.md;
     address-review = ./commands/address-review.md;
     shepherd-pr = ./commands/shepherd-pr.md;
-    execute-plan = ./commands/execute-plan.md;
+  };
+
+  # Whole directories, not single files: a skill may grow references/ beside its
+  # SKILL.md, and the module links a directory value through as-is.
+  bundledSkills = {
+    execute-task = ./skills/execute-task;
   };
 
   gradleEnvHook = pkgs.writeShellApplication {
@@ -190,11 +195,21 @@ in
       fix-ci.enable = lib.mkEnableOption "fix-ci slash command";
       address-review.enable = lib.mkEnableOption "address-review slash command";
       shepherd-pr.enable = lib.mkEnableOption "shepherd-pr slash command";
-      execute-plan.enable = lib.mkEnableOption "execute-plan slash command";
       extra = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
         default = { };
         description = "Additional custom slash commands beyond the bundled ones.";
+      };
+    };
+
+    # Bundled skill toggles. A skill carries its own frontmatter description, so
+    # Claude can reach for it on its own as well as on an explicit /<name>.
+    skills = {
+      execute-task.enable = lib.mkEnableOption "execute-task skill";
+      extra = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
+        default = { };
+        description = "Additional custom skills beyond the bundled ones.";
       };
     };
 
@@ -316,6 +331,7 @@ in
       };
       commands =
         (lib.filterAttrs (name: _: cfg.commands.${name}.enable) bundledCommands) // cfg.commands.extra;
+      skills = (lib.filterAttrs (name: _: cfg.skills.${name}.enable) bundledSkills) // cfg.skills.extra;
       context = cfg.memory;
 
       mcpServers = lib.filterAttrs (_n: v: v != null) {

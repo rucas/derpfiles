@@ -6,6 +6,10 @@ Type `/<name>` in Claude Code. Each `.md` here is one slash command, wired in by
 
 On by default: `note`, `commit`, `resolve-conflicts`. Everything else is opt-in.
 
+Skills live in `../skills/` and are listed in their own README. They are also typed
+as `/<name>`, but carry a frontmatter description, so Claude can reach for one on its
+own without being asked.
+
 ## Pick one
 
 | Command             | Use when                                       | Acts outward on its own |
@@ -17,7 +21,8 @@ On by default: `note`, `commit`, `resolve-conflicts`. Everything else is opt-in.
 | `/shepherd-pr`      | PR is stalled on mechanics, not judgement      | **Yes** — see below      |
 | `/resolve-conflicts`| Mid-merge/rebase with conflict markers         | No — never pushes        |
 | `/plan-to-jira`     | Plan is written and needs a ticket             | **Yes** — creates issue  |
-| `/execute-plan`     | Ticket + plan ready to hand to a fresh session | No — local worktree only |
+
+Handing work to a fresh session is `/execute-task`, a skill — see `../skills/README.md`.
 
 ## Daily
 
@@ -118,18 +123,7 @@ Turns a plan file into a ticket, full plan as the description.
 
 Stops rather than creating an orphan if the parent 404s or the MCP is unauthed.
 
-### `/execute-plan`
-
-Launches a fresh Claude session on a plan, in its own worktree and tmux session.
-
-1. Asks for inputs in three rounds — files, then repo, then where in the repo
-2. Pre-flight checks, aborting before creating anything
-3. Creates the worktree (`git wt new`) and stages a brief
-4. Starts Claude in tmux and reports
-
-It is the launcher, not the implementer: it never implements the plan in your
-current session, never writes outside the new worktree, and never pushes or opens a
-PR unless asked.
+Once the ticket exists, `/execute-task` takes it and the plan to a fresh session.
 
 ## Plugin skills
 
