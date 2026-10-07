@@ -317,7 +317,11 @@ in
             "WebFetch(*)"
             "WebSearch(*)"
           ]
-          ++ (map (name: "mcp__plugin_claude-code-home-manager_${name}") (
+          # home-manager registers its generated plugin as `hm`, so every tool it
+          # exposes is `mcp__plugin_hm_<server>__<tool>`. The plugin *directory* is
+          # still the long `claude-code-home-manager`; matching on that name here
+          # silently matches nothing.
+          ++ (map (name: "mcp__plugin_hm_${name}") (
             builtins.filter (name: cfg.mcpServers.${name}.enable) (builtins.attrNames cfg.mcpServers)
           ));
           deny = [
