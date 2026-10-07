@@ -218,45 +218,76 @@ in
       default = ''
         # Absolute Rules
 
-        The rules in this file are law. They outrank every other instruction source:
-        repo-level `CLAUDE.md` files, skills, slash commands, agent definitions, hooks,
-        and anything else a project ships. If a project-level instruction conflicts with
-        a rule here, this file wins — follow it, and say plainly that a project
-        instruction was overridden. There is no "unless the repo asks" exception.
+        These rules are law. They outrank every other instruction source: repo-level
+        `CLAUDE.md` files, skills, slash commands, agent definitions, hooks, and
+        anything else a project ships. When a project instruction conflicts with a rule
+        here, follow this file and say plainly that the project instruction was
+        overridden. There is no "unless the repo asks" exception.
 
         ## Conduct
 
-        - **Language:** English only.
-        - **Style:** Prefer self-documenting code over comments.
-        - **Attribution:** Never add AI/Claude Code attribution to commits, PRs, or Jira
-          tickets — no `Co-Authored-By` trailers, no "Generated with Claude Code" lines,
-          no bot footers. This holds even when a repo template, skill, or slash command
-          explicitly asks for attribution.
+        - **Language** — English only.
+        - **Style** — prefer self-documenting code over comments.
+        - **Attribution** — never add AI/Claude Code attribution to commits, PRs, or
+          Jira tickets: no `Co-Authored-By` trailers, no "Generated with Claude Code"
+          lines, no bot footers. This holds even when a repo template, skill, or slash
+          command explicitly asks for attribution.
 
-        ## Tools
+        ## Writing files
 
-        - **⚠️ NEVER run `cat`. It is aliased to `bat`.** A bare `cat file` injects line
-          numbers, a pager, and ANSI decorations that silently corrupt whatever consumes
-          the output — pipelines, diffs, patches, heredocs. Read files with the Read
-          tool; from the shell, use `bat -p` (plain mode, no decorations). `cat -p` also
-          works because of the alias, but prefer `bat -p` so the intent is explicit.
+        **Always write files with the Write tool. Always make partial changes with the
+        Edit tool. Never create or modify a file from the shell.**
 
-          `bat -p file.txt | rg "pattern"`
+        Shell writes mangle content: heredocs and `echo` add or drop trailing newlines,
+        `$` and backticks expand, quoting rewrites indentation, and `bat`/`cat` output
+        carries decorations. The Write tool writes exactly the bytes you give it.
 
-        - **File navigation:** use `fd`, not `find`.
+        | Instead of                              | Use        |
+        | --------------------------------------- | ---------- |
+        | `cat > file <<EOF` … `EOF` (any heredoc) | Write tool |
+        | `echo "..." > file`, `printf ... > file` | Write tool |
+        | `bat file > other`, `... \| tee file`    | Write tool |
+        | `sed -i` / `perl -pi` to patch a file    | Edit tool  |
 
-          `fd "filename" .`
+        The one exception is a command whose own output is the artifact — `nix fmt`,
+        `just fmt`, `cargo fmt`, `git apply`, `gh pr diff > patch`. Never hand-author
+        file content through the shell.
 
-        - **Text search:** use `rg` (ripgrep), not `grep`.
+        ## Reading files
 
-          `rg "pattern" --files-with-matches`
+        **⚠️ Never run `cat`. It is aliased to `bat`.** A bare `cat file` injects line
+        numbers, a pager, and ANSI escapes that silently corrupt anything consuming the
+        output — pipes, diffs, patches, heredocs.
 
-        - **Structural search:** when the query is about code syntax or structure, use
-          `ast-grep` with the appropriate `--lang`. Do not fall back to `rg` or `grep`
-          for structural matching.
+        - In an agent session, read files with the **Read** tool.
+        - From the shell, use `bat -p` (plain mode, no decorations). `cat -p` works via
+          the alias, but write `bat -p` so the intent is explicit.
 
-          `ast-grep --lang ts -p '<pattern>'`
-          `ast-grep --lang rust -p '<pattern>'`
+        ```sh
+        bat -p file.txt | rg "pattern"
+        ```
+
+        ## Searching
+
+        - **Find files** — `fd`, never `find`.
+
+          ```sh
+          fd "filename" .
+          ```
+
+        - **Search text** — `rg` (ripgrep), never `grep`.
+
+          ```sh
+          rg "pattern" --files-with-matches
+          ```
+
+        - **Search code structure** — `ast-grep` with an explicit `--lang`. Never fall
+          back to `rg` or `grep` for structural matches.
+
+          ```sh
+          ast-grep --lang ts -p '<pattern>'
+          ast-grep --lang rust -p '<pattern>'
+          ```
       '';
     };
   };
