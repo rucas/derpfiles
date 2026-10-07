@@ -2,7 +2,7 @@
 name: execute-task
 description: Hand work off to a fresh Claude session running in its own git worktree and tmux session — a Jira ticket plus a plan doc, or just a sentence of intent. Sets up the worktree, stages a brief, starts Claude, and reports how to get there; it never implements the work itself.
 disable-model-invocation: true
-allowed-tools: [Bash, Read, Write, AskUserQuestion, mcp__plugin_hm_jira__jira_get_issue]
+allowed-tools: [Bash, Read, Write, AskUserQuestion, mcp__plugin_hm_jira__jira_get_issue, mcp__plugin_hm_jira__jira_get_transitions, mcp__plugin_hm_jira__jira_transition_issue]
 ---
 
 # Execute Task
@@ -134,11 +134,28 @@ Report and stop if any holds:
 A collision means picking a different name, not reusing the existing one. For a ticket the name is
 fixed, so a collision means the ticket is already in flight: say so and stop.
 
-### 7. Fetch the ticket
+### 7. Fetch the ticket, and move it to In Progress
 
 Only when there is one. `jira_get_issue` on the key: summary, type, status, parent, description,
 acceptance criteria, URL. If the MCP errors (e.g. expired OAuth), do not invent content — carry on
 with just the key + browse URL and note in the brief that the new session must fetch it itself.
+
+Then put the ticket's status where the work now is. Handing off *is* starting, so a ticket that is
+still sitting in a To Do-category status should not stay there.
+
+- Only when the fetched status is in the **To Do** category (`Open`, `Prioritized`, `Backlog`, …).
+  A ticket already `In Progress`, or further along (`Ready For Review`, `Resolved`, …), is left
+  exactly as it is — never walk a status backwards.
+- `jira_get_transitions` on the key, then `jira_transition_issue` to the `In Progress` one. Match
+  it by **name**, not by a hard-coded id: the ids are per-workflow and this skill runs against more
+  than one project. If no transition named `In Progress` is offered, skip the move rather than
+  guessing at a neighbouring status.
+- No transition comment. The handoff is not news the ticket's watchers need.
+- Best-effort, exactly like the fetch: a failed transition never blocks the handoff. Note it in the
+  final report and carry on — the worktree is the point, the status is bookkeeping.
+
+Do not ask before moving it. It is a reversible, one-field change on a ticket the user just chose
+to start, and a prompt per handoff costs more than it protects.
 
 ### 8. Create the worktree + session
 
@@ -210,7 +227,9 @@ Claude starting, report that instead of claiming success.
 ### 12. Report
 
 The ticket + URL when there is one, otherwise the task; then the repo, the branch, the worktree
-path, `target`, the session name, and the staged files. Finish with how to get there —
+path, `target`, the session name, and the staged files. Say what step 7 did to the ticket's status
+— moved to `In Progress`, left alone because it was already past To Do, or failed and why.
+Finish with how to get there —
 `tmux switch-client -t <name>` inside tmux, `tmux attach -t <name>` outside. Leave the session
 detached; only when `--attach` was passed in `$ARGUMENTS`, run that switch yourself as the final
 action.
