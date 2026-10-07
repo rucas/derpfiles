@@ -13,17 +13,17 @@ let
   bundledCommands = {
     note = ./commands/note.md;
     commit = ./commands/commit.md;
-    plan-to-jira = ./commands/plan-to-jira.md;
     resolve-conflicts = ./commands/resolve-conflicts.md;
     fix-ci = ./commands/fix-ci.md;
-    address-review = ./commands/address-review.md;
-    shepherd-pr = ./commands/shepherd-pr.md;
   };
 
   # Whole directories, not single files: a skill may grow references/ beside its
   # SKILL.md, and the module links a directory value through as-is.
   bundledSkills = {
     execute-task = ./skills/execute-task;
+    address-review = ./skills/address-review;
+    plan-to-jira = ./skills/plan-to-jira;
+    shepherd-pr = ./skills/shepherd-pr;
   };
 
   gradleEnvHook = pkgs.writeShellApplication {
@@ -188,13 +188,10 @@ in
       commit.enable = lib.mkEnableOption "commit slash command" // {
         default = true;
       };
-      plan-to-jira.enable = lib.mkEnableOption "plan-to-jira slash command";
       resolve-conflicts.enable = lib.mkEnableOption "resolve-conflicts slash command" // {
         default = true;
       };
       fix-ci.enable = lib.mkEnableOption "fix-ci slash command";
-      address-review.enable = lib.mkEnableOption "address-review slash command";
-      shepherd-pr.enable = lib.mkEnableOption "shepherd-pr slash command";
       extra = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
         default = { };
@@ -206,6 +203,9 @@ in
     # Claude can reach for it on its own as well as on an explicit /<name>.
     skills = {
       execute-task.enable = lib.mkEnableOption "execute-task skill";
+      address-review.enable = lib.mkEnableOption "address-review skill";
+      plan-to-jira.enable = lib.mkEnableOption "plan-to-jira skill";
+      shepherd-pr.enable = lib.mkEnableOption "shepherd-pr skill (pulls in the skills and commands it delegates to)";
       extra = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
         default = { };
@@ -262,6 +262,18 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # shepherd-pr is an orchestrator — every branch of it hands off to something
+    # else, so enabling it alone dead-ends at steps 2, 5 and 7b. mkDefault so a
+    # host can still opt a delegate back out deliberately.
+    programs.claude-code-custom = lib.mkIf cfg.skills.shepherd-pr.enable {
+      commands = {
+        commit.enable = lib.mkDefault true;
+        fix-ci.enable = lib.mkDefault true;
+        resolve-conflicts.enable = lib.mkDefault true;
+      };
+      skills.address-review.enable = lib.mkDefault true;
+    };
+
     programs.claude-code = {
       enable = true;
       marketplaces = lib.optionalAttrs cfg.plugins.adhd.enable {

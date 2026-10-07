@@ -27,17 +27,12 @@
       plugins.adhd.enable = true;
       gradleEnv.enable = true;
       agentTeams.enable = true;
-      commands = {
-        note.enable = true;
-        commit.enable = true;
-        plan-to-jira.enable = true;
-        resolve-conflicts.enable = true;
-        fix-ci.enable = true;
-        address-review.enable = true;
-        shepherd-pr.enable = true;
-      };
+      # note, commit, and resolve-conflicts are enabled by default;
+      # shepherd-pr pulls in fix-ci and address-review
       skills = {
         execute-task.enable = true;
+        plan-to-jira.enable = true;
+        shepherd-pr.enable = true;
       };
       mcpServers = {
         buildkite.enable = true;

@@ -1,15 +1,18 @@
+---
+name: address-review
+description: Triage open review threads on a PR, apply the clearly-valid low-risk fixes, and draft one reply per thread. Never posts a comment, submits a review, or pushes — local commits only.
+---
+
+# Address Review
+
 Triage incoming review feedback on a PR, apply the clearly-valid low-risk fixes, and draft
 replies. Never post or push by default.
 
 `$ARGUMENTS` may carry a PR number, a PR URL, or a specific review/comment URL. Optional.
 
-## Context first
-
-Before doing anything else, load this repo's own guidance so your work follows its
-conventions: read the repo-root `CLAUDE.md` and any `.claude/` context that applies
-(`.claude/CLAUDE.md`, `.claude/rules/*`). Let those commands, conventions, and
-policies govern every step below. If none exist, fall back to the Makefile /
-package.json / CI config.
+This repo's guidance — the `CLAUDE.md` chain and `.claude/rules/*` — is already loaded in
+context; let its commands and conventions govern every step below. Where a repo ships
+none, fall back to its Makefile / package.json / CI config.
 
 ## Steps
 
@@ -29,8 +32,8 @@ package.json / CI config.
    file:line or the relevant commit SHA. Be concrete; don't lump them together.
 
 4. **Apply only the clearly-valid, low-risk fixes** in the working tree, following the repo's
-   `CLAUDE.md` / `.claude/rules/*` and style conventions. For anything ambiguous, risky, or a
-   judgment call, do NOT change code — flag it for the user instead.
+   style conventions. For anything ambiguous, risky, or a judgment call, do NOT change code —
+   flag it for the user instead.
 
 5. **Commit the fixes with the `commit` skill — one thread, one commit.** Invoke it via the
    Skill tool (`commit`), passing a grouping hint that spells out the intended split, one
@@ -54,58 +57,11 @@ package.json / CI config.
    intermediate state either: if the hunks are genuinely interdependent, let them be one
    commit and cite it from both threads.
 
-6. **Draft one reply per thread**, following **Reply style** below. Keep them as drafts in
-   your response.
+6. **Draft one reply per thread.** Read `references/reply-style.md` and follow it exactly.
+   Keep the replies as drafts in your response.
 
 7. **HARD DEFAULT — do not post or push.** Committing locally (step 5) is expected; going
    outward is not. Never add PR comments, submit a review, or push as part of this. Only post
    (e.g. via the github MCP pending-review tools) or push if the user EXPLICITLY confirms.
 
 8. **Summarize:** per concern → disposition, the commit SHA (if any), and the draft reply.
-
-## Reply style
-
-Shape every drafted reply with the `i-have-adhd` skill's rules: the outcome is the first
-line, no preamble, no recap, no closing pleasantry, no hedging adverbs, matter-of-fact on
-errors. That skill sets `disable-model-invocation`, so you cannot call it as a tool — read
-its `SKILL.md` from the installed `i-have-adhd` plugin if you need the full rules (and if
-`/i-have-adhd` is already active this session, it is already governing your output). The
-rules below are what those come down to for review replies.
-
-**Fixed → one line.** Do not restate the reviewer's point, explain the fix, or thank them.
-
-```
-Fixed in abc1234.
-```
-
-Step 5 means the SHA always exists by the time you draft. Use the literal placeholder only
-when a fix was deliberately left uncommitted, and say why in the same line:
-
-```
-Fixed in [SHA] — holding the commit until the API change in #412 lands.
-```
-
-Add one short clause only when the SHA alone is misleading — the fix landed somewhere the
-reviewer would not expect:
-
-```
-Fixed in abc1234 (moved the guard into `parseConfig` instead of the caller).
-```
-
-**Wontfix, feedback is wrong, or you took a different direction → 1-3 sentences.** Be
-concrete, not longer. Say what you did instead (if anything) and the reason that decides
-it — a constraint, a repo convention, a measurement, a call site. Cite `file:line` or the
-rule when that settles the point. Offering an alternative is fine; padding is not.
-
-```
-Left as-is: `retryCount` is read by the scheduler at scheduler.rs:88, so making it private
-breaks that call site. Can add a getter if you would rather it not be a public field.
-```
-
-```
-Went the other way in abc1234 — memoizing here would keep the whole response body alive
-between renders. Cached just the parsed header instead, which is what the hot path reads.
-```
-
-Never write: "Great catch", "Thanks for the review", "You're absolutely right", "Let me
-know what you think", or an apology.

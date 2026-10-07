@@ -4,25 +4,34 @@ Type `/<name>` in Claude Code. Each `.md` here is one slash command, wired in by
 `../default.nix` and toggled per host with
 `programs.claude-code-custom.commands.<name>.enable`.
 
-On by default: `note`, `commit`, `resolve-conflicts`. Everything else is opt-in.
+All four are on by default.
 
-Skills live in `../skills/` and are listed in their own README. They are also typed
-as `/<name>`, but carry a frontmatter description, so Claude can reach for one on its
-own without being asked.
+Skills live in `../skills/` and are listed in their own README. The two directories are
+the *same* mechanism — see that README for what actually distinguishes them.
 
 ## Pick one
 
-| Command             | Use when                                       | Acts outward on its own |
-| ------------------- | ---------------------------------------------- | ----------------------- |
-| `/commit`           | Working tree is dirty and needs commits        | No — commits only        |
-| `/note`             | You learned something worth keeping            | No — writes to ledger    |
-| `/fix-ci`           | One CI check is red and you know it            | No — never pushes        |
-| `/address-review`   | Review comments to triage, not yet answered    | No — never posts/pushes  |
-| `/shepherd-pr`      | PR is stalled on mechanics, not judgement      | **Yes** — see below      |
-| `/resolve-conflicts`| Mid-merge/rebase with conflict markers         | No — never pushes        |
-| `/plan-to-jira`     | Plan is written and needs a ticket             | **Yes** — creates issue  |
+| Command              | Use when                                 | Acts outward on its own |
+| -------------------- | ---------------------------------------- | ----------------------- |
+| `/commit`            | Working tree is dirty and needs commits  | No — commits only       |
+| `/note`              | You learned something worth keeping      | No — writes to ledger   |
+| `/fix-ci`            | One CI check is red and you know it      | No — never pushes       |
+| `/resolve-conflicts` | Mid-merge/rebase with conflict markers   | No — never pushes       |
 
-Handing work to a fresh session is `/execute-task`, a skill — see `../skills/README.md`.
+PR shepherding, review triage, Jira handoff and session handoff are all skills — see
+`../skills/README.md`.
+
+## Frontmatter
+
+Every command carries YAML frontmatter with at least a `description`. That is not
+cosmetic: **without it, a command advertises its first physical line as its description**,
+and since these files hard-wrap at ~90 characters that yields a truncated, mid-sentence
+description — which is exactly the text Claude matches against when deciding whether to
+reach for the command on its own.
+
+`disable-model-invocation: true` works here too, and genuinely removes the command from
+the model-invocable listing. `allowed-tools` parses but does **not** restrict the toolset
+— it is a permission grant, and a no-op under this repo's `defaultMode = "auto"`.
 
 ## Daily
 
@@ -65,38 +74,6 @@ Reports the fix. **Does not push unless asked** — `/shepherd-pr` asks, so it p
 there. If the only problem is that the branch is behind base, it says so instead of
 inventing a code fix.
 
-### `/address-review`
-
-Triages review feedback without answering it.
-
-1. Fetches inline threads, review summaries, and PR comments (skips resolved/outdated)
-2. Gives each open concern a disposition: **valid**, **partial**, **discussion/invalid**, **wontfix**, tied to file:line
-3. Applies only the clearly-valid low-risk fixes in the working tree
-4. Drafts a reply per thread for you to review
-
-**Hard default: never posts a comment, submits a review, or pushes.** Local commits
-are expected; going outward needs an explicit yes.
-
-### `/shepherd-pr`
-
-The orchestrator — use it when you want the whole PR moved, not one problem fixed.
-Delegates to `/fix-ci`, `/address-review`, `/commit`.
-
-1. Un-stales the branch (`gh pr update-branch`); on conflict, merges base locally and runs `/resolve-conflicts`
-2. Waits on checks (`gh pr checks --watch`), ignoring human gates — approvals, CODEOWNERS, CLA, manual environments
-3. Hands real failures to `/fix-ci`, authorizing it to commit and push, then loops back to the wait
-4. **Draft** → `gh pr ready`. **Under review** → one commit per actionable comment, then reply/resolve each thread
-
-Runs as long as your CI does.
-
-**Automatic:** branch updates, conflict resolution, `/fix-ci` commits and pushes.
-**Gated:** pushing review-fix commits (once), then every reply/resolve (per thread).
-
-Merges to clear conflicts, never rebases — a rebase would need
-`git push --force-with-lease`, which the `Bash(git push --force*)` deny rule blocks.
-Stops if a rebase is genuinely required, if base conflicts twice in one run, or
-after 3 fix attempts.
-
 ### `/resolve-conflicts`
 
 Finishes an in-progress merge, rebase, or cherry-pick.
@@ -109,21 +86,6 @@ Finishes an in-progress merge, rebase, or cherry-pick.
 Resolution only — never pushes or force-pushes. `/shepherd-pr` delegates to it after
 merging base locally; its ambiguity gate still applies, so it will ask you rather
 than guess.
-
-## Planning handoff
-
-### `/plan-to-jira`
-
-Turns a plan file into a ticket, full plan as the description.
-
-1. Resolves the plan — argument, else newest `~/.claude/plans/*.md`
-2. Resolves the parent: explicit key > git branch > repo path > ask
-3. **Always confirms the project prefix before creating** — the plan's project may not match your current branch
-4. Converts markdown to Jira markup and creates the issue
-
-Stops rather than creating an orphan if the parent 404s or the MCP is unauthed.
-
-Once the ticket exists, `/execute-task` takes it and the plan to a fresh session.
 
 ## Plugin skills
 
@@ -138,11 +100,22 @@ it on itself. Enable with `programs.claude-code-custom.plugins.adhd.enable`.
 
 ## Adding a command
 
-1. Drop `<name>.md` in this directory
+1. Drop `<name>.md` in this directory, frontmatter first
 2. Add it to `bundledCommands` in `../default.nix`
 3. Add a `<name>.enable` option next to the others
-4. Turn it on in the hosts that want it
+4. Turn it on in the hosts that want it (or give it `default = true`)
+
+Reach for `../skills/` instead when the thing wants conditional reference material —
+that is the one capability a command does not have.
 
 `bundledCommands` maps each file explicitly, so this README is not shipped as a
 command. For one-offs that do not belong in the repo, use
 `programs.claude-code-custom.commands.extra`.
+
+## Repo context is already loaded
+
+Do **not** open a command with "first, read the repo's `CLAUDE.md` and `.claude/rules/*`".
+Claude Code auto-loads the `CLAUDE.md` chain and every `.claude/rules/*.md` into the
+session before the command body runs, so that instruction only buys a redundant `Read` at
+the top of every invocation. One line noting that the guidance governs the steps is
+enough.
