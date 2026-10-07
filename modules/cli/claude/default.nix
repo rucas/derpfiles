@@ -454,6 +454,10 @@ in
       };
     };
 
+    # The commit command reaches for git-surgeon when two logical changes share
+    # a file: `git add -p` is interactive, so an agent cannot drive it.
+    home.packages = lib.optional cfg.commands.commit.enable pkgs.git-surgeon;
+
     # Session variables (only if osConfig secrets available)
     home.sessionVariables = lib.mkMerge [
       (lib.mkIf (cfg.mcpServers.buildkite.enable && getSecretPath "buildkiteMCPToken" != null) {

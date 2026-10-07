@@ -33,7 +33,7 @@ Create one or more git commits from the current changes, broken into atomic logi
 4. **Execute each commit in order**:
    - `git add <files>` for only the files in that group
    - When two logical changes live in the same file, stage individual hunks with
-     `git add -p <file>` (or `git apply --cached` for finer control) so each commit is a
+     `git-surgeon` — see **Hunk-level staging** below — so each commit is a
      coherent, self-contained unit rather than lumping unrelated edits together
    - Commit with `git commit --no-verify`
    - Title conventions (apply to every commit):
@@ -48,9 +48,35 @@ Create one or more git commits from the current changes, broken into atomic logi
 5. **Confirm** by showing all new commits with `git log -<n> --stat` where n is the number of
    commits made.
 
+## Hunk-level staging
+
+`git add -p` and `git checkout -p` only answer to an interactive TTY prompt, so they are
+not usable here. Use `git-surgeon`, which addresses hunks by a content-derived 7-char id:
+
+```sh
+git-surgeon hunks                      # list unstaged hunks: <id> <file> [fn] (+n -n)
+git-surgeon hunks --file <path>        # narrow to one file
+git-surgeon show <id>                  # full hunk diff, 1-based line numbers for --lines
+git-surgeon stage <id> [<id>...]       # stage whole hunks
+git-surgeon stage <id> --lines 5-30    # stage part of one hunk
+git-surgeon unstage <id>               # back out a staging mistake
+```
+
+Then commit the staged result with `git commit --no-verify` as usual.
+
+**Use it only for hunk selection.** `git-surgeon` also has `commit`, `split`, `fold`,
+`amend`, `squash`, `reword`, `move` and `undo` subcommands — do not reach for them here.
+Two reasons: this command's job is to build commits from the working tree, not to rewrite
+history; and `git-surgeon commit` takes no `--no-verify`, so it would run the hooks this
+repo's convention skips.
+
+Ids are stable across line shifts but change when the hunk's own content changes, so
+re-run `git-surgeon hunks` after each commit rather than reusing ids from an earlier
+listing.
+
 ## Notes
 
-- Prefer file-level splitting, but reach for hunk-level staging (`git add -p`) when two logical
+- Prefer file-level splitting, but reach for hunk-level staging when two logical
   changes share a file and can be cleanly separated. Never leave a broken intermediate state — if
   the hunks are interdependent, keep them in one commit instead.
 - Never add a `Co-Authored-By` trailer or any AI attribution.

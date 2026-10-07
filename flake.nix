@@ -190,7 +190,12 @@
           };
 
           packages = {
-            inherit (pkgs) claude-code cc-safety-net gitui;
+            inherit (pkgs)
+              claude-code
+              cc-safety-net
+              gitui
+              git-surgeon
+              ;
             inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus;
           }
           // pkgs.lib.optionalAttrs isDarwin {
