@@ -12,11 +12,7 @@
     enable = true;
     model = "claude-opus-5";
     plugins.adhd.enable = true;
-    commands = {
-      note.enable = true;
-      commit.enable = true;
-      resolve-conflicts.enable = true;
-    };
+    # note, commit, and resolve-conflicts are enabled by default
     mcpServers = {
       fetch.enable = true;
       git.enable = true;

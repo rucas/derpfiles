@@ -19,11 +19,7 @@
     plugins.adhd.enable = true;
     # fetch, git, and time are enabled by default
     # memory uses the same default configuration
-    commands = {
-      note.enable = true;
-      commit.enable = true;
-      resolve-conflicts.enable = true;
-    };
+    # note, commit, and resolve-conflicts are enabled by default
     mcpServers = {
       homeAssistant = {
         enable = true;

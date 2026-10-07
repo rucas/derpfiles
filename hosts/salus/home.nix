@@ -30,11 +30,7 @@
       ];
     };
     model = "claude-opus-5";
-    commands = {
-      note.enable = true;
-      commit.enable = true;
-      resolve-conflicts.enable = true;
-    };
+    # note, commit, and resolve-conflicts are enabled by default
     mcpServers = {
       fetch.enable = true;
       git.enable = true;
