@@ -1,0 +1,81 @@
+{
+  "maxOpenPullRequests": 5,
+  "packages": [
+    {
+      "attr": "buildkite-mcp-server",
+      "os": "ubuntu-latest",
+      "automerge": true
+    },
+    {
+      "attr": "chronoctl",
+      "os": "ubuntu-latest",
+      "automerge": true
+    },
+    {
+      "attr": "chronosphere-mcp",
+      "os": "ubuntu-latest",
+      "automerge": true
+    },
+    {
+      "attr": "git-surgeon",
+      "os": "ubuntu-latest",
+      "automerge": true
+    },
+    {
+      "attr": "rollbar-mcp-server",
+      "os": "ubuntu-latest",
+      "automerge": true
+    },
+    {
+      "attr": "claude-code",
+      "os": "ubuntu-latest",
+      "script": "pkgs/claude-code/update.sh"
+    },
+    {
+      "attr": "crw",
+      "os": "ubuntu-latest"
+    },
+    {
+      "attr": "bubble-card",
+      "os": "ubuntu-latest"
+    },
+    {
+      "attr": "graphite",
+      "os": "ubuntu-latest"
+    },
+    {
+      "attr": "lovelace-auto-entities",
+      "os": "ubuntu-latest"
+    },
+    {
+      "attr": "lovelace-layout-card",
+      "os": "ubuntu-latest"
+    },
+    {
+      "attr": "my-cards",
+      "os": "ubuntu-latest"
+    },
+    {
+      "attr": "mcp-atlassian",
+      "os": "macos-latest"
+    },
+    {
+      "attr": "yabai",
+      "os": "macos-latest"
+    }
+  ],
+  "skip": {
+    "actual-budget-api": "pins an npm lockfile rather than a version; needs `npm update` plus --generate-lockfile",
+    "cc-safety-net": "src is the claude-code-safety-net flake input, covered by update.yml",
+    "git-wt": "local shell script, no upstream release",
+    "gitui": "src is the gitui flake input, covered by update.yml",
+    "hass-browser_mod": "not a flake package; pinned to a bare 2023 commit under a version string upstream never tagged, so moving it to a tag is a deliberate 2.x -> 3.x upgrade",
+    "ledger-sync": "local shell script, no upstream release",
+    "ledger-watch": "local shell script, no upstream release",
+    "snowflake-labs-mcp": "uvx wrapper; the version string is cosmetic",
+    "temporal-mcp": "src is the temporal-mcp flake input, covered by update.yml",
+    "tmux-1password": "src is the tmux-1password flake input, covered by update.yml",
+    "tmux-pomodoro-plus": "src is the tmux-pomodoro-plus flake input, covered by update.yml",
+    "windmill-sync": "local shell script, no upstream release"
+  }
+}

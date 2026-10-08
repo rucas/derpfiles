@@ -177,6 +177,19 @@
                 };
               };
             };
+
+            # A hand-pinned package must either be auto-updated or carry a
+            # written reason for staying manual.
+            update-coverage =
+              let
+                manifest = pkgs.lib.importJSON ./.github/nix-update.json;
+                covered = (map (p: p.attr) manifest.packages) ++ builtins.attrNames manifest.skip;
+                uncovered = pkgs.lib.subtractLists covered (builtins.attrNames self'.packages);
+              in
+              if uncovered == [ ] then
+                pkgs.emptyFile
+              else
+                throw "add to `packages` or `skip` in .github/nix-update.json: ${pkgs.lib.concatStringsSep ", " uncovered}";
           };
 
           devShells.default = pkgs.mkShell {
@@ -186,20 +199,44 @@
               pkgs.nixd
               pkgs.statix
               pkgs.deadnix
+              pkgs.nix-update
             ];
           };
 
+          # Every hand-pinned package is exposed here so `nix-update --flake`
+          # can address it; see .github/nix-update.json.
           packages = {
             inherit (pkgs)
-              claude-code
+              actual-budget-api
+              buildkite-mcp-server
               cc-safety-net
-              gitui
+              chronoctl
+              chronosphere-mcp
+              claude-code
               git-surgeon
+              git-wt
+              gitui
+              ledger-sync
+              ledger-watch
+              rollbar-mcp-server
+              snowflake-labs-mcp
+              temporal-mcp
+              windmill-sync
               ;
+            inherit (pkgs.home-assistant-custom-lovelace-modules) bubble-card lovelace-layout-card;
+            inherit (pkgs.home-assistant-themes) graphite;
             inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus;
+
+            # Called inline by nixos/home-assistant, so not overlay attributes.
+            lovelace-auto-entities = pkgs.callPackage ./pkgs/lovelace-auto-entities { };
+            my-cards = pkgs.callPackage ./pkgs/my-cards { };
           }
           // pkgs.lib.optionalAttrs isDarwin {
-            inherit (pkgs) yabai;
+            # mcp-atlassian vendors macosx_11_0_arm64 wheels.
+            inherit (pkgs) mcp-atlassian yabai;
+          }
+          // pkgs.lib.optionalAttrs (!isDarwin) {
+            inherit (pkgs) crw;
           };
         };
 

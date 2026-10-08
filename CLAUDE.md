@@ -26,6 +26,7 @@ just switch [HOST]   # build and activate (darwin-rebuild on macOS, sudo nixos-r
 just check           # nix flake check — statix, deadnix, treefmt, and host evals
 just fmt             # format the tree with treefmt (nixfmt, prettier, shfmt, taplo)
 just update [INPUT]  # nix flake update (all inputs, or one)
+just update-pkg ATTR # bump one hand-pinned pkgs/ package via nix-update
 ```
 
 `just switch`/`build` on darwin pass `--impure` (home config reads absolute
@@ -94,7 +95,33 @@ decrypted secret material.
 `.github/workflows/`: `check.yaml` (`nix flake check`) and `build.yaml` (per-host
 `nix build`) both run `on: push` across ubuntu + macOS, posting per-job status
 checks. `update.yml` opens a weekly flake-bump PR and merges it with
-`gh pr merge --auto`. `master` is branch-protected requiring the `check (*)` and
-`build (*)` contexts, so a bump can't merge unless every host evaluates, builds,
-and lints clean. When adding/removing a host, update both the `build.yaml` matrix
-and the required branch-protection contexts.
+`gh pr merge --auto`. `update-pkgs.yaml` does the same job for the hand-pinned
+packages flakes don't cover (see **Package updates** below). `master` is
+branch-protected requiring the `check (*)` and `build (*)` contexts, so a bump
+can't merge unless every host evaluates, builds, and lints clean. When
+adding/removing a host, update both the `build.yaml` matrix and the required
+branch-protection contexts.
+
+## Package updates
+
+`update-pkgs.yaml` runs weekly, bumps `pkgs/` entries with `nix-update`, and
+opens one PR per package (label `nix-deps` plus `pkg:<attr>`), capped at five
+open at a time. `.github/nix-update.json` drives it: every package listed there
+is auto-bumped on the runner it names, and everything else exposed in
+`packages.<system>` must carry a written reason under `skip`. The
+`update-coverage` flake check enforces that, so a new `pkgs/` entry has to be
+either wired into the updater or explicitly excused.
+
+Two constraints shape it:
+
+- `nix-update --flake` resolves `packages.<system>.<attr>`, so every pinned
+  package is exposed in `flake.nix`'s `packages` output even when nothing else
+  needs it there.
+- Determinate Nix's lazy trees give each source file its own store path, which
+  defeats nix-update's check that a package is defined inside the flake. Both
+  the `just update-pkg` recipe and the workflow set
+  `NIX_CONFIG="lazy-trees = false"`.
+
+Packages pinned to a `rev`/`version` that `nix-update` cannot rewrite (a bare
+commit sha, a `v`-prefixed `version` feeding `rev = version`) must be
+normalised to `version = "1.2.3"` + `tag = "v${version}"` first.

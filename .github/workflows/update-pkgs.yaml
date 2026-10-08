@@ -1,0 +1,180 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: update packages
+"on":
+  schedule:
+    # Monday 06:00 UTC, offset from the Sunday flake bump in update.yml.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      attr:
+        description: "Update only this package (must be listed in .github/nix-update.json)"
+        required: false
+        type: string
+concurrency:
+  group: update-pkgs
+  cancel-in-progress: false
+jobs:
+  plan:
+    name: plan
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.pick.outputs.matrix }}
+      empty: ${{ steps.pick.outputs.empty }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - name: Ensure the tracking label exists
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+        run: gh label create nix-deps --color 0366d6 --description "Automated package bump" --force
+      - name: Pick packages to update
+        id: pick
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+          ATTR: ${{ inputs.attr }}
+        run: |
+          set -euo pipefail
+          manifest=.github/nix-update.json
+
+          jq -c '[ .packages[] | {
+            attr,
+            os,
+            automerge: (.automerge // false),
+            script: (.script // ""),
+            args: ((.args // []) | join(" "))
+          } ]' "$manifest" > /tmp/candidates.json
+
+          if [ -n "$ATTR" ]; then
+            # Manual run: one named package, no cap.
+            selected=$(jq -c --arg a "$ATTR" 'map(select(.attr == $a))' /tmp/candidates.json)
+            if [ "$(jq 'length' <<<"$selected")" -eq 0 ]; then
+              echo "::error::$ATTR is not listed in $manifest"
+              exit 1
+            fi
+          else
+            # A package already under review does not get a second PR, and the
+            # total number of open bump PRs is capped.
+            gh pr list --state open --label nix-deps --json labels \
+              --jq '[.[].labels[].name | select(startswith("pkg:")) | ltrimstr("pkg:")]' \
+              > /tmp/open-attrs.json
+            open_count=$(jq 'length' /tmp/open-attrs.json)
+            limit=$(jq '.maxOpenPullRequests' "$manifest")
+            slots=$(( limit - open_count ))
+            echo "$open_count bump PR(s) open, $slots slot(s) free"
+            if [ "$slots" -le 0 ]; then
+              selected='[]'
+            else
+              selected=$(jq -c --slurpfile open /tmp/open-attrs.json --argjson slots "$slots" \
+                'map(select(.attr as $a | $open[0] | index($a) | not)) | .[:$slots]' /tmp/candidates.json)
+            fi
+          fi
+
+          echo "selected: $(jq -c 'map(.attr)' <<<"$selected")"
+          if [ "$(jq 'length' <<<"$selected")" -eq 0 ]; then
+            echo "empty=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "empty=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "matrix={\"include\":$selected}" >> "$GITHUB_OUTPUT"
+
+  update:
+    name: update (${{ matrix.attr }})
+    needs: plan
+    if: needs.plan.outputs.empty == 'false'
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    runs-on: ${{ matrix.os }}
+    env:
+      # Determinate Nix's lazy trees give each source file its own store path,
+      # which defeats the check nix-update makes that a package is defined
+      # inside the flake.
+      NIX_CONFIG: "lazy-trees = false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.ACTIONS_TOKEN }}
+          fetch-depth: 1
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          logger: pretty
+      - name: Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          use-flakehub: "disabled"
+      - uses: cachix/cachix-action@v17
+        with:
+          name: derpfiles
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Record current version
+        run: echo "OLD_VERSION=$(nix eval --raw .#${{ matrix.attr }}.version)" >> "$GITHUB_ENV"
+      - name: Update ${{ matrix.attr }}
+        run: |
+          set -euo pipefail
+          if [ -n "${{ matrix.script }}" ]; then
+            # The package ships its own updater (e.g. a vendored manifest.json).
+            ./${{ matrix.script }}
+            nix build --no-link .#${{ matrix.attr }}
+          else
+            # Pinned to the flake's own nixpkgs so a run here matches
+            # `just update-pkg` and does not depend on the registry.
+            nixpkgs=$(jq -r '.nodes.root.inputs.nixpkgs as $n | .nodes[$n].locked | "github:\(.owner)/\(.repo)/\(.rev)"' flake.lock)
+            nix run "$nixpkgs#nix-update" -- --flake --build ${{ matrix.args }} ${{ matrix.attr }}
+          fi
+          nix fmt
+      - name: Record new version
+        run: echo "NEW_VERSION=$(nix eval --raw .#${{ matrix.attr }}.version)" >> "$GITHUB_ENV"
+      - name: Open pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+          ATTR: ${{ matrix.attr }}
+          AUTOMERGE: ${{ matrix.automerge }}
+        run: |
+          set -euo pipefail
+          if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
+            echo "$ATTR is already at $OLD_VERSION"
+            exit 0
+          fi
+
+          branch="nix-update/$ATTR-$NEW_VERSION"
+          if [ -n "$(gh pr list --state all --head "$branch" --json number --jq '.[].number')" ]; then
+            echo "$branch already has a pull request; leaving it alone"
+            exit 0
+          fi
+
+          homepage=$(nix eval --raw ".#$ATTR.meta.homepage" 2>/dev/null || true)
+          body="Bumps \`$ATTR\` from $OLD_VERSION to $NEW_VERSION."
+          if [ -n "$homepage" ]; then
+            body="$body"$'\n\n'"Upstream: $homepage"
+            case "$homepage" in
+              https://github.com/*) body="$body"$'\n'"Releases: ${homepage%/}/releases" ;;
+            esac
+          fi
+          body="$body"$'\n\n'"Reproduce locally with \`just update-pkg $ATTR\`."
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit --all --no-verify -m "$ATTR: bump to $NEW_VERSION"
+          git push origin "$branch"
+
+          gh label create "pkg:$ATTR" --color ededed --description "Tracks the open bump PR for $ATTR" --force
+          gh pr create \
+            --base master \
+            --head "$branch" \
+            --title "$ATTR: bump to $NEW_VERSION" \
+            --body "$body" \
+            --label nix-deps \
+            --label "pkg:$ATTR"
+
+          if [ "$AUTOMERGE" = "true" ]; then
+            gh pr merge "$branch" --squash --delete-branch --auto
+          fi
