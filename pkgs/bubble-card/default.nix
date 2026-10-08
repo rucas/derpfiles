@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "Clooos";
     repo = "Bubble-Card";
-    rev = "v${version}";
+    tag = "v${version}";
     hash = "sha256-1/vLf6dWnrHsTluwUYQyJKPB8cpnJ6NIt0n8lQ6TQGs=";
   };
 

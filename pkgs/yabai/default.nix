@@ -7,10 +7,10 @@
 
 stdenv.mkDerivation rec {
   pname = "yabai";
-  version = "v7.1.24";
+  version = "7.1.24";
 
   src = fetchzip {
-    url = "https://github.com/koekeishiya/yabai/releases/download/${version}/${pname}-${version}.tar.gz";
+    url = "https://github.com/koekeishiya/yabai/releases/download/v${version}/${pname}-v${version}.tar.gz";
     hash = "sha256-2NTZUxptWhcF6sb1iUQwOuvG6omVAGVeb+j8XPBhRvs=";
   };
 

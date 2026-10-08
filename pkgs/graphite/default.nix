@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "TilmanGriesel";
     repo = "graphite";
-    rev = "${version}";
+    tag = version;
     hash = "sha256-UzYg6+Mv8jkalCC68NVDbVdTrj1ZYdPC06iuFf255rw=";
   };
 

@@ -5,12 +5,12 @@
 }:
 buildNpmPackage rec {
   pname = "lovelace-layout-card";
-  version = "v2.4.5";
+  version = "2.4.5";
 
   src = fetchFromGitHub {
     owner = "thomasloven";
     repo = "lovelace-layout-card";
-    rev = version;
+    tag = "v${version}";
     hash = "sha256-JqHpd3u3HT9JuAfCQW0Bg/UIQ/pzurQBp9/PFa+0/u0=";
   };
 

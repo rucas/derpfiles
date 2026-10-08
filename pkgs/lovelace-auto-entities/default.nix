@@ -5,12 +5,12 @@
 }:
 buildNpmPackage rec {
   pname = "lovelace-auto-entities";
-  version = "v1.13.0";
+  version = "1.13.0";
 
   src = fetchFromGitHub {
     owner = "thomasloven";
     repo = "lovelace-auto-entities";
-    rev = version;
+    tag = "v${version}";
     hash = "sha256-ls8Jqt5SdiY5ROhtaSS4ZvoY+nHv6UB1RYApOJzC1VQ=";
   };
 

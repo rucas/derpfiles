@@ -5,12 +5,12 @@
 }:
 buildNpmPackage rec {
   pname = "my-cards";
-  version = "v1.0.5";
+  version = "1.0.5";
 
   src = fetchFromGitHub {
     owner = "AnthonMS";
     repo = "my-cards";
-    rev = version;
+    tag = "v${version}";
     hash = "sha256-sPxiO+zxvUzAA/TBn1XWRyx6Kc4n59d1rRdn47pctuw=";
   };
 
