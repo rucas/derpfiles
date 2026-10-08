@@ -211,7 +211,7 @@ let
 in
 buildPythonApplication rec {
   pname = "mcp-atlassian";
-  version = "0.23.0";
+  version = "0.23.1";
   format = "wheel";
 
   src = fetchPypi {
@@ -220,7 +220,7 @@ buildPythonApplication rec {
     format = "wheel";
     dist = "py3";
     python = "py3";
-    hash = "sha256-7MsazUVy368zKy2ochTM8uUnwBxjDl4mETeCPqtz1Pc=";
+    hash = "sha256-LACCDau2052TVgJaUmicvEEexPfX3YemRYkJkITaRxo=";
   };
 
   propagatedBuildInputs = [
