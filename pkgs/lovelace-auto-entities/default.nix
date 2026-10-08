@@ -31,7 +31,7 @@ buildNpmPackage rec {
     description = "🔹Automatically populate the entities-list of lovelace cards";
     homepage = "https://github.com/thomasloven/lovelace-auto-entities";
     license = lib.licenses.mit;
-    maintainers = [ lib.maintainers.rucas ];
+    maintainers = [ ];
   };
 
 }

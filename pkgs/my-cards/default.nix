@@ -31,7 +31,7 @@ buildNpmPackage rec {
     description = "Bundle of my custom Lovelace cards for Home Assistant. Includes: my-slider, my-slider-v2, my-button";
     homepage = "https://github.com/AnthonMS/my-cards";
     license = lib.licenses.mit;
-    maintainers = [ lib.maintainers.rucas ];
+    maintainers = [ ];
   };
 
 }

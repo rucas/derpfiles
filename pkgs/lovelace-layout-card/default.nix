@@ -28,7 +28,7 @@ buildNpmPackage rec {
     description = "Get more control over the placement of lovelace cards.";
     homepage = "https://github.com/thomasloven/lovelace-layout-card";
     license = lib.licenses.mit;
-    maintainers = [ lib.maintainers.rucas ];
+    maintainers = [ ];
   };
 
 }
