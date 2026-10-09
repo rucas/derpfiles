@@ -14,6 +14,7 @@
 # (SentenceTransformers and pypdf are the documented memory hogs at scale).
 let
   port = 8081;
+  url = "https://ai.rucaslab.com";
   # rucaslab is an i7-1165G7: 4 physical cores / 8 threads. One worker per
   # physical core leaves the SMT siblings for Ollama inference, Tika and Postgres.
   workers = 4;
@@ -22,6 +23,43 @@ let
   package = pkgs.open-webui.overridePythonAttrs (old: {
     dependencies = old.dependencies ++ pkgs.open-webui.optional-dependencies.postgres;
   });
+
+  # Outline serves its own MCP server at /mcp (Outline → Settings → AI → "MCP
+  # server", which has to be on or the endpoint 404s for the whole workspace).
+  # Open WebUI's MCP client speaks streamable HTTP only, which is exactly what
+  # that endpoint is, so no mcpo proxy.
+  #
+  # The public URL rather than loopback: tokens are bound to the resource
+  # identifier Outline advertises for that endpoint, and OAuth discovery has to
+  # land on the same origin.
+  outlineUrl = config.services.outline.publicUrl;
+  mcpServerId = "outline";
+  # Open WebUI keys the OAuth client as `mcp:<info.id>` and derives the callback
+  # from it. The Outline OAuth app has to carry this exact redirect URI.
+  mcpRedirectUri = "${url}/oauth/clients/mcp:${mcpServerId}/callback";
+  # "write" covers every Outline MCP tool, "read" only the list/info/search
+  # ones — Outline filters the tool list per granted scope.
+  mcpScope = "read write";
+
+  # Per-user OAuth, so each member reaches exactly the documents Outline lets
+  # them see; a shared API token would make everyone act as its owner.
+  #
+  # Upstream only ever builds this connection through the admin UI, which
+  # persists it in the config table — unreachable here, because
+  # ENABLE_PERSISTENT_CONFIG=False makes every config read fall back to the
+  # environment. Declaring it in TOOL_SERVER_CONNECTIONS works, except that
+  # Open WebUI refuses to register an OAuth client without the
+  # `info.oauth_client_info` blob the UI would have stored: a Fernet token under
+  # OAUTH_CLIENT_INFO_ENCRYPTION_KEY. So this generator mints the blob from the
+  # Outline client credentials at every start, and the connection JSON lands in
+  # a runtime file that open-webui.service reads as a second EnvironmentFile.
+  #
+  # Outline's authorization-server metadata is inlined rather than discovered to
+  # keep service start off the network. If it ever drifts, Open WebUI's
+  # authorize route notices the stale client, rediscovers, and re-registers from
+  # info.oauth_client_id/oauth_client_secret.
+  mcpToolServerGenerator = pkgs.python3.withPackages (ps: [ ps.cryptography ]);
+  mcpToolServerEnv = "/run/open-webui-mcp/tool-servers.env";
 in
 {
   services = {
@@ -35,7 +73,7 @@ in
         # knowledge, chats) lives in its own tables and is unaffected.
         ENABLE_PERSISTENT_CONFIG = "False";
 
-        WEBUI_URL = "https://ai.rucaslab.com";
+        WEBUI_URL = url;
 
         # Local inference
         ENABLE_OLLAMA_API = "True";
@@ -203,6 +241,37 @@ in
       };
     };
 
+    # TOOL_SERVER_CONNECTIONS carries a Fernet blob keyed by
+    # OAUTH_CLIENT_INFO_ENCRYPTION_KEY, so it is minted at start rather than
+    # stored — see the comment on mcpToolServerGenerator above
+    open-webui-mcp-tool-server = {
+      description = "Build the Outline MCP tool server connection for Open WebUI";
+      requiredBy = [ "open-webui.service" ];
+      before = [ "open-webui.service" ];
+      # Rotating the Outline credentials has to re-mint the blob; the unit
+      # itself is otherwise unchanged, so switch would leave the stale
+      # /run file in place
+      restartTriggers = [ config.age.secrets.open_webui_mcp_env.file ];
+      environment = {
+        OUTLINE_URL = outlineUrl;
+        MCP_SERVER_ID = mcpServerId;
+        MCP_OAUTH_REDIRECT_URI = mcpRedirectUri;
+        MCP_OAUTH_SCOPE = mcpScope;
+      };
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        # OAUTH_CLIENT_INFO_ENCRYPTION_KEY, OUTLINE_OAUTH_CLIENT_ID,
+        # OUTLINE_OAUTH_CLIENT_SECRET
+        EnvironmentFile = config.age.secrets.open_webui_mcp_env.path;
+        RuntimeDirectory = "open-webui-mcp";
+        RuntimeDirectoryMode = "0700";
+        RuntimeDirectoryPreserve = true;
+        UMask = "0077";
+        ExecStart = "${mcpToolServerGenerator}/bin/python3 ${./mcp-tool-server.py} ${mcpToolServerEnv}";
+      };
+    };
+
     open-webui = {
       after = [
         "ollama.service"
@@ -222,6 +291,9 @@ in
         "postgresql-setup.service"
         "redis-open-webui.service"
       ];
+      # Requires does not propagate restarts, so a re-minted connection only
+      # reaches the workers if the service itself comes back too
+      restartTriggers = [ config.age.secrets.open_webui_mcp_env.file ];
       # Peer auth over the postgres socket needs a stable user, which rules out
       # the upstream module's DynamicUser
       serviceConfig = {
@@ -235,6 +307,11 @@ in
           config.age.secrets.open_webui_env.path
           # OPENAI_API_KEYS
           config.age.secrets.open_webui_openrouter_env.path
+          # OAUTH_CLIENT_INFO_ENCRYPTION_KEY — the key the blob below was
+          # minted with; left to its default it would follow WEBUI_SECRET_KEY
+          config.age.secrets.open_webui_mcp_env.path
+          # TOOL_SERVER_CONNECTIONS
+          mcpToolServerEnv
         ];
       };
     };

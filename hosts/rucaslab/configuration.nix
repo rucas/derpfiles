@@ -205,6 +205,11 @@
     open_webui_openrouter_env = {
       file = ./secrets/open_webui_openrouter_env.age;
     };
+    # Outline OAuth app credentials for the MCP tool server, plus the key its
+    # client blob is encrypted with
+    open_webui_mcp_env = {
+      file = ./secrets/open_webui_mcp_env.age;
+    };
     authelia_oidc_open_webui_client_secret = {
       file = ./secrets/authelia_oidc_open_webui_client_secret.age;
       owner = config.services.authelia.instances.rucaslab.user;
