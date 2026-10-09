@@ -6,7 +6,15 @@
     settings = {
       zwave = {
         port = CONF.hosts.rucaslab.zwave.device;
-        rf.region = 9; # RFRegion["USA (Long Range)"]
+        rf = {
+          region = 9; # RFRegion["USA (Long Range)"]
+          autoPowerlevels = false; # "auto" only fires on a region change
+          txPower = {
+            powerlevel = -1; # ZWA-2, US
+            measured0dBm = 0; # hardware calibration, do not change
+          };
+          maxLongRangePowerlevel = 20; # ZWA-2, US
+        };
       };
       backup = {
         storeBackup = true;
