@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   osConfig,
   inputs,
@@ -33,6 +34,9 @@ in
   programs.firefox = {
     enable = true;
     package = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.firefox else null;
+    # NOTE: macOS 27+ denies non-Mozilla-signed builds access to
+    # ~/Library/Application Support/Firefox (NixOS/nixpkgs#535123)
+    configPath = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin "Library/Application Support/org.nixos.firefox";
     policies = {
       FirefoxHome = {
         Search = true;
