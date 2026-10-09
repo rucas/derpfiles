@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: Hand work off to a fresh Claude session running in its own git worktree and tmux session — a Jira ticket plus a plan doc, or just a sentence of intent. Sets up the worktree, stages a brief, starts Claude, and reports how to get there; it never implements the work itself.
+description: Hand work off to a Claude session running in its own git worktree and tmux session — a Jira ticket plus a plan doc, or just a sentence of intent. Sets up the worktree, stages a brief, starts Claude, and reports how to get there; it never implements the work itself. Work that already has a live tmux session is resumed in that session instead, running /address-review there when the task is about review feedback.
 disable-model-invocation: true
 allowed-tools: [Bash, Read, Write, AskUserQuestion, mcp__plugin_hm_jira__jira_get_issue, mcp__plugin_hm_jira__jira_get_transitions, mcp__plugin_hm_jira__jira_transition_issue]
 ---
@@ -10,6 +10,10 @@ allowed-tools: [Bash, Read, Write, AskUserQuestion, mcp__plugin_hm_jira__jira_ge
 You are the **launcher**, not the implementer. Collect the inputs, create an isolated worktree,
 stage a brief, start Claude in a tmux session, and report. Do **not** start the work in this
 session, and never write outside the new worktree — the files you are given are read-only inputs.
+
+Work that has been handed off once already has a worktree and a session. That case is **resume
+mode** (step 2): nothing is created, the command is sent into the session that already owns the
+work. Everything from step 3 on is the fresh-handoff path.
 
 ## Two shapes of work, one flow
 
@@ -54,11 +58,94 @@ under the cursor verbatim, so the first line carries its `****` stars and `(-)` 
 continuation lines carry `jira:` / `pr:` / `tmux:` links. (An INBOX item is scheduled onto today's
 TODO by the keymap first, so it arrives in the same shape.) Treat the stars and the marker as
 framing, not as part of the task; the links are real context. A `jira:` line is where the ticket
-comes from — a block carrying one is planned work.
+comes from — a block carrying one is planned work. A `tmux:` line names a session that may already
+own this work, and a `pr:` line carries the PR URL a review-feedback task needs; both feed step 2.
 
 With no arguments at all, ask in plain text for the task or the ticket and stop for the answer.
 
-### 2. Ask for the remaining inputs
+### 2. Resume mode — when the work already has a session
+
+Check this before anything else. A task that has been handed off once has a worktree, a branch and
+a tmux session; its follow-up work — most often *address the review comments on its PR* — belongs
+**in that session**. A second worktree off the same branch would split the work in two.
+
+Resume mode applies when a live session owns the task:
+
+- the norg block carries a `tmux: {tmux:SESSION}[SESSION]` line, **or** the ticket key from step 1
+  names a session (handed-off sessions are named after the key), and
+- `tmux has-session -t "=<session>"` succeeds.
+
+Nothing else is a signal — a `pr:` line alone is not, since the worktree that opened the PR may
+have been cleaned up since.
+
+When the `tmux:` line names a session that is **not** live, the worktree may have outlived it.
+Finding out needs the repo, so ask step 4's question first, then check
+`<main_wt>/.claude/worktrees/<session>`:
+
+- it exists — the session was killed and the work was not. Recreate it rooted at the worktree
+  (`tmux new-session -d -s <session> -c <worktree-dir>`; its original subdir died with it, so the
+  root is the best available cwd) and resume from **a**.
+- it is gone — the `tmux:` line is stale. Hand off fresh from step 3, keeping the repo answer.
+
+In resume mode:
+
+**a. Locate the session's working directory.**
+
+```bash
+tmux list-panes -s -t "=<session>" -F '#{pane_id} #{pane_current_command} #{pane_current_path}'
+```
+
+The panes' `pane_current_path` is the subdir of the worktree the work runs in — take the first
+one. It is the `-c` for a new window in step c, and the `CLAUDE.md` chain the resumed session
+loads.
+
+**b. Decide what to run there.**
+
+- **Review feedback** — the prose is about addressing review comments (`address @X's review
+  comments`, `handle the review feedback on …`). Run `/address-review`, with the block's `pr:` URL
+  as its argument; with no `pr:` line, send it bare — the session sits on the PR's branch, so the
+  skill resolves it itself. Send this **without asking**: it is the case the hotkey exists for.
+- **Anything else** — ask with `AskUserQuestion`, offering `/address-review` (when the block has a
+  `pr:` line), the task prose as a plain prompt into the session, and handing off fresh under
+  another name (which drops into step 3). Never guess.
+
+**c. Pick a pane that is safe to type into.** Never send keys into a pane running Claude: the line
+lands in its chat prompt as a message, interrupting whatever it is doing. A pane is safe only when
+its foreground process is a **shell** — Claude shows up as `.claude-wrapped`, not as `claude`, so
+match the shell rather than the absence of Claude. This is the rule `git wt` itself applies
+(`_command_pane`):
+
+```bash
+pane=$(tmux list-panes -s -t "=<session>" -F '#{pane_id} #{pane_current_command}' \
+  | awk '$2 ~ /^-?(zsh|bash|sh|fish|dash|ksh)$/ { print $1; exit }')
+[ -n "$pane" ] || pane=$(tmux new-window -d -t "=<session>" -c <dir> -P -F '#{pane_id}')
+```
+
+A long-lived worktree session usually has a Claude pane and a spare shell; when it does not, the
+detached window is the spare. Targeting the session rather than the pane id is never safe here.
+
+**d. Launch a fresh Claude on the skill.** `C-u` first, so a half-typed line in that shell cannot
+corrupt the command:
+
+```bash
+tmux send-keys -t "$pane" C-u
+tmux send-keys -t "$pane" 'claude "/address-review <pr-url>"' Enter
+```
+
+Keep it to one short line, as in step 12. Check it took with
+`tmux capture-pane -p -t "$pane" | tail -5`; if the pane does not show Claude starting, report
+that instead of claiming success.
+
+**e. Leave the ticket alone.** No Jira fetch and no transition — work with a session is in flight
+by definition, and step 8 never walks a status backwards anyway.
+
+**f. Report and stop.** The session, the working directory, which pane took the command (existing
+shell or new window), the exact command sent, and how to get there —
+`tmux switch-client -t <session>` inside tmux, `tmux attach -t <session>` outside — running that
+switch yourself as the final action when `--attach` was passed. Run nothing below: resume mode
+creates no worktree, stages no brief, and writes no files.
+
+### 3. Ask for the remaining inputs
 
 Skip any round whose answer is already settled, and skip the whole step for a plain task with no
 files named.
@@ -77,7 +164,7 @@ files named.
 If a named file does not exist, say so and re-ask — never silently drop an input or substitute a
 different file.
 
-### 3. Ask which repo
+### 4. Ask which repo
 
 Offer candidates with `AskUserQuestion` (`Other` takes a free-form path):
 
@@ -95,7 +182,7 @@ main_wt=$(git -C <answer> worktree list --porcelain | head -1 | awk '{print $2}'
 
 If the answer is not in a git repo, say so and ask again.
 
-### 4. Settle on `rel` — where in the repo the session runs
+### 5. Settle on `rel` — where in the repo the session runs
 
 `rel` is the working directory **relative to `main_wt`**; empty means the repo root. It decides
 which `CLAUDE.md` chain the new session loads, so it is worth getting right.
@@ -110,7 +197,7 @@ verify `<main_wt>/<rel>` exists — if not, say so and re-ask.
 `rel = git -C . rev-parse --show-prefix`; for any other repo there is no subdir to infer, so start
 at its root. A one-line task belongs where you are standing — do not spend a prompt on it.
 
-### 5. Settle on a name
+### 6. Settle on a name
 
 The worktree directory, the branch (`worktree-<name>`) and the tmux session all share one name.
 
@@ -121,20 +208,20 @@ The worktree directory, the branch (`worktree-<name>`) and the tmux session all 
   `(-)` marker, `#tags` and link lines are framing. Show the slug and ask once whether to keep it
   or use another: one prompt, with the slug as the default option.
 
-### 6. Pre-flight — abort before creating anything
+### 7. Pre-flight — abort before creating anything
 
 Report and stop if any holds:
 
-- `tmux has-session -t "=<name>"` succeeds. A session already exists, possibly with a live Claude
-  in it; **never send keys into it**. Suggest `tmux switch-client -t <name>` or
-  `git wt kill <name>`.
+- `tmux has-session -t "=<name>"` succeeds. Step 2 has already ruled out that session owning this
+  task, so this is an unrelated session wearing the name — **never send keys into it**, and never
+  adopt it. Suggest `tmux switch-client -t <name>` or `git wt kill <name>`.
 - `<main_wt>/.claude/worktrees/<name>` exists.
 - `git -C <main_wt> rev-parse --verify worktree-<name>` succeeds — the branch is already there.
 
 A collision means picking a different name, not reusing the existing one. For a ticket the name is
 fixed, so a collision means the ticket is already in flight: say so and stop.
 
-### 7. Fetch the ticket, and move it to In Progress
+### 8. Fetch the ticket, and move it to In Progress
 
 Only when there is one. `jira_get_issue` on the key: summary, type, status, parent, description,
 acceptance criteria, URL. If the MCP errors (e.g. expired OAuth), do not invent content — carry on
@@ -157,7 +244,7 @@ still sitting in a To Do-category status should not stay there.
 Do not ask before moving it. It is a reversible, one-field change on a ticket the user just chose
 to start, and a prompt per handoff costs more than it protects.
 
-### 8. Create the worktree + session
+### 9. Create the worktree + session
 
 ```bash
 git wt new <name> <main_wt>                   # add --cd <rel> when rel is non-empty
@@ -174,18 +261,18 @@ set, and use for every path from here on:
 
 If `git wt new` fails, STOP: report its output and leave the tree alone.
 
-### 9. Stage the brief
+### 10. Stage the brief
 
 Everything goes in `<wt>/.claude/execute-task/`, as copies rather than symlinks so the brief cannot
 drift:
 
-- `TICKET.md` — the fetched Jira content, or the key + URL when step 7 failed. Omit with no ticket.
+- `TICKET.md` — the fetched Jira content, or the key + URL when step 8 failed. Omit with no ticket.
 - `PLAN.md` — the plan doc. Omit when there is none.
 - `context/<basename>` — each extra file, de-duplicating colliding basenames. Omit when there are
   none.
-- `PROMPT.md` — the kickoff brief from step 10.
+- `PROMPT.md` — the kickoff brief from step 11.
 
-### 10. Write `PROMPT.md`
+### 11. Write `PROMPT.md`
 
 Plain markdown, covering:
 
@@ -211,7 +298,7 @@ Plain markdown, covering:
   Do not push or open a PR unless asked.
 - **Do not commit `.claude/execute-task/`** — it is scaffolding for this session.
 
-### 11. Launch Claude in the session
+### 12. Launch Claude in the session
 
 Keep the sent line short — multi-line prompts through `send-keys` are quoting-fragile, so the brief
 lives in the file and the prompt just points at it:
@@ -221,13 +308,14 @@ tmux send-keys -t "=<name>" 'claude "Read <wt>/.claude/execute-task/PROMPT.md an
 ```
 
 `git wt new` leaves a single shell pane in the fresh session, so targeting the session is safe
-here. Check it took with `tmux capture-pane -p -t "=<name>" | tail -5`. If the pane does not show
-Claude starting, report that instead of claiming success.
+here — unlike resume mode, which has to pick its pane (step 2c). Check it took with
+`tmux capture-pane -p -t "=<name>" | tail -5`. If the pane does not show Claude starting, report
+that instead of claiming success.
 
-### 12. Report
+### 13. Report
 
 The ticket + URL when there is one, otherwise the task; then the repo, the branch, the worktree
-path, `target`, the session name, and the staged files. Say what step 7 did to the ticket's status
+path, `target`, the session name, and the staged files. Say what step 8 did to the ticket's status
 — moved to `In Progress`, left alone because it was already past To Do, or failed and why.
 Finish with how to get there —
 `tmux switch-client -t <name>` inside tmux, `tmux attach -t <name>` outside. Leave the session

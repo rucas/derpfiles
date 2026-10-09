@@ -31,7 +31,7 @@ add it expecting a sandbox.)
 
 | Skill               | Use when                                        | Acts outward on its own |
 | ------------------- | ----------------------------------------------- | ----------------------- |
-| `/execute-task`     | Work is ready to hand to a fresh Claude session | No — local worktree only |
+| `/execute-task`     | Work is ready for a Claude session of its own  | No — local worktree only |
 | `/address-review`   | Review comments to triage, not yet answered     | No — never posts/pushes |
 | `/shepherd-pr`      | PR is stalled on mechanics, not judgement       | **Yes** — pushes, marks ready |
 | `/plan-to-jira`     | Plan is written and needs a ticket              | **Yes** — creates issue |
@@ -53,12 +53,24 @@ session. It covers both shapes of handoff and picks between them from the inputs
 
 1. Reads `$ARGUMENTS` for a Jira key, file paths and prose — including a norg task
    block sent by nxvm's `<LocalLeader>nx`, whose `jira:` line supplies the ticket
-2. Asks for whatever is missing — plan doc, context files, repo, and (with a plan)
+2. **Resumes instead** when a live tmux session already owns the task (see below)
+3. Asks for whatever is missing — plan doc, context files, repo, and (with a plan)
    where in the repo to work
-3. Pre-flight checks, aborting before creating anything
-4. Creates the worktree (`git wt new`) and stages the brief under
+4. Pre-flight checks, aborting before creating anything
+5. Creates the worktree (`git wt new`) and stages the brief under
    `<worktree>/.claude/execute-task/`
-5. Starts Claude in tmux and reports how to get there
+6. Starts Claude in tmux and reports how to get there
+
+**Resume mode.** A task that has been handed off once carries a `tmux:` line, so the
+second hotkey press on it — typically once the PR has review comments — should land in
+the session that already has the branch, not in a second worktree off it. When the
+block's `tmux:` session (or the session named after its ticket key) is live, the skill
+creates nothing: it finds a pane in that session whose foreground process is a shell
+(opening a detached window when every pane is running Claude, since typing into Claude's
+pane would land in its chat prompt), and starts a fresh Claude there. A task whose prose
+is about addressing review comments runs `/address-review <pr-url>` with no prompt —
+that is the case the hotkey exists for; anything else asks what to run. The ticket is
+left untouched, since work with a session is in flight by definition.
 
 It is the launcher, not the implementer: it never does the work in your current
 session, never writes outside the new worktree, and never pushes or opens a PR
