@@ -6,6 +6,12 @@
     settings = {
       zwave = {
         port = CONF.hosts.rucaslab.zwave.device;
+        rf.region = 9; # RFRegion["USA (Long Range)"]
+      };
+      backup = {
+        storeBackup = true;
+        nvmBackup = true;
+        nvmBackupOnEvent = true;
       };
       ui = {
         darkMode = true;
