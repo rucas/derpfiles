@@ -3,11 +3,11 @@ rec {
   people = {
     lucas = {
       mobile = "mobile_app_lucas_iphone";
-      person = "person.lucas";
+      person = "person.lucas_rondenet";
     };
     kelsey = {
       mobile = "mobile_app_kelsey_s_iphone";
-      person = "person.kelsey";
+      person = "person.kelsey_rondenet";
     };
   };
 
