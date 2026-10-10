@@ -47,6 +47,20 @@ rec {
       webhook_id = id;
     };
 
+    # `event_data` narrows a bus event to one entity. Timers announce expiry as
+    # a `timer.finished` event rather than a state change, so a state trigger on
+    # the timer entity never sees it.
+    event =
+      {
+        event_type,
+        event_data ? { },
+      }:
+      {
+        platform = "event";
+        inherit event_type;
+      }
+      // lib.optionalAttrs (event_data != { }) { inherit event_data; };
+
     mqtt =
       {
         topic,
@@ -289,6 +303,24 @@ rec {
         service = if state == "on" then "switch.turn_on" else "switch.turn_off";
         inherit entity_id;
       };
+
+    switchToggle = entity_id: {
+      service = "switch.toggle";
+      inherit entity_id;
+    };
+
+    # `timer.start` on an already-running timer restarts it from its full
+    # duration. That is the point: it re-phases a cycle instead of inheriting
+    # whatever was left of the current half-period.
+    timerStart = entity_id: {
+      service = "timer.start";
+      inherit entity_id;
+    };
+
+    timerCancel = entity_id: {
+      service = "timer.cancel";
+      inherit entity_id;
+    };
 
     delay = seconds: {
       delay = { inherit seconds; };

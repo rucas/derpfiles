@@ -121,11 +121,48 @@ rec {
     runTime = "input_datetime.robovac_run_time";
   };
 
+  # Aqara plug in line with the instant hot water recirculating pump. The pump
+  # has no state of its own — the plug's switch *is* the pump — so the cycle can
+  # flip it blind without reading anything back off the device.
+  recircPump = {
+    switch = "switch.hot_water_recirculating_pump";
+
+    # Half-period of the 15-on/15-off schedule, not a countdown anything reads:
+    # only the `timer.finished` event matters. Keeping the clock in a timer
+    # rather than a `/15` time pattern is what lets a demand trigger restart it
+    # mid-cycle and still hand the pump a full-length run.
+    cycle = "timer.hot_water_recirc";
+
+    # Washing dishes by hand wants a steady tap, not a loop that cuts the hot
+    # water every other quarter hour. While this one runs the pump is held on
+    # and the cycle timer is cancelled outright, so no flip can interrupt it.
+    boost = "timer.hot_water_recirc_boost";
+
+    # Stand-ins for "someone is about to want hot water". Master and guest only:
+    # the front bathroom has leak sensors but no light in Home Assistant.
+    demandLights = [
+      "light.master_bathroom_main_lights"
+      "light.master_bathroom_shower_lights"
+      "light.master_bathroom_toilet"
+      "light.guest_bathroom_main_lights"
+    ];
+  };
+
+  # The closest thing the house has to a bed sensor. This presence sensor drops
+  # to "off" once we settle for the night and reports "on" again when someone
+  # actually moves, so the morning edge after a long gap means "up", not "in
+  # bed" — see the guard in hot_water_recirc.nix.
+  masterBedroom = {
+    occupancy = "binary_sensor.master_bedroom_occupancy";
+  };
+
   bedtime = "input_datetime.bedtime";
 
   vacationMode = "input_boolean.vacation_mode";
 
   allMobileDevices = lib.attrValues (lib.mapAttrs (_name: person: person.mobile) people);
+
+  allPersons = lib.attrValues (lib.mapAttrs (_name: person: person.person) people);
 
   roomLights = room: lib.attrValues lights.${room} or [ ];
 

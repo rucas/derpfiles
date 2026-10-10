@@ -72,6 +72,28 @@ in
       };
     };
 
+    # The pump's whole schedule, held as one half-period: every expiry flips the
+    # switch, so a single 15-minute timer yields 15 on, 15 off. `restore` is
+    # what keeps a cycle alive across a restart — without it the timer comes
+    # back idle and the pump would sit untouched until the next 5 AM start.
+    timer.hot_water_recirc = {
+      name = "Hot Water Recirc Cycle";
+      icon = "mdi:pump";
+      duration = "00:15:00";
+      restore = true;
+    };
+
+    # A triple press on the Dishwasher Button holds the pump on for one of
+    # these instead of cycling it. The automation reads this `duration` back
+    # when it names the end time in its confirmation, so the value here is the
+    # only place the boost length is written down.
+    timer.hot_water_recirc_boost = {
+      name = "Hot Water Recirc Boost";
+      icon = "mdi:silverware-clean";
+      duration = "00:30:00";
+      restore = true;
+    };
+
     # One entity standing for "some opening is letting conditioned air out".
     # A group is on when any member is on and skips members reporting unknown,
     # which is the normal resting state for a Sensative strip that has not
