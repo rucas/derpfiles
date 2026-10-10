@@ -1,0 +1,230 @@
+blueprint:
+  name: Wake-up light alarm with sunrise effect (Kelvin)
+  description: >-
+    Ramp one or more dimmable, colour-temperature-capable lights from a dim
+    ember glow up to daylight over the configured number of minutes, landing at
+    full brightness on the time held by an `input_datetime` or `time` entity.
+
+
+    Turning the lights off during the ramp ends it — the loop watches the first
+    light in the list and stops as soon as it reports `off`, so a hand on the
+    switch wins.
+
+
+    A fork of sbyx's "Wake-up light alarm with sunrise effect"
+    (https://gist.github.com/sbyx/96c43b13b90ae1c35b872313ba1d2d2d), rewritten
+    for Home Assistant 2026.x. Three things changed and all three are load-bearing
+    here:
+
+
+    1. Colour is driven with `color_temp_kelvin` against the light's
+    `min_color_temp_kelvin`/`max_color_temp_kelvin` attributes. The original
+    used mireds, which no longer exist on light entities — on current Home
+    Assistant it quietly degrades to a brightness-only ramp.
+
+
+    2. The alarm time is read straight off a datetime entity with `today_at()`,
+    instead of string-concatenating `sensor.date` with a time. That drops the
+    Time & Date integration requirement entirely.
+
+
+    3. The target is a list of lights rather than a single entity, so a pair of
+    bedside lamps ramps as one.
+  domain: automation
+  homeassistant:
+    min_version: "2024.10.0"
+  input:
+    light_entity:
+      name: Wake-up lights
+      description: >-
+        The lights to ramp. They need brightness and colour temperature
+        support; the Kelvin range is clamped to what each light reports.
+      selector:
+        entity:
+          filter:
+            - domain: light
+          multiple: true
+    alarm_time_entity:
+      name: Alarm time
+      description: >-
+        Entity holding the time the sunrise should finish on. An
+        `input_datetime` (time only) or a `time` entity works, as does any
+        entity whose state is a full timestamp — a time-only state is
+        interpreted as today.
+      selector:
+        entity:
+          filter:
+            - domain: input_datetime
+            - domain: time
+            - domain: sensor
+    enable_entity:
+      name: Enable entity
+      description: >-
+        Optional gate. If set, the sunrise only runs while this entity is `on`
+        or `home` — an `input_boolean`, a workday sensor, or a person entity.
+      default: none
+      selector:
+        entity: {}
+    sunrise_duration:
+      name: Sunrise duration
+      description: How long before the alarm time the ramp starts.
+      default: 30
+      selector:
+        number:
+          min: 5
+          max: 60
+          step: 5
+          unit_of_measurement: min
+          mode: slider
+    start_brightness_pct:
+      name: Starting brightness
+      description: >-
+        Where the ramp begins. Some bulbs refuse very low values and jump to
+        full brightness instead, so raise this if the first step is a flash.
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 100
+          step: 1
+          unit_of_measurement: "%"
+          mode: slider
+    end_brightness_pct:
+      name: Ending brightness
+      default: 100
+      selector:
+        number:
+          min: 5
+          max: 100
+          step: 1
+          unit_of_measurement: "%"
+          mode: slider
+    start_kelvin:
+      name: Starting colour temperature
+      description: Warm end of the ramp. Clamped up to what the light supports.
+      default: 2000
+      selector:
+        number:
+          min: 1500
+          max: 6500
+          step: 100
+          unit_of_measurement: K
+          mode: slider
+    end_kelvin:
+      name: Ending colour temperature
+      description: Cool end of the ramp. Clamped down to what the light supports.
+      default: 4000
+      selector:
+        number:
+          min: 1500
+          max: 6500
+          step: 100
+          unit_of_measurement: K
+          mode: slider
+    pre_sunrise_actions:
+      name: Pre-sunrise actions
+      description: Optional actions to run just before the ramp starts.
+      default: []
+      selector:
+        action: {}
+    post_sunrise_actions:
+      name: Post-sunrise actions
+      description: >-
+        Optional actions to run at the alarm time, once the ramp has finished.
+        Skipped if the sunrise was cut short by the lights being turned off.
+      default: []
+      selector:
+        action: {}
+  source_url: https://gist.github.com/sbyx/96c43b13b90ae1c35b872313ba1d2d2d
+
+# Fires every minute rather than once at a computed time so that a restart
+# mid-sunrise is self-healing: the next tick re-enters the window, finds the
+# lights where it left them, and carries on. `mode: single` keeps the ticks
+# during a running ramp from stacking, and `max_exceeded: silent` keeps them
+# out of the log.
+mode: single
+max_exceeded: silent
+
+triggers:
+  - trigger: time_pattern
+    minutes: "*"
+
+variables:
+  lights: !input light_entity
+  alarm_time_entity: !input alarm_time_entity
+  enable_entity: !input enable_entity
+  sunrise_duration: !input sunrise_duration
+  start_brightness_pct: !input start_brightness_pct
+  end_brightness_pct: !input end_brightness_pct
+  start_kelvin: !input start_kelvin
+  end_kelvin: !input end_kelvin
+  seconds: "{{ sunrise_duration | float * 60 }}"
+  # ~100 steps, floored at 5s so a short sunrise does not hammer the radio.
+  tick: "{{ [5, (seconds | float / 100) | round(0, 'ceil') | int] | max }}"
+  # The ramp follows the first light's state, so turning it off stops the loop.
+  reference_light: "{{ (lights if lights is not string else [lights]) | first }}"
+  # Clamped to the hardware. A bulb silently refusing an out-of-range Kelvin is
+  # the difference between a sunrise and a light that sits at one colour.
+  min_kelvin: "{{ state_attr(reference_light, 'min_color_temp_kelvin') | int(2000) }}"
+  max_kelvin: "{{ state_attr(reference_light, 'max_color_temp_kelvin') | int(6500) }}"
+  from_kelvin: "{{ [[start_kelvin | int, min_kelvin | int] | max, max_kelvin | int] | min }}"
+  to_kelvin: "{{ [[end_kelvin | int, min_kelvin | int] | max, max_kelvin | int] | min }}"
+  # Resolved once per trigger, then held for the whole ramp: the target is a
+  # fixed point in time, and recomputing it every tick is what made the
+  # original's loop conditions so hard to read.
+  alarm_ts: >-
+    {% set raw = states(alarm_time_entity) %}
+    {% set absolute = as_timestamp(raw, none) %}
+    {{ absolute if absolute is not none else today_at(raw) | as_timestamp }}
+
+conditions:
+  # Inside the sunrise window, and not past the alarm time.
+  - condition: template
+    value_template: >-
+      {{ alarm_ts is not none
+         and alarm_ts - now().timestamp() > 0
+         and alarm_ts - now().timestamp() <= seconds | float }}
+  - condition: template
+    value_template: >-
+      {{ enable_entity == 'none'
+         or states(enable_entity) in ['on', 'home'] }}
+
+actions:
+  - sequence: !input pre_sunrise_actions
+
+  - action: light.turn_on
+    target:
+      entity_id: !input light_entity
+    data:
+      brightness_pct: "{{ start_brightness_pct }}"
+      color_temp_kelvin: "{{ from_kelvin }}"
+      transition: 1
+
+  - repeat:
+      while:
+        - "{{ is_state(reference_light, 'on') }}"
+        - "{{ alarm_ts - now().timestamp() > 0 }}"
+      sequence:
+        # Aim at where the ramp should be once this step's transition has run,
+        # so the lights arrive at full brightness on the alarm time rather than
+        # one tick behind it.
+        - variables:
+            progress: >-
+              {{ [[1 - (alarm_ts - now().timestamp() - tick | float) / (seconds | float), 0] | max, 1] | min }}
+        - action: light.turn_on
+          target:
+            entity_id: !input light_entity
+          data:
+            brightness_pct: >-
+              {{ (start_brightness_pct | float
+                  + (end_brightness_pct | float - start_brightness_pct | float) * progress | float) | round | int }}
+            color_temp_kelvin: >-
+              {{ (from_kelvin | float
+                  + (to_kelvin | float - from_kelvin | float) * progress | float) | round | int }}
+            transition: "{{ tick }}"
+        - delay: "{{ tick }}"
+
+  - choose:
+      - conditions:
+          - "{{ is_state(reference_light, 'on') }}"
+        sequence: !input post_sunrise_actions

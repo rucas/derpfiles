@@ -46,6 +46,15 @@ in
         name = "Robovac Scheduled";
         icon = "mdi:robot-vacuum";
       };
+
+      # Gate for wakeup_sunrise.nix. Deliberately no `initial`, unlike bedtime
+      # and for the same reason as the restore helpers above: an alarm has to
+      # survive a restart. A nightly core update that reset this to off would
+      # mean a morning with no sunrise and no indication why.
+      wakeup_alarm = {
+        name = "Wake-Up Alarm";
+        icon = "mdi:alarm";
+      };
     };
 
     # `initial` re-applies on every restart rather than restoring the previous
@@ -69,6 +78,17 @@ in
         has_date = false;
         has_time = true;
         initial = "06:00:00";
+      };
+
+      # The moment the bedside lamps reach full brightness, not the moment the
+      # sunrise starts — the blueprint backs the ramp off this time by its
+      # configured duration.
+      wakeup_time = {
+        name = "Wake-Up Time";
+        icon = "mdi:weather-sunset-up";
+        has_date = false;
+        has_time = true;
+        initial = "06:30:00";
       };
     };
 

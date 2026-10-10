@@ -154,9 +154,21 @@ rec {
   # bed" — see the guard in hot_water_recirc.nix.
   masterBedroom = {
     occupancy = "binary_sensor.master_bedroom_occupancy";
+
+    # The bedside pair, as one unit. Both are Hue colour-temperature bulbs
+    # (2000-6535 K) paired through Zigbee2MQTT rather than a Hue bridge, which
+    # is why the wake-up sunrise can drive them with `color_temp_kelvin`.
+    lamps = [
+      "light.master_bedroom_lamp_left"
+      "light.master_bedroom_lamp_right"
+    ];
   };
 
   bedtime = "input_datetime.bedtime";
+
+  wakeupTime = "input_datetime.wakeup_time";
+
+  wakeupAlarm = "input_boolean.wakeup_alarm";
 
   vacationMode = "input_boolean.vacation_mode";
 

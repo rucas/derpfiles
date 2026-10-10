@@ -12,6 +12,7 @@
         hash = "sha256-fJq3YHrm2gglBWZLK6KFevOll7dn4eHgXfaV5rZFQC8=";
       })
       ./blueprints/aqara_mini_switch_t1.yaml
+      ./blueprints/wake_up_light_sunrise.yaml
     ];
 
     script = [

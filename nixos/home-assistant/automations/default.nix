@@ -11,6 +11,7 @@
     ./security_camera_privacy.nix
     ./climate_door_pause.nix
     ./hot_water_recirc.nix
+    ./wakeup_sunrise.nix
   ];
   services.home-assistant.config = {
     "automation ui" = "!include automations.yaml";
