@@ -1,9 +1,19 @@
 blueprint:
-  name: Wake-up light alarm with sunrise effect (Kelvin)
+  name: Wake-up light alarm with sunrise effect
   description: >-
-    Ramp one or more dimmable, colour-temperature-capable lights from a dim
-    ember glow up to daylight over the configured number of minutes, landing at
-    full brightness on the time held by an `input_datetime` or `time` entity.
+    Ramp one or more lights through a real sunrise — saturated red, through
+    orange and amber, into yellow-white and finally daylight — landing at full
+    brightness on the time held by an `input_datetime`, having started
+    `sunrise_offset` earlier.
+
+
+    The ramp runs in two phases. The first interpolates through a list of RGB
+    stops, which is what gets the reds and oranges a colour temperature cannot
+    reach. The second switches to colour temperature and climbs to the finish.
+    The handover is colour-continuous as long as the last RGB stop matches the
+    RGB rendering of `start_kelvin` — the defaults are set up that way (2000 K
+    is `[255, 137, 14]`), so the bulb changes colour mode without a visible
+    jump. Set `colour_phase_fraction` to 0 for a colour-temperature-only ramp.
 
 
     Turning the lights off during the ramp ends it — the loop watches the first
@@ -13,8 +23,8 @@ blueprint:
 
     A fork of sbyx's "Wake-up light alarm with sunrise effect"
     (https://gist.github.com/sbyx/96c43b13b90ae1c35b872313ba1d2d2d), rewritten
-    for Home Assistant 2026.x. Three things changed and all three are load-bearing
-    here:
+    for Home Assistant 2026.x. Four things changed and all four are
+    load-bearing here:
 
 
     1. Colour is driven with `color_temp_kelvin` against the light's
@@ -30,6 +40,16 @@ blueprint:
 
     3. The target is a list of lights rather than a single entity, so a pair of
     bedside lamps ramps as one.
+
+
+    4. The RGB phase above. The original ran entirely on the white axis, so its
+    "sunrise" started at warm white rather than red.
+
+
+    5. One time trigger offset back from the alarm entity, where the original
+    polled every minute and tested whether it was inside the window. The offset
+    doubles as the ramp length, so there is no second copy of it to keep in
+    step.
   domain: automation
   homeassistant:
     min_version: "2024.10.0"
@@ -37,8 +57,9 @@ blueprint:
     light_entity:
       name: Wake-up lights
       description: >-
-        The lights to ramp. They need brightness and colour temperature
-        support; the Kelvin range is clamped to what each light reports.
+        The lights to ramp. The colour phase needs RGB support and the second
+        phase needs colour temperature; the Kelvin range is clamped to what the
+        light reports.
       selector:
         entity:
           filter:
@@ -48,14 +69,15 @@ blueprint:
       name: Alarm time
       description: >-
         Entity holding the time the sunrise should finish on. An
-        `input_datetime` (time only) or a `time` entity works, as does any
-        entity whose state is a full timestamp — a time-only state is
-        interpreted as today.
+        `input_datetime` (time only) works, as does a `sensor` whose state is a
+        full timestamp — a time-only state is interpreted as today. The trigger
+        reads this entity directly and only accepts those two domains, which is
+        why a `time` entity is not offered: it would pass the selector and then
+        fail to validate.
       selector:
         entity:
           filter:
             - domain: input_datetime
-            - domain: time
             - domain: sensor
     enable_entity:
       name: Enable entity
@@ -65,22 +87,53 @@ blueprint:
       default: none
       selector:
         entity: {}
-    sunrise_duration:
-      name: Sunrise duration
-      description: How long before the alarm time the ramp starts.
-      default: 30
+    sunrise_offset:
+      name: Sunrise offset
+      description: >-
+        How long before the alarm time the ramp starts, as a negative duration
+        — `-01:00:00` starts the ramp an hour ahead of it. This is both the
+        trigger's offset from the alarm time and the length of the ramp, so the
+        two cannot drift apart; a positive value would arm the trigger after
+        the alarm time and the window condition would then refuse to run.
+      default: "-01:00:00"
+      selector:
+        text: {}
+    colour_stops:
+      name: Sunrise colours
+      description: >-
+        RGB stops for the colour phase, interpolated in order. At least two are
+        required. The first is where the sunrise begins and the last should be
+        the RGB rendering of `start_kelvin`, so the handover to colour
+        temperature is seamless. Brightness is applied separately, so these
+        should be fully saturated — the dimness early on comes from the
+        brightness ramp, not from darker colours.
+      default:
+        - [255, 0, 0]
+        - [255, 30, 0]
+        - [255, 70, 0]
+        - [255, 110, 5]
+        - [255, 137, 14]
+      selector:
+        object: {}
+    colour_phase_fraction:
+      name: Colour phase length
+      description: >-
+        Fraction of the ramp spent in the RGB phase before handing over to
+        colour temperature. 0 disables the colour phase entirely and runs a
+        colour-temperature-only ramp from `start_kelvin`.
+      default: 0.65
       selector:
         number:
-          min: 5
-          max: 60
-          step: 5
-          unit_of_measurement: min
+          min: 0
+          max: 1
+          step: 0.05
           mode: slider
     start_brightness_pct:
       name: Starting brightness
       description: >-
         Where the ramp begins. Some bulbs refuse very low values and jump to
         full brightness instead, so raise this if the first step is a flash.
+        Deep red at 1% is close to the floor of what a bulb renders smoothly.
       default: 1
       selector:
         number:
@@ -100,8 +153,13 @@ blueprint:
           unit_of_measurement: "%"
           mode: slider
     start_kelvin:
-      name: Starting colour temperature
-      description: Warm end of the ramp. Clamped up to what the light supports.
+      name: Handover colour temperature
+      description: >-
+        Where the colour-temperature phase begins, and the colour the RGB phase
+        should end on. Clamped to what the light supports. Kept next to
+        `colour_stops` above because the two are coupled: this value's RGB
+        rendering has to be the last stop, or the lights jump at the handover.
+        2000 K renders as `[255, 137, 14]`.
       default: 2000
       selector:
         number:
@@ -137,28 +195,38 @@ blueprint:
         action: {}
   source_url: https://gist.github.com/sbyx/96c43b13b90ae1c35b872313ba1d2d2d
 
-# Fires every minute rather than once at a computed time so that a restart
-# mid-sunrise is self-healing: the next tick re-enters the window, finds the
-# lights where it left them, and carries on. `mode: single` keeps the ticks
-# during a running ramp from stacking, and `max_exceeded: silent` keeps them
-# out of the log.
+# Fires once, at the alarm time offset backwards by the ramp length. A time
+# trigger pointed at an entity re-arms itself whenever that entity changes, so
+# editing the alarm time moves the start with it and the offset stays the only
+# place the ramp length is written down.
+#
+# The cost is that a restart mid-ramp ends that morning's sunrise: nothing
+# re-enters the window. An every-minute `time_pattern` would recover from that,
+# but it also burns the five stored traces Home Assistant keeps per automation
+# every five minutes, which leaves no way to inspect what a sunrise actually
+# did. A choreography this long is worth more debuggable than restart-proof.
 mode: single
-max_exceeded: silent
 
 triggers:
-  - trigger: time_pattern
-    minutes: "*"
+  - trigger: time
+    at:
+      entity_id: !input alarm_time_entity
+      offset: !input sunrise_offset
 
 variables:
   lights: !input light_entity
   alarm_time_entity: !input alarm_time_entity
   enable_entity: !input enable_entity
-  sunrise_duration: !input sunrise_duration
+  sunrise_offset: !input sunrise_offset
+  colour_stops: !input colour_stops
+  colour_phase_fraction: !input colour_phase_fraction
   start_brightness_pct: !input start_brightness_pct
   end_brightness_pct: !input end_brightness_pct
   start_kelvin: !input start_kelvin
   end_kelvin: !input end_kelvin
-  seconds: "{{ sunrise_duration | float * 60 }}"
+  # Taken from the trigger's own offset, so the ramp always spans exactly the
+  # gap the trigger fired across. `abs` because the offset points backwards.
+  seconds: "{{ (sunrise_offset | as_timedelta).total_seconds() | abs }}"
   # ~100 steps, floored at 5s so a short sunrise does not hammer the radio.
   tick: "{{ [5, (seconds | float / 100) | round(0, 'ceil') | int] | max }}"
   # The ramp follows the first light's state, so turning it off stops the loop.
@@ -169,6 +237,7 @@ variables:
   max_kelvin: "{{ state_attr(reference_light, 'max_color_temp_kelvin') | int(6500) }}"
   from_kelvin: "{{ [[start_kelvin | int, min_kelvin | int] | max, max_kelvin | int] | min }}"
   to_kelvin: "{{ [[end_kelvin | int, min_kelvin | int] | max, max_kelvin | int] | min }}"
+  use_colour_phase: "{{ colour_phase_fraction | float > 0 and colour_stops | length > 1 }}"
   # Resolved once per trigger, then held for the whole ramp: the target is a
   # fixed point in time, and recomputing it every tick is what made the
   # original's loop conditions so hard to read.
@@ -192,13 +261,27 @@ conditions:
 actions:
   - sequence: !input pre_sunrise_actions
 
-  - action: light.turn_on
-    target:
-      entity_id: !input light_entity
-    data:
-      brightness_pct: "{{ start_brightness_pct }}"
-      color_temp_kelvin: "{{ from_kelvin }}"
-      transition: 1
+  # Open on the first colour stop, or on the handover temperature when the
+  # colour phase is switched off.
+  - choose:
+      - conditions:
+          - "{{ use_colour_phase }}"
+        sequence:
+          - action: light.turn_on
+            target:
+              entity_id: !input light_entity
+            data:
+              brightness_pct: "{{ start_brightness_pct }}"
+              rgb_color: "{{ colour_stops | first }}"
+              transition: 1
+    default:
+      - action: light.turn_on
+        target:
+          entity_id: !input light_entity
+        data:
+          brightness_pct: "{{ start_brightness_pct }}"
+          color_temp_kelvin: "{{ from_kelvin }}"
+          transition: 1
 
   - repeat:
       while:
@@ -211,17 +294,49 @@ actions:
         - variables:
             progress: >-
               {{ [[1 - (alarm_ts - now().timestamp() - tick | float) / (seconds | float), 0] | max, 1] | min }}
-        - action: light.turn_on
-          target:
-            entity_id: !input light_entity
-          data:
-            brightness_pct: >-
+            brightness: >-
               {{ (start_brightness_pct | float
                   + (end_brightness_pct | float - start_brightness_pct | float) * progress | float) | round | int }}
-            color_temp_kelvin: >-
-              {{ (from_kelvin | float
-                  + (to_kelvin | float - from_kelvin | float) * progress | float) | round | int }}
-            transition: "{{ tick }}"
+        - choose:
+            # Colour phase: walk the RGB stops. `stop_index` is held one below
+            # the last stop so that `stop_index + 1` is always a real stop.
+            - conditions:
+                - "{{ use_colour_phase and progress | float < colour_phase_fraction | float }}"
+              sequence:
+                - variables:
+                    stop_position: >-
+                      {{ (progress | float / colour_phase_fraction | float) * (colour_stops | length - 1) }}
+                    stop_index: "{{ [stop_position | int, colour_stops | length - 2] | min }}"
+                    stop_blend: "{{ stop_position | float - stop_index | int }}"
+                - action: light.turn_on
+                  target:
+                    entity_id: !input light_entity
+                  data:
+                    brightness_pct: "{{ brightness }}"
+                    transition: "{{ tick }}"
+                    rgb_color: >-
+                      {% set a = colour_stops[stop_index | int] %}
+                      {% set b = colour_stops[stop_index | int + 1] %}
+                      {% set f = stop_blend | float %}
+                      {{ [(a[0] + (b[0] - a[0]) * f) | round | int,
+                          (a[1] + (b[1] - a[1]) * f) | round | int,
+                          (a[2] + (b[2] - a[2]) * f) | round | int] }}
+          # Colour-temperature phase, rebased so it spans the remainder of the
+          # ramp rather than restarting the clock.
+          default:
+            - variables:
+                kelvin_progress: >-
+                  {% set offset = colour_phase_fraction | float if use_colour_phase else 0 %}
+                  {{ 1 if offset >= 1 else (progress | float - offset) / (1 - offset) }}
+            - action: light.turn_on
+              target:
+                entity_id: !input light_entity
+              data:
+                brightness_pct: "{{ brightness }}"
+                transition: "{{ tick }}"
+                color_temp_kelvin: >-
+                  {{ (from_kelvin | float
+                      + (to_kelvin | float - from_kelvin | float) * kelvin_progress | float) | round | int }}
         - delay: "{{ tick }}"
 
   - choose:

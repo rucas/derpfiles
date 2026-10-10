@@ -155,9 +155,12 @@ rec {
   masterBedroom = {
     occupancy = "binary_sensor.master_bedroom_occupancy";
 
-    # The bedside pair, as one unit. Both are Hue colour-temperature bulbs
-    # (2000-6535 K) paired through Zigbee2MQTT rather than a Hue bridge, which
-    # is why the wake-up sunrise can drive them with `color_temp_kelvin`.
+    # The bedside pair, as one unit. Both are Hue colour bulbs paired through
+    # Zigbee2MQTT rather than a Hue bridge, reporting `color_temp` (2000-6535 K)
+    # and `xy` — the two modes the wake-up sunrise needs. Its red phase sends
+    # `rgb_color`, which the light component converts to xy on the way through
+    # because these report no native RGB mode; a colour-temperature-only bulb
+    # here would drop that phase and start the ramp at warm white instead.
     lamps = [
       "light.master_bedroom_lamp_left"
       "light.master_bedroom_lamp_right"

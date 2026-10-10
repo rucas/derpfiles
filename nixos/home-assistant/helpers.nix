@@ -81,8 +81,11 @@ in
       };
 
       # The moment the bedside lamps reach full brightness, not the moment the
-      # sunrise starts — the blueprint backs the ramp off this time by its
-      # configured duration.
+      # sunrise starts — the automation triggers on this entity offset
+      # backwards by the `sunrise_offset` in wakeup_sunrise.nix, so 06:30 here
+      # with that file's -01:00:00 means the ramp begins at 05:30. Editing this
+      # in the UI re-arms the trigger, so the start follows until the next
+      # restart puts `initial` back.
       wakeup_time = {
         name = "Wake-Up Time";
         icon = "mdi:weather-sunset-up";
