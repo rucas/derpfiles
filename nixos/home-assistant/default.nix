@@ -10,6 +10,7 @@ in
     ./automations
     ./blueprints.nix
     ./helpers.nix
+    ./integrations/adaptive_lighting.nix
     ./integrations/lutron_caseta.nix
     ./integrations/notify.nix
     ./integrations/sonos.nix
@@ -36,6 +37,7 @@ in
       ];
       extraPackages = ps: with ps; [ psycopg2 ];
       customComponents = [
+        pkgs.home-assistant-custom-components.adaptive_lighting
         pkgs.home-assistant-custom-components.alarmo
         (pkgs.callPackage ../../pkgs/hass-browser_mod { })
       ];

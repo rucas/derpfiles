@@ -170,6 +170,13 @@ rec {
 
   wakeupAlarm = "input_boolean.wakeup_alarm";
 
+  # Adaptive Lighting names its main switch after the device, which it builds
+  # as "Adaptive Lighting: <name>" from the `name` in integrations/
+  # adaptive_lighting.nix. Changing that name moves this entity id.
+  adaptiveLighting = {
+    masterBedroom = "switch.adaptive_lighting_master_bedroom";
+  };
+
   vacationMode = "input_boolean.vacation_mode";
 
   allMobileDevices = lib.attrValues (lib.mapAttrs (_name: person: person.mobile) people);
