@@ -31,7 +31,7 @@ writeShellApplication {
     _main_branch() {
       local branch
       for branch in master main; do
-        git rev-parse --verify "$branch" >/dev/null 2>&1 && { echo "$branch"; return; }
+        git -C "''${1:-.}" rev-parse --verify "$branch" >/dev/null 2>&1 && { echo "$branch"; return; }
       done
       echo "Error: neither 'master' nor 'main' branch found" >&2
       exit 1
@@ -521,13 +521,18 @@ writeShellApplication {
     }
 
     new() {
-      local usage="Usage: git wt new <branch>... [repo-path] [--cd SUBDIR] [--attach] [--no-copy-skills]"
-      local copy_skills=1 attach=0 subdir=""
-      local rest=() want_cd=0
+      local usage="Usage: git wt new <branch>... [repo-path] [--cd SUBDIR] [--from REF] [--attach] [--no-copy-skills]"
+      local copy_skills=1 attach=0 subdir="" from=""
+      local rest=() want_cd=0 want_from=0
       for arg in "$@"; do
         if [ "$want_cd" -eq 1 ]; then
           subdir="$arg"
           want_cd=0
+          continue
+        fi
+        if [ "$want_from" -eq 1 ]; then
+          from="$arg"
+          want_from=0
           continue
         fi
         case "$arg" in
@@ -535,12 +540,18 @@ writeShellApplication {
           --attach|-a)      attach=1 ;;
           --cd)             want_cd=1 ;;
           --cd=*)           subdir="''${arg#--cd=}" ;;
+          --from)           want_from=1 ;;
+          --from=*)         from="''${arg#--from=}" ;;
           -h|--help)        echo "$usage"; return ;;
           *)                rest+=("$arg") ;;
         esac
       done
       if [ "$want_cd" -eq 1 ]; then
         echo "Error: --cd needs a subdir" >&2
+        exit 1
+      fi
+      if [ "$want_from" -eq 1 ]; then
+        echo "Error: --from needs a ref" >&2
         exit 1
       fi
       set -- "''${rest[@]}"
@@ -577,6 +588,39 @@ writeShellApplication {
       subdir="''${subdir#/}"
       subdir="''${subdir%/}"
 
+      # `worktree add -b` branches from the main worktree's HEAD, which is a master
+      # that may not have been pulled in days — or whatever feature branch the main
+      # checkout is parked on. Start from the freshly fetched remote tip instead, so
+      # work always begins on current master. Resolved before anything is created:
+      # a failed fetch aborts with no worktree, branch or session left behind.
+      local start_point
+      if [ -n "$from" ]; then
+        # Resolve --from where the user is standing, so `--from HEAD` means the commit
+        # they are on rather than the main checkout's. Branch names resolve the same
+        # either way, since every worktree shares the one ref store.
+        start_point="$(git rev-parse --verify "$from^{commit}" 2>/dev/null)" ||
+          start_point="$(git -C "$main_wt" rev-parse --verify "$from^{commit}" 2>/dev/null)" || {
+            echo "Error: --from: no such commit: $from" >&2
+            exit 1
+          }
+        git -C "$main_wt" rev-parse --verify --quiet "$start_point^{commit}" >/dev/null || {
+          echo "Error: --from: $from is not a commit in $main_wt" >&2
+          exit 1
+        }
+      else
+        local main_branch
+        main_branch="$(_main_branch "$main_wt")"
+        # Explicit refspec rather than a bare `fetch origin <branch>`: the remote-tracking
+        # ref has to be updated whatever refspec the remote is configured with.
+        git -C "$main_wt" fetch --quiet origin \
+          "+refs/heads/$main_branch:refs/remotes/origin/$main_branch" || {
+            echo "Error: failed to fetch origin/$main_branch" >&2
+            echo "       Refusing to branch from a stale base; pass --from <ref> to use a local one." >&2
+            exit 1
+          }
+        start_point="origin/$main_branch"
+      fi
+
       mkdir -p "$main_wt/.claude/worktrees"
 
       local last_session=""
@@ -587,7 +631,7 @@ writeShellApplication {
         fi
 
         local wt_path="$main_wt/.claude/worktrees/$name"
-        git -C "$main_wt" worktree add --no-checkout -b "$branch" "$wt_path"
+        git -C "$main_wt" worktree add --no-checkout -b "$branch" "$wt_path" "$start_point"
         _link_git_crypt "$main_wt" "$wt_path"
         git -C "$wt_path" checkout
 
@@ -1187,10 +1231,14 @@ writeShellApplication {
       echo "Usage: git wt <subcommand>"
       echo ""
       echo "Subcommands:"
-      echo "    new <branch>... [repo] [--cd SUBDIR] [--attach] [--no-copy-skills]"
+      echo "    new <branch>... [repo] [--cd SUBDIR] [--from REF] [--attach] [--no-copy-skills]"
       echo "                        Create worktree(s) + tmux session(s) in <repo>/.claude/worktrees/"
       echo "                        [repo] may be any path inside the repo (a subdir works); the"
       echo "                        worktree is always created off the main worktree's root."
+      echo "                        Branches from a freshly fetched origin/<master|main>, so work"
+      echo "                        never starts on a stale base; aborts if that fetch fails."
+      echo "                        --from REF branches from REF instead and skips the fetch"
+      echo "                        (--from HEAD keeps the old behaviour; REF resolves in \$PWD)."
       echo "                        --cd SUBDIR starts each session in that subdir of the worktree"
       echo "                        (relative to the repo root) so its CLAUDE.md chain loads."
       echo "                        Copies every nested live .claude/skills into each worktree"
