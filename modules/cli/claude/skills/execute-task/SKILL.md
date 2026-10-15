@@ -294,8 +294,7 @@ Plain markdown, covering:
   so and wait rather than picking a direction.
 - **Verify** — use the repo's own scoped build/lint/test commands for the affected module only, as
   documented in its `CLAUDE.md`.
-- **Commit** — atomic commits per logical unit, repo commit conventions, no AI/Claude attribution.
-  Do not push or open a PR unless asked.
+- **Commit** — run `/commit`. Do not push or open a PR unless asked.
 - **Do not commit `.claude/execute-task/`** — it is scaffolding for this session.
 
 ### 12. Launch Claude in the session
