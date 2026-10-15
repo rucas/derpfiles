@@ -60,6 +60,8 @@ TODO by the keymap first, so it arrives in the same shape.) Treat the stars and 
 framing, not as part of the task; the links are real context. A `jira:` line is where the ticket
 comes from — a block carrying one is planned work. A `tmux:` line names a session that may already
 own this work, and a `pr:` line carries the PR URL a review-feedback task needs; both feed step 2.
+Keep the header line itself byte-for-byte as it arrived: step 13 hands it back to `ldgr` as the key
+that identifies this task in the ledger, so the framing step 6 strips cannot be stripped here.
 
 With no arguments at all, ask in plain text for the task or the ticket and stop for the answer.
 
@@ -311,11 +313,48 @@ here — unlike resume mode, which has to pick its pane (step 2c). Check it took
 `tmux capture-pane -p -t "=<name>" | tail -5`. If the pane does not show Claude starting, report
 that instead of claiming success.
 
-### 13. Report
+### 13. Link the session back onto the norg task
+
+Only when `$ARGUMENTS` arrived as a norg task block (step 1). The block's header line is what
+identifies the task in the ledger; a handoff typed as prose has no such line, so skip the step
+rather than guessing which task it belongs to.
+
+The write belongs to the ledger's own tool — this skill never edits a norg file itself. Hand `ldgr`
+the header line verbatim and the session name:
+
+```bash
+LEDGER_DIR="${LEDGER_DIR:-$HOME/Code/ledger}" \
+  "$HOME/Code/ledger/scripts/ldgr" task sync tmux \
+  --task '<header line>' --session <name>
+```
+
+- Pass the first line **exactly** as `$ARGUMENTS` delivered it — `****` stars, `(-)` marker,
+  `#tags` and all. It is the match key, so the framing step 6 strips for the slug has to survive
+  here. Single-quote it: a task header routinely carries backticks and `#`.
+- Call it by **absolute path**, as `modules/cli/tmux.nix` does for `journal-session`. Bare `ldgr`
+  is on PATH only inside the ledger checkout (direnv), and this step never runs from there. The
+  script needs nothing but GNU `date` and `gawk`, which `modules/cli/default.nix` installs
+  globally.
+- `LEDGER_DIR` is not optional either. `ldgr` resolves its root from `$PWD` otherwise, and `$PWD`
+  here is a worktree of some entirely different repo.
+- A bare `ldgr task sync tmux` is not a substitute. It matches each task's Jira key or `PR#<n>`
+  against live session names, so it never fires for the slug session step 6 derives for a
+  ticketless task — the explicit pair is what covers that case.
+
+Best-effort, exactly like step 8: an absent ledger checkout, a header matching no task in the day's
+TODO, or any non-zero exit gets noted in the final report and nothing more. The worktree and the
+session are the handoff; the norg line is bookkeeping, and it never blocks or reverses them.
+
+Resume mode does not reach this step, and that is deliberate: a task with a live session usually
+carries its `tmux:` line already, and step 2 promises to create nothing and write nothing.
+
+### 14. Report
 
 The ticket + URL when there is one, otherwise the task; then the repo, the branch, the worktree
 path, `target`, the session name, and the staged files. Say what step 8 did to the ticket's status
-— moved to `In Progress`, left alone because it was already past To Do, or failed and why.
+— moved to `In Progress`, left alone because it was already past To Do, or failed and why. Say the
+same for step 13's norg link — written, skipped because the handoff did not arrive as a norg block,
+or failed and why.
 Finish with how to get there —
 `tmux switch-client -t <name>` inside tmux, `tmux attach -t <name>` outside. Leave the session
 detached; only when `--attach` was passed in `$ARGUMENTS`, run that switch yourself as the final
