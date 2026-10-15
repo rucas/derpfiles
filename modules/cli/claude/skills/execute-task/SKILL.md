@@ -259,6 +259,11 @@ set, and use for every path from here on:
   `Worktree:` line
 - `target` = `<wt>/<rel>` — the directory the work happens in
 
+`git wt new` branches from a freshly fetched `origin/<master|main>`, so the handoff never starts
+on a stale base or on whatever branch the main checkout happens to be parked on. It aborts rather
+than branching from a stale tree when that fetch fails, which is one more way the call below can
+fail — and one worth naming in the report when it does.
+
 If `git wt new` fails, STOP: report its output and leave the tree alone.
 
 ### 10. Stage the brief
