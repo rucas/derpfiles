@@ -631,7 +631,12 @@ writeShellApplication {
         fi
 
         local wt_path="$main_wt/.claude/worktrees/$name"
-        git -C "$main_wt" worktree add --no-checkout -b "$branch" "$wt_path" "$start_point"
+        # --no-track: `worktree add -b` defaults to --track when the start point is a
+        # remote-tracking ref, which would leave every worktree branch upstreamed to
+        # origin/master — reporting itself "behind" as master moves, pulling master on
+        # `git pull`, and rejecting `git push` because the names differ. Branching from
+        # a local HEAD never set an upstream, so keep it that way.
+        git -C "$main_wt" worktree add --no-checkout --no-track -b "$branch" "$wt_path" "$start_point"
         _link_git_crypt "$main_wt" "$wt_path"
         git -C "$wt_path" checkout
 
