@@ -95,6 +95,8 @@
       [core]
           fsmonitor = true
           untrackedCache = true
+
+      [feature]
           manyFiles = true
     '';
     ".config/git/public.gitconfig".text = ''
