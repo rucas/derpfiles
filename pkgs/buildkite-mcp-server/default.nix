@@ -6,16 +6,16 @@
 
 buildGoModule (finalAttrs: {
   pname = "buildkite-mcp-server";
-  version = "1.26.1";
+  version = "1.28.0";
 
   src = fetchFromGitHub {
     owner = "buildkite";
     repo = "buildkite-mcp-server";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-m2O70jgEA2Ob9JWH3grCSpDp8nXwhiSYI97P0By/Qb4=";
+    hash = "sha256-Ro6GK10C1q7T4uA2W8ZWo0LTOsvma5PybTc3nRib68U=";
   };
 
-  vendorHash = "sha256-vMu+6vJ7QM1MLEv6AtX1UDQbWhCYOSYA3H/GRsK1w44=";
+  vendorHash = "sha256-9tmECoZ+nCQGP7fBa/U5xLY0Yhwu2fdjrQ3qko+JDfU=";
 
   subPackages = [ "cmd/buildkite-mcp-server" ];
 
