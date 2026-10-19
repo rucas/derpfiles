@@ -6,16 +6,16 @@
 
 buildNpmPackage rec {
   pname = "rollbar-mcp-server";
-  version = "0.6.1";
+  version = "0.7.0";
 
   src = fetchFromGitHub {
     owner = "rollbar";
     repo = "rollbar-mcp-server";
     rev = "v${version}";
-    hash = "sha256-CJPoFMhf6NHH60T7y2z965EUwIqq34BlE6RHNuPtCWI=";
+    hash = "sha256-KjreL5pi6PD6xq4aOLTvMj0i+dnshOOwBKxLcjsQVi0=";
   };
 
-  npmDepsHash = "sha256-z2P5volGfxaKBY/AWeWhwCe7Nq8lQplAkYeS3Lj3geY=";
+  npmDepsHash = "sha256-miY4ywc/REv80+qmpOoTzfQdLg053Ova6Z46VyJFRCI=";
 
   meta = {
     description = "Model Context Protocol server for Rollbar error monitoring";
