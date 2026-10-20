@@ -105,12 +105,18 @@ branch-protection contexts.
 ## Package updates
 
 `update-pkgs.yaml` runs weekly, bumps `pkgs/` entries with `nix-update`, and
-opens one PR per package (label `nix-deps` plus `pkg:<attr>`), capped at five
-open at a time. `.github/nix-update.json` drives it: every package listed there
-is auto-bumped on the runner it names, and everything else exposed in
-`packages.<system>` must carry a written reason under `skip`. The
+opens one PR per package (label `nix-deps` plus `pkg:<attr>`), capped by
+`maxOpenPullRequests` open at a time. `.github/nix-update.json` drives it: every
+package listed there is auto-bumped on the runner it names, and everything else
+exposed in `packages.<system>` must carry a written reason under `skip`. The
 `update-coverage` flake check enforces that, so a new `pkgs/` entry has to be
 either wired into the updater or explicitly excused.
+
+Keep `maxOpenPullRequests` at or above the length of `packages`. The plan step
+takes a prefix of the list (`.[:$slots]`, where `slots = maxOpenPullRequests -
+open PRs`), so a cap below the package count permanently starves everything past
+that index — the leading entries automerge and free their slots again before the
+next run, and the same prefix wins every week.
 
 Two constraints shape it:
 

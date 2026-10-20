@@ -1,5 +1,5 @@
 {
-  "maxOpenPullRequests": 5,
+  "maxOpenPullRequests": 20,
   "packages": [
     {
       "attr": "buildkite-mcp-server",
