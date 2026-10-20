@@ -1221,13 +1221,20 @@ writeShellApplication {
       local trash
       trash="$(mktemp -d)"
       for m in "''${matches[@]}"; do
-        IFS='|' read -r wt_path branch_ref session <<< "$m"
+        IFS='|' read -r wt_path _ session <<< "$m"
         _kill_session "$session"
         mv "$wt_path" "$trash/" 2>/dev/null || { [ -n "$wt_path" ] && rm -rf "$wt_path"; }
+      done
+
+      # Prune before deleting branches: while the worktree is still registered
+      # git refuses to delete the branch it has checked out.
+      git -C "$main_wt" worktree prune
+
+      for m in "''${matches[@]}"; do
+        IFS='|' read -r _ branch_ref session <<< "$m"
         git -C "$main_wt" branch -D "''${branch_ref#refs/heads/}" 2>/dev/null || true
         printf "Killed %s\n" "$session"
       done
-      git -C "$main_wt" worktree prune
       rm -rf "$trash" &
       disown
     }
