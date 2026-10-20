@@ -32,5 +32,16 @@ update input="":
 
 # Bump a hand-pinned package to its latest upstream release (e.g. `just update-pkg crw`)
 update-pkg attr:
-    {{ nix_update }} --flake --build {{ attr }}
+    #!/usr/bin/env bash
+    set -euo pipefail
+    script=$(jq -r --arg a "{{ attr }}" \
+        '.packages[] | select(.attr == $a) | .script // empty' .github/nix-update.json)
+    if [ -n "$script" ]; then
+        # The package ships its own updater (e.g. a vendored manifest.json),
+        # matching the `script` branch in .github/workflows/update-pkgs.yaml.
+        "./$script"
+        nix build --no-link ".#{{ attr }}"
+    else
+        {{ nix_update }} --flake --build "{{ attr }}"
+    fi
     nix fmt
