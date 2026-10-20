@@ -17,6 +17,7 @@
   programs.claude-code-custom = {
     enable = true;
     plugins.adhd.enable = true;
+    plugins.ponytail.enable = true;
     # fetch, git, and time are enabled by default
     # memory uses the same default configuration
     # note, commit, and resolve-conflicts are enabled by default

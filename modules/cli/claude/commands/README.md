@@ -98,6 +98,23 @@ preamble or closers. Stays on for the whole session until you say
 You must invoke it — it sets `disable-model-invocation: true`, so Claude cannot turn
 it on itself. Enable with `programs.claude-code-custom.plugins.adhd.enable`.
 
+### `/ponytail`
+
+Lazy senior dev mode: the smallest change that fully solves the task, standard library
+and existing helpers before new code, no abstraction nobody asked for. Also stays on for
+the whole session, until you say "stop ponytail". Takes a level —
+`/ponytail lite|full|ultra` — where `lite` only names the smaller option and `ultra` also
+pushes back on the request itself.
+
+Unlike `/i-have-adhd` it carries no `disable-model-invocation`, so Claude can reach for
+it on its own on any coding task. Enable with
+`programs.claude-code-custom.plugins.ponytail.enable`.
+
+The plugin ships more than the skill: five sibling skills (`/ponytail-audit`, `-debt`,
+`-gain`, `-help`, `-review`) and two hook bundles. One of those hooks keeps a task board,
+appending a row per turn to `~/.config/ponytail/band/<project>.csv`; its webhook, which
+would send those rows off the machine, is empty unless you set one.
+
 ## Adding a command
 
 1. Drop `<name>.md` in this directory, frontmatter first
