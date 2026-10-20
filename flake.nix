@@ -94,6 +94,10 @@
       url = "github:ayghri/i-have-adhd";
       flake = false;
     };
+    ponytail = {
+      url = "github:DietrichGebert/ponytail";
+      flake = false;
+    };
     rucaslab = {
       url = "github:rucas/rucaslab";
       inputs.nixpkgs.follows = "nixpkgs";

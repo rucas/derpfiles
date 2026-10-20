@@ -170,6 +170,8 @@ in
 
     plugins.adhd.enable = lib.mkEnableOption "i-have-adhd plugin (ADHD-friendly output formatting)";
 
+    plugins.ponytail.enable = lib.mkEnableOption "ponytail plugin (lazy senior dev mode)";
+
     gradleEnv.enable = lib.mkEnableOption "auto-bootstrap the SDKMAN env for Gradle/Kotlin Bash commands";
 
     agentTeams.enable = lib.mkEnableOption "experimental agent teams (CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS)";
@@ -307,9 +309,13 @@ in
 
     programs.claude-code = {
       enable = true;
-      marketplaces = lib.optionalAttrs cfg.plugins.adhd.enable {
-        "i-have-adhd" = inputs.i-have-adhd;
-      };
+      marketplaces =
+        (lib.optionalAttrs cfg.plugins.adhd.enable {
+          "i-have-adhd" = inputs.i-have-adhd;
+        })
+        // (lib.optionalAttrs cfg.plugins.ponytail.enable {
+          "ponytail" = inputs.ponytail;
+        });
       settings = {
         theme = "dark";
         model = lib.mkIf (cfg.model != null) cfg.model;
@@ -331,6 +337,9 @@ in
           ))
           // (lib.optionalAttrs cfg.plugins.adhd.enable {
             "i-have-adhd@i-have-adhd" = true;
+          })
+          // (lib.optionalAttrs cfg.plugins.ponytail.enable {
+            "ponytail@ponytail" = true;
           });
         hooks = lib.mkIf (cfg.safetyNet.enable || cfg.gradleEnv.enable) {
           PreToolUse = [

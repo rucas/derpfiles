@@ -21,6 +21,7 @@
   programs.claude-code-custom = {
     enable = true;
     plugins.adhd.enable = true;
+    plugins.ponytail.enable = true;
     lsp = {
       enable = true;
       servers = [

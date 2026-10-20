@@ -25,6 +25,7 @@
       enable = true;
       model = "claude-opus-5";
       plugins.adhd.enable = true;
+      plugins.ponytail.enable = true;
       gradleEnv.enable = true;
       agentTeams.enable = true;
       # note, commit, and resolve-conflicts are enabled by default;
