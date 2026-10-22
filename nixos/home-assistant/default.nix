@@ -32,6 +32,7 @@ in
         "met"
         "radio_browser"
         "roborock"
+        "sensorpush"
         "unifiprotect"
         "zwave_js"
       ];
