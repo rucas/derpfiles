@@ -3,6 +3,8 @@ _: {
     enable = true;
     configuration = {
       server.http_listen_port = 3030;
+      # info logs one line per split subquery; a 168h dashboard query emits ~25k of them
+      server.log_level = "warn";
       auth_enabled = false;
 
       ingester = {
@@ -59,6 +61,8 @@ _: {
         reject_old_samples = true;
         reject_old_samples_max_age = "168h";
         allow_structured_metadata = false;
+        split_queries_by_interval = "24h";
+        split_instant_metric_queries_by_interval = "24h";
       };
 
       table_manager = {
