@@ -373,6 +373,13 @@
     };
   };
 
+  # a single runaway service filled 4G and burned a core on journald; cap the blast radius
+  services.journald.settings.Journal = {
+    SystemMaxUse = "2G";
+    RateLimitIntervalSec = "30s";
+    RateLimitBurst = 5000;
+  };
+
   systemd.services = {
     adguardhome.serviceConfig = {
       DynamicUser = pkgs.lib.mkForce false;
