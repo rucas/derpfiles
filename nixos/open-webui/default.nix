@@ -138,6 +138,9 @@ in
         WEBSOCKET_MANAGER = "redis";
         WEBSOCKET_REDIS_URL = redisUrl;
         ENABLE_WEBSOCKET_SUPPORT = "True";
+        # 0.12.2's room-channel manager calls _get_redis_module_and_error, renamed to
+        # _get_redis_module in python-socketio 5.17; drop once open-webui catches up
+        WEBSOCKET_REDIS_ROOM_CHANNELS = "False";
 
         UVICORN_WORKERS = toString workers;
         THREAD_POOL_SIZE = "2000";
