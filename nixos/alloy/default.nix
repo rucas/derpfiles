@@ -22,6 +22,12 @@ in
         source_labels = ["__journal__systemd_unit"]
         target_label  = "unit"
       }
+      // the log pipeline's own logs re-enter it through the journal; drop them
+      rule {
+        source_labels = ["unit"]
+        regex         = "(loki|alloy)\\.service"
+        action        = "drop"
+      }
     }
 
     loki.write "local" {
