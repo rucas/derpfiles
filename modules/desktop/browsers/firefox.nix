@@ -61,6 +61,7 @@ in
 
     profiles.default = {
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
+        clearurls
         darkreader
         # NOTE: need to manage permissions on per domain basis
         fake-filler

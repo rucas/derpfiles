@@ -8,7 +8,7 @@
     };
     profiles.default = {
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
-        # cleanurls
+        clearurls
         darkreader
         gruvbox-dark-theme
         onepassword-password-manager
