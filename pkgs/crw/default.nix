@@ -10,16 +10,16 @@
 # scrape surface; its search results come from SearXNG.
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "crw";
-  version = "1.2.0";
+  version = "1.8.2";
 
   src = fetchFromGitHub {
     owner = "adambenhassen";
     repo = "crw-camofox";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-XzncGL0GpvvKnUFT8BAbqTOkvO3ggU3Noq+z2SSuqu4=";
+    hash = "sha256-r5gRxpRSl26/ViDzrxTqYjKmKzZVkbUKgUtsQJDQAU4=";
   };
 
-  cargoHash = "sha256-oV655qeu0mCg+H0GfJiJJ+n5j5gujPFTNHHyezVR3K0=";
+  cargoHash = "sha256-GXwPykhpw0wONHO3a7oN0EI2hU0CeEYEcWI89mDvfDI=";
 
   # crw-server ships no default features; `camofox` pulls in `cdp` transitively.
   buildFeatures = [ "camofox" ];
