@@ -5,16 +5,16 @@
 }:
 buildNpmPackage rec {
   pname = "my-cards";
-  version = "1.0.5";
+  version = "2.3.1";
 
   src = fetchFromGitHub {
     owner = "AnthonMS";
     repo = "my-cards";
     tag = "v${version}";
-    hash = "sha256-sPxiO+zxvUzAA/TBn1XWRyx6Kc4n59d1rRdn47pctuw=";
+    hash = "sha256-H67EA8zDGNZ9EK+w3Vgb/0NvTdqxmUL177ggS8D8Cz8=";
   };
 
-  npmDepsHash = "sha256-QohapCm6ABarHYwLlAhubvlrU5Z626vNAX1OB8b9A6g=";
+  npmDepsHash = "sha256-ia9Z65Pvupt37otSLyj0mNFakg5Cl/huIbso4QYc1NA=";
 
   makeCacheWritable = true;
 
