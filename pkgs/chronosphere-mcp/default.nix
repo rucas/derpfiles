@@ -6,16 +6,16 @@
 
 buildGoModule (finalAttrs: {
   pname = "chronosphere-mcp";
-  version = "0.6.0";
+  version = "0.7.1";
 
   src = fetchFromGitHub {
     owner = "chronosphereio";
     repo = "chronosphere-mcp";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-bL+OzxarokltXxQgRSgbWTpGrAGNpbpuCWZjRref3z4=";
+    hash = "sha256-9wWK1+BXGXi6x1mFCyiJ1sp1DJnGfj+Urhk1pwqxJyo=";
   };
 
-  vendorHash = "sha256-fQTAkO6sjf3pA1WnRFubOf1EGpQBQ/ftL2yXklIVk3A=";
+  vendorHash = "sha256-/hk6JwLDQNlMPGnLHAIyOSyxz8DBdsUX85f9Dds7SVc=";
 
   subPackages = [ "mcp-server" ];
 
