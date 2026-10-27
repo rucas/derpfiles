@@ -26,6 +26,10 @@ let
     runtimeInputs = [
       pkgs.git
       pkgs.coreutils
+      # `git-crypt unlock` records the smudge filter as the bare command name,
+      # and the unit's PATH is a closed list that excludes /run/current-system.
+      # Without this, the merge below aborts on every encrypted file.
+      pkgs.git-crypt
     ];
     text = ''
       die() {
@@ -105,7 +109,7 @@ in
     };
   };
 
-  # git-crypt unlock records an absolute store path as the clone's filter;
-  # nix.gc would collect it and the filter would silently stop working.
+  # For the one-time `git-crypt unlock` and any hand-run git in the clone; the
+  # upgrade unit gets its own copy through runtimeInputs.
   environment.systemPackages = [ pkgs.git-crypt ];
 }
