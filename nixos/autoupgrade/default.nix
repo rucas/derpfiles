@@ -5,7 +5,7 @@
 # Pull-based rather than push-based: no root SSH key in GitHub Actions, and the
 # box converges on its own after being offline. The real `git` binary is used
 # (not comin's go-git) because only it honours the git-crypt smudge filter —
-# without it `secrets/adguard-rules-rucaslab.toml` arrives encrypted and
+# without it the files under `secrets/` arrive encrypted and the
 # `builtins.fromTOML` in nixos/adguard throws.
 #
 # One-time bootstrap, by hand on the box:
@@ -15,7 +15,6 @@
 #
 let
   flakePath = "/var/lib/derpfiles";
-  gitCryptCanary = "${flakePath}/secrets/adguard-rules-rucaslab.toml";
   ntfyTopic = "http://localhost${config.services.ntfy-sh.settings.listen-http}/rucaslab";
 
   # ExecCondition, not ExecStartPre: exit 0 runs the unit, 1-254 skips it
@@ -46,9 +45,19 @@ let
       git merge --ff-only origin/master ||
           die "fast-forward to origin/master failed - the checkout is dirty or diverged"
 
-      if [ "$(head -c 9 ${gitCryptCanary} | tr -d '\0')" = "GITCRYPT" ]; then
-          die "${gitCryptCanary} is still encrypted - run git-crypt unlock in ${flakePath}"
-      fi
+      # Ask git which files are git-crypt'd rather than naming one, so adding to
+      # or renaming things under secrets/ needs no change here. Every encrypted
+      # file starts with the magic "\0GITCRYPT\0".
+      checked=0
+      while IFS= read -r -d "" secret; do
+          checked=$((checked + 1))
+          [ -r "$secret" ] || die "$secret is tracked but unreadable"
+          if [ "$(head -c 9 "$secret" | tr -d '\0')" = "GITCRYPT" ]; then
+              die "$secret is still encrypted - run git-crypt unlock in ${flakePath}"
+          fi
+      done < <(git ls-files -z -- secrets)
+
+      [ "$checked" -gt 0 ] || die "secrets/ has no tracked files - has .gitattributes moved?"
     '';
   };
 
