@@ -38,6 +38,7 @@
     settings = {
       alias = {
         conflicts = "diff --name-only --diff-filter=U";
+        whatchanged = "log --raw --no-merges";
       };
       branch = {
         sort = "-committerdate";
