@@ -1,0 +1,115 @@
+{ config, pkgs, ... }:
+#
+# Pull master and rebuild, on the box itself.
+#
+# Pull-based rather than push-based: no root SSH key in GitHub Actions, and the
+# box converges on its own after being offline. The real `git` binary is used
+# (not comin's go-git) because only it honours the git-crypt smudge filter —
+# without it the files under `secrets/` arrive encrypted and the
+# `builtins.fromTOML` in nixos/adguard throws.
+#
+# One-time bootstrap, by hand on the box:
+#
+#   sudo git clone https://github.com/rucas/derpfiles.git /var/lib/derpfiles
+#   sudo git-crypt unlock /path/to/git-crypt-key   # run inside the clone
+#
+let
+  flakePath = "/var/lib/derpfiles";
+  ntfyTopic = "http://localhost${config.services.ntfy-sh.settings.listen-http}/rucaslab";
+
+  # ExecCondition, not ExecStartPre: exit 0 runs the unit, 1-254 skips it
+  # silently, >=255 fails it. "Already up to date" must skip, or the box
+  # re-evaluates the whole system every five minutes for nothing. Everything
+  # that is actually broken exits 255 so onFailure fires.
+  fetchMaster = pkgs.writeShellApplication {
+    name = "autoupgrade-fetch-master";
+    runtimeInputs = [
+      pkgs.git
+      pkgs.coreutils
+      # `git-crypt unlock` records the smudge filter as the bare command name,
+      # and the unit's PATH is a closed list that excludes /run/current-system.
+      # Without this, the merge below aborts on every encrypted file.
+      pkgs.git-crypt
+    ];
+    text = ''
+      die() {
+          echo "$*" >&2
+          exit 255
+      }
+
+      cd ${flakePath} || die "${flakePath} is missing - clone it and run git-crypt unlock"
+
+      git fetch --prune origin master || die "git fetch failed"
+
+      if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/master)" ]; then
+          echo "Already at origin/master, nothing to deploy"
+          exit 1
+      fi
+
+      git merge --ff-only origin/master ||
+          die "fast-forward to origin/master failed - the checkout is dirty or diverged"
+
+      # Ask git which files are git-crypt'd rather than naming one, so adding to
+      # or renaming things under secrets/ needs no change here. Every encrypted
+      # file starts with the magic "\0GITCRYPT\0".
+      checked=0
+      while IFS= read -r -d "" secret; do
+          checked=$((checked + 1))
+          [ -r "$secret" ] || die "$secret is tracked but unreadable"
+          if [ "$(head -c 9 "$secret" | tr -d '\0')" = "GITCRYPT" ]; then
+              die "$secret is still encrypted - run git-crypt unlock in ${flakePath}"
+          fi
+      done < <(git ls-files -z -- secrets)
+
+      [ "$checked" -gt 0 ] || die "secrets/ has no tracked files - has .gitattributes moved?"
+    '';
+  };
+
+  notifyFailure = pkgs.writeShellApplication {
+    name = "autoupgrade-notify";
+    runtimeInputs = [
+      pkgs.curl
+      config.systemd.package
+    ];
+    text = ''
+      journalctl --unit nixos-upgrade.service --lines 30 --no-pager |
+          curl --silent --show-error --fail \
+              --header "Title: rucaslab auto-upgrade failed" \
+              --header "Priority: high" \
+              --header "Tags: warning" \
+              --data-binary @- \
+              ${ntfyTopic}
+    '';
+  };
+in
+{
+  system.autoUpgrade = {
+    enable = true;
+    flake = flakePath;
+    operation = "switch";
+    # The lockfile is what CI built and what master promises; --upgrade would
+    # bump nixpkgs behind its back.
+    upgrade = false;
+    dates = "*:0/5";
+    randomizedDelaySec = "30";
+  };
+
+  systemd.services = {
+    nixos-upgrade = {
+      serviceConfig.ExecCondition = "${fetchMaster}/bin/autoupgrade-fetch-master";
+      onFailure = [ "autoupgrade-notify.service" ];
+    };
+
+    autoupgrade-notify = {
+      description = "Push a ntfy alert when nixos-upgrade fails";
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${notifyFailure}/bin/autoupgrade-notify";
+      };
+    };
+  };
+
+  # For the one-time `git-crypt unlock` and any hand-run git in the clone; the
+  # upgrade unit gets its own copy through runtimeInputs.
+  environment.systemPackages = [ pkgs.git-crypt ];
+}

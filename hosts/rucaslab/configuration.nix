@@ -45,6 +45,7 @@
     ../../nixos/open-webui
     ../../nixos/searxng
     ../../nixos/crw
+    ../../nixos/autoupgrade
 
   ];
 
