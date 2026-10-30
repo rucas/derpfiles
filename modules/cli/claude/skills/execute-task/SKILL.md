@@ -310,12 +310,17 @@ Keep the sent line short — multi-line prompts through `send-keys` are quoting-
 lives in the file and the prompt just points at it:
 
 ```bash
-tmux send-keys -t "=<name>" 'claude "Read <wt>/.claude/execute-task/PROMPT.md and execute it."' Enter
+tmux send-keys -t "=<name>:" 'claude "Read <wt>/.claude/execute-task/PROMPT.md and execute it."' Enter
 ```
+
+The trailing colon is load-bearing: `send-keys` and `capture-pane` take a **pane** target, and a
+bare `=<name>` is not one — tmux fails with `can't find pane`. `=<name>:` is the exact-matched
+session's active pane. Dropping the `=` instead would also resolve, but by prefix match, so it can
+land in a different session whose name merely starts with this one.
 
 `git wt new` leaves a single shell pane in the fresh session, so targeting the session is safe
 here — unlike resume mode, which has to pick its pane (step 2c). Check it took with
-`tmux capture-pane -p -t "=<name>" | tail -5`. If the pane does not show Claude starting, report
+`tmux capture-pane -p -t "=<name>:" | tail -5`. If the pane does not show Claude starting, report
 that instead of claiming success.
 
 ### 13. Link the session back onto the norg task
