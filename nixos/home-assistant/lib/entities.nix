@@ -167,6 +167,11 @@ rec {
     ];
   };
 
+  # Hue colour bulb on Zigbee2MQTT, with no area assigned in Home Assistant.
+  nursery = {
+    lamp = "light.nursery_lamp";
+  };
+
   bedtime = "input_datetime.bedtime";
 
   wakeupTime = "input_datetime.wakeup_time";
