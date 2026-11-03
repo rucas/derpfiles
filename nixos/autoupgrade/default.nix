@@ -112,4 +112,11 @@ in
   # For the one-time `git-crypt unlock` and any hand-run git in the clone; the
   # upgrade unit gets its own copy through runtimeInputs.
   environment.systemPackages = [ pkgs.git-crypt ];
+
+  # The clone is root-owned, so git refuses it for any other user ("dubious
+  # ownership"). /etc/gitconfig because home-manager's user config is read-only.
+  programs.git = {
+    enable = true;
+    config.safe.directory = flakePath;
+  };
 }
