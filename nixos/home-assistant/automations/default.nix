@@ -5,6 +5,7 @@
     ./doorbell_chime.nix
     ./master_bedroom_pico.nix
     ./downstairs_lamps_pico.nix
+    ./nursery_lamp_pico.nix
     ./dishwasher_reminder.nix
     ./robovac_schedule.nix
     ./rusty_crate_privacy.nix
