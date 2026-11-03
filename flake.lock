@@ -1133,6 +1133,7 @@
         "temporal-mcp": "temporal-mcp",
         "tmux-1password": "tmux-1password",
         "tmux-pomodoro-plus": "tmux-pomodoro-plus",
+        "tmux-which-key": "tmux-which-key",
         "treefmt-nix": "treefmt-nix"
       }
     },
@@ -1285,6 +1286,22 @@
       "original": {
         "owner": "olimorris",
         "repo": "tmux-pomodoro-plus",
+        "type": "github"
+      }
+    },
+    "tmux-which-key": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787697164,
+        "narHash": "sha256-duqagS0h9q8kjxdUBOp7TvnHx3svNjLVJq1yV0Khfgw=",
+        "owner": "nucc",
+        "repo": "tmux-which-key",
+        "rev": "6c94cccb6d0b2b59aa470b583de69cfe2fc9a67a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nucc",
+        "repo": "tmux-which-key",
         "type": "github"
       }
     },

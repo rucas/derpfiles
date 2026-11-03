@@ -137,6 +137,13 @@ _final: prev: {
       src = inputs.tmux-pomodoro-plus;
       rtpFilePath = "pomodoro.tmux";
     };
+    # shadows nixpkgs' tmux-which-key, which is the unrelated alexwforsythe plugin
+    tmux-which-key = prev.tmuxPlugins.mkTmuxPlugin {
+      pluginName = "tmux-which-key";
+      version = "unstable-2026-08-25";
+      src = inputs.tmux-which-key;
+      rtpFilePath = "which-key.tmux";
+    };
   };
   home-assistant-custom-lovelace-modules = prev.home-assistant-custom-lovelace-modules // {
     lovelace-layout-card = prev.callPackage ../pkgs/lovelace-layout-card { };

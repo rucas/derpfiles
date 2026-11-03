@@ -74,6 +74,10 @@
       url = "github:olimorris/tmux-pomodoro-plus";
       flake = false;
     };
+    tmux-which-key = {
+      url = "github:nucc/tmux-which-key";
+      flake = false;
+    };
     opnix = {
       url = "github:brizzbuzz/opnix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -230,7 +234,7 @@
               ;
             inherit (pkgs.home-assistant-custom-lovelace-modules) bubble-card lovelace-layout-card;
             inherit (pkgs.home-assistant-themes) graphite;
-            inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus;
+            inherit (pkgs.tmuxPlugins) tmux-1password tmux-pomodoro-plus tmux-which-key;
 
             # Called inline by nixos/home-assistant, so not overlay attributes.
             lovelace-auto-entities = pkgs.callPackage ./pkgs/lovelace-auto-entities { };
