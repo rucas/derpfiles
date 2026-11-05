@@ -76,6 +76,7 @@
     "temporal-mcp": "src is the temporal-mcp flake input, covered by update.yml",
     "tmux-1password": "src is the tmux-1password flake input, covered by update.yml",
     "tmux-pomodoro-plus": "src is the tmux-pomodoro-plus flake input, covered by update.yml",
+    "tmux-which-key": "src is the tmux-which-key flake input, covered by update.yml",
     "windmill-sync": "local shell script, no upstream release"
   }
 }

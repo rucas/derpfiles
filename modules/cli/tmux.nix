@@ -122,6 +122,14 @@ in
           set -g @pomodoro_on " 󱩠 "
         '';
       }
+      {
+        plugin = pkgs.tmuxPlugins.tmux-which-key;
+        # the plugin reads these when it binds the key, so they must be set first
+        extraConfig = ''
+          set -g @which-key-popup-bg "${theme.colors.primary.other_background}"
+          set -g @which-key-popup-fg "${theme.colors.normal.dark_grey}"
+        '';
+      }
     ];
     extraConfig = ''
       set -g default-terminal "tmux-256color"
