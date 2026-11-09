@@ -15,6 +15,13 @@ _final: prev: {
       "tests/src/unit/test_tool_error_signaling.py::TestClassifiedGuidanceSurvivesCallerSuggestions::test_environment_guidance_comes_first"
     ];
   });
+  # dotnet-sdk is only a check input (and a DOTNET_ROOT env ref), but darwin's
+  # source-built dotnet is not in the binary cache and takes hours to build.
+  pre-commit = prev.pre-commit.overridePythonAttrs (old: {
+    doCheck = false;
+    dontUsePytestCheck = true;
+    env = builtins.removeAttrs old.env [ "DOTNET_ROOT" ];
+  });
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
   buildkite-mcp-server = prev.callPackage ../pkgs/buildkite-mcp-server { };
