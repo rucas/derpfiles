@@ -8,6 +8,13 @@ _final: prev: {
     # (e.g. store filenames containing "Error" trip its assertions).
     disabledTestPaths = (old.disabledTestPaths or [ ]) ++ [ "tests/test_store.py" ];
   });
+  ha-mcp = prev.ha-mcp.overridePythonAttrs (old: {
+    disabledTestPaths = (old.disabledTestPaths or [ ]) ++ [
+      # Upstream expectation omits the darwin-only "macOS may block local
+      # network access" hint the code appends, so it fails only on darwin.
+      "tests/src/unit/test_tool_error_signaling.py::TestClassifiedGuidanceSurvivesCallerSuggestions::test_environment_guidance_comes_first"
+    ];
+  });
   claude-code = prev.callPackage ../pkgs/claude-code { };
   yabai = prev.callPackage ../pkgs/yabai { };
   buildkite-mcp-server = prev.callPackage ../pkgs/buildkite-mcp-server { };
