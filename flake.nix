@@ -67,8 +67,10 @@
       flake = false;
     };
     nxvm = {
+      # Pins its own nixpkgs on purpose: following root re-derives the nixvim
+      # closure, so the binaries nxvm pushed to nxvm.cachix.org never match and
+      # every host rebuilds neovim -> marksman -> dotnet from source.
       url = "github:rucas/nxvm";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     tmux-pomodoro-plus = {
       url = "github:olimorris/tmux-pomodoro-plus";

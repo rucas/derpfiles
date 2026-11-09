@@ -64,5 +64,6 @@ jobs:
         with:
           name: derpfiles
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          extraPullNames: nxvm
       - name: Build ${{ matrix.host }}
         run: nix build .#${{ matrix.config_type }}.${{ matrix.host }}.config.system.build.toplevel
