@@ -40,6 +40,9 @@ in
       customComponents = [
         pkgs.home-assistant-custom-components.adaptive_lighting
         pkgs.home-assistant-custom-components.alarmo
+        # successor of the removed card-mod lovelace module; registers its own
+        # frontend resource, so `card_mod:` keeps working without one here
+        pkgs.home-assistant-custom-components.uix
         (pkgs.callPackage ../../pkgs/hass-browser_mod { })
       ];
       customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
@@ -77,7 +80,6 @@ in
                 "light-entity-card"
                 "layout-card"
                 "bubble-card"
-                "card-mod"
                 "mushroom"
               ];
         };
@@ -96,7 +98,6 @@ in
     "L+ /run/hass/light-entity-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.light-entity-card}/light-entity-card.js"
     "L+ /run/hass/layout-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.lovelace-layout-card}/layout-card.js"
     "L+ /run/hass/bubble-card.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.bubble-card}/bubble-card.js"
-    "L+ /run/hass/card-mod.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.card-mod}/card-mod.js"
     "L+ /run/hass/mushroom.js - - - - ${pkgs.home-assistant-custom-lovelace-modules.mushroom}/mushroom.js"
   ];
 
