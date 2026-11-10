@@ -7,13 +7,13 @@
 
 buildGoModule (finalAttrs: {
   pname = "chronoctl";
-  version = "1.36.0";
+  version = "1.37.0";
 
   src = fetchFromGitHub {
     owner = "chronosphereio";
     repo = "chronoctl-core";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-9pM4yQy1135oqAd+IYtADlmJovybiDztV88BxTeKhzg=";
+    hash = "sha256-+Mwksdf2lteZBkK3XPhC4qXrybw4mDdHeuXeC9Ywnww=";
   };
 
   vendorHash = "sha256-ELJCBFfcmVy5HmzKxHsqpqpJODJtLJkEV/z3xkjGWq4=";
