@@ -171,6 +171,9 @@
 
           checks = {
             pre-commit-check = pre-commit-hooks.lib.${system}.run {
+              # pre-commit-hooks.nix builds from its own un-overlaid nixpkgs, so
+              # without this the overlay's dotnet-free pre-commit is bypassed.
+              package = pkgs.pre-commit;
               src = builtins.path {
                 path = ./.;
                 name = "source";
