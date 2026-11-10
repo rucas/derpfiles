@@ -1,10 +1,11 @@
 {
   lib,
-  buildGoModule,
+  buildGoLatestModule,
   fetchFromGitHub,
 }:
 
-buildGoModule (finalAttrs: {
+# Upstream's go.mod tracks the newest Go release, ahead of nixpkgs' default.
+buildGoLatestModule (finalAttrs: {
   pname = "buildkite-mcp-server";
   version = "1.28.0";
 

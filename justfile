@@ -42,6 +42,8 @@ update-pkg attr:
         "./$script"
         nix build --no-link ".#{{ attr }}"
     else
-        {{ nix_update }} --flake --build "{{ attr }}"
+        mapfile -t args < <(jq -r --arg a "{{ attr }}" \
+            '.packages[] | select(.attr == $a) | (.args // [])[]' .github/nix-update.json)
+        {{ nix_update }} --flake --build "${args[@]}" "{{ attr }}"
     fi
     nix fmt
