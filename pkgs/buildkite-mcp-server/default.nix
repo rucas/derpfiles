@@ -7,16 +7,16 @@
 # Upstream's go.mod tracks the newest Go release, ahead of nixpkgs' default.
 buildGoLatestModule (finalAttrs: {
   pname = "buildkite-mcp-server";
-  version = "1.28.0";
+  version = "1.31.0";
 
   src = fetchFromGitHub {
     owner = "buildkite";
     repo = "buildkite-mcp-server";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Ro6GK10C1q7T4uA2W8ZWo0LTOsvma5PybTc3nRib68U=";
+    hash = "sha256-tXwEY44s2RiOS7CEiTmzFYMoBzyGA3oJLwgZdIxM+Pg=";
   };
 
-  vendorHash = "sha256-9tmECoZ+nCQGP7fBa/U5xLY0Yhwu2fdjrQ3qko+JDfU=";
+  vendorHash = "sha256-wTGm8ME+0CLn91HSJMesRXDlIFTlRDgeGRt0JYj0uKA=";
 
   subPackages = [ "cmd/buildkite-mcp-server" ];
 
