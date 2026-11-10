@@ -57,7 +57,8 @@
     },
     {
       "attr": "mcp-atlassian",
-      "os": "macos-latest"
+      "os": "macos-latest",
+      "args": ["--url", "mirror://pypi/m/mcp-atlassian"]
     },
     {
       "attr": "yabai",
