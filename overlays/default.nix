@@ -13,8 +13,11 @@ _final: prev: {
       # Upstream expectation omits the darwin-only "macOS may block local
       # network access" hint the code appends, so it fails only on darwin.
       "tests/src/unit/test_tool_error_signaling.py::TestClassifiedGuidanceSurvivesCallerSuggestions::test_environment_guidance_comes_first"
-      # Expects json.loads on 200k-deep nesting to hit RecursionError; Python
-      # 3.14's stack-based recursion guard lets it parse on the Linux builder.
+    ]
+    # Expects json.loads on 200k-deep nesting to hit RecursionError; Python
+    # 3.14's stack-based recursion guard lets it parse on the Linux builder.
+    # Linux-only so the darwin derivation (and its cached build) is unchanged.
+    ++ prev.lib.optionals prev.stdenv.hostPlatform.isLinux [
       "tests/src/unit/test_tool_dispatch.py::test_deeply_nested_arguments_string_is_a_malformed_envelope_not_a_crash"
     ];
   });
