@@ -97,6 +97,9 @@ in
     };
   };
 
+  # BlueZ for the onboard adapter; home-assistant's bluetooth entry needs it
+  hardware.bluetooth.enable = true;
+
   systemd.tmpfiles.rules = [
     "d /run/hass 0700 caddy caddy"
     "L+ /run/hass/my-cards.js - - - - ${my-cards}/my-cards.js"
