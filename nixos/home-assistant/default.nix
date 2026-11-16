@@ -26,6 +26,7 @@ in
       extraComponents = [
         "airthings"
         "apple_tv"
+        "aranet"
         "esphome"
         "homekit_controller"
         "lutron_caseta"
