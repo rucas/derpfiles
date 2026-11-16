@@ -35,6 +35,9 @@ in
         "roborock"
         "sensorpush"
         "unifiprotect"
+        # not used for any device here (Zigbee runs through zigbee2mqtt), but
+        # lock-code-manager imports homeassistant.components.zha at flow load
+        "zha"
         "zwave_js"
       ];
       extraPackages = ps: with ps; [ psycopg2 ];
