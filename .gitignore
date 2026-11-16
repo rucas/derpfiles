@@ -43,3 +43,4 @@ secret-key
 !.claude/
 .claude/*
 !.claude/skills/
+__pycache__/
