@@ -172,6 +172,23 @@ rec {
     lamp = "light.nursery_lamp";
   };
 
+  downstairs = {
+    # The three lamps the Living Room Pico drives, as one unit. Deliberately
+    # mixed integrations: the living room lamp is a Hue colour bulb on
+    # Zigbee2MQTT, the other two are Lutron Caséta plug-in dimmers. Only
+    # `brightness` is common to all three — the Hue bulb also reports
+    # `color_temp` and `xy`, the dimmers report neither — so anything driving
+    # the set as a whole has to stick to brightness and transition.
+    #
+    # These are the table and floor lamps, not the Lutron wall dimmers in the
+    # same rooms: those are `lights.living_room.main` / `.accent`.
+    lamps = [
+      "light.living_room_lamp"
+      "light.dining_room_table_lamp"
+      "light.front_foyer_table_lamp"
+    ];
+  };
+
   bedtime = "input_datetime.bedtime";
 
   wakeupTime = "input_datetime.wakeup_time";
