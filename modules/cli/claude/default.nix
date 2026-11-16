@@ -361,11 +361,11 @@ in
           defaultMode = "auto";
           allow = [
             "Bash(*)"
-            "Read(*)"
-            "Edit(*)"
-            "Write(*)"
-            "Glob(*)"
-            "Grep(*)"
+            "Read"
+            "Edit"
+            "Write"
+            "Glob"
+            "Grep"
             "WebFetch(*)"
             "WebSearch(*)"
           ]
