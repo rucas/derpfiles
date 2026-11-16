@@ -2,6 +2,7 @@
   lib,
   fetchFromGitHub,
   buildHomeAssistantComponent,
+  python3Packages,
 }:
 
 buildHomeAssistantComponent rec {
@@ -22,6 +23,10 @@ buildHomeAssistantComponent rec {
     substituteInPlace custom_components/lock_code_manager/manifest.json \
       --replace-fail '"version": "0.0.0"' '"version": "${version}"'
   '';
+
+  # providers/__init__.py imports the ZHA provider unconditionally, so the
+  # config flow needs zigpy even on a host that never runs ZHA.
+  dependencies = [ python3Packages.zigpy ];
 
   meta = {
     description = "Manage lock user codes across Z-Wave, Zigbee and Matter locks";
