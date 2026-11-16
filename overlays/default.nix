@@ -100,10 +100,14 @@ _final: prev: {
     };
 
     OPENSSL_NO_VENDOR = "1";
-    # nixpkgs' rust hooks now export LIBGIT2_NO_VENDOR=1, but libgit2-sys pins
+
+    # cargoSetupHook's cargoUseSystemLibs (a preConfigure hook) exports
+    # LIBGIT2_NO_VENDOR=1, clobbering any derivation attr. libgit2-sys pins
     # libgit2 1.9.x with the `experimental` (sha256) feature, which nixpkgs'
-    # libgit2 doesn't provide — build the vendored copy instead.
-    LIBGIT2_NO_VENDOR = "0";
+    # libgit2 doesn't provide — re-enable the vendored copy after that hook.
+    preBuild = ''
+      export LIBGIT2_NO_VENDOR=0
+    '';
 
     nativeBuildInputs = with prev; [
       pkg-config
