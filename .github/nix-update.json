@@ -44,6 +44,10 @@
       "os": "ubuntu-latest"
     },
     {
+      "attr": "lock-code-manager",
+      "os": "ubuntu-latest"
+    },
+    {
       "attr": "lovelace-auto-entities",
       "os": "ubuntu-latest"
     },

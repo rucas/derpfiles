@@ -251,6 +251,9 @@
           }
           // pkgs.lib.optionalAttrs (!isDarwin) {
             inherit (pkgs) crw;
+            # Home Assistant component, called inline by nixos/home-assistant;
+            # home-assistant is Linux-only.
+            lock-code-manager = pkgs.callPackage ./pkgs/lock-code-manager { };
           };
         };
 

@@ -1,0 +1,56 @@
+{
+  "path": "f/scripts/door_code_sync",
+  "code_file": "main.sh",
+  "summary": "Sync lldap door codes to the lock and Alarmo",
+  "description": "Pushes the door-code attribute of every door_access member in lldap to Lock Code Manager (Z-Wave lock) and Alarmo, and removes the codes of users it added once they leave the group.",
+  "language": "bash",
+  "schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "lldap_url": {
+        "type": "string",
+        "description": "lldap web/GraphQL URL",
+        "default": "http://localhost:17170"
+      },
+      "lldap_user": {
+        "type": "string",
+        "description": "lldap user in lldap_strict_readonly (its password comes from 1Password)",
+        "default": "windmill"
+      },
+      "group": {
+        "type": "string",
+        "description": "Only members of this lldap group get a code; empty for everyone",
+        "default": "door_access"
+      },
+      "ha_url": {
+        "type": "string",
+        "description": "Home Assistant URL",
+        "default": "http://localhost:8123"
+      },
+      "lcm_entry": {
+        "type": "string",
+        "description": "Title of the Lock Code Manager config entry to manage",
+        "default": "Door Codes"
+      },
+      "dry_run": {
+        "type": "boolean",
+        "description": "Report what would change without changing anything",
+        "default": false
+      }
+    },
+    "required": ["lldap_url", "lldap_user", "ha_url", "lcm_entry"]
+  },
+  "schedule": {
+    "cron": "0 */5 * * * *",
+    "timezone": "America/Los_Angeles",
+    "args": {
+      "lldap_url": "http://localhost:17170",
+      "lldap_user": "windmill",
+      "group": "door_access",
+      "ha_url": "http://localhost:8123",
+      "lcm_entry": "Door Codes",
+      "dry_run": false
+    }
+  }
+}

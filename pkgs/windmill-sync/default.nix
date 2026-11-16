@@ -32,6 +32,34 @@ writeShellApplication {
         "$BASE_URL/api/w/$WORKSPACE$endpoint" "$@"
     }
 
+    # An optional `schedule` in meta.json ({cron, timezone, args}; cron has a
+    # leading seconds field) becomes a schedule at the script's own path,
+    # created or overwritten on every sync. A failure only warns, so one bad
+    # schedule does not stop the remaining scripts from syncing.
+    sync_schedule() {
+      local meta="$1" path="$2" schedule
+      schedule=$(jq -c '.schedule // empty' "$meta")
+      [ -n "$schedule" ] || return 0
+
+      local action body
+      if [ "$(api GET "/schedules/exists/$path" || echo false)" = "true" ]; then
+        action="update/$path"
+        body=$(jq -n --argjson s "$schedule" \
+          '{schedule: $s.cron, timezone: $s.timezone, args: ($s.args // {})}')
+      else
+        action="create"
+        body=$(jq -n --argjson s "$schedule" --arg path "$path" \
+          '{path: $path, script_path: $path, is_flow: false, enabled: true,
+            schedule: $s.cron, timezone: $s.timezone, args: ($s.args // {})}')
+      fi
+
+      if api POST "/schedules/$action" -d "$body" > /dev/null; then
+        echo "SCHEDULE OK: $path"
+      else
+        echo "WARN: schedule $action failed: $path"
+      fi
+    }
+
     for dir in "$SCRIPTS_DIR"/*/; do
       [ -d "$dir" ] || continue
 
@@ -54,6 +82,7 @@ writeShellApplication {
         existing_content=$(echo "$existing" | jq -r '.content')
         if [ "$existing_content" = "$content" ]; then
           echo "SKIP: $path (unchanged)"
+          sync_schedule "$meta" "$path"
           continue
         fi
         echo "UPDATE: $path"
@@ -76,6 +105,7 @@ writeShellApplication {
 
       api POST "/scripts/create" -d "$payload" > /dev/null
       echo "OK: $path"
+      sync_schedule "$meta" "$path"
     done
   '';
 }

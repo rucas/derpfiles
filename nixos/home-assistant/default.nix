@@ -44,6 +44,8 @@ in
         # frontend resource, so `card_mod:` keeps working without one here
         pkgs.home-assistant-custom-components.uix
         (pkgs.callPackage ../../pkgs/hass-browser_mod { })
+        # door codes, fed from lldap by the windmill door_code_sync script
+        (pkgs.callPackage ../../pkgs/lock-code-manager { })
       ];
       customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
         button-card
@@ -55,7 +57,12 @@ in
       config = {
         default_config = { };
         frontend.themes = "!include ${theme}/${theme.pname}.yaml";
-        recorder.db_url = "postgresql://@/hass";
+        recorder = {
+          db_url = "postgresql://@/hass";
+          # Lock Code Manager keeps each user's PIN as the plaintext state of a
+          # `text.<entry>_<user>_pin` entity; keep those out of history.
+          exclude.entity_globs = [ "text.*_pin" ];
+        };
         homeassistant = {
           allowlist_external_dirs = [
             "/etc/lutron"
