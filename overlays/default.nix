@@ -18,9 +18,15 @@ _final: prev: {
       ]
       # Expects json.loads on 200k-deep nesting to hit RecursionError; Python
       # 3.14's stack-based recursion guard lets it parse on the Linux builder.
-      # Linux-only so the darwin derivation (and its cached build) is unchanged.
       ++ prev.lib.optionals prev.stdenv.hostPlatform.isLinux [
         "tests/src/unit/test_tool_dispatch.py::test_deeply_nested_arguments_string_is_a_malformed_envelope_not_a_crash"
+      ]
+      # Busy-port detection: macOS lets the second bind succeed (SO_REUSEADDR
+      # semantics differ from Linux), so these asserts fail on darwin builders.
+      ++ prev.lib.optionals prev.stdenv.hostPlatform.isDarwin [
+        "tests/src/unit/test_embedded_listen.py::test_busy_port_reads_as_a_startup_exit"
+        "tests/src/unit/test_listen_sockets.py::test_port_in_use_is_reported_not_skipped"
+        "tests/src/unit/test_listen_sockets.py::test_port_held_on_ipv6_only_keeps_the_ipv4_listener"
       ];
   });
   # dotnet-sdk is only a check input (and a DOTNET_ROOT env ref), but darwin's
