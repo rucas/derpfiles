@@ -29,6 +29,28 @@ let
     "sync.mjs" = ./scripts/actual_budget_sync/sync.mjs;
   };
 
+  # Python with its libraries pinned here, so the job needs nothing from PyPI
+  # at run time. The secret paths and state file are baked in as flags; the
+  # Windmill job passes only non-secret settings.
+  doorCodeSync =
+    let
+      inherit (config.services.onepassword-secrets) secrets;
+      app = pkgs.writers.writePython3Bin "door-code-sync-unwrapped" {
+        libraries = [
+          pkgs.python3Packages.bcrypt
+          pkgs.python3Packages.websockets
+        ];
+        flakeIgnore = [ "E501" ];
+      } (builtins.readFile ./scripts/door_code_sync/sync.py);
+    in
+    pkgs.writeShellScript "door-code-sync" ''
+      exec ${app}/bin/door-code-sync-unwrapped \
+        --lldap-password-file ${secrets.doorCodeSyncLldapPassword.path} \
+        --ha-token-file ${secrets.doorCodeSyncHaToken.path} \
+        --state-file /var/lib/windmill-worker/door-code-sync/state.json \
+        "$@"
+    '';
+
   syncScripts = pkgs.runCommand "windmill-scripts" { } ''
     cp -r ${./scripts} $out
   '';
@@ -59,6 +81,7 @@ in
   systemd.services.windmill-worker.environment = {
     CATEGORIZER_APP = categorizerApp;
     SYNC_APP = syncApp;
+    DOOR_CODE_SYNC = doorCodeSync;
   };
 
   systemd.services.windmill-sync = {
