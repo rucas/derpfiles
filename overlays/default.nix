@@ -9,11 +9,25 @@ _final: prev: {
     disabledTestPaths = (old.disabledTestPaths or [ ]) ++ [ "tests/test_store.py" ];
   });
   ha-mcp = prev.ha-mcp.overridePythonAttrs (old: {
-    disabledTestPaths = (old.disabledTestPaths or [ ]) ++ [
-      # Upstream expectation omits the darwin-only "macOS may block local
-      # network access" hint the code appends, so it fails only on darwin.
-      "tests/src/unit/test_tool_error_signaling.py::TestClassifiedGuidanceSurvivesCallerSuggestions::test_environment_guidance_comes_first"
-    ];
+    disabledTestPaths =
+      (old.disabledTestPaths or [ ])
+      ++ [
+        # Upstream expectation omits the darwin-only "macOS may block local
+        # network access" hint the code appends, so it fails only on darwin.
+        "tests/src/unit/test_tool_error_signaling.py::TestClassifiedGuidanceSurvivesCallerSuggestions::test_environment_guidance_comes_first"
+      ]
+      # Expects json.loads on 200k-deep nesting to hit RecursionError; Python
+      # 3.14's stack-based recursion guard lets it parse on the Linux builder.
+      ++ prev.lib.optionals prev.stdenv.hostPlatform.isLinux [
+        "tests/src/unit/test_tool_dispatch.py::test_deeply_nested_arguments_string_is_a_malformed_envelope_not_a_crash"
+      ]
+      # Busy-port detection: macOS lets the second bind succeed (SO_REUSEADDR
+      # semantics differ from Linux), so these asserts fail on darwin builders.
+      ++ prev.lib.optionals prev.stdenv.hostPlatform.isDarwin [
+        "tests/src/unit/test_embedded_listen.py::test_busy_port_reads_as_a_startup_exit"
+        "tests/src/unit/test_listen_sockets.py::test_port_in_use_is_reported_not_skipped"
+        "tests/src/unit/test_listen_sockets.py::test_port_held_on_ipv6_only_keeps_the_ipv4_listener"
+      ];
   });
   # dotnet-sdk is only a check input (and a DOTNET_ROOT env ref), but darwin's
   # source-built dotnet is not in the binary cache and takes hours to build.
@@ -100,6 +114,14 @@ _final: prev: {
     };
 
     OPENSSL_NO_VENDOR = "1";
+
+    # cargoSetupHook's cargoUseSystemLibs (a preConfigure hook) exports
+    # LIBGIT2_NO_VENDOR=1, clobbering any derivation attr. libgit2-sys pins
+    # libgit2 1.9.x with the `experimental` (sha256) feature, which nixpkgs'
+    # libgit2 doesn't provide — re-enable the vendored copy after that hook.
+    preBuild = ''
+      export LIBGIT2_NO_VENDOR=0
+    '';
 
     nativeBuildInputs = with prev; [
       pkg-config
