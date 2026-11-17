@@ -1,35 +1,62 @@
 { lib, ... }:
 let
   haLib = import ../lib { inherit lib; };
-  inherit (haLib) mkBlueprintAutomation;
+  inherit (haLib) entities mkBlueprintAutomation;
 
-  mkPicoAutomation =
-    { name, pico_id }:
-    mkBlueprintAutomation {
-      id = "master_bedroom_pico_${lib.toLower name}";
-      alias = "Master Bedroom Pico ${name}";
-      blueprint_path = "lutron_pico_5_button_actions.yaml";
+  inherit (entities.masterBedroom) lamps;
+
+  setLamps = data: [
+    {
+      action = "light.turn_on";
+      target.entity_id = lamps;
+      inherit data;
+    }
+  ];
+in
+{
+  services.home-assistant.config."automation manual" = [
+    (mkBlueprintAutomation {
+      id = "master_bedroom_pico";
+      alias = "Master Bedroom Pico";
+      blueprint_path = "lutron_pico_5_button_actions_multi.yaml";
       input = {
-        inherit pico_id;
-        short_click_action_on = [
-          {
-            action = "light.turn_on";
-            metadata = { };
-            target.entity_id = [
-              "light.master_bedroom_lamp_left"
-              "light.master_bedroom_lamp_right"
-            ];
-            data = {
-              transition = 3;
-              color_temp_kelvin = 3005;
-              brightness_pct = 100;
-            };
-          }
-        ];
+        # Registry uuids, and the documented exception to entity-ids-only: the
+        # Caséta integration never puts a Pico press on the state machine, so
+        # the blueprint has to match the remote by device. Re-pairing one mints
+        # a new uuid and that remote stops firing silently.
+        pico_a = "ac4c0d4c33c32d9f3d0323e7d0b7a953";
+        pico_b = "28416cdafc91efc5b755ac0b414d5362";
+        pico_c = "0c3c19f854df4723c2bca68ee69dffdd";
+
+        short_click_action_on = setLamps {
+          brightness_pct = 100;
+          color_temp_kelvin = 3005;
+          transition = 3;
+        };
+
+        # The Lutron "favourite" button, same role it has downstairs: the
+        # evening state, low and deep-warm, rather than a second full-brightness
+        # press.
+        short_click_action_stop = setLamps {
+          brightness_pct = 40;
+          color_temp_kelvin = 2200;
+          transition = 3;
+        };
+
+        # One step per press, and deliberately no transition. The blueprint runs
+        # `mode: single` and holds a run open for up to delay_hold +
+        # delay_click (~1.25s) classifying the press, so a hold-to-dim loop
+        # would spend its time being dropped as "Already running"; a fade still
+        # in flight eats the next press for the same reason. Adaptive Lighting
+        # owns these two bulbs (adaptive_lighting.nix) but a step carries an
+        # explicit brightness, so `take_over_control` hands the lamps over on
+        # the first press instead of fighting the arrows.
+        short_click_action_up = setLamps { brightness_step_pct = 10; };
+        short_click_action_down = setLamps { brightness_step_pct = -10; };
+
         short_click_action_off = [
           {
             action = "light.turn_off";
-            metadata = { };
             data.transition = 3;
             target.area_id = [ "master_bedroom" ];
           }
@@ -37,7 +64,6 @@ let
         double_click_action_off = [
           {
             action = "light.turn_off";
-            metadata = { };
             data.transition = 3;
             target.area_id = [
               "master_bedroom"
@@ -45,42 +71,7 @@ let
             ];
           }
         ];
-        short_click_action_up = [
-          {
-            action = "light.turn_on";
-            target.device_id = [
-              "52c8623cb007dd8cebf4ab4f58df6f62"
-              "3821039564adbbd9b098e0977066b6a8"
-            ];
-            data.brightness_step_pct = 10;
-          }
-        ];
-        short_click_action_down = [
-          {
-            action = "light.turn_on";
-            target.device_id = [
-              "52c8623cb007dd8cebf4ab4f58df6f62"
-              "3821039564adbbd9b098e0977066b6a8"
-            ];
-            data.brightness_step_pct = -10;
-          }
-        ];
       };
-    };
-in
-{
-  services.home-assistant.config."automation manual" = [
-    (mkPicoAutomation {
-      name = "A";
-      pico_id = "ac4c0d4c33c32d9f3d0323e7d0b7a953";
-    })
-    (mkPicoAutomation {
-      name = "B";
-      pico_id = "28416cdafc91efc5b755ac0b414d5362";
-    })
-    (mkPicoAutomation {
-      name = "C";
-      pico_id = "0c3c19f854df4723c2bca68ee69dffdd";
     })
   ];
 }
