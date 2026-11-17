@@ -12,6 +12,17 @@ let
       inherit data;
     }
   ];
+
+  bothRoomsOff = [
+    {
+      action = "light.turn_off";
+      data.transition = 3;
+      target.area_id = [
+        "master_bedroom"
+        "master_bathroom"
+      ];
+    }
+  ];
 in
 {
   services.home-assistant.config."automation manual" = [
@@ -79,16 +90,13 @@ in
             target.area_id = [ "master_bedroom" ];
           }
         ];
-        double_click_action_off = [
-          {
-            action = "light.turn_off";
-            data.transition = 3;
-            target.area_id = [
-              "master_bedroom"
-              "master_bathroom"
-            ];
-          }
-        ];
+        # Both rooms, on either gesture. A hold is the one you can find in the
+        # dark; the double tap stays because it is what the remote has always
+        # done. The blueprint classifies a hold by waiting out delay_hold (1s)
+        # on the release, so the lights go off a second after the press rather
+        # than on it — holding longer changes nothing.
+        long_click_action_off = bothRoomsOff;
+        double_click_action_off = bothRoomsOff;
       };
     })
   ];
