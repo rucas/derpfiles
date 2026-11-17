@@ -11,6 +11,7 @@
     ./rusty_crate_privacy.nix
     ./security_camera_privacy.nix
     ./climate_door_pause.nix
+    ./door_code_disarm.nix
     ./hot_water_recirc.nix
     ./wakeup_sunrise.nix
   ];
