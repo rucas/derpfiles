@@ -34,25 +34,32 @@ in
           transition = 3;
         };
 
-        # The Lutron "favourite" button holds the night bathroom trip: both
-        # rooms at 20%, enough to walk by without resetting anyone's eyes. A
-        # double tap on Off is the way back — it covers both rooms, where a
-        # single tap leaves the bathroom lit.
+        # The Lutron "favourite" button holds the night bathroom trip: enough
+        # light to walk by without resetting anyone's eyes. A double tap on Off
+        # is the way back — it covers both rooms, where a single tap leaves the
+        # bathroom lit.
         #
-        # 2200 K is the warmest the bedside bulbs go. The bathroom dimmers
-        # report `brightness` and nothing else, so the light component drops the
-        # colour for them and 20% is the whole scene there.
-        short_click_action_stop = [
-          {
-            action = "light.turn_on";
-            target.entity_id = lamps ++ entities.masterBathroom.lights;
-            data = {
-              brightness_pct = 20;
-              color_temp_kelvin = 2200;
-              transition = 3;
-            };
+        # The bathroom sits at half the bedroom's level: it is the room you end
+        # up standing in, and its three dimmers light a smaller space between
+        # them. 2200 K is the warmest the bedside bulbs go; the bathroom dimmers
+        # report `brightness` and nothing else, so brightness is the whole
+        # scene there.
+        short_click_action_stop =
+          setLamps {
+            brightness_pct = 20;
+            color_temp_kelvin = 2200;
+            transition = 3;
           }
-        ];
+          ++ [
+            {
+              action = "light.turn_on";
+              target.entity_id = entities.masterBathroom.lights;
+              data = {
+                brightness_pct = 10;
+                transition = 3;
+              };
+            }
+          ];
 
         # One step per press, and deliberately no transition. The blueprint runs
         # `mode: single` and holds a run open for up to delay_hold +
