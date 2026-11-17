@@ -140,12 +140,7 @@ rec {
 
     # Stand-ins for "someone is about to want hot water". Master and guest only:
     # the front bathroom has leak sensors but no light in Home Assistant.
-    demandLights = [
-      "light.master_bathroom_main_lights"
-      "light.master_bathroom_shower_lights"
-      "light.master_bathroom_toilet"
-      "light.guest_bathroom_main_lights"
-    ];
+    demandLights = masterBathroom.lights ++ [ "light.guest_bathroom_main_lights" ];
   };
 
   # The closest thing the house has to a bed sensor. This presence sensor drops
@@ -164,6 +159,18 @@ rec {
     lamps = [
       "light.master_bedroom_lamp_left"
       "light.master_bedroom_lamp_right"
+    ];
+  };
+
+  masterBathroom = {
+    # The whole room, as one unit. All three are Caséta dimmers reporting
+    # `brightness` and nothing else — no colour temperature to set, so a warm
+    # scene can only be dim here, and `color_temp_kelvin` sent alongside is
+    # dropped by the light component rather than erroring.
+    lights = [
+      "light.master_bathroom_main_lights"
+      "light.master_bathroom_shower_lights"
+      "light.master_bathroom_toilet"
     ];
   };
 
